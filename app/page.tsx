@@ -16,7 +16,7 @@ export default function Home() {
               <h1 className="font-['Zen_Dots'] text-lg font-normal">Fitness Geek</h1>
             </div>
             <div className="flex justify-end mt-1" >
-            <a href="#" className="" >sign in</a>
+            <a href="/users/sign-in" className="" >sign in</a>
             </div>
             
           </div>
