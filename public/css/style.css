@@ -882,7 +882,7 @@ textarea {
 .exercise-content-sec h2 ,
 #workout-empty-main .ui-datepicker-title{
     color: var(--4, #12151C);
-    text-align: center;
+    /* text-align: center; */
     font-family: "Zen Dots";
     font-size: 18px;
     font-style: normal;
@@ -1584,6 +1584,7 @@ div#ui-datepicker-div {
 }
 #homescreen-main .slick-slide{
     padding: 0 8px;
+    width:253px;
 }
 #homescreen-main .slick-list{
     margin-left: 12px;
@@ -2684,7 +2685,7 @@ ul.nav.nav-tabs.focus-tab-main{
     height: 40px;
 }
 .timer .countdown {
-   text-transform: uppercase;*/
+   text-transform: uppercase;
    margin-top: 10px; 
 }
 .prev-icon {
@@ -2892,7 +2893,7 @@ ul.nav.nav-tabs.focus-tab-main{
     line-height: 10px;
 }
 .bg-img-sec{
-    background: url(../images/about-us/blog-image-3.jpg);
+    background: url(/public/images/about-us/blog-image-3.jpg);
     position: relative;
     height: 570px;
     width: 500px;
@@ -2976,5 +2977,4 @@ ul.nav.nav-tabs.focus-tab-main{
 #stomach-main .single-workout-tab-content{
     margin-top: 25px;
 }
-
 
