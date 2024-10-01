@@ -9,7 +9,7 @@ import password_icon from "../../../public/svg/password-icon.svg";
 
 
 
-const sign_in = () => {
+const sign_up = () => {
     
     const [inputEmail, setInputEmail] = useState('john@doe.gmail.com');
     const [inputPassword, setInputPassword] = useState('test123!@#');
@@ -62,9 +62,10 @@ const sign_in = () => {
                         alt="logo"
                         className="mx-auto"
                     />
-                    <h1 className="text-xl font-normal mt-6 font-['Zen_Dots']">WELCOME BACK</h1>
+                    <h1 className="text-xl font-normal mt-6 font-['Zen_Dots']">CREATE ACCOUNT</h1>
                     <p className="text-base font-normal mt-3">
-                        Sign in now to get access to personalized workouts and achieve your fitness goals.
+                        Sign up now to get access to personalized workouts and achieve your
+                        fitness goals.
                     </p>
                     </div>
                     <form className="mt-8">
@@ -96,13 +97,13 @@ const sign_in = () => {
                     </div>
                     </form>
                     <div className="password-btn mt-4">
-                    <a href="verify-email-address.html" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign in</a>
+                    <a href="verify-email-address.html" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign up</a>
                     </div>
                     <footer id="let-you-footer">
                         <div className="block-footer mt-4">
                             <p className="text-base font-normal text-center">
-                                Don't have an account? &nbsp;
-                                <a href="/users/sign-up" className="font-medium text-black underline">Sign Up</a>
+                            Already have an account? &nbsp;
+                            <a href="/users/sign-in" className="font-medium text-black underline">Sign In</a>
                             </p>
                         </div>
                     </footer>
@@ -115,4 +116,4 @@ const sign_in = () => {
     );
 };
 
-export default sign_in;
+export default sign_up;

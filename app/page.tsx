@@ -17,6 +17,8 @@ export default function Home() {
             </div>
             <div className="flex justify-end mt-1" >
             <a href="/users/sign-in" className="" >sign in</a>
+            &nbsp;&nbsp;/&nbsp;&nbsp;
+            <a href="/users/sign-up" className="" >sign up</a>
             </div>
             
           </div>
