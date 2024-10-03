@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import Image from "next/image";
 import icon1 from "../public/images/homescreen/icon1.svg";
 import icon2 from "../public/images/homescreen/icon2.svg";
@@ -14,9 +15,9 @@ const BottomBar = () => {
 				<div className="bottom-menu-svg">
 					<div className="gol3">
 						<div className="add-to-cart-icon">
-							<a href="workout-history.html">
+							<Link href="workout-history.html">
 								<Image src={icon3} alt="tabbar-icon" />
-							</a>
+							</Link>
 						</div>
 					</div>
 					<svg className="bottom-menu-svg-design" width="600" height="150" viewBox="0 0 375 104" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -37,36 +38,36 @@ const BottomBar = () => {
 			<div className="navigation">
 				<ul className="listWrap">
 					<li className="list active ">
-						<a href="homescreen.html">
+						<Link href="homescreen.html">
 							<i className="icon">
 								<Image src={icon1} alt="tabbar-icon" />	
 							</i>
 							<span className="text"></span>
-						</a>
+						</Link>
 					</li>
 					<li className="list">
-						<a href="discover-workouts.html">
+						<Link href="discover-workouts.html">
 							<i className="icon">
 								<Image src={icon2} alt="tabbar-icon" />
 							</i>
 							<span className="text"></span>
-						</a>
+						</Link>
 					</li>
 					<li className="list ">
-						<a href="bar-chart.html">
+						<Link href="bar-chart.html">
 							<i className="icon">
 								<Image src={icon4} alt="tabbar-icon" />	
 							</i>
 							<span className="text"></span>
-						</a>
+						</Link>
 					</li>
 					<li className="list">
-						<a href="workout-history.html">
+						<Link href="workout-history.html">
 							<i className="icon">
 								<Image src={icon5} alt="tabbar-icon" />	
 							</i>
 							<span className="text"></span>
-						</a>
+						</Link>
 					</li>
 				</ul>
 			</div> 

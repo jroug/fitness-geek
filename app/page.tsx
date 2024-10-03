@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from 'next/link';
 import Preloader from "../components/Preloader";
 import facebook from "../public/images/about-us/facebook.svg";
 import instragram from "../public/images/about-us/instragram.svg";
@@ -11,14 +12,14 @@ export default function Home() {
     <main className="site-content">
         {/* <Preloader/> */}
         <header id="top-header" className="bg-white  py-4">
-          <div className="header-wrap space-between">
-            <div className="header-name flex justify-start">
+          <div className="justify-between header-wrap space-between">
+            <div className="flex header-name justify-start">
               <h1 className="font-['Zen_Dots'] text-lg font-normal">Fitness Geek</h1>
             </div>
-            <div className="flex justify-end mt-1" >
-            <a href="/users/sign-in" className="" >sign in</a>
+            <div className="flex justify-end" >
+            <Link href="/users/sign-in" className="" >sign in</Link>
             &nbsp;&nbsp;/&nbsp;&nbsp;
-            <a href="/users/sign-up" className="" >sign up</a>
+            <Link href="/users/sign-up" className="" >sign up</Link>
             </div>
             
           </div>
@@ -66,9 +67,9 @@ export default function Home() {
                   
                   <div className="social-detail-about flex flex-col items-center">
                     <div className="shape facebook-bg bg-blue-600 p-4 rounded-full">
-                      <a href="https://www.facebook.com/" target="_blank">
+                      <Link href="https://www.facebook.com/" target="_blank">
                         <Image src={facebook} alt="facebook" />
-                      </a>
+                      </Link>
                     </div>
                     <div>
                       <p className="text-xs font-medium mt-2 text-center">Facebook</p>
@@ -76,9 +77,9 @@ export default function Home() {
                   </div>
                   <div className="social-detail-about flex flex-col items-center">
                     <div className="shape instragram-bg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 rounded-full">
-                      <a href="https://www.instagram.com/" target="_blank">
+                      <Link href="https://www.instagram.com/" target="_blank">
                         <Image src={instragram} alt="instagram" />
-                      </a>
+                      </Link>
                     </div>
                     <div>
                       <p className="text-xs font-medium mt-2 text-center">Instagram</p>
@@ -86,9 +87,9 @@ export default function Home() {
                   </div>
                   <div className="social-detail-about flex flex-col items-center">
                     <div className="shape twitter-bg bg-blue-400 p-4 rounded-full">
-                      <a href="https://twitter.com/" target="_blank">
+                      <Link href="https://twitter.com/" target="_blank">
                         <Image src={twitter} alt="twitter" />
-                      </a>
+                      </Link>
                     </div>
                     <div>
                       <p className="text-xs font-medium mt-2 text-center">Twitter</p>
@@ -96,9 +97,9 @@ export default function Home() {
                   </div>
                   <div className="social-detail-about flex flex-col items-center">
                     <div className="shape youtube-bg bg-red-600 p-4 rounded-full">
-                      <a href="https://www.youtube.com/" target="_blank">
+                      <Link href="https://www.youtube.com/" target="_blank">
                         <Image src={youtube} alt="youtube" />
-                      </a>
+                      </Link>
                     </div>
                     <div>
                       <p className="text-xs font-medium mt-2 text-center">YouTube</p>

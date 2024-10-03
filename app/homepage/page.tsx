@@ -19,8 +19,6 @@ import SideBar from "../../components/SideBar";
  
 
  
-
-
 const homepage = () => {
 
     const settings = {

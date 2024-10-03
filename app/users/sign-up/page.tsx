@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import Image from "next/image";
 import left_arrow from "../../../public/svg/black-left-arrow.svg";
 import small_logo from "../../../public/images/splashscreen/small-logo.png";
@@ -44,9 +45,9 @@ const sign_up = () => {
             <header id="top-header" className="border-0">
                 <div className="header-wrap">
                     <div className="header-back">
-                        <a href="/">
+                        <Link href="/">
                             <Image src={left_arrow} alt="back-btn-icon" />
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </header>
@@ -97,13 +98,13 @@ const sign_up = () => {
                     </div>
                     </form>
                     <div className="password-btn mt-4">
-                    <a href="verify-email-address.html" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign up</a>
+                    <Link href="verify-email-address.html" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign up</Link>
                     </div>
                     <footer id="let-you-footer">
                         <div className="block-footer mt-4">
                             <p className="text-base font-normal text-center">
                             Already have an account? &nbsp;
-                            <a href="/users/sign-in" className="font-medium text-black underline">Sign In</a>
+                            <Link href="/users/sign-in" className="font-medium text-black underline">Sign In</Link>
                             </p>
                         </div>
                     </footer>
