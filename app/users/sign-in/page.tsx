@@ -97,7 +97,7 @@ const sign_in = () => {
                     </div>
                     </form>
                     <div className="password-btn mt-4">
-                    <Link href="verify-email-address.html" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign in</Link>
+                    <Link href="/homepage" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign in</Link>
                     </div>
                     <footer id="let-you-footer">
                         <div className="block-footer mt-4">

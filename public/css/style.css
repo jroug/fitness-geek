@@ -679,6 +679,7 @@ textarea {
 }
 #homescreen-main{
     padding-bottom: 160px;
+    overflow-x: hidden;
 }
 .concentric-circles {
     position: relative;
@@ -1578,6 +1579,10 @@ div#ui-datepicker-div {
 }
 .focus-content{
     text-align: center;
+    flex-grow: 1;
+}
+.focus-content img {
+  margin:auto;
 }
 #homescreen-main .home-second{
     margin-top: 70px;
@@ -1617,7 +1622,21 @@ div#ui-datepicker-div {
 .bottom-menu-svg {
     position: fixed;
     bottom: -40px;
+    left: 50%;
+    transform: translate(-50%, -2px);
+    max-width: 600px;
+    width: 100%;
 }
+.shape-icon-bottom{
+    margin-left:-2px;
+    margin-top: 4px;
+}
+/* .bottom-tabbar{
+    border:1px solid green;
+}
+.verify-email{
+    border:1px solid red;
+} */
 .gol3 {
     position: absolute;
     left: 50%;
@@ -1628,6 +1647,18 @@ div#ui-datepicker-div {
     background-color: #000000;
     border-radius: 50%;
     z-index: 99;
+}
+@media only screen and (max-width: 600px)  {
+    .gol3{
+        width: 72px;
+        height: 72px;
+    }
+}
+@media only screen and (max-width: 500px)  {
+    .gol3{
+        width: 52px;
+        height: 52px;
+    }
 }
 .add-to-cart-icon {
     position: absolute;
@@ -2978,3 +3009,17 @@ ul.nav.nav-tabs.focus-tab-main{
     margin-top: 25px;
 }
 
+.menu-sidebar{
+    position: fixed;
+    left: -300px; /* Hidden off the left side */
+    width:300px;
+    top: 0;
+    height: 100%; 
+    transition: left 0.3s ease;
+    background-color: #fff;
+    padding:10px;
+}
+
+.menu-sidebar.active {
+    left: 0px; /* Slide in */
+  }

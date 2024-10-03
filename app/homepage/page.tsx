@@ -34,6 +34,12 @@ const homepage = () => {
         prevArrow: <SlickCustomPrevArrow />,
     };
 
+    const handleHomeSettingsClick = () => {
+        const sidebar = document.querySelector('.menu-sidebar') as HTMLElement;
+
+        sidebar.classList.toggle('active');
+    }
+
     return (
         <main className="site-content">
             {/* <!-- Preloader start --> */}
@@ -54,7 +60,7 @@ const homepage = () => {
                         <p className="sm-font-zen fw-400">FITNESS GEEK</p>
                     </div>
                     <div className="home-setting">
-                        <Link href="#"><Image src={settings_icon} alt="setting-icon" /></Link>
+                        <Link href="#" onClick={handleHomeSettingsClick} ><Image src={settings_icon} alt="setting-icon" /></Link>
                     </div>
                 </div>
             </header>
@@ -141,6 +147,8 @@ const homepage = () => {
                             <Image src={shoulders} alt="body-img" />
                             <p className="mt-8 color-black">Legs</p>	
                         </div>
+                    </div>
+                    <div className="home-second-wrap mt-12">
                         <div className="focus-content shoulder-redirect">
                             <Image src={shoulders} alt="body-img" />
                             <p className="mt-8 color-black">Back</p>	

@@ -114,7 +114,7 @@ const SideBar = () => {
 										</div>
 									</div>
 								</Link> 
-								<Link href="language.html">
+								{/* <Link href="language.html">
 									<div className="send-money-contact-tab border-bottom1">
 										<div className="setting-icon">
 											<Image src={setting8} alt="setting-icon" />
@@ -133,7 +133,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</div>
-								</Link> 
+								</Link>  */}
 								<Link href="faq.html">
 									<div className="send-money-contact-tab border-bottom1 ">
 										<div className="setting-icon">
@@ -149,7 +149,7 @@ const SideBar = () => {
 										</div>
 									</div>
 								</Link> 
-								<Link href="data-privacy.html">
+								{/* <Link href="data-privacy.html">
 									<div className="send-money-contact-tab border-bottom1 ">
 										<div className="setting-icon">
 											<Image src={setting10} alt="setting-icon" />
@@ -163,20 +163,17 @@ const SideBar = () => {
 											</div>
 										</div>
 									</div>
-								</Link> 
+								</Link>  */}
 								<Link href="about-us.html">
 									<div className="send-money-contact-tab border-bottom1">
 										<div className="setting-icon">
 											<Image src={setting11} alt="setting-icon" />
 										</div>
 										<div className="setting-title">
-											<h3>About Vigor</h3>
+											<h3>About Fitness Geek</h3>
 										</div>
 										<div className="contact-star">
 											<div className="star-favourite">
-												<span className="setting-lanuage">
-													v2.0.2
-												</span>
 												<span>
 													<Image src={right_arrow} alt="edit-icon" />
 												</span>
@@ -214,7 +211,7 @@ const SideBar = () => {
 										</div>
 									</div>
 								</Link> 
-								<Link href="Invite-friend.html">
+								{/* <Link href="Invite-friend.html">
 									<div className="send-money-contact-tab border-bottom1 ">
 										<div className="setting-icon">
 											<Image src={setting15} alt="setting-icon" />
@@ -228,8 +225,8 @@ const SideBar = () => {
 											</div>
 										</div>
 									</div>
-								</Link> 
-								<Link href="javascript:void(0)" data-bs-toggle="modal" data-bs-target="#workout-complete-modal">
+								</Link>  */}
+								<Link href="#" data-bs-toggle="modal" data-bs-target="#workout-complete-modal">
 									<div className="send-money-contact-tab">
 										<div className="setting-icon bg-red">
 											<Image src={setting17} alt="setting-icon" />
