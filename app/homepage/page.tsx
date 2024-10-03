@@ -14,6 +14,7 @@ import shoulders from "../../public/images/homescreen/shoulders.png";
 
 import SlickCustomNextArrow from "../../components/SlickCustomNextArrow";
 import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
+
 import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
  

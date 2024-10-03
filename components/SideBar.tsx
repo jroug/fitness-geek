@@ -7,13 +7,13 @@ import setting7 from "../public/images/setting/setting7.svg";
 import setting3 from "../public/images/setting/setting3.svg";
 import setting5 from "../public/images/setting/setting5.svg";
 import setting6 from "../public/images/setting/setting6.svg";
-import setting8 from "../public/images/setting/setting8.svg";
+// import setting8 from "../public/images/setting/setting8.svg";
 import setting9 from "../public/images/setting/setting9.svg";
-import setting10 from "../public/images/setting/setting10.svg";
+// import setting10 from "../public/images/setting/setting10.svg";
 import setting11 from "../public/images/setting/setting11.svg";
 import setting12 from "../public/images/setting/setting12.svg";
 import setting13 from "../public/images/setting/setting13.svg";
-import setting15 from "../public/images/setting/setting15.svg";
+// import setting15 from "../public/images/setting/setting15.svg";
 import setting17 from "../public/images/setting/setting17.svg";
 
 import right_arrow from "../public/svg/right-arrow.svg";
@@ -134,7 +134,7 @@ const SideBar = () => {
 										</div>
 									</div>
 								</Link>  */}
-								<Link href="faq.html">
+								<Link href="/faq">
 									<div className="send-money-contact-tab border-bottom1 ">
 										<div className="setting-icon">
 											<Image src={setting9} alt="setting-icon" />

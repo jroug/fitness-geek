@@ -1628,7 +1628,7 @@ div#ui-datepicker-div {
     width: 100%;
 }
 .shape-icon-bottom{
-    margin-left:-2px;
+    margin-left:-1px;
     margin-top: 4px;
 }
 /* .bottom-tabbar{
@@ -1654,10 +1654,13 @@ div#ui-datepicker-div {
         height: 72px;
     }
 }
-@media only screen and (max-width: 500px)  {
+@media only screen and (max-width: 490px)  {
     .gol3{
         width: 52px;
         height: 52px;
+    }
+    .bottom-menu-svg {
+        bottom: -10px;
     }
 }
 .add-to-cart-icon {
