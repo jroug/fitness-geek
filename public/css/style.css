@@ -209,6 +209,8 @@ ul{
 }
 .display-flex,
 .password-btn a,
+.password-btn button,
+.password-btn button,
 .otp-section,
 .custom-radio-sel-friend,
 .shape,
@@ -357,6 +359,7 @@ header {
     box-shadow: 0px -4px 4px 0px rgba(18, 18, 18, 0.04);
 }
 .password-btn a,
+.password-btn button,
 .change-password-btn a  {
     width: 100%;
     color: var(--1, #FFF);
@@ -1269,6 +1272,7 @@ div#ui-datepicker-div {
 }
 .empty-box-top p,
 .slider-sec-btn a,
+.password-btn button,
 .password-btn a,
 .change-password-btn a,
 .current-plan h2,

@@ -72,6 +72,8 @@ const homepage = () => {
                     <div className="home-bottom-content mt-24">
                         <div className="home-first container mx-8">
                             <h1>Hi John,</h1>
+                            <span>Registration: 1/1/2024</span>
+                            <br/>
                             <span>Workout plan for you</span>
                         </div>
                         <h2 className="hidden">Homescreen</h2>
