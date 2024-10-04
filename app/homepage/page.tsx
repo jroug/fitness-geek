@@ -17,7 +17,7 @@ import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
 
 import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
- 
+
 
  
 const homepage = () => {
@@ -42,137 +42,139 @@ const homepage = () => {
     }
 
     return (
-        <main className="site-content">
-            {/* <!-- Preloader start --> */}
-            {/* <div className="preloader">
-                <Image src="assets/images/favicon/preloader.gif" alt="preloader" />
-            </div> */}
-            {/* <!-- Preloader end --> */}
+        <>
+            <main className="site-content">
+                {/* <!-- Preloader start --> */}
+                {/* <div className="preloader">
+                    <Image src="assets/images/favicon/preloader.gif" alt="preloader" />
+                </div> */}
+                {/* <!-- Preloader end --> */}
 
-            {/* <!-- Header start --> */}
-            <header id="top-header">
-                <div className="header-wrap-home">
-                    <div className="header-logo-home">
-                        <Link href="#">
-                            <Image src={header_logo} alt="back-btn-icon" />
-                        </Link>
+                {/* <!-- Header start --> */}
+                <header id="top-header">
+                    <div className="header-wrap-home">
+                        <div className="header-logo-home">
+                            <Link href="#">
+                                <Image src={header_logo} alt="back-btn-icon" />
+                            </Link>
+                        </div>
+                        <div className="header-name">
+                            <p className="sm-font-zen fw-400">FITNESS GEEK</p>
+                        </div>
+                        <div className="home-setting">
+                            <Link href="#" onClick={handleHomeSettingsClick} ><Image src={settings_icon} alt="setting-icon" /></Link>
+                        </div>
                     </div>
-                    <div className="header-name">
-                        <p className="sm-font-zen fw-400">FITNESS GEEK</p>
+                </header>
+                {/* <!-- Header end --> */}
+                {/* <!-- Homescreen screen start --> */}
+                <div className="verify-email" id="homescreen-main">
+                    <div className="home-bottom-content mt-24">
+                        <div className="home-first container mx-8">
+                            <h1>Hi John,</h1>
+                            <span>Workout plan for you</span>
+                        </div>
+                        <h2 className="hidden">Homescreen</h2>
+                        <div className="home-slider-wrap mt-16" >
+                            <Slider {...settings}  >
+                                {/* <!-- slide start --> */}
+                                <div className="workout-details">
+                                    <Link href="#">
+                                        <div className="verify-email-img-sec ">
+                                            <div className="main-img-top">
+                                                <Image src={home1} alt="notification-img" />
+                                            </div>
+                                            <div className="main-img-bottom">
+                                                <Image src={bottom} alt="notification-img" />
+                                            </div>
+                                            <div className="workout-plan-ready-details">
+                                                <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
+                                                <p>sssssssss  |  Beginner</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                                {/* <!-- slide end --> */}
+                                {/* <!-- slide start --> */}
+                                <div className="workout-details">
+                                    <Link href="#">
+                                        <div className="verify-email-img-sec ">
+                                            <div className="main-img-top">
+                                                <Image src={home1} alt="notification-img" />
+                                            </div>
+                                            <div className="main-img-bottom">
+                                                <Image src={bottom} alt="notification-img" />
+                                            </div>
+                                            <div className="workout-plan-ready-details">
+                                                <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
+                                                <p>sssssssss  |  Beginner</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                                {/* <!-- slide end --> */}
+                                {/* <!-- slide start --> */}
+                                <div className="workout-details">
+                                    <Link href="#">
+                                        <div className="verify-email-img-sec ">
+                                            <div className="main-img-top">
+                                                <Image src={home1} alt="notification-img" />
+                                            </div>
+                                            <div className="main-img-bottom">
+                                                <Image src={bottom} alt="notification-img" />
+                                            </div>
+                                            <div className="workout-plan-ready-details">
+                                                <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
+                                                <p>sssssssss  |  Beginner</p>
+                                            </div>
+                                        </div>
+                                    </Link>
+                                </div>
+                                {/* <!-- slide end --> */}
+                            </Slider>
+                        </div>
                     </div>
-                    <div className="home-setting">
-                        <Link href="#" onClick={handleHomeSettingsClick} ><Image src={settings_icon} alt="setting-icon" /></Link>
+                    <div className="home-second">
+                        <h2 className="text-left container mx-8">Body focus area</h2>
+                        <div className="home-second-wrap mt-12">
+                            <div className="focus-content shoulder-redirect">
+                                <Image src={shoulders} alt="body-img" />
+                                <p className="mt-8 color-black">Shoulders</p>	
+                            </div>
+                            <div className="focus-content shoulder-redirect">
+                                <Image src={shoulders} alt="body-img" />
+                                <p className="mt-8 color-black">Chest</p>	
+                            </div>
+                            <div className="focus-content shoulder-redirect">
+                                <Image src={shoulders} alt="body-img" />
+                                <p className="mt-8 color-black">Legs</p>	
+                            </div>
+                        </div>
+                        <div className="home-second-wrap mt-12">
+                            <div className="focus-content shoulder-redirect">
+                                <Image src={shoulders} alt="body-img" />
+                                <p className="mt-8 color-black">Back</p>	
+                            </div>
+                            <div className="focus-content shoulder-redirect">
+                                <Image src={shoulders} alt="body-img" />
+                                <p className="mt-8 color-black">Arms</p>	
+                            </div>
+                            <div className="focus-content shoulder-redirect">
+                                <Image src={shoulders} alt="body-img" />
+                                <p className="mt-8 color-black">Stomach</p>	
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </header>
-            {/* <!-- Header end --> */}
-            {/* <!-- Homescreen screen start --> */}
-            <div className="verify-email" id="homescreen-main">
-                <div className="home-bottom-content mt-24">
-                    <div className="home-first container mx-8">
-                        <h1>Hi John,</h1>
-                        <span>Workout plan for you</span>
-                    </div>
-                    <h2 className="hidden">Homescreen</h2>
-                    <div className="home-slider-wrap mt-16" >
-                        <Slider {...settings}  >
-                            {/* <!-- slide start --> */}
-                            <div className="workout-details">
-                                <Link href="#">
-                                    <div className="verify-email-img-sec ">
-                                        <div className="main-img-top">
-                                            <Image src={home1} alt="notification-img" />
-                                        </div>
-                                        <div className="main-img-bottom">
-                                            <Image src={bottom} alt="notification-img" />
-                                        </div>
-                                        <div className="workout-plan-ready-details">
-                                            <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
-                                            <p>sssssssss  |  Beginner</p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-                            {/* <!-- slide end --> */}
-                            {/* <!-- slide start --> */}
-                            <div className="workout-details">
-                                <Link href="#">
-                                    <div className="verify-email-img-sec ">
-                                        <div className="main-img-top">
-                                            <Image src={home1} alt="notification-img" />
-                                        </div>
-                                        <div className="main-img-bottom">
-                                            <Image src={bottom} alt="notification-img" />
-                                        </div>
-                                        <div className="workout-plan-ready-details">
-                                            <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
-                                            <p>sssssssss  |  Beginner</p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-                            {/* <!-- slide end --> */}
-                            {/* <!-- slide start --> */}
-                            <div className="workout-details">
-                                <Link href="#">
-                                    <div className="verify-email-img-sec ">
-                                        <div className="main-img-top">
-                                            <Image src={home1} alt="notification-img" />
-                                        </div>
-                                        <div className="main-img-bottom">
-                                            <Image src={bottom} alt="notification-img" />
-                                        </div>
-                                        <div className="workout-plan-ready-details">
-                                            <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
-                                            <p>sssssssss  |  Beginner</p>
-                                        </div>
-                                    </div>
-                                </Link>
-                            </div>
-                            {/* <!-- slide end --> */}
-                        </Slider>
-                    </div>
-                </div>
-                <div className="home-second">
-				    <h2 className="text-left container mx-8">Body focus area</h2>
-				    <div className="home-second-wrap mt-12">
-                        <div className="focus-content shoulder-redirect">
-                            <Image src={shoulders} alt="body-img" />
-                            <p className="mt-8 color-black">Shoulders</p>	
-                        </div>
-                        <div className="focus-content shoulder-redirect">
-                            <Image src={shoulders} alt="body-img" />
-                            <p className="mt-8 color-black">Chest</p>	
-                        </div>
-                        <div className="focus-content shoulder-redirect">
-                            <Image src={shoulders} alt="body-img" />
-                            <p className="mt-8 color-black">Legs</p>	
-                        </div>
-                    </div>
-                    <div className="home-second-wrap mt-12">
-                        <div className="focus-content shoulder-redirect">
-                            <Image src={shoulders} alt="body-img" />
-                            <p className="mt-8 color-black">Back</p>	
-                        </div>
-                        <div className="focus-content shoulder-redirect">
-                            <Image src={shoulders} alt="body-img" />
-                            <p className="mt-8 color-black">Arms</p>	
-                        </div>
-                        <div className="focus-content shoulder-redirect">
-                            <Image src={shoulders} alt="body-img" />
-                            <p className="mt-8 color-black">Stomach</p>	
-                        </div>
-                    </div>
-                </div>
-			</div>
-            {/* <!-- Homescreen screen end --> */}
-            {/* <!-- Bottom tabbar content start --> */}
-            <BottomBar />
-            {/* <!-- Bottom tabbar content end --> */}
-            {/* <!-- Side bar content start --> */}
-            <SideBar />
-            {/* <!-- Side bar content end --> */}
-        </main>
+                {/* <!-- Homescreen screen end --> */}
+                {/* <!-- Bottom tabbar content start --> */}
+                <BottomBar />
+                {/* <!-- Bottom tabbar content end --> */}
+                {/* <!-- Side bar content start --> */}
+                <SideBar />
+                {/* <!-- Side bar content end --> */}
+            </main>
+        </>
     );
 };
 
