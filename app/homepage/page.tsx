@@ -23,6 +23,7 @@ import SideBar from "../../components/SideBar";
  
 const homepage = () => {
 
+    // const [data, setData] = useState(null)
     const [loading, setLoading] = useState(true);
     const router = useRouter();
   
@@ -37,6 +38,12 @@ const homepage = () => {
         if (res.ok) {
           // User is authenticated, allow access to the page
           setLoading(false);
+        //   fetch('/api/profile-data')
+        //   .then((res) => res.json())
+        //   .then((data) => {
+        //     setData(data)
+        //     setLoading(false)
+        //   })
         } else {
           // User is not authenticated, redirect to login
           router.push('/');

@@ -37,5 +37,7 @@ next-env.d.ts
 
 # help folders 
 _yliko
+_http
 
+# wordpress backend
 wp-backend
