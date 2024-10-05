@@ -28,8 +28,6 @@ const SideBar = () => {
 		 document.getElementById('workout-complete-modal')?.classList.add('show-modal');
 	};
 
-
-
     return (
 		<>
 			<div className="menu-sidebar details">

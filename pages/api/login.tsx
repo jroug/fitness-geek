@@ -2,7 +2,7 @@ export default async function handler(req, res) {
 
     if (req.method === 'POST') {
       const { username, password } = req.body;
-      console.log(`${process.env.WORDPRESS_API_URL}/wp-json/jwt-auth/v1/token`);
+      // console.log(`${process.env.WORDPRESS_API_URL}/wp-json/jwt-auth/v1/token`);
 
 
       try {
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         });
 
 
-        console.log(response);
+        // console.log(response);
 
 
         if (!response.ok) {

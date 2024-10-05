@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
+import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import Image from "next/image";
 import left_arrow from "../../../public/svg/black-left-arrow.svg";
@@ -15,6 +16,8 @@ const sign_in = () => {
     const [inputEmail, setInputEmail] = useState('rougeris@gmail.com');
     const [inputPassword, setInputPassword] = useState('admin_fitness123');
 
+    const router = useRouter();
+    
     const handleOnChangeEmail = (e) => {
         setInputEmail(e.target.value);
     }
@@ -51,9 +54,10 @@ const sign_in = () => {
         });
       
         if (res.ok) {
-          console.log('Login successful');
+            console.log('Login successful');
+            router.push("/homepage");
         } else {
-          console.log('Login failed');
+            alert('Login failed');
         }
     };
 
@@ -80,59 +84,59 @@ const sign_in = () => {
             {/* <!-- Sign up screen start --> */}
             <div className="verify-email pb-20" id="sign-up-main">
                 <div className="container mx-auto">
-                <div className="let-you-middle-wrap text-center">
-                    <div className="middle-first mt-6">
-                    <Image
-                        src={small_logo}
-                        alt="logo"
-                        className="mx-auto"
-                    />
-                    <h1 className="text-xl font-normal mt-6 font-['Zen_Dots']">WELCOME BACK</h1>
-                    <p className="text-base font-normal mt-3">
-                        Sign in now to get access to personalized workouts and achieve your fitness goals.
-                    </p>
-                    </div>
-                    <form className="mt-8" onSubmit={handleSignInSubmit} >
-                        <div className="form-details-sign-in border flex items-center px-4 py-2">
-                            <span>
-                            <Image src={mail_icon} alt="mail-icon" />
-                            </span>
-                            <input
-                                type="email"
-                                id="email"
-                                className="flex-1 ml-2 text-black text-base font-normal outline-none"
-                                autoComplete="off"
-                                value={inputEmail}
-                                onChange={handleOnChangeEmail}
+                    <div className="let-you-middle-wrap text-center">
+                        <div className="middle-first mt-6">
+                            <Image
+                                src={small_logo}
+                                alt="logo"
+                                className="mx-auto"
                             />
-                        </div>
-                        <div className="form-details-sign-in border mt-2 flex items-center px-4 py-2">
-                            <span>
-                                <Image src={password_icon} alt="password-icon" />
-                            </span>
-                            <input
-                                type="password"
-                                id="password"
-                                className="flex-1 ml-2 text-black text-base font-normal outline-none"
-                                value={inputPassword}
-                                onChange={handleOnChangePassword}
-                            />
-                            <i className="fas fa-eye-slash" id="eye" onClick={handleShowHidePassword} ></i>
-                        </div>
-                        <div className="password-btn mt-4">
-                            <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign in</button>
-                        </div>
-                    </form>
-
-                    <footer id="let-you-footer">
-                        <div className="block-footer mt-4">
-                            <p className="text-base font-normal text-center">
-                                Don't have an account? &nbsp;
-                                <Link href="/users/sign-up" className="font-medium text-black underline">Sign Up</Link>
+                            <h1 className="text-xl font-normal mt-6 font-['Zen_Dots']">WELCOME BACK</h1>
+                            <p className="text-base font-normal mt-3">
+                                Sign in now to get access to personalized workouts and achieve your fitness goals.
                             </p>
                         </div>
-                    </footer>
-                </div>
+                        <form className="mt-8" onSubmit={handleSignInSubmit} >
+                            <div className="form-details-sign-in border flex items-center px-4 py-2">
+                                <span>
+                                <Image src={mail_icon} alt="mail-icon" />
+                                </span>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    className="flex-1 ml-2 text-black text-base font-normal outline-none"
+                                    autoComplete="off"
+                                    value={inputEmail}
+                                    onChange={handleOnChangeEmail}
+                                />
+                            </div>
+                            <div className="form-details-sign-in border mt-2 flex items-center px-4 py-2">
+                                <span>
+                                    <Image src={password_icon} alt="password-icon" />
+                                </span>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    className="flex-1 ml-2 text-black text-base font-normal outline-none"
+                                    value={inputPassword}
+                                    onChange={handleOnChangePassword}
+                                />
+                                <i className="fas fa-eye-slash" id="eye" onClick={handleShowHidePassword} ></i>
+                            </div>
+                            <div className="password-btn mt-4">
+                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign in</button>
+                            </div>
+                        </form>
+
+                        <footer id="let-you-footer">
+                            <div className="block-footer mt-4">
+                                <p className="text-base font-normal text-center">
+                                    Don't have an account? &nbsp;
+                                    <Link href="/users/sign-up" className="font-medium text-black underline">Sign Up</Link>
+                                </p>
+                            </div>
+                        </footer>
+                    </div>
                 </div>
             </div>
             {/* <!-- Sign up screen end --> */}

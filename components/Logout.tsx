@@ -1,4 +1,7 @@
+"use client";
+
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import Image from "next/image";
 import Link from "next/link";
 import logoutImg from "../public/images/setting/logout-img.png";
@@ -6,9 +9,28 @@ import logoutImg from "../public/images/setting/logout-img.png";
 
 const Logout = () => {
 
+	const router = useRouter();
+
 	// Function to hide the logout modal
 	const hideModal = () => {
 		document.getElementById('workout-complete-modal')?.classList.remove('show-modal');
+	};
+
+	const handleLogout = () => {
+		logout();
+	}
+
+	const logout = async () => {
+		const res = await fetch('/api/logout', {
+			method: 'POST',
+		});
+		
+		if (res.ok) {
+			console.log('Logged out successfully');
+			router.push('/');
+		} else {
+			alert('Logout failed');
+		}
 	};
 
     return (
@@ -26,7 +48,7 @@ const Logout = () => {
 									<Link href="#" onClick={hideModal} >CANCEL</Link>
 								</div>
 								<div className="report-btn">
-									<Link href="/">LOGOUT</Link>
+									<Link href="#" onClick={handleLogout} >LOGOUT</Link>
 								</div>
 							</div>
 						</div>
