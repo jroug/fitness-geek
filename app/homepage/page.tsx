@@ -23,7 +23,8 @@ import SideBar from "../../components/SideBar";
  
 const homepage = () => {
 
-    // const [data, setData] = useState(null)
+ 
+    const [profileData, setProfileData] = useState(null);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
   
@@ -37,13 +38,16 @@ const homepage = () => {
   
         if (res.ok) {
           // User is authenticated, allow access to the page
-          setLoading(false);
-        //   fetch('/api/profile-data')
-        //   .then((res) => res.json())
-        //   .then((data) => {
-        //     setData(data)
-        //     setLoading(false)
-        //   })
+          const profileData = await fetch('/api/profile-data', {
+            method: 'GET',
+            credentials: 'include', // Include cookies in the request
+          })
+          .then((res) => res.json())
+          .then((data) => {
+                setProfileData(data)
+                setLoading(false)
+          });
+
         } else {
           // User is not authenticated, redirect to login
           router.push('/');
@@ -76,6 +80,13 @@ const homepage = () => {
         sidebar.classList.toggle('active');
     }
 
+    const display_name = 
+        ( profileData.first_name !== '' && profileData.last_name !== '' )
+        ?
+        profileData.first_name + ' ' +profileData.last_name
+        :
+        profileData.user_name;
+
     return (
         <>
             <main className="site-content">
@@ -106,7 +117,7 @@ const homepage = () => {
                 <div className="verify-email" id="homescreen-main">
                     <div className="home-bottom-content mt-24">
                         <div className="home-first container mx-8">
-                            <h1>Hi John,</h1>
+                            <h1>Hi {display_name},</h1>
                             <span>Registration: 1/1/2024</span>
                             <br/>
                             <span>Workout plan for you</span>
@@ -119,10 +130,10 @@ const homepage = () => {
                                     <Link href="#">
                                         <div className="verify-email-img-sec ">
                                             <div className="main-img-top">
-                                                <Image src={home1} alt="notification-img" />
+                                                <Image src={home1} priority={true} alt="notification-img" />
                                             </div>
                                             <div className="main-img-bottom">
-                                                <Image src={bottom} alt="notification-img" />
+                                                <Image src={bottom} priority={true} alt="notification-img" />
                                             </div>
                                             <div className="workout-plan-ready-details">
                                                 <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
@@ -137,10 +148,10 @@ const homepage = () => {
                                     <Link href="#">
                                         <div className="verify-email-img-sec ">
                                             <div className="main-img-top">
-                                                <Image src={home1} alt="notification-img" />
+                                                <Image src={home1} priority={true} alt="notification-img" />
                                             </div>
                                             <div className="main-img-bottom">
-                                                <Image src={bottom} alt="notification-img" />
+                                                <Image src={bottom} priority={true} alt="notification-img" />
                                             </div>
                                             <div className="workout-plan-ready-details">
                                                 <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
@@ -155,10 +166,10 @@ const homepage = () => {
                                     <Link href="#">
                                         <div className="verify-email-img-sec ">
                                             <div className="main-img-top">
-                                                <Image src={home1} alt="notification-img" />
+                                                <Image src={home1} priority={true} alt="notification-img" />
                                             </div>
                                             <div className="main-img-bottom">
-                                                <Image src={bottom} alt="notification-img" />
+                                                <Image src={bottom} priority={true} alt="notification-img" />
                                             </div>
                                             <div className="workout-plan-ready-details">
                                                 <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>

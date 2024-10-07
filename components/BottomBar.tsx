@@ -21,7 +21,7 @@ const BottomBar = () => {
 							</Link>
 						</div>
 					</div>
-					<Image src={shape} alt="shape-icon" className="shape-icon-bottom" />
+					<Image src={shape} priority={true} alt="shape-icon" className="shape-icon-bottom" />
 				</div>
 			</div>
 			<div className="navigation">

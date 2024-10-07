@@ -4,8 +4,8 @@ export default async function handler(req, res) {
       const { username, password } = req.body;
       // console.log(`${process.env.WORDPRESS_API_URL}/wp-json/jwt-auth/v1/token`);
 
-
       try {
+        
         const response = await fetch(`${process.env.WORDPRESS_API_URL}/wp-json/jwt-auth/v1/token`, {
           method: 'POST',
           headers: {
@@ -14,10 +14,7 @@ export default async function handler(req, res) {
           body: JSON.stringify({ username, password }),
         });
 
-
-        // console.log(response);
-
-
+        console.log(response.body);
         if (!response.ok) {
           return res.status(401).json({ message: 'Authentication failed' });
         }
