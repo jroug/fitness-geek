@@ -3,12 +3,15 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import jwt from 'jsonwebtoken';
 
-const SECRET_KEY = process.env.JWT_SECRET_KEY || 'mmmcsuJ4N~&<iB@`+zJbfiIjBbb+d=XCUHXv8nAEka8jmmmm'; // Use a strong secret key
+const SECRET_KEY = process.env.JWT_SECRET_KEY; // Use a strong secret key
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
+
   try {
     // Get the token from cookies
     const token = req.cookies.token;
+
+    console.log(req.cookies);
 
     // If no token is found, return unauthorized
     if (!token) {

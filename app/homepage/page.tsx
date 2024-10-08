@@ -14,13 +14,18 @@ import home1 from "../../public/images/homescreen/home1.png";
 import bottom from "../../public/images/homescreen/bottom.png";
 import shoulders from "../../public/images/homescreen/shoulders.png";
 
+import Loading from "../../components/Loading";
 import SlickCustomNextArrow from "../../components/SlickCustomNextArrow";
 import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
+
 
 import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
  
+const checkAuthFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-auth`;
+const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
  
+
 const homepage = () => {
 
  
@@ -29,16 +34,20 @@ const homepage = () => {
     const router = useRouter();
   
     useEffect(() => {
+
+        
       // Fetch user authentication status from an API endpoint (session, cookies)
       async function checkAuth() {
-        const res = await fetch('/api/check-auth', {
+        
+        // alert(checkAuthFetchUrl);
+        const res = await fetch(checkAuthFetchUrl, {
           method: 'GET',
           credentials: 'include', // Include cookies in the request
         });
   
         if (res.ok) {
           // User is authenticated, allow access to the page
-          const profileData = await fetch('/api/profile-data', {
+          const profileData = await fetch(profileDataFetchUrl, {
             method: 'GET',
             credentials: 'include', // Include cookies in the request
           })
@@ -58,7 +67,7 @@ const homepage = () => {
     }, [router]);
   
     if (loading) {
-      return <div>Loading...</div>; // Display a loading state while checking authentication
+      return <Loading />; // Display a loading state while checking authentication
     }
 
     const settings = {
@@ -83,9 +92,18 @@ const homepage = () => {
     const display_name = 
         ( profileData.first_name !== '' && profileData.last_name !== '' )
         ?
-        profileData.first_name + ' ' +profileData.last_name
+        profileData.first_name + ' ' + profileData.last_name
         :
         profileData.user_name;
+
+    // get the correct format for date
+    const dateObj = new Date(profileData.user_registered);
+    const day =  dateObj.getDate();
+    const month = dateObj.toLocaleString('default', { month: 'short' }); // Months are zero-based
+    const year = dateObj.getFullYear();
+
+    // Format the date to dd.mm.yyyy
+    const user_registered_formatted = `${day} ${month} ${year}`;
 
     return (
         <>
@@ -118,7 +136,7 @@ const homepage = () => {
                     <div className="home-bottom-content mt-24">
                         <div className="home-first container mx-8">
                             <h1>Hi {display_name},</h1>
-                            <span>Registration: 1/1/2024</span>
+                            <span>Registration: {user_registered_formatted}</span>
                             <br/>
                             <span>Workout plan for you</span>
                         </div>

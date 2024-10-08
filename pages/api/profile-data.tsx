@@ -7,8 +7,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
 
         const token = req.cookies.token;
+        const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/users/me`;
 
-        const response = await fetch(`${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/users/me`, {
+        const response = await fetch(profileDataFetchUrl, {
           method: 'GET',
  
           headers: {
@@ -31,6 +32,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             user_name: data.name,
             first_name: data.first_name,
             last_name: data.last_name,
+            user_registered: data.user_registered,
         });
 
       } catch (error) {

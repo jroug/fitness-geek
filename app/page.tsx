@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from 'next/link';
-import Preloader from "../components/Preloader";
+import Preloader from "../components/Loading";
 import facebook from "../public/images/about-us/facebook.svg";
 import instragram from "../public/images/about-us/instragram.svg";
 import twitter from "../public/images/about-us/twitter.svg";
@@ -9,7 +9,9 @@ import youtube from "../public/images/about-us/youtube.svg";
  
 export default async function LandingPage() {
 
-  const res = await fetch(`${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/pages/${process.env.WORDPRESS_PAGE_HOME_ID}`);
+  const wpApiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}`;
+  const fetchUrl = `${wpApiUrl}/wp/v2/pages/${process.env.WORDPRESS_PAGE_HOME_ID}`;
+  const res = await fetch(fetchUrl);
   const data = await res.json();
 
   return (
