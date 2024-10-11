@@ -39,6 +39,21 @@ const SideBar = () => {
 						<div className="dropdown">
 							<div className="setting-page-full">
 								<div className="setting-page-wrapper">
+									<Link href="/meals/add">
+										<div className="send-money-contact-tab border-bottom1 pt-0  ">
+											<div className="setting-icon">
+												<Image src={setting6} alt="setting-icon" />
+											</div>
+											<div className="setting-title">
+												<h3>Add Meals</h3>
+											</div>
+											<div className="contact-star">
+												<div className="star-favourite">
+													<Image src={right_arrow} alt="edit-icon" />
+												</div>
+											</div>
+										</div>
+									</Link> 
 									{/* <Link href="workout-preferences.html">
 										<div className="send-money-contact-tab border-bottom1 pt-0  ">
 											<div className="setting-icon">

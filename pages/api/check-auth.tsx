@@ -11,7 +11,7 @@ export default function handler(req: NextApiRequest, res: NextApiResponse) {
     // Get the token from cookies
     const token = req.cookies.token;
 
-    console.log(req.cookies);
+    // console.log(req.cookies);
 
     // If no token is found, return unauthorized
     if (!token) {

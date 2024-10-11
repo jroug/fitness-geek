@@ -124,6 +124,7 @@
 	.splash-slider .slider-img img {
 		clip-path: circle(94% at 42% 9%);
 	}
+	.green-btn a,
 	.password-btn a{
 		font-size: 14px;
 	}

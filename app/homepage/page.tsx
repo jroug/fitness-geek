@@ -99,7 +99,7 @@ const homepage = () => {
     // get the correct format for date
     const dateObj = new Date(profileData.user_registered);
     const day =  dateObj.getDate();
-    const month = dateObj.toLocaleString('default', { month: 'short' }); // Months are zero-based
+    const month = dateObj.toLocaleString('en-US', { month: 'short' }); // Months are zero-based
     const year = dateObj.getFullYear();
 
     // Format the date to dd.mm.yyyy
