@@ -13,6 +13,8 @@ const AddMeal = () => {
 
     const [mealType, setMealType] = useState(''); 
     const [mealTitle, setMealTitle] = useState(''); 
+    const [mealDescription, setMealDescription] = useState(''); 
+    const [mealCalories, setMealCalories] = useState(''); 
     const [suggestionMeals, setSuggestionMeals] = useState([]);
     const [dateTime, setDateTime] = useState('');
 
@@ -42,13 +44,13 @@ const AddMeal = () => {
 
         // Convert to Athens time using toLocaleString
         const options = {
-        timeZone: 'Europe/Athens',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
+            timeZone: 'Europe/Athens',
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false,
         };
 
         // Format the date and time
@@ -63,7 +65,7 @@ const AddMeal = () => {
 
     const getMealSuggestions = async () => {
         // Example: fetch data from an API or local data
-        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/wp/v2/meal?per_page=100&orderby=date&order=desc&_fields=id,title,content`;
+        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/wp/v2/meal?per_page=100&orderby=date&order=desc&_fields=id,title,content,calories`;
         const res = await fetch(fetchSuggestedMealsUrl);
         const data = await res.json();
         setSuggestionMeals(data);
@@ -78,7 +80,10 @@ const AddMeal = () => {
     }, []);
     
     const handleMealSugestionsInputChange = (event, newValue) => {
-        setMealTitle(newValue);
+        // console.log(newValue);
+        setMealTitle(newValue.title);
+        setMealDescription(newValue.content.rendered);
+        setMealCalories(newValue.calories);
     };
 
 
@@ -136,10 +141,10 @@ const AddMeal = () => {
                                 <label htmlFor="meal-short" className="custom-lbl-feedback">What did I ate? (Title)</label>
                                 {/* <input type="text" id="meal-short" placeholder="Write here" className="sm-font-sans border mt-8" autoComplete="off" /> */}
                                 <Autocomplete
-                                    freeSolo
-                                    options={suggestionMeals.map((option) => option.title.rendered)} // Customize as needed
-                                    value={mealTitle}
-                                    onInputChange={handleMealSugestionsInputChange}
+                                    options={suggestionMeals}
+                                    getOptionLabel={ (option) => option.title.rendered }
+                                    onChange={handleMealSugestionsInputChange}
+                                    isOptionEqualToValue = {(options, value) => options.id === value.id }
                                     renderInput={(params) => (
                                         <TextField {...params} label="Search" variant="outlined" />
                                     )}
@@ -147,11 +152,11 @@ const AddMeal = () => {
                             </div>
                             <div className="addmeal-div">
                                 <label htmlFor="meal-long" className="custom-lbl-feedback">What did I ate? (Description)</label>
-                                <textarea rows="4" cols="50" placeholder="Write here..." className="sm-font-sans custom-textarea mt-8" id="meal-long"></textarea>
+                                <div className="sm-font-sans custom-textarea-div mt-8 border-green-1" id="meal-long" >{mealDescription}</div>
                             </div>
                             <div className="addmeal-div feedback-email">
                                 <label htmlFor="calories" className="custom-lbl-feedback">Calories</label>
-                                <input type="text" id="calories" placeholder="Write here" className="sm-font-sans border mt-8" autoComplete="off" />
+                                <div className="sm-font-sans custom-div mt-8 border-green-1" id="calories" >{mealCalories}</div>
                             </div>
                             <div className="addmeal-div">
                                 <label htmlFor="comments" className="custom-lbl-feedback">Comments</label>
