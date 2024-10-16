@@ -233,13 +233,13 @@ const homepage = () => {
                     </div>
                 </div>
                 {/* <!-- Homescreen screen end --> */}
-                {/* <!-- Bottom tabbar content start --> */}
-                <BottomBar />
-                {/* <!-- Bottom tabbar content end --> */}
-                {/* <!-- Side bar content start --> */}
-                <SideBar />
-                {/* <!-- Side bar content end --> */}
             </main>
+            {/* <!-- Bottom tabbar content start --> */}
+            <BottomBar />
+            {/* <!-- Bottom tabbar content end --> */}
+            {/* <!-- Side bar content start --> */}
+            <SideBar />
+            {/* <!-- Side bar content end --> */}
         </>
     );
 };

@@ -198,6 +198,7 @@ ul{
 .fw-400{
     font-weight: 400;
 }
+
 .color-green{
     color: #7FD83B !important;
 }
@@ -1208,6 +1209,7 @@ div#ui-datepicker-div {
     list-style-type: none;
 }
 .current-plan h2,
+.ok-btn,
 .home-btn a,
 .home-first span,
 .skip-btn-form a,
@@ -1283,6 +1285,7 @@ div#ui-datepicker-div {
 .password-btn a,
 .change-password-btn a,
 .current-plan h2,
+.ok-btn,
 .home-btn a,
 .home-first span,
 .skip-btn-form a,
@@ -1472,6 +1475,7 @@ div#ui-datepicker-div {
     font-weight: 500;
     line-height: 18px; 
 }
+.ok-btn,
 .home-btn,
 .start-trial {
     border-radius: 12px;
@@ -1515,9 +1519,12 @@ div#ui-datepicker-div {
     color: var(--1, #FFF);
     text-align: center;
 }
+
+.popup-complete-modal .modal-body,
 #workout-complete-modal .modal-body{
     padding: 24px 16px !important;
 }
+.popup-complete-modal .modal-dialog,
 #workout-complete-modal .modal-dialog {
     position: fixed;
     top: auto;
@@ -1529,6 +1536,7 @@ div#ui-datepicker-div {
     margin-bottom: 0;
     max-width:600px;
 }
+.popup-complete-modal .modal-content,
 #workout-complete-modal .modal-content {
     border-radius: 24px 24px 0px 0px;
     background: var(--1, #FFF);
@@ -3072,11 +3080,10 @@ ul.nav.nav-tabs.focus-tab-main{
 .addmeal-div{
     margin-top:24px;
 }
-.addmeal-div select,
-.addmeal-div textarea,
-.addmeal-div input{
-    border:1px solid #7FD83B !important;
-}
+
+
+
+ 
 .border-green-1{
     border: 1px solid #7FD83B !important;
 }
@@ -3096,3 +3103,17 @@ ul.nav.nav-tabs.focus-tab-main{
     width: 100%;
     height:100px;
 }
+
+
+.error {
+    border: 1px solid #FB4945 !important;
+}
+.Autocomplete-green.error2 fieldset{
+    border: 1px solid #FB4945 !important;
+}
+.Autocomplete-green fieldset{
+    border: 1px solid #7FD83B;
+    border-radius: 12px;
+}
+
+ 
