@@ -9,12 +9,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const token = req.cookies.token;
         const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
         const response = await fetch(addMealsUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`, // Include the JWT token here
-          },
-          body: JSON.stringify(req.body)
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`, // Include the JWT token here
+            },
+            body: JSON.stringify(req.body)
         });
 
         

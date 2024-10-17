@@ -82,7 +82,7 @@ const AddMeal = () => {
 
     const getMealSuggestions = async () => {
         // Example: fetch data from an API or local data
-        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/wp/v2/meal?per_page=100&orderby=date&order=desc&_fields=id,title,content,calories`;
+        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
         const res = await fetch(fetchSuggestedMealsUrl);
         const data = await res.json();
         setSuggestionMeals(data);
