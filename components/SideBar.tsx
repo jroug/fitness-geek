@@ -201,7 +201,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>  */}
-									<Link href="about-us.html">
+									<Link href="/about">
 										<div className="send-money-contact-tab border-bottom1">
 											<div className="setting-icon">
 												<Image src={setting11} alt="setting-icon" />

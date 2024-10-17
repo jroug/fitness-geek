@@ -2,7 +2,15 @@ import React from 'react';
 
 import Header from "../../components/Header";
 
-const faq = () => {
+export default async function faq() {
+
+    // server side component no need to call node API
+    const fetchFaqPageDataUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=faqs&_fields=id,title,content`;
+    const response = await fetch(fetchFaqPageDataUrl);
+    const data = await response.json();
+    const pageData = data[0];
+    const pageDataContent = pageData.content.rendered.split("\n\n\n\n");
+
     return (
         <main className="site-content">
 
@@ -14,153 +22,32 @@ const faq = () => {
                 <div className="container">
                     <div className="faq-full-sec mt-16">
                         <h1 className="hidden">Faq</h1>
-                        <h2 className="hidden">Hidden</h2>
-                        <div className='nested-accordion'>
-                            <h3 className="boder-top">General</h3>
-                            <div className='comment'>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">What is Vigor?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I send money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I request money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I can delete my account?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                    <div className="boder-top1"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='nested-accordion mt-24'>
-                            <h3 className="boder-top">Payment Methods on Vigor</h3>
-                            <div className='comment'>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">What is Vigor?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I send money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I request money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I can delete my account?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                    <div className="boder-top1"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='nested-accordion mt-24'>
-                            <h3 className="boder-top">How to Find Your Missing Payment</h3>
-                            <div className='comment'>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">What is Vigor?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I send money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I request money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I can delete my account?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                    <div className="boder-top1"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='nested-accordion mt-24'>
-                            <h3 className="boder-top">How to Refund a Course</h3>
-                            <div className='comment'>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">What is Vigor?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I send money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I request money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I can delete my account?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                    <div className="boder-top1"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className='nested-accordion mt-24'>
-                            <h3>Downloading Payment Invoice</h3>
-                            <div className='comment'>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">What is Vigor?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I send money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I request money?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
-                                </div>
-                                <div className='nested-accordion'>
-                                    <h3 className="faq-txt1 mt-16">How do I can delete my account?</h3>
-                                    <div className='comment mt-12'>
-                                        Ultricies facilisis risus integer nibh. In vestibulum porttitor ac augue orci. Dui id aliquet pharetra arcu duis condimentum accumsan. Elementum feugiat lectus tellus mi. Sed donec proin lorem nunc gravida. Pharetra dui tincidunt sociis odio tellus. Bibendum mauris at id elementum ut ut.
-                                    </div>
+                        <div className='page-content'>
+                            <div className='nested-custom-accordion'>
+                                <h1 className="boder-top font-bold">Questions</h1>
+                                <div className="custom-accordion">
+                                    {pageDataContent.map((element, index, array) =>  (
+                                        index % 2 === 0 && (
+                                            <div className="custom-accordion-item rounded-12" key={index}>
+                                                <input
+                                                    type="checkbox"
+                                                    id={"item" + index}
+                                                    className="custom-accordion-toggle"
+                                                />
+                                                <label
+                                                    htmlFor={"item" + index}
+                                                    className="custom-accordion-label border-green-1 rounded-12"
+                                                    dangerouslySetInnerHTML={{ __html: element }}
+                                                ></label>
+                                                {index + 1 < array.length && (
+                                                    <div
+                                                        className="custom-accordion-content"
+                                                        dangerouslySetInnerHTML={{ __html: array[index + 1] }}
+                                                    ></div>
+                                                )}
+                                            </div>
+                                        )
+                                    ))}
                                 </div>
                             </div>
                         </div>
@@ -172,4 +59,4 @@ const faq = () => {
     );
 };
 
-export default faq;
+ 

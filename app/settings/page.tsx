@@ -242,13 +242,13 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link href="about-us.html">
+                            <Link href="/about">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
                                         <Image src={setting10} alt="setting-icon" />
                                     </div>
                                     <div className="setting-title">
-                                        <h3>About Us</h3>
+                                        <h3>About Fitness Geek</h3>
                                     </div>
                                     <div className="contact-star">
                                         <div className="star-favourite">

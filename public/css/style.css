@@ -446,6 +446,7 @@ header {
     outline: 0;
     margin: 0;
 }
+.main-img-top img,
 #homescreen-main .main-img-top img,
 #homescreen-main .main-img-bottom img{
     width: 100%;
@@ -532,6 +533,7 @@ textarea {
 }
 
 /************************ 7.Data Privacy Css ***************************/
+
 .data-privacy-content h1,
 .manage-txt,
 .social-txt,
@@ -884,6 +886,7 @@ textarea {
 }
 
 /************************ 14.Contact Us Css ***************************/
+
 .contact-txt h1,
 .cup-details h1,
 .home-second h2,
@@ -1159,6 +1162,7 @@ div#ui-datepicker-div {
     font-weight: 700;
     line-height: 24px;
 }
+
 .billing-price h1,
 .billing-price h2 {
     color: var(--4, #12151C);
@@ -1169,6 +1173,7 @@ div#ui-datepicker-div {
     font-weight: 400;
     line-height: 32px;
 }
+
 .billing-price h1 span,
 .home-first h1 {
     color: var(--4, #12151C);
@@ -1587,6 +1592,7 @@ div#ui-datepicker-div {
     align-items: center;
     column-gap: 12px;
 }
+
 .home-first h1,
 .home-first span{
     line-height: 30px !important;
@@ -3116,4 +3122,56 @@ ul.nav.nav-tabs.focus-tab-main{
     border-radius: 12px;
 }
 
- 
+.custom-accordion {
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.custom-accordion-item {
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.custom-accordion-toggle {
+    display: none;
+}
+
+.custom-accordion-label {
+    display: block;
+    padding: 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.custom-accordion-label:hover {
+    background: #e0e0e0;
+}
+
+.custom-accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease-out;
+    padding: 0 15px;
+}
+
+.custom-accordion-toggle:checked + .custom-accordion-label + .custom-accordion-content {
+    max-height: 200px; /* Set a reasonable height to allow content to fit */
+    padding: 15px; /* Add padding when open */
+}
+.rounded-12{
+    border-radius: 12px !important;
+}
+
+.page-content h1 {
+    color: var(--4, #12151C);
+    font-family: "Zen Dots";
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    margin-top:30px;
+    margin-bottom:20px;
+
+}
