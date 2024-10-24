@@ -15,7 +15,7 @@ const SimpleContent = (props) => {
                     <div className="about-us-screen-full border-b-2 border-gray-200 mt-4" >
                         <div className="max-w-4xl mx-auto bg-white rounded-lg mt-4 mb-6">
                             {/* <h2 className="text-4xl font-bold text-gray-900 mb-6 mt-4">{pageTitle}</h2> */}
-                            <div class="setting-bottom-img p-0 mt-16">
+                            <div className="setting-bottom-img p-0 mt-16">
                                 <div className="verify-email-img-sec">
                                     <div className="main-img-top">
                                         <Image src={settingImg} alt="notification-img" />

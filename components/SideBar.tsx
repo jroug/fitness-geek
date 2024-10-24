@@ -54,13 +54,13 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									{/* <Link href="workout-preferences.html">
-										<div className="send-money-contact-tab border-bottom1 pt-0  ">
+									<Link href="/users/profile">
+										<div className="send-money-contact-tab border-bottom1 pt-0">
 											<div className="setting-icon">
-												<Image src={setting1} alt="setting-icon" />
+												<Image src={setting12} alt="setting-icon" />
 											</div>
 											<div className="setting-title">
-												<h3>Workout Preferences</h3>
+												<h3>Personal Info</h3>
 											</div>
 											<div className="contact-star">
 												<div className="star-favourite">
@@ -68,7 +68,7 @@ const SideBar = () => {
 												</div>
 											</div>
 										</div>
-									</Link>  */}
+									</Link>
 									<Link href="/settings">
 										<div className="send-money-contact-tab border-bottom1">
 											<div className="setting-icon">
@@ -135,22 +135,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									<div className="setting-center-border"></div>
-									<Link href="profile.html">
-										<div className="send-money-contact-tab border-bottom1 pt-0">
-											<div className="setting-icon">
-												<Image src={setting6} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Personal Info</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
+									<div className="setting-center-border"></div>  */}
 									{/* <Link href="language.html">
 										<div className="send-money-contact-tab border-bottom1">
 											<div className="setting-icon">
@@ -214,21 +199,6 @@ const SideBar = () => {
 													<span>
 														<Image src={right_arrow} alt="edit-icon" />
 													</span>
-												</div>
-											</div>
-										</div>
-									</Link> 
-									<Link href="feedback.html">
-										<div className="send-money-contact-tab border-bottom1 ">
-											<div className="setting-icon">
-												<Image src={setting12} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Send Feedback</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
 												</div>
 											</div>
 										</div>

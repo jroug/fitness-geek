@@ -5,7 +5,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
 
   
-        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/meal?per_page=100&orderby=date&order=desc&_fields=id,title,content,calories`;
+        // const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/meal?per_page=100&orderby=date&order=desc&_fields=id,title,content,calories`;
+        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/foods/v1/list/`;
         const response = await fetch(fetchSuggestedMealsUrl);
         
         if (!response.ok) {

@@ -20,14 +20,15 @@ const AddMeal = () => {
     const [mealType, setMealType] = useState(''); 
     const [mealSelected, setMealSelected] = useState({
         "id": "",
-        "title": {
-            "rendered": ""
-        },
-        "content": {
-            "rendered": "",
-            "protected": false
-        },
-        "calories": ""
+        "food_name": "",
+        "calories": "",
+        "protein": "",
+        "carbohydrates": "",
+        "fat": "",
+        "fiber": "",
+        "category": "",
+        "serving_size": "",
+        "comments": ""
     }); 
     const [mealComments, setMealComments] = useState(''); 
 
@@ -45,7 +46,7 @@ const AddMeal = () => {
         return 'MS'; // Morning Snack
       } else if (currentHour < 16) {
         return 'L'; // Lunch
-      } else if (currentHour < 18) {
+      } else if (currentHour < 20) {
         return 'AS'; // Afternoon Snack
       } else if (currentHour < 23) { 
         return 'D'; // Dinner
@@ -85,6 +86,7 @@ const AddMeal = () => {
         const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
         const res = await fetch(fetchSuggestedMealsUrl);
         const data = await res.json();
+        console.log(data);
         setSuggestionMeals(data);
         return data;
     };
@@ -111,14 +113,15 @@ const AddMeal = () => {
             setMealType(''); 
             setMealSelected({
                 "id": "",
-                "title": {
-                    "rendered": ""
-                },
-                "content": {
-                    "rendered": "",
-                    "protected": false
-                },
-                "calories": ""
+                "food_name": "",
+                "calories": "",
+                "protein": "",
+                "carbohydrates": "",
+                "fat": "",
+                "fiber": "",
+                "category": "",
+                "serving_size": "",
+                "comments": ""
             }); 
             setMealComments(''); 
         }else{
@@ -164,7 +167,7 @@ const AddMeal = () => {
             doSubmit = false;
             setMealTitleErrorClass("error2");
         }else{
-            setMealTypeErrorClass("");
+            setMealTitleErrorClass("");
         }
 
         if (mealType===''){
@@ -209,7 +212,7 @@ const AddMeal = () => {
                     <div className="container">
                         <div className="feedback-content  mt-16">
                             <div className="green-btn mt-4">
-                                <Link href="#" onClick={handleSetCurrentDateAndMeal} >set Current Date & Meal</Link>
+                                <Link href="#" onClick={handleSetCurrentDateAndMeal} >set Current Date & Type</Link>
                             </div>
                             <form className="feedback-form" onSubmit={handleFormSubmit}>
                                 <div className="addmeal-div feedback-email">
@@ -249,7 +252,7 @@ const AddMeal = () => {
                                         className={"Autocomplete-green " + mealTitleErrorClass }
                                         value={mealSelected}
                                         options={suggestionMeals}
-                                        getOptionLabel={ (option) => option.title.rendered }
+                                        getOptionLabel={ (option) => option.food_name }
                                         onChange={handleMealSugestionsInputChange}
                                         isOptionEqualToValue = {(options, value) => options.id === value.id }
                                         renderInput={(params) => (
@@ -258,12 +261,41 @@ const AddMeal = () => {
                                     />
                                 </div>
                                 <div className="addmeal-div">
-                                    <label htmlFor="meal-long" className="custom-lbl-feedback">Description</label>
-                                    <div className="sm-font-sans custom-textarea-div mt-8 border-green-1" id="meal-long" >{mealSelected.content.rendered}</div>
-                                </div>
-                                <div className="addmeal-div feedback-email">
-                                    <label htmlFor="calories" className="custom-lbl-feedback">Calories</label>
-                                    <div className="sm-font-sans custom-div mt-8 border-green-1" id="calories" >{mealSelected.calories}</div>
+                                    <label htmlFor="meal-long" className="custom-lbl-feedback">Details</label>
+                                    <div className="sm-font-sans custom-textarea-div mt-8 border-green-1" id="meal-long" >
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Category - Size:</td>
+                                                    <td>{ mealSelected && mealSelected.category !== "" ? mealSelected.category : '' } { mealSelected && mealSelected.serving_size !== "" ? "- "+mealSelected.serving_size + 'gr' : '' }</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Protein:</td>
+                                                    <td>{ mealSelected && mealSelected.protein !== "" ? mealSelected.protein + 'gr' : '' }</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Carbohydrates:</td>
+                                                    <td>{ mealSelected && mealSelected.carbohydrates !== "" ? mealSelected.carbohydrates + 'gr' : '' }</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fat:</td>
+                                                    <td>{ mealSelected && mealSelected.fat !== "" ? mealSelected.fat + 'gr' : '' }</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Fiber:</td>
+                                                    <td>{ mealSelected && mealSelected.fiber !== "" ? mealSelected.fiber + 'gr' : '' }</td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Calories:</b></td>
+                                                    <td><b>{ mealSelected && mealSelected.calories !== "" ? mealSelected.calories + ' kcal' : '' }</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Comments:</td>
+                                                    <td>{ mealSelected && mealSelected.comments !== "" ? mealSelected.comments : '' }</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                                 <div className="addmeal-div">
                                     <label htmlFor="comments" className="custom-lbl-feedback">Comments</label>

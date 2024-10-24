@@ -2,12 +2,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
 
-    //   console.log(`${process.env.WORDPRESS_API_URL}/wp-json/wp/v2/users/${user_id}`);
+     //  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
 
       try {
 
         const token = req.cookies.token;
-        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
+        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
         const response = await fetch(addMealsUrl, {
             method: 'POST',
             headers: {
@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         return res.status(500).json({ message: 'Server error' });
       }
     } else {
-      return res.status(405).json({ message: 'Only GET requests are allowed' });
+      return res.status(405).json({ message: 'Only POST requests are allowed' });
     }
 
   }
