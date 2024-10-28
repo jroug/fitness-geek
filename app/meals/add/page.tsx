@@ -82,7 +82,7 @@ const AddMeal: React.FC = () => {
     };
 
     const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
-        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
+        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
         const res = await fetch(fetchSuggestedMealsUrl);
         const data = await res.json();
         setSuggestionMeals(data);
@@ -90,7 +90,7 @@ const AddMeal: React.FC = () => {
     };
 
     const addMealToDB = async (input_data: MealInputData) => {
-        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
+        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
         const res = await fetch(addMealsUrl, {
             method: 'POST',
             headers: {

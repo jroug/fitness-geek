@@ -17,7 +17,7 @@ type ApiResponse = Meal[] | ErrorResponse;
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'GET') {
         try {
-            const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/foods/v1/list/`;
+            const fetchSuggestedMealsUrl = `${process.env.WORDPRESS_API_URL}/foods/v1/list/`;
             const response = await fetch(fetchSuggestedMealsUrl);
 
             if (!response.ok) {

@@ -6,12 +6,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
 
-     //  console.log(`${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
+     //  console.log(`${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
 
       try {
 
         const token = req.cookies.token;
-        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
+        const addMealsUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
         const response = await fetch(addMealsUrl, {
             method: 'POST',
             headers: {

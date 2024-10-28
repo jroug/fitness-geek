@@ -5,7 +5,7 @@ import Header from "../../components/Header";
 export default async function faq() {
 
     // server side component no need to call node API
-    const fetchFaqPageDataUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=faqs&_fields=id,title,content`;
+    const fetchFaqPageDataUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=faqs&_fields=id,title,content`;
     const response = await fetch(fetchFaqPageDataUrl);
     const data = await response.json();
     const pageData = data[0];

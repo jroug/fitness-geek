@@ -30,7 +30,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 return res.status(401).json({ message: 'Unauthorized: No token provided' });
             }
 
-            const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/users/me`;
+            const profileDataFetchUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/users/me`;
 
             const response = await fetch(profileDataFetchUrl, {
                 method: 'GET',

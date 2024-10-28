@@ -22,8 +22,8 @@ import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
 import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
  
-const checkAuthFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-auth`;
-const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
+const checkAuthFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-auth`;
+const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
  
 
 const Homepage = () => {

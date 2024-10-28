@@ -20,7 +20,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const { username, password } = req.body as LoginRequestBody;
 
         try {
-            const wpApiUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}`;
+            const wpApiUrl = `${process.env.WORDPRESS_API_URL}`;
             const loginFetchUrl = `${wpApiUrl}/jwt-auth/v1/token`;
 
             const response = await fetch(loginFetchUrl, {

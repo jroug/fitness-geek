@@ -10,8 +10,9 @@ import youtube from "../public/images/about-us/youtube.svg";
 export default async function LandingPage() {
 
   // server side component no need to call node API
-  const fetchLandingPageDataUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=landingpage&_fields=id,title,content`;
-  // console.log(fetchLandingPageDataUrl);
+ 
+  const fetchLandingPageDataUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=landingpage&_fields=id,title,content`;
+  console.log('fetchLandingPageDataUrl', fetchLandingPageDataUrl);
   const response = await fetch(fetchLandingPageDataUrl);
   const data = await response.json();
   const pageData = data[0];
