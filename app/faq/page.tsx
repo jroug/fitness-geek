@@ -26,7 +26,7 @@ export default async function faq() {
                             <div className='nested-custom-accordion'>
                                 <h1 className="boder-top font-bold">Questions</h1>
                                 <div className="custom-accordion">
-                                    {pageDataContent.map((element, index, array) =>  (
+                                    {pageDataContent.map((element: string, index: number, array: string[]) =>  (
                                         index % 2 === 0 && (
                                             <div className="custom-accordion-item rounded-12" key={index}>
                                                 <input
@@ -57,6 +57,4 @@ export default async function faq() {
             {/* <!-- Faq screen start --> */}
         </main>
     );
-};
-
- 
+}

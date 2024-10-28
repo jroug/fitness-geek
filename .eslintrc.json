@@ -1,3 +1,47 @@
 {
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended"
+  ],
+  "plugins": ["@typescript-eslint", "react", "react-hooks"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "rules": {
+    // Next.js specific rules
+    "@next/next/no-img-element": "off", // Allows using <img> instead of Next.js <Image>
+    
+    // TypeScript specific rules
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }], // Ignores unused variables prefixed with "_"
+    "@typescript-eslint/explicit-module-boundary-types": "off", // Allows omitting return types in functions
+    
+    // React and hooks rules
+    "react/react-in-jsx-scope": "off", // React import not needed in Next.js
+    "react-hooks/rules-of-hooks": "error", // Checks the rules of hooks
+    "react-hooks/exhaustive-deps": "warn", // Checks dependency arrays in useEffect
+    
+    // General JavaScript rules
+    "no-console": ["warn", { "allow": ["warn", "error"] }], // Allows console.warn and console.error
+    "no-unused-vars": "off", // Disables no-unused-vars in favor of TypeScript's rule
+    "no-var": "error", // Disallows var, use let or const instead
+    "prefer-const": "warn" // Suggests using const when variables are not reassigned
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  }
 }

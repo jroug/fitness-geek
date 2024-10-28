@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from 'next/link';
-import Loading from "../components/Loading";
+// import Loading from "../components/Loading";
 import facebook from "../public/images/about-us/facebook.svg";
 import instragram from "../public/images/about-us/instragram.svg";
 import twitter from "../public/images/about-us/twitter.svg";

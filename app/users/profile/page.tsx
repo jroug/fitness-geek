@@ -74,7 +74,7 @@ const page = () => {
                                     <Image src={editIcon} alt="edit-icon" width={20} height={20} className="custom-icon-edit"/>
                                 </Link>
                             </div>
-                            <div class="green-btn mt-16">
+                            <div className="green-btn mt-16">
                                 <Link href="#">UPDATE CHANGES</Link>
                             </div>
                         </form>

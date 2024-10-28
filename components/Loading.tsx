@@ -4,7 +4,6 @@ import preloader from "../public/images/favicon/preloader.gif";
 
 const Loading = () => {
     return (
-		   
         <div className="flex justify-center items-center h-screen">
             <Image 
               priority={true}
@@ -15,7 +14,6 @@ const Loading = () => {
               height={64}
             />
           </div>
-       
     );
 };
 

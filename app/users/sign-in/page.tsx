@@ -9,42 +9,39 @@ import small_logo from "../../../public/images/splashscreen/small-logo.png";
 import mail_icon from "../../../public/svg/mail-icon.svg";
 import password_icon from "../../../public/svg/password-icon.svg";
 
-
-
-const sign_in = () => {
+const SignIn: React.FC = () => {
     
-    const [inputEmail, setInputEmail] = useState('rougeris@gmail.com');
-    const [inputPassword, setInputPassword] = useState('admin_fitness123');
+    const [inputEmail, setInputEmail] = useState<string>('rougeris@gmail.com');
+    const [inputPassword, setInputPassword] = useState<string>('admin_fitness123');
 
     const router = useRouter();
     
-    const handleOnChangeEmail = (e) => {
+    const handleOnChangeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputEmail(e.target.value);
     }
-    const handleOnChangePassword = (e) => {
+
+    const handleOnChangePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputPassword(e.target.value);
     }
-    const handleShowHidePassword = (e) => {
-        document.getElementById('eye').classList.toggle("fa-eye");
-        document.getElementById('eye').classList.toggle("fa-eye-slash");
-   
-        var input =  document.getElementById('password');
-        if (input.type === "password") {
-            input.type = "text";
-        } else {
-            input.type = "password";
+
+    const handleShowHidePassword = () => {
+        const eyeIcon = document.getElementById('eye');
+        const passwordInput = document.getElementById('password') as HTMLInputElement | null;
+
+        if (eyeIcon && passwordInput) {
+            eyeIcon.classList.toggle("fa-eye");
+            eyeIcon.classList.toggle("fa-eye-slash");
+
+            passwordInput.type = passwordInput.type === "password" ? "text" : "password";
         }
     }
     
-    const handleSignInSubmit = (e) => {
+    const handleSignInSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('inputEmail', inputEmail);
-        console.log('inputPassword', inputPassword);
         login(inputEmail, inputPassword);
     }
 
-
-    const login = async (username, password) => {
+    const login = async (username: string, password: string) => {
         const res = await fetch('/api/login', {
           method: 'POST',
           headers: {
@@ -54,7 +51,6 @@ const sign_in = () => {
         });
       
         if (res.ok) {
-            console.log('Login successful');
             router.push("/homepage");
         } else {
             alert('Login failed');
@@ -63,13 +59,6 @@ const sign_in = () => {
 
     return (
         <main className="site-content">
-            {/* <!-- Preloader start --> */}
-            {/* <div className="preloader">
-                <Image src="assets/images/favicon/preloader.gif" alt="preloader" />
-            </div> */}
-            {/* <!-- Preloader end --> */}
-
-            {/* <!-- Header start --> */}
             <header id="top-header" className="border-0">
                 <div className="header-wrap">
                     <div className="header-back">
@@ -79,9 +68,7 @@ const sign_in = () => {
                     </div>
                 </div>
             </header>
-            {/* <!-- Header end --> */}
 
-            {/* <!-- Sign up screen start --> */}
             <div className="verify-email pb-20" id="sign-up-main">
                 <div className="container mx-auto">
                     <div className="let-you-middle-wrap text-center">
@@ -99,7 +86,7 @@ const sign_in = () => {
                         <form className="mt-8" onSubmit={handleSignInSubmit} >
                             <div className="form-details-sign-in border flex items-center px-4 py-2">
                                 <span>
-                                <Image src={mail_icon} alt="mail-icon" />
+                                    <Image src={mail_icon} alt="mail-icon" />
                                 </span>
                                 <input
                                     type="email"
@@ -121,7 +108,7 @@ const sign_in = () => {
                                     value={inputPassword}
                                     onChange={handleOnChangePassword}
                                 />
-                                <i className="fas fa-eye-slash" id="eye" onClick={handleShowHidePassword} ></i>
+                                <i className="fas fa-eye-slash" id="eye" onClick={handleShowHidePassword}></i>
                             </div>
                             <div className="password-btn mt-4">
                                 <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">Sign in</button>
@@ -131,7 +118,7 @@ const sign_in = () => {
                         <footer id="let-you-footer">
                             <div className="block-footer mt-4">
                                 <p className="text-base font-normal text-center">
-                                    Don't have an account? &nbsp;
+                                    Don&#39;t have an account? &nbsp;
                                     <Link href="/users/sign-up" className="font-medium text-black underline">Sign Up</Link>
                                 </p>
                             </div>
@@ -139,10 +126,8 @@ const sign_in = () => {
                     </div>
                 </div>
             </div>
-            {/* <!-- Sign up screen end --> */}
         </main>
-
     );
-};
+}
 
-export default sign_in;
+export default SignIn;

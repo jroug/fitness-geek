@@ -17,9 +17,9 @@ import setting10 from "../../public/images/setting/setting10.svg";
 import setting11 from "../../public/images/setting/setting11.svg";
 import setting12 from "../../public/images/setting/setting12.svg";
 import setting13 from "../../public/images/setting/setting13.svg";
-import setting15 from "../../public/images/setting/setting15.svg";
-import setting16 from "../../public/images/setting/setting16.svg";
-import setting17 from "../../public/images/setting/setting17.svg";
+// import setting15 from "../../public/images/setting/setting15.svg";
+// import setting16 from "../../public/images/setting/setting16.svg";
+// import setting17 from "../../public/images/setting/setting17.svg";
 
 import Header from "../../components/Header";
 

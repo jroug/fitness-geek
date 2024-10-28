@@ -26,10 +26,15 @@ const checkAuthFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEX
 const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
  
 
-const homepage = () => {
+const Homepage = () => {
 
  
-    const [profileData, setProfileData] = useState(null);
+    const [profileData, setProfileData] = useState({
+        first_name: '',
+        last_name: '',
+        user_name: '',
+        user_registered: '',
+    });
     const [loading, setLoading] = useState(true);
     const router = useRouter();
   
@@ -47,7 +52,7 @@ const homepage = () => {
   
         if (res.ok) {
           // User is authenticated, allow access to the page
-          const profileData = await fetch(profileDataFetchUrl, {
+          await fetch(profileDataFetchUrl, {
             method: 'GET',
             credentials: 'include', // Include cookies in the request
           })
@@ -90,11 +95,9 @@ const homepage = () => {
     }
 
     const display_name = 
-        ( profileData.first_name !== '' && profileData.last_name !== '' )
-        ?
-        profileData.first_name + ' ' + profileData.last_name
-        :
-        profileData.user_name;
+        profileData?.first_name && profileData.last_name
+        ? `${profileData.first_name} ${profileData.last_name}`
+        : profileData?.user_name || '';
 
     // get the correct format for date
     const dateObj = new Date(profileData.user_registered);
@@ -244,4 +247,4 @@ const homepage = () => {
     );
 };
 
-export default homepage;
+export default Homepage;

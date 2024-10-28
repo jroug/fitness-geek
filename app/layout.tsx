@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import "./globals.css";
-import '../public/css/style.css'; 
- 
+import "../public/css/style.css"; 
+import "../public/css/all.min.css"; // Importing the CSS file directly
 
 export const metadata: Metadata = {
   title: "Fitness Geek",
@@ -16,12 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="/css/all.min.css" />
-      </head>
-      <body
-        className={` antialiased`}
-      >
+      <body className="antialiased">
         {children}
       </body>
     </html>

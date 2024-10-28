@@ -1,5 +1,5 @@
 'use client';
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -7,61 +7,65 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Header from "../../../components/Header";
 import Popup from "../../../components/Popup";
 
+// Define interfaces for meal data
+interface MealSuggestion {
+    id: string;
+    food_name: string;
+    calories: string;
+    protein: string;
+    carbohydrates: string;
+    fat: string;
+    fiber: string;
+    category: string;
+    serving_size: string;
+    comments: string;
+}
 
+interface MealInputData {
+    datetime_of_meal: string;
+    meal_id: string;
+    meal_type: string;
+    comments: string;
+}
 
-const AddMeal = () => {
-
- 
+const AddMeal: React.FC = () => {
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTypeErrorClass, setMealTypeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
 
     const [dateTime, setDateTime] = useState('');
-    const [mealType, setMealType] = useState(''); 
-    const [mealSelected, setMealSelected] = useState({
-        "id": "",
-        "food_name": "",
-        "calories": "",
-        "protein": "",
-        "carbohydrates": "",
-        "fat": "",
-        "fiber": "",
-        "category": "",
-        "serving_size": "",
-        "comments": ""
-    }); 
-    const [mealComments, setMealComments] = useState(''); 
+    const [mealType, setMealType] = useState('');
+    const [mealSelected, setMealSelected] = useState<MealSuggestion>({
+        id: "",
+        food_name: "",
+        calories: "",
+        protein: "",
+        carbohydrates: "",
+        fat: "",
+        fiber: "",
+        category: "",
+        serving_size: "",
+        comments: ""
+    });
+    const [mealComments, setMealComments] = useState('');
 
-    const [suggestionMeals, setSuggestionMeals] = useState([]);
-    
-    const [popupData, setPopupData] = useState({title:'', message:''});
+    const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
+    const [popupData, setPopupData] = useState({ title: '', message: '', show_popup: false });
 
     // Function to determine the meal based on the current time
-    const getMealBasedOnTime = () => {
-      const currentHour = new Date().getHours();
-  
-      if (currentHour < 10) {
-        return 'B'; // Breakfast
-      } else if (currentHour < 12) {
-        return 'MS'; // Morning Snack
-      } else if (currentHour < 16) {
-        return 'L'; // Lunch
-      } else if (currentHour < 20) {
-        return 'AS'; // Afternoon Snack
-      } else if (currentHour < 23) { 
-        return 'D'; // Dinner
-      } else {
-        return 'OTH'; // 
-      }
-
+    const getMealBasedOnTime = (): string => {
+        const currentHour = new Date().getHours();
+        if (currentHour < 10) return 'B';
+        if (currentHour < 12) return 'MS';
+        if (currentHour < 16) return 'L';
+        if (currentHour < 20) return 'AS';
+        if (currentHour < 23) return 'D';
+        return 'OTH';
     };
 
-    const getCurrentDateTime = () => {
-        // Create a new date for the current time
+    const getCurrentDateTime = (): string => {
         const now = new Date();
-
-        // Convert to Athens time using toLocaleString
-        const options = {
+        const options: Intl.DateTimeFormatOptions = {
             timeZone: 'Europe/Athens',
             year: 'numeric',
             month: '2-digit',
@@ -71,148 +75,117 @@ const AddMeal = () => {
             hour12: false,
         };
 
-        // Format the date and time
         const athensTime = new Intl.DateTimeFormat('en-GB', options).format(now);
         const [datePart, timePart] = athensTime.split(', ');
-        
-        // Convert from DD/MM/YYYY to YYYY-MM-DD
         const formattedDate = datePart.split('/').reverse().join('-');
-        const formattedDateTime = `${formattedDate}T${timePart.replace(':', ':')}`;
-        return formattedDateTime;
-    }
+        return `${formattedDate}T${timePart.replace(':', ':')}`;
+    };
 
-    const getMealSuggestions = async () => {
-        // Example: fetch data from an API or local data
+    const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
         const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
         const res = await fetch(fetchSuggestedMealsUrl);
         const data = await res.json();
-        console.log(data);
         setSuggestionMeals(data);
         return data;
     };
 
-    const addMealToDB = async (input_data) => {
-
-        // Example: fetch data from an API or local data
+    const addMealToDB = async (input_data: MealInputData) => {
         const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}:${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
         const res = await fetch(addMealsUrl, {
-            method: 'POST',  
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json', 
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(input_data) // Converts the data object to a JSON string
+            body: JSON.stringify(input_data)
         });
         const data = await res.json();
-        if(data.user_meal_added) {
-            setPopupData({
-                title: 'Message',
-                message: data.message,
-                show_popup: true
-            });
+        if (data.user_meal_added) {
+            setPopupData({ title: 'Message', message: data.message, show_popup: true });
             setDateTime('');
-            setMealType(''); 
+            setMealType('');
             setMealSelected({
-                "id": "",
-                "food_name": "",
-                "calories": "",
-                "protein": "",
-                "carbohydrates": "",
-                "fat": "",
-                "fiber": "",
-                "category": "",
-                "serving_size": "",
-                "comments": ""
-            }); 
-            setMealComments(''); 
-        }else{
-            setPopupData({
-                title: 'Message',
-                message: 'Something went wrong!',
-                show_popup: false
+                id: "",
+                food_name: "",
+                calories: "",
+                protein: "",
+                carbohydrates: "",
+                fat: "",
+                fiber: "",
+                category: "",
+                serving_size: "",
+                comments: ""
             });
+            setMealComments('');
+        } else {
+            setPopupData({ title: 'Message', message: 'Something went wrong!', show_popup: false });
         }
-
-
-
-        return;
     };
 
-    // Set the meal based on the current time when the component mounts
     useEffect(() => {
         getMealSuggestions();
     }, []);
-    
-    const handleSetCurrentDateAndMeal = (e) => {
+
+    const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
         setMealType(getMealBasedOnTime());
         setDateTime(getCurrentDateTime());
-    }
-
-    const handleMealSugestionsInputChange = (event, newValue) => {
-        console.log(newValue);
-        setMealSelected(newValue);
     };
 
-    const handleMealComments = (e) => {
+    const handleMealSuggestionsInputChange = (event: React.SyntheticEvent, newValue: MealSuggestion | null) => {
+        if (newValue) setMealSelected(newValue);
+    };
+
+    const handleMealComments = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         setMealComments(e.target.value);
-    }
+    };
 
-    const handleFormSubmit = (e) => {
+    const handleFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-
-        // check if nessesary fields are completed
         let doSubmit = true;
- 
-        if (mealSelected.id === undefined || mealSelected.id === ''){
+
+        if (!mealSelected.id) {
             doSubmit = false;
             setMealTitleErrorClass("error2");
-        }else{
+        } else {
             setMealTitleErrorClass("");
         }
 
-        if (mealType===''){
+        if (!mealType) {
             doSubmit = false;
             setMealTypeErrorClass("error");
-        }else{
+        } else {
             setMealTypeErrorClass("");
         }
 
-        if (dateTime===''){
+        if (!dateTime) {
             doSubmit = false;
             setDateTimeErrorClass("error");
-        }else{
-            setDateTimeErrorClass("")
+        } else {
+            setDateTimeErrorClass("");
         }
 
-        if (doSubmit){
-            let input_data = {
-                "datetime_of_meal": dateTime,
-                "meal_id": mealSelected.id,
-                "meal_type": mealType,
-                "comments": mealComments
-            }
-            
+        if (doSubmit) {
+            const input_data: MealInputData = {
+                datetime_of_meal: dateTime,
+                meal_id: mealSelected.id,
+                meal_type: mealType,
+                comments: mealComments
+            };
             addMealToDB(input_data);
-        }else{
-            alert('Complete all nesessary fields!');
+        } else {
+            alert('Complete all necessary fields!');
         }
- 
-        return false;
     };
 
-
-
-
-    
     return (
         <>
             <main className="site-content">
                 <Header title="Add Meal" backUrl="/homepage" />
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
-                        <div className="feedback-content  mt-16">
+                        <div className="feedback-content mt-16">
                             <div className="green-btn mt-4">
-                                <Link href="#" onClick={handleSetCurrentDateAndMeal} >set Current Date & Type</Link>
+                                <Link href="#" onClick={handleSetCurrentDateAndMeal}>Set Current Date & Type</Link>
                             </div>
                             <form className="feedback-form" onSubmit={handleFormSubmit}>
                                 <div className="addmeal-div feedback-email">
@@ -253,7 +226,7 @@ const AddMeal = () => {
                                         value={mealSelected}
                                         options={suggestionMeals}
                                         getOptionLabel={ (option) => option.food_name }
-                                        onChange={handleMealSugestionsInputChange}
+                                        onChange={handleMealSuggestionsInputChange}
                                         isOptionEqualToValue = {(options, value) => options.id === value.id }
                                         renderInput={(params) => (
                                             <TextField {...params} label="" variant="outlined" />

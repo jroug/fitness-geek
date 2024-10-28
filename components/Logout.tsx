@@ -26,7 +26,7 @@ const Logout = () => {
 		});
 		
 		if (res.ok) {
-			console.log('Logged out successfully');
+			// console.log('Logged out successfully');
 			router.push('/');
 		} else {
 			alert('Logout failed');

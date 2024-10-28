@@ -1,11 +1,11 @@
 import React from 'react';
 import Image from "next/image";
 import Link from 'next/link';
-import setting1 from "../public/images/setting/setting1.svg";
+// import setting1 from "../public/images/setting/setting1.svg";
  
 import setting7 from "../public/images/setting/setting7.svg";
-import setting3 from "../public/images/setting/setting3.svg";
-import setting5 from "../public/images/setting/setting5.svg";
+// import setting3 from "../public/images/setting/setting3.svg";
+// import setting5 from "../public/images/setting/setting5.svg";
 import setting6 from "../public/images/setting/setting6.svg";
 // import setting8 from "../public/images/setting/setting8.svg";
 import setting9 from "../public/images/setting/setting9.svg";
@@ -17,16 +17,15 @@ import setting13 from "../public/images/setting/setting13.svg";
 import setting17 from "../public/images/setting/setting17.svg";
 
 import right_arrow from "../public/svg/right-arrow.svg";
-import up_arrow from "../public/svg/up-arrow.svg";
+// import up_arrow from "../public/svg/up-arrow.svg";
 import Logout from "./Logout";
 
 
 const SideBar = () => {
-
 	// Function to show the logout modal
 	const showModal = () => {
-		 document.getElementById('workout-complete-modal')?.classList.add('show-modal');
-	};
+		document.getElementById('workout-complete-modal')?.classList.add('show-modal');
+	}
 
     return (
 		<>

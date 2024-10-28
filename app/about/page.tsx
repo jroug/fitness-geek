@@ -18,9 +18,7 @@ export default async function about() {
     return (
         <main className="site-content">
             <Header backUrl="/settings" title={pageTitle}  />
-            <SimpleContent pageTitle={"About us"} pageContent={pageContent} />
+            <SimpleContent pageContent={pageContent} />
         </main>
     );
-};
-
- 
+}
