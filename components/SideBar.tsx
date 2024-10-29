@@ -4,7 +4,7 @@ import Link from 'next/link';
 // import setting1 from "../public/images/setting/setting1.svg";
  
 import setting7 from "../public/images/setting/setting7.svg";
-// import setting3 from "../public/images/setting/setting3.svg";
+import setting3 from "../public/images/setting/setting3.svg";
 // import setting5 from "../public/images/setting/setting5.svg";
 import setting6 from "../public/images/setting/setting6.svg";
 // import setting8 from "../public/images/setting/setting8.svg";
@@ -53,6 +53,23 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
+									<Link href="/meals/calendar">
+										<div className="Char-content border-bottom1">
+											<div className="send-money-contact-tab ">
+												<div className="setting-icon">
+													<Image src={setting3} alt="setting-icon" />
+												</div>
+												<div className="setting-title">
+													<h3>Meals Calendar</h3>
+												</div>
+												<div className="contact-star">
+													<div className="star-favourite">
+														<Image src={right_arrow} alt="edit-icon" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</Link>
 									<Link href="/users/profile">
 										<div className="send-money-contact-tab border-bottom1 pt-0">
 											<div className="setting-icon">
@@ -98,27 +115,6 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>  */}
-									{/* <div className="Char-content border-bottom1">
-										<div className="send-money-contact-tab ">
-											<div className="setting-icon">
-												<Image src={setting3} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Different Chart</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={up_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-										<div className="diffrent-chat-dropdown">
-											<ul>
-												<li><Link href="area-chart.html">Area Chat</Link> </li>
-												<li className="border-0"><Link href="line-chart.html ">Line Chat</Link> </li>
-											</ul>
-										</div>
-									</div> */}
 									{/* <Link href="data-analytics.html">
 										<div className="send-money-contact-tab  pb-0">
 											<div className="setting-icon">
@@ -252,7 +248,8 @@ const SideBar = () => {
 						</div>
 					</div>
 				</div>
-			<div className="offcanvas-backdrop fade show"></div></div>
+				<div className="offcanvas-backdrop fade show"></div>
+			</div>
 			<Logout />
 		</>
     );

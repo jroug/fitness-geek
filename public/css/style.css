@@ -3181,3 +3181,13 @@ ul.nav.nav-tabs.focus-tab-main{
 #meal-long table tr td:first-child{
     width:150px;
 }
+
+#calendar-main{
+    position: absolute;
+    top: 71px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    width: 100%;
+    max-width: 1000px;
+    min-width: 400px;
+}

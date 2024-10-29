@@ -42,7 +42,7 @@ const Homepage = () => {
 
         
       // Fetch user authentication status from an API endpoint (session, cookies)
-      async function checkAuth() {
+      async function getProfileDataForHome() {
         
         // alert(checkAuthFetchUrl);
         const res = await fetch(checkAuthFetchUrl, {
@@ -68,7 +68,7 @@ const Homepage = () => {
         }
       }
   
-      checkAuth();
+      getProfileDataForHome();
     }, [router]);
   
     if (loading) {
