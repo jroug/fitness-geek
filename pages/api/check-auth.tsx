@@ -10,6 +10,7 @@ interface AuthResponse {
     user?: string | JwtPayload;
 }
 
+// here you check only the http cookie
 export default function handler(req: NextApiRequest, res: NextApiResponse<AuthResponse>) {
   try {
     // Get the token from cookies

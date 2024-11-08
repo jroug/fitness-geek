@@ -40,7 +40,6 @@ const Homepage = () => {
   
     useEffect(() => {
 
-        
       // Fetch user authentication status from an API endpoint (session, cookies)
       async function getProfileDataForHome() {
         

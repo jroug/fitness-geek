@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import "../public/css/style.css"; 
 import "../public/css/all.min.css"; // Importing the CSS file directly
+import PageAnimatePresence from '../components/PageAnimatePresence'
 
 export const metadata: Metadata = {
   title: "Fitness Geek",
@@ -16,7 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {children}
+        <PageAnimatePresence>{children}</PageAnimatePresence>
       </body>
     </html>
   );

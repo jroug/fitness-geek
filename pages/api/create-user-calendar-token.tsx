@@ -1,46 +1,37 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-interface Meal {
-    ID: string;
-    user_id: number;
-    meal_id: number;
-    meal_type: string;
-    comments: string;
-    datetime_of_meal: string;
-    datetime_saved: string;
-    // Add any other fields that may be present in the response
+interface JR_Token {
+    token: string;
 }
 
 interface ErrorResponse {
     message: string;
 }
 
-type ApiResponse = Meal[] | ErrorResponse;
+type ApiResponse = JR_Token[] | ErrorResponse;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'GET') {
         try {
-
             const token = req.cookies.token;
-
             if (!token) {
                 return res.status(401).json({ message: 'Unauthorized: No token provided' });
             }
 
-            const fetchUserMealsUrl = `${process.env.WORDPRESS_API_URL}/foods/v1/list/user/me`;
-            const response = await fetch(fetchUserMealsUrl,{
+            const createPublicCalendarToken = `${process.env.WORDPRESS_API_URL}/jr_tokens/v1/calendar/token/create`;
+            const response = await fetch(createPublicCalendarToken,{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
                 },
             });
-
+ 
             if (!response.ok) {
-                return res.status(401).json({ message: 'Authentication failed (get-user-meals)' });
+                return res.status(401).json({ message: 'Authentication failed (create-user-calendar-token)' });
             }
 
-            const data: Meal[] = await response.json();
+            const data: JR_Token[] = await response.json();
 
             return res.status(200).json(data);
 
