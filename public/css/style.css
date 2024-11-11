@@ -3195,7 +3195,7 @@ ul.nav.nav-tabs.focus-tab-main{
 
 /* react big calendar event inside bubble */
 .rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event{
-    min-height: 70px !important;
+    min-height: 100px !important;
 }
 
 /* react big calendar custom timeslots */

@@ -11,8 +11,8 @@ import password_icon from "../../../public/svg/password-icon.svg";
 
 const SignIn: React.FC = () => {
     
-    const [inputEmail, setInputEmail] = useState<string>('rougeris@gmail.com');
-    const [inputPassword, setInputPassword] = useState<string>('admin_fitness123');
+    const [inputEmail, setInputEmail] = useState<string>('john@doe.com');
+    const [inputPassword, setInputPassword] = useState<string>('test');
 
     const router = useRouter();
     
