@@ -9,6 +9,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import Link from "next/link";
+import { adjustTime } from "../../../lib/adjustTime";
 
 const localizer = momentLocalizer(moment);
 
@@ -32,6 +33,8 @@ interface UserMealData {
 interface TokenResponse {
     jr_token: string;
 }
+
+ 
 
 const CalendarHomePage: React.FC = () => {
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
@@ -117,8 +120,8 @@ const CalendarHomePage: React.FC = () => {
         }, {} as Record<string, MealEvent[]>);
 
         const transformedData: MealEvent[] = Object.values(groupedData).map((group) => ({
-            title: group.map(event => event.title).join(' & '),
-            start: group[0].start,
+            title: ' ----- ' + moment(group[0].start).format("h:mm a") + ' ----- ' + group.map(event => event.title).join(' '),
+            start: adjustTime(group[0].start),
             end: group[0].end,
         }));
 

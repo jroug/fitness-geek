@@ -7,6 +7,7 @@ import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
 import CustomTimeGutter from '@/components/CustomTimeGutter';
+import { adjustTime } from "@/lib/adjustTime";
 
 const localizer = momentLocalizer(moment);
 
@@ -21,12 +22,21 @@ interface MealEvent {
 
 interface CalendarPageProps {
     params: {
-      jr_token: string;
-    }
+        jr_token: string;
+    };
+}
+
+interface MealData {
+    datetime_of_meal: string;
+    food_name: string;
+}
+
+interface CalendarData {
+    user_display_name: string;
+    meals_list: MealData[];
 }
 
 const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
-
     const { jr_token } = params;
 
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
@@ -36,22 +46,34 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
 
     const getUserMealsANDNameFromToken = useCallback(async (): Promise<void> => {
         try {
-            const res = await fetch(getPublicCalendarData + '?jr_token=' + jr_token, { method: 'GET' });
-            const data = await res.json();
+            const res = await fetch(`${getPublicCalendarData}?jr_token=${jr_token}`, { method: 'GET' });
+            const data: CalendarData = await res.json();
+
             setUserDisplayName(data.user_display_name);
-            // Check if data exists and is not empty
+
             if (!data.meals_list || data.meals_list.length === 0) {
-                setUserMealsList([]); // Set an empty list if no meals are found
-                setLoadingMeals(false); // Stop loading
+                setUserMealsList([]);
+                setLoadingMeals(false);
                 return;
             }
 
-            const transformedData: MealEvent[] = data.meals_list.map((item: { datetime_of_meal: moment.MomentInput; food_name: string; }) => ({
-                start: moment(item.datetime_of_meal).toDate(),
-                end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                title: item.food_name,
+            const groupedData = data.meals_list.reduce((acc, item) => {
+                const mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD hh A");
+                if (!acc[mealDateTime]) acc[mealDateTime] = [];
+                acc[mealDateTime].push({
+                    start: moment(item.datetime_of_meal).toDate(),
+                    end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
+                    title: item.food_name,
+                });
+                return acc;
+            }, {} as Record<string, MealEvent[]>);
+
+            const transformedData: MealEvent[] = Object.values(groupedData).map((group) => ({
+                title: ' ----- ' + moment(group[0].start).format("h:mm a") + ' ----- ' + group.map(event => event.title).join(' '),
+                start: adjustTime(group[0].start),
+                end: group[0].end,
             }));
-            
+
             setUserMealsList(transformedData);
             setLoadingMeals(false);
         } catch (error) {
@@ -60,13 +82,14 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
     }, [jr_token]);
 
     useEffect(() => {
-        async function getCalendarData() {
+        const getCalendarData = async () => {
             try {
-                const res = await fetch(checkUserCalendarTokenUrl + '?jr_token=' + jr_token, {
+                const res = await fetch(`${checkUserCalendarTokenUrl}?jr_token=${jr_token}`, {
                     method: 'GET',
                     credentials: 'include',
                 });
                 const data = await res.json();
+
                 if (data.jr_token === "valid") {
                     getUserMealsANDNameFromToken();
                 } else {
@@ -75,7 +98,7 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
             } catch (error) {
                 console.error("Error checking calendar token:", error);
             }
-        }
+        };
         getCalendarData();
     }, [router, jr_token, getUserMealsANDNameFromToken]);
 
@@ -84,7 +107,7 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
     }
 
     const currentDate = new Date();
-        
+
     return (
         <main className="site-content">
             <div className="text-center font-bold text-2xl publish-btn-wrapper mt-4">
