@@ -69,7 +69,7 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
             }, {} as Record<string, MealEvent[]>);
 
             const transformedData: MealEvent[] = Object.values(groupedData).map((group) => ({
-                title: ' ------ ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
+                title: ' ----- ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
                 start: adjustTime(group[0].start),
                 end: group[0].end,
             }));

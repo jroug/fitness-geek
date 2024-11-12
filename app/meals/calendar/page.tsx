@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
+import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -9,11 +10,11 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import Link from "next/link";
-import { adjustTime } from "../../../lib/adjustTime";
+import { adjustTime } from "@/lib/adjustTime";
+
 
 const localizer = momentLocalizer(moment);
 
-const checkAuthFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-auth`;
 const userMealsFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-meals`;
 const getUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-calendar-token`;
 const createUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/create-user-calendar-token`;
@@ -120,7 +121,7 @@ const CalendarHomePage: React.FC = () => {
         }, {} as Record<string, MealEvent[]>);
 
         const transformedData: MealEvent[] = Object.values(groupedData).map((group) => ({
-            title: ' ------ ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
+            title: ' ----- ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
             start: adjustTime(group[0].start),
             end: group[0].end,
         }));
@@ -131,15 +132,10 @@ const CalendarHomePage: React.FC = () => {
 
     useEffect(() => {
         const getCalendarData = async () => {
-            const res = await fetch(checkAuthFetchUrl, {
-                method: 'GET',
-                credentials: 'include',
-            });
-            if (res.ok) {
+            const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
+            if (ret === true){
                 await getUserMeals();
                 await getCalendarStatus();
-            } else {
-                router.push('/');
             }
         };
         getCalendarData();

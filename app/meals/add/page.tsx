@@ -3,7 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Link from "next/link";
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-
+import { useRouter } from 'next/navigation';
+import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "../../../components/Header";
 import Popup from "../../../components/Popup";
 
@@ -29,6 +30,9 @@ interface MealInputData {
 }
 
 const AddMeal: React.FC = () => {
+    
+    const router = useRouter();
+
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTypeErrorClass, setMealTypeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
@@ -122,8 +126,14 @@ const AddMeal: React.FC = () => {
     };
 
     useEffect(() => {
-        getMealSuggestions();
-    }, []);
+        const getAddMealPageData = async () => {
+            const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
+            if (ret === true){
+                getMealSuggestions();
+            }
+        }
+        getAddMealPageData();
+    }, [router]);
 
     const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();

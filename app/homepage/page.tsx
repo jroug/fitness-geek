@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Image from "next/image";
 import Link from 'next/link';
 import Slider from "react-slick";
@@ -22,9 +22,7 @@ import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
 import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
  
-const checkAuthFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-auth`;
 const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
- 
 
 const Homepage = () => {
 
@@ -43,29 +41,20 @@ const Homepage = () => {
       // Fetch user authentication status from an API endpoint (session, cookies)
       async function getProfileDataForHome() {
         
-        // alert(checkAuthFetchUrl);
-        const res = await fetch(checkAuthFetchUrl, {
-          method: 'GET',
-          credentials: 'include', // Include cookies in the request
-        });
-  
-        if (res.ok) {
-          // User is authenticated, allow access to the page
-          await fetch(profileDataFetchUrl, {
-            method: 'GET',
-            credentials: 'include', // Include cookies in the request
-          })
-          .then((res) => res.json())
-          .then((data) => {
-                setProfileData(data)
-                setLoading(false)
-          });
-
-        } else {
-          // User is not authenticated, redirect to login
-          router.push('/');
+        const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
+            if (ret === true){
+            // User is authenticated, allow access to the page
+            await fetch(profileDataFetchUrl, {
+                method: 'GET',
+                credentials: 'include', // Include cookies in the request
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                    setProfileData(data)
+                    setLoading(false)
+            });
+            }
         }
-      }
   
       getProfileDataForHome();
     }, [router]);
