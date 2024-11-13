@@ -8,17 +8,19 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
+import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 
-
 const localizer = momentLocalizer(moment);
 
-const userMealsFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-meals`;
+const calendarDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-calendar-data`;
 const getUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-calendar-token`;
 const createUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/create-user-calendar-token`;
 const deleteUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-user-calendar-token`;
+
+
 
 interface MealEvent {
     start: Date;
@@ -31,11 +33,27 @@ interface UserMealData {
     food_name: string;
 }
 
+interface UserWeightData {
+    date_of_weighing: moment.MomentInput;
+    weight: string;
+}
+
+interface UserWorkoutData {
+    date_of_workout: moment.MomentInput;
+    w_title: string;
+    w_type: string;
+}
+
+interface CalendarData {
+    meals_list: UserMealData[],
+    weight_list: UserWeightData[],
+    workout_list: UserWorkoutData[],
+}
+
+
 interface TokenResponse {
     jr_token: string;
 }
-
- 
 
 const CalendarHomePage: React.FC = () => {
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
@@ -43,6 +61,10 @@ const CalendarHomePage: React.FC = () => {
     const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
     const [isPublished, setIsPublished] = useState<boolean>(false);
     const [jrTokenFromDb, setJrTokenFromDb] = useState<string>('');
+    const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
+    const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
+
+
     const router = useRouter();
 
     const handlePublishingCalendar = async (): Promise<void> => {
@@ -96,20 +118,21 @@ const CalendarHomePage: React.FC = () => {
         setLoadingStatus(false);
     };
 
-    const getUserMeals = async (): Promise<void> => {
-        const response = await fetch(userMealsFetchUrl, {
+    const getCalendarData = async (): Promise<void> => {
+        const response = await fetch(calendarDataFetchUrl, {
             method: 'GET',
             credentials: 'include',
         });
-        const data: UserMealData[] = await response.json();
+        const data: CalendarData = await response.json();
         
-        if (!data || data.length === 0) {
+        if (!data || !data.meals_list || data.meals_list.length === 0) { // if weight list is empty we do not worrie
             setUserMealsList([]);
             setLoadingMeals(false);
             return;
         }
 
-        const groupedData = data.reduce((acc, item) => {
+        // user meal data 
+        const groupedData = data.meals_list.reduce((acc, item) => {
             const mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD hh A");
             if (!acc[mealDateTime]) acc[mealDateTime] = [];
             acc[mealDateTime].push({
@@ -120,33 +143,54 @@ const CalendarHomePage: React.FC = () => {
             return acc;
         }, {} as Record<string, MealEvent[]>);
 
-        const transformedData: MealEvent[] = Object.values(groupedData).map((group) => ({
+        const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
             title: ' ----- ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
             start: adjustTime(group[0].start),
             end: group[0].end,
         }));
+ 
+        // user weight data
+        const transformedWeightData: Record<string, string> = {};
+        data.weight_list.forEach(( val ) => {
+            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = val.weight + 'kg @' + moment(val.date_of_weighing).format("hh:mma"); // Dynamically add entries
+        });
 
-        setUserMealsList(transformedData);
+        const transformedWorkoutData: Record<string, UserWorkoutData> = {};
+        data.workout_list.forEach(( val ) => {
+            transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
+                w_title: val.w_title,
+                w_type: val.w_type + ' @' + moment(val.date_of_workout).format("hh:mma"),
+                date_of_workout:val.date_of_workout
+            }
+        });
+        
+
+
+        setUserWorkoutList(transformedWorkoutData);
+        setUserWeightList(transformedWeightData);
+        setUserMealsList(transformedMealData);
         setLoadingMeals(false);
     };
 
     useEffect(() => {
-        const getCalendarData = async () => {
+        const prepareCalendar = async () => {
             const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
             if (ret === true){
-                await getUserMeals();
+                await getCalendarData();
                 await getCalendarStatus();
             }
         };
-        getCalendarData();
+        prepareCalendar();
     }, [router]);
 
     if (loadingMeals || loadingStatus) {
         return <Loading />;
     }
 
-    const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/meals/calendar/${jrTokenFromDb}`;
+    const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
     
+
+
     return (
         <main className="site-content">
             <Header title="Meals Calendar" backUrl="/homepage" />
@@ -180,7 +224,8 @@ const CalendarHomePage: React.FC = () => {
                         min={new Date(new Date().setHours(9, 0))}
                         max={new Date(new Date().setHours(23, 59))}
                         components={{
-                            timeGutterWrapper: CustomTimeGutter,
+                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
+                            timeGutterWrapper: CustomTimeGutter,  
                         }}
                     />
                 </div>

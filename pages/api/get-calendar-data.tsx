@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 return res.status(401).json({ message: 'Unauthorized: No token provided' });
             }
 
-            const fetchUserMealsUrl = `${process.env.WORDPRESS_API_URL}/foods/v1/list/user/me`;
+            const fetchUserMealsUrl = `${process.env.WORDPRESS_API_URL}/calendar/v1/data/user/me`;
             const response = await fetch(fetchUserMealsUrl,{
                 method: 'GET',
                 headers: {

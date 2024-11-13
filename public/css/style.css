@@ -3085,7 +3085,9 @@ ul.nav.nav-tabs.focus-tab-main{
     margin-top:24px;
 }
 
-
+.form-div{
+    margin-top:24px;
+}
 
  
 .border-green-1{
@@ -3232,9 +3234,14 @@ ul.nav.nav-tabs.focus-tab-main{
 
 }
 .rbc-label.rbc-time-header-gutter{
-    min-width: 95px;
+    min-width: 94px !important;
+    height:110px;
 }
 
+.small-font-custom{
+    font-weight: normal !important;
+    font-size: 13px;
+}
 
 /* framer motion wrapper divs */
 .outer-motion-div{
@@ -3258,5 +3265,9 @@ button.green-btn{
     background: var(--2, #7FD83B);
 }
 
-
- 
+.custom-text-cal-header:first-child{
+    margin-top:10px;
+}
+.custom-text-cal-header{
+    font-weight: bold;
+}

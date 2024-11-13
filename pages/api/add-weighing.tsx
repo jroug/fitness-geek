@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
  
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     if (req.method === 'POST') {
@@ -10,8 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
 
         const token = req.cookies.token;
-        const addMealsUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
-        const response = await fetch(addMealsUrl, {
+        const addWeighingUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-weighing/`;
+        const response = await fetch(addWeighingUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -26,15 +27,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         
         if (!response.ok) {
-          return res.status(401).json({ message: 'Authentication failed (add-meal)' });
+          return res.status(401).json({ message: 'Authentication failed (add-weighing)' });
         }
   
         // const data = await response.json();
-        // console.log(data);
+       
         
         return res.status(200).json({ 
-            message: 'Meal Added successfully',
-            user_meal_added: true
+            message: 'Weighing Added successfully',
+            user_weight_added: true
         });
 
       } catch {

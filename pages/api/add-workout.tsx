@@ -10,8 +10,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
 
         const token = req.cookies.token;
-        const addMealsUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`;
-        const response = await fetch(addMealsUrl, {
+        const addWorkoutUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-workout/`;
+        const response = await fetch(addWorkoutUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -26,15 +26,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         }
         
         if (!response.ok) {
-          return res.status(401).json({ message: 'Authentication failed (add-meal)' });
+          return res.status(401).json({ message: 'Authentication failed (add-workout)' });
         }
   
         // const data = await response.json();
         // console.log(data);
         
         return res.status(200).json({ 
-            message: 'Meal Added successfully',
-            user_meal_added: true
+            message: 'Workout Added successfully',
+            user_workout_added: true
         });
 
       } catch {

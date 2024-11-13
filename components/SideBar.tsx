@@ -38,13 +38,13 @@ const SideBar = () => {
 						<div className="dropdown">
 							<div className="setting-page-full">
 								<div className="setting-page-wrapper">
-									<Link href="/meals/add">
+									<Link href="/meals">
 										<div className="send-money-contact-tab border-bottom1 pt-0  ">
 											<div className="setting-icon">
 												<Image src={setting6} alt="setting-icon" />
 											</div>
 											<div className="setting-title">
-												<h3>Add Meals</h3>
+												<h3>Add Meal</h3>
 											</div>
 											<div className="contact-star">
 												<div className="star-favourite">
@@ -53,14 +53,48 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									<Link href="/meals/calendar">
+									<Link href="/weighing">
+										<div className="Char-content border-bottom1">
+											<div className="send-money-contact-tab ">
+												<div className="setting-icon">
+													<Image src={setting6} alt="setting-icon" />
+												</div>
+												<div className="setting-title">
+													<h3>Add Weighing</h3>
+												</div>
+												<div className="contact-star">
+													<div className="star-favourite">
+														<Image src={right_arrow} alt="edit-icon" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</Link>
+									<Link href="/workouts">
+										<div className="Char-content border-bottom1">
+											<div className="send-money-contact-tab ">
+												<div className="setting-icon">
+													<Image src={setting6} alt="setting-icon" />
+												</div>
+												<div className="setting-title">
+													<h3>Add Workout</h3>
+												</div>
+												<div className="contact-star">
+													<div className="star-favourite">
+														<Image src={right_arrow} alt="edit-icon" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</Link>
+									<Link href="/calendar">
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
 													<Image src={setting3} alt="setting-icon" />
 												</div>
 												<div className="setting-title">
-													<h3>Meals Calendar</h3>
+													<h3>Calendar</h3>
 												</div>
 												<div className="contact-star">
 													<div className="star-favourite">

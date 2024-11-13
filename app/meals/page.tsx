@@ -5,8 +5,8 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
-import Header from "../../../components/Header";
-import Popup from "../../../components/Popup";
+import Header from "@/components/Header";
+import Popup from "@/components/Popup";
 
 // Define interfaces for meal data
 interface MealSuggestion {
