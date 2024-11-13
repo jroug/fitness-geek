@@ -195,17 +195,19 @@ const AddMeal: React.FC = () => {
                                         className="border-green-1"
                                     />
                                 </div>
-                                <div className="addmeal-div">
+                                <div className="addmeal-div feedback-email">
                                     <label htmlFor="quantity-type" className="custom-lbl-feedback">Quantity Type*</label>
-                                    <select 
-                                        id="quantity-type" 
-                                        value={mealQuantityType} 
-                                        onChange={(e) => setMealQuantityType(e.target.value)}
-                                        className="arrow-icon sm-font-sans border-green-1"
-                                    >
-                                        <option value="N">Number</option>
-                                        <option value="GR">Grams</option>
-                                    </select>
+                                    <div className="custom-select-subject mt-8">
+                                        <select 
+                                            id="quantity-type" 
+                                            value={mealQuantityType} 
+                                            onChange={(e) => setMealQuantityType(e.target.value)}
+                                            className="arrow-icon sm-font-sans border-green-1"
+                                        >
+                                            <option value="N">Number</option>
+                                            <option value="GR">Grams</option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div className="addmeal-div feedback-email">
                                     <label htmlFor="meal-short" className="custom-lbl-feedback">What did I eat?*</label>
@@ -213,7 +215,7 @@ const AddMeal: React.FC = () => {
                                         className={`Autocomplete-green ${mealTitleErrorClass}`}
                                         value={mealSelected}
                                         options={suggestionMeals}
-                                        getOptionLabel={(option) => option.food_name}
+                                        getOptionLabel={(option) => (option.food_name ? option.food_name + ' - ' + Math.round(parseInt(option.serving_size)) + 'gr' : '') }
                                         onChange={handleMealSuggestionsInputChange}
                                         isOptionEqualToValue={(option, value) => option.id === value.id}
                                         renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
