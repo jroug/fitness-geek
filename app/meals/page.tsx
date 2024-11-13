@@ -25,20 +25,19 @@ interface MealSuggestion {
 interface MealInputData {
     datetime_of_meal: string;
     meal_id: string;
-    meal_type: string;
+    meal_quantity: number;
+    meal_quantity_type: string;
     comments: string;
 }
 
 const AddMeal: React.FC = () => {
-    
     const router = useRouter();
 
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
-    const [mealTypeErrorClass, setMealTypeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
-
-    const [dateTime, setDateTime] = useState('');
-    const [mealType, setMealType] = useState('');
+    const [mealQuantity, setMealQuantity] = useState<number>(1);
+    const [mealQuantityType, setMealQuantityType] = useState<string>('N');
+    const [dateTime, setDateTime] = useState<string>('');
     const [mealSelected, setMealSelected] = useState<MealSuggestion>({
         id: "",
         food_name: "",
@@ -51,21 +50,9 @@ const AddMeal: React.FC = () => {
         serving_size: "",
         comments: ""
     });
-    const [mealComments, setMealComments] = useState('');
-
+    const [mealComments, setMealComments] = useState<string>('');
     const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
     const [popupData, setPopupData] = useState({ title: '', message: '', show_popup: false });
-
-    // Function to determine the meal based on the current time
-    const getMealBasedOnTime = (): string => {
-        const currentHour = new Date().getHours();
-        if (currentHour < 10) return 'B';
-        if (currentHour < 12) return 'MS';
-        if (currentHour < 16) return 'L';
-        if (currentHour < 20) return 'AS';
-        if (currentHour < 23) return 'D';
-        return 'OTH';
-    };
 
     const getCurrentDateTime = (): string => {
         const now = new Date();
@@ -78,7 +65,6 @@ const AddMeal: React.FC = () => {
             minute: '2-digit',
             hour12: false,
         };
-
         const athensTime = new Intl.DateTimeFormat('en-GB', options).format(now);
         const [datePart, timePart] = athensTime.split(', ');
         const formattedDate = datePart.split('/').reverse().join('-');
@@ -97,16 +83,15 @@ const AddMeal: React.FC = () => {
         const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
         const res = await fetch(addMealsUrl, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(input_data)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(input_data),
         });
         const data = await res.json();
         if (data.user_meal_added) {
             setPopupData({ title: 'Message', message: data.message, show_popup: true });
             setDateTime('');
-            setMealType('');
+            setMealQuantity(1);
+            setMealQuantityType('N');
             setMealSelected({
                 id: "",
                 food_name: "",
@@ -128,20 +113,17 @@ const AddMeal: React.FC = () => {
     useEffect(() => {
         const getAddMealPageData = async () => {
             const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
-            if (ret === true){
-                getMealSuggestions();
-            }
+            if (ret) getMealSuggestions();
         }
         getAddMealPageData();
     }, [router]);
 
     const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
         e.preventDefault();
-        setMealType(getMealBasedOnTime());
         setDateTime(getCurrentDateTime());
     };
 
-    const handleMealSuggestionsInputChange = (event: React.SyntheticEvent, newValue: MealSuggestion | null) => {
+    const handleMealSuggestionsInputChange = (_: React.SyntheticEvent, newValue: MealSuggestion | null) => {
         if (newValue) setMealSelected(newValue);
     };
 
@@ -160,13 +142,6 @@ const AddMeal: React.FC = () => {
             setMealTitleErrorClass("");
         }
 
-        if (!mealType) {
-            doSubmit = false;
-            setMealTypeErrorClass("error");
-        } else {
-            setMealTypeErrorClass("");
-        }
-
         if (!dateTime) {
             doSubmit = false;
             setDateTimeErrorClass("error");
@@ -178,8 +153,9 @@ const AddMeal: React.FC = () => {
             const input_data: MealInputData = {
                 datetime_of_meal: dateTime,
                 meal_id: mealSelected.id,
-                meal_type: mealType,
-                comments: mealComments
+                meal_quantity: mealQuantity,
+                meal_quantity_type: mealQuantityType,
+                comments: mealComments,
             };
             addMealToDB(input_data);
         } else {
@@ -205,84 +181,71 @@ const AddMeal: React.FC = () => {
                                         id="datetime-local" 
                                         value={dateTime} 
                                         onChange={(e) => setDateTime(e.target.value)} 
-                                        className={"border-green-1 " + dateTimeErrorClass}
+                                        className={`border-green-1 ${dateTimeErrorClass}`}
                                     />
-                                </div>
-                                <div className="addmeal-div">
-                                    <label htmlFor="meal-type" className="custom-lbl-feedback">Type*</label>
-                                    <div className="custom-select-subject mt-8">
-                                        <select 
-                                            className={"arrow-icon sm-font-sans border-green-1 " + mealTypeErrorClass}
-                                            id="meal-type" 
-                                            value={mealType} 
-                                            onChange={(e) => setMealType(e.target.value)}
-                                        >
-                                            <option value="" >-</option>
-                                            <option value="B">Breakfast</option>
-                                            <option value="MS">Morning Snack</option>
-                                            <option value="L">Lunch</option>
-                                            <option value="AS">Afternoon Snack</option>
-                                            <option value="D">Dinner</option> 
-                                            <option value="PW">Post Workout</option>
-                                            <option value="OTH">Other</option>
-                                        </select>
-                                    </div>
                                 </div>
                                 <div className="addmeal-div feedback-email">
-                                    <label htmlFor="meal-short" className="custom-lbl-feedback">What did I ate?*</label>
-                                    {/* <input type="text" id="meal-short" placeholder="Write here" className="sm-font-sans border mt-8" autoComplete="off" /> */}
-                                    <Autocomplete
-                                        className={"Autocomplete-green " + mealTitleErrorClass }
-                                        value={mealSelected}
-                                        options={suggestionMeals}
-                                        getOptionLabel={ (option) => option.food_name }
-                                        onChange={handleMealSuggestionsInputChange}
-                                        isOptionEqualToValue = {(options, value) => options.id === value.id }
-                                        renderInput={(params) => (
-                                            <TextField {...params} label="" variant="outlined" />
-                                        )}
+                                    <label htmlFor="meal-quantity" className="custom-lbl-feedback">Quantity*</label>
+                                    <input 
+                                        type="number" 
+                                        id="meal-quantity" 
+                                        min="1" 
+                                        value={mealQuantity} 
+                                        onChange={(e) => setMealQuantity(Number(e.target.value))} 
+                                        className="border-green-1"
                                     />
                                 </div>
                                 <div className="addmeal-div">
-                                    <label htmlFor="meal-long" className="custom-lbl-feedback">Details</label>
-                                    <div className="sm-font-sans custom-textarea-div mt-8 border-green-1" id="meal-long" >
+                                    <label htmlFor="quantity-type" className="custom-lbl-feedback">Quantity Type*</label>
+                                    <select 
+                                        id="quantity-type" 
+                                        value={mealQuantityType} 
+                                        onChange={(e) => setMealQuantityType(e.target.value)}
+                                        className="arrow-icon sm-font-sans border-green-1"
+                                    >
+                                        <option value="N">Number</option>
+                                        <option value="GR">Grams</option>
+                                    </select>
+                                </div>
+                                <div className="addmeal-div feedback-email">
+                                    <label htmlFor="meal-short" className="custom-lbl-feedback">What did I eat?*</label>
+                                    <Autocomplete
+                                        className={`Autocomplete-green ${mealTitleErrorClass}`}
+                                        value={mealSelected}
+                                        options={suggestionMeals}
+                                        getOptionLabel={(option) => option.food_name}
+                                        onChange={handleMealSuggestionsInputChange}
+                                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                                        renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+                                    />
+                                </div>
+                                <div className="addmeal-div">
+                                    <label htmlFor="meal-details" className="custom-lbl-feedback">Details</label>
+                                    <div className="sm-font-sans custom-textarea-div mt-8 border-green-1">
                                         <table>
                                             <tbody>
-                                                <tr>
-                                                    <td>Category - Size:</td>
-                                                    <td>{ mealSelected && mealSelected.category !== "" ? mealSelected.category : '' } { mealSelected && mealSelected.serving_size !== "" ? "- "+mealSelected.serving_size + 'gr' : '' }</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Protein:</td>
-                                                    <td>{ mealSelected && mealSelected.protein !== "" ? mealSelected.protein + 'gr' : '' }</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Carbohydrates:</td>
-                                                    <td>{ mealSelected && mealSelected.carbohydrates !== "" ? mealSelected.carbohydrates + 'gr' : '' }</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Fat:</td>
-                                                    <td>{ mealSelected && mealSelected.fat !== "" ? mealSelected.fat + 'gr' : '' }</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Fiber:</td>
-                                                    <td>{ mealSelected && mealSelected.fiber !== "" ? mealSelected.fiber + 'gr' : '' }</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><b>Calories:</b></td>
-                                                    <td><b>{ mealSelected && mealSelected.calories !== "" ? mealSelected.calories + ' kcal' : '' }</b></td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Comments:</td>
-                                                    <td>{ mealSelected && mealSelected.comments !== "" ? mealSelected.comments : '' }</td>
-                                                </tr>
+                                                <tr><td>Category - Size:</td><td>{mealSelected.category} {mealSelected.serving_size && `- ${mealSelected.serving_size}gr`}</td></tr>
+                                                <tr><td>Protein:</td><td>{mealSelected.protein && `${mealSelected.protein}gr`}</td></tr>
+                                                <tr><td>Carbohydrates:</td><td>{mealSelected.carbohydrates && `${mealSelected.carbohydrates}gr`}</td></tr>
+                                                <tr><td>Fat:</td><td>{mealSelected.fat && `${mealSelected.fat}gr`}</td></tr>
+                                                <tr><td>Fiber:</td><td>{mealSelected.fiber && `${mealSelected.fiber}gr`}</td></tr>
+                                                <tr><td><b>Calories:</b></td><td><b>{mealSelected.calories && `${mealSelected.calories} kcal`}</b></td></tr>
+                                                <tr><td>Comments:</td><td>{mealSelected.comments}</td></tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                                 <div className="addmeal-div">
                                     <label htmlFor="comments" className="custom-lbl-feedback">Comments</label>
-                                    <textarea rows={4} cols={50} placeholder="Write here..." className="sm-font-sans custom-textarea mt-8 border-green-1" id="comments" value={mealComments} onChange={handleMealComments}></textarea>
+                                    <textarea 
+                                        rows={4} 
+                                        cols={50} 
+                                        placeholder="Write here..." 
+                                        className="sm-font-sans custom-textarea mt-8 border-green-1" 
+                                        id="comments" 
+                                        value={mealComments} 
+                                        onChange={handleMealComments}
+                                    ></textarea>
                                 </div>
                                 <div className="green-btn mt-4">
                                     <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">ADD</button>

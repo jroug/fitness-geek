@@ -10,6 +10,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
 import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
+import CustomEvent from '@/components/CustomEvent';
 import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 
@@ -20,17 +21,18 @@ const getUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.en
 const createUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/create-user-calendar-token`;
 const deleteUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-user-calendar-token`;
 
-
-
 interface MealEvent {
     start: Date;
     end: Date;
     title: string;
+    meals?: string[];
 }
 
 interface UserMealData {
     datetime_of_meal: moment.MomentInput;
     food_name: string;
+    meal_quantity: number;
+    meal_quantity_type: string;
 }
 
 interface UserWeightData {
@@ -45,25 +47,25 @@ interface UserWorkoutData {
 }
 
 interface CalendarData {
-    meals_list: UserMealData[],
-    weight_list: UserWeightData[],
-    workout_list: UserWorkoutData[],
+    meals_list: UserMealData[];
+    weight_list: UserWeightData[];
+    workout_list: UserWorkoutData[];
 }
-
 
 interface TokenResponse {
     jr_token: string;
+    deleted?: string;
+    message?: string;
 }
 
 const CalendarHomePage: React.FC = () => {
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
+    const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
+    const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
     const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
     const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
     const [isPublished, setIsPublished] = useState<boolean>(false);
     const [jrTokenFromDb, setJrTokenFromDb] = useState<string>('');
-    const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
-    const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
-
 
     const router = useRouter();
 
@@ -80,11 +82,11 @@ const CalendarHomePage: React.FC = () => {
             method: 'GET',
             credentials: 'include',
         });
-        const data = await response.json();
+        const data: TokenResponse = await response.json();
         if (data.deleted === 'ok') {
             setIsPublished(false);
             setJrTokenFromDb('');
-        } else {
+        } else if (data.message) {
             alert(data.message);
         }
     };
@@ -124,47 +126,49 @@ const CalendarHomePage: React.FC = () => {
             credentials: 'include',
         });
         const data: CalendarData = await response.json();
-        
-        if (!data || !data.meals_list || data.meals_list.length === 0) { // if weight list is empty we do not worrie
+
+        if (!data || !data.meals_list || data.meals_list.length === 0) {
+            setUserWorkoutList({});
+            setUserWeightList({});
             setUserMealsList([]);
             setLoadingMeals(false);
             return;
         }
 
-        // user meal data 
+        // User meal data
         const groupedData = data.meals_list.reduce((acc, item) => {
             const mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD hh A");
             if (!acc[mealDateTime]) acc[mealDateTime] = [];
             acc[mealDateTime].push({
                 start: moment(item.datetime_of_meal).toDate(),
                 end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                title: item.food_name,
+                title: `${item.meal_quantity}${item.meal_quantity_type === 'N' ? 'x' : 'gr'} ${item.food_name}`,
             });
             return acc;
         }, {} as Record<string, MealEvent[]>);
 
         const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
-            title: ' ----- ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
+            title: moment(group[0].start).format("hh:mm a"),
+            meals: group.map(event => event.title),
             start: adjustTime(group[0].start),
             end: group[0].end,
         }));
- 
-        // user weight data
+
+        // User weight data
         const transformedWeightData: Record<string, string> = {};
-        data.weight_list.forEach(( val ) => {
-            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = val.weight + 'kg @' + moment(val.date_of_weighing).format("hh:mma"); // Dynamically add entries
+        data.weight_list.forEach((val) => {
+            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
         });
 
+        // User workout data
         const transformedWorkoutData: Record<string, UserWorkoutData> = {};
-        data.workout_list.forEach(( val ) => {
+        data.workout_list.forEach((val) => {
             transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
                 w_title: val.w_title,
-                w_type: val.w_type + ' @' + moment(val.date_of_workout).format("hh:mma"),
-                date_of_workout:val.date_of_workout
-            }
+                w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
+                date_of_workout: val.date_of_workout,
+            };
         });
-        
-
 
         setUserWorkoutList(transformedWorkoutData);
         setUserWeightList(transformedWeightData);
@@ -174,8 +178,8 @@ const CalendarHomePage: React.FC = () => {
 
     useEffect(() => {
         const prepareCalendar = async () => {
-            const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
-            if (ret === true){
+            const ret = await checkAuthAndRedirect(router);
+            if (ret === true) {
                 await getCalendarData();
                 await getCalendarStatus();
             }
@@ -188,8 +192,6 @@ const CalendarHomePage: React.FC = () => {
     }
 
     const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
-    
-
 
     return (
         <main className="site-content">
@@ -224,7 +226,8 @@ const CalendarHomePage: React.FC = () => {
                         min={new Date(new Date().setHours(9, 0))}
                         max={new Date(new Date().setHours(23, 59))}
                         components={{
-                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
+                            event: CustomEvent,  
+                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
                             timeGutterWrapper: CustomTimeGutter,  
                         }}
                     />

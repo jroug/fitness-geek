@@ -6,7 +6,9 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
+import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
+import CustomEvent from '@/components/CustomEvent';
 import { adjustTime } from "@/lib/adjustTime";
 
 const localizer = momentLocalizer(moment);
@@ -20,26 +22,48 @@ interface MealEvent {
     title: string;
 }
 
+interface GroupedMealEvent extends MealEvent {
+    meals: string[];
+}
+
+interface UserMealData {
+    datetime_of_meal: moment.MomentInput;
+    food_name: string;
+    meal_quantity: number;
+    meal_quantity_type: string;
+}
+
+interface UserWeightData {
+    date_of_weighing: moment.MomentInput;
+    weight: string;
+}
+
+interface UserWorkoutData {
+    date_of_workout: moment.MomentInput;
+    w_title: string;
+    w_type: string;
+}
+
+interface CalendarData {
+    user_display_name: string;
+    meals_list: UserMealData[];
+    weight_list: UserWeightData[];
+    workout_list: UserWorkoutData[];
+}
+
 interface CalendarPageProps {
     params: {
         jr_token: string;
     };
 }
 
-interface MealData {
-    datetime_of_meal: string;
-    food_name: string;
-}
-
-interface CalendarData {
-    user_display_name: string;
-    meals_list: MealData[];
-}
-
 const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
     const { jr_token } = params;
 
-    const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
+    const [userMealsList, setUserMealsList] = useState<GroupedMealEvent[]>([]);
+    const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
+    const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
+    
     const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
     const [userDisplayName, setUserDisplayName] = useState<string>('');
     const router = useRouter();
@@ -51,7 +75,9 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
 
             setUserDisplayName(data.user_display_name);
 
-            if (!data.meals_list || data.meals_list.length === 0) {
+            if (!data || !data.meals_list || data.meals_list.length === 0) {
+                setUserWorkoutList({});
+                setUserWeightList({});
                 setUserMealsList([]);
                 setLoadingMeals(false);
                 return;
@@ -63,18 +89,35 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
                 acc[mealDateTime].push({
                     start: moment(item.datetime_of_meal).toDate(),
                     end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                    title: item.food_name,
+                    title: `${item.meal_quantity}${item.meal_quantity_type === 'N' ? 'x' : 'gr'} ${item.food_name}`,
                 });
                 return acc;
             }, {} as Record<string, MealEvent[]>);
 
-            const transformedData: MealEvent[] = Object.values(groupedData).map((group) => ({
-                title: ' ----- ' + moment(group[0].start).format("hh:mm a") + ' ----- ' + group.map(event => event.title).join(', '),
+            const transformedMealData: GroupedMealEvent[] = Object.values(groupedData).map((group) => ({
+                title: moment(group[0].start).format("hh:mm a"),
+                meals: group.map(event => event.title),
                 start: adjustTime(group[0].start),
                 end: group[0].end,
             }));
 
-            setUserMealsList(transformedData);
+            const transformedWeightData: Record<string, string> = {};
+            data.weight_list.forEach((val) => {
+                transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
+            });
+
+            const transformedWorkoutData: Record<string, UserWorkoutData> = {};
+            data.workout_list.forEach((val) => {
+                transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
+                    w_title: val.w_title,
+                    w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
+                    date_of_workout: val.date_of_workout
+                };
+            });
+
+            setUserWorkoutList(transformedWorkoutData);
+            setUserWeightList(transformedWeightData);
+            setUserMealsList(transformedMealData);
             setLoadingMeals(false);
         } catch (error) {
             console.error("Error fetching user meals:", error);
@@ -126,7 +169,9 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
                         min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
                         max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
                         components={{
-                            timeGutterWrapper: CustomTimeGutter,
+                            event: CustomEvent,  
+                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
+                            timeGutterWrapper: CustomTimeGutter,  
                         }}
                     />
                 </div>

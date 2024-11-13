@@ -3200,6 +3200,8 @@ ul.nav.nav-tabs.focus-tab-main{
     min-height: 90px !important;
     height: 115px !important;
     border: 0 !important;
+    left:2px !important;
+    width: calc(100% - 2px) !important;
 }
 
 /* react big calendar custom timeslots */
