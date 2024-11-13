@@ -29,6 +29,7 @@ interface GroupedMealEvent extends MealEvent {
 interface UserMealData {
     datetime_of_meal: moment.MomentInput;
     food_name: string;
+    serving_size: number;
     meal_quantity: number;
     meal_quantity_type: string;
 }
@@ -89,14 +90,14 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
                 acc[mealDateTime].push({
                     start: moment(item.datetime_of_meal).toDate(),
                     end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                    title: `${item.meal_quantity}${item.meal_quantity_type === 'N' ? 'x' : 'gr'} ${item.food_name}`,
+                    title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ' - ' + Math.round(item.meal_quantity * item.serving_size) + 'gr'}`,
                 });
                 return acc;
             }, {} as Record<string, MealEvent[]>);
 
             const transformedMealData: GroupedMealEvent[] = Object.values(groupedData).map((group) => ({
                 title: moment(group[0].start).format("hh:mm a"),
-                meals: group.map(event => event.title),
+                meals: group.map(event => event.title ),
                 start: adjustTime(group[0].start),
                 end: group[0].end,
             }));
