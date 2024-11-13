@@ -18,7 +18,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, weight
     const dateKey = moment(value).format('YYYY-MM-DD');
     const weightText =  weightData[dateKey] ? weightData[dateKey]  : '';  
     const workoutTypeText =  workoutData[dateKey] ? workoutData[dateKey].w_type  : '';  
-    const workoutTitleText =  workoutData[dateKey] ? workoutData[dateKey].w_type  : '';  
+    const workoutTitleText =  workoutData[dateKey] ? workoutData[dateKey].w_title  : '';  
  
 
     return (
