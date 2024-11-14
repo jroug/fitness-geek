@@ -154,10 +154,10 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
 
     return (
         <main className="site-content calendar-main-wrapper">
-            <div className="text-center font-bold text-2xl publish-btn-wrapper mt-8 calendar-main mx-auto">
+            <div className="text-center font-bold text-2xl publish-btn-wrapper mt-10 calendar-main mx-auto">
                 <h2>{userDisplayName} Diet Calendar</h2>
             </div>
-            <div className="pb-20 mt-8 calendar-main mx-auto" id="calendar-main">
+            <div className="pb-20 mt-10 calendar-main mx-auto" id="calendar-main">
                 <Calendar
                     localizer={localizer}
                     defaultDate={new Date()}

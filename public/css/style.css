@@ -3269,6 +3269,23 @@ button.green-btn{
 /* ::-webkit-scrollbar {
     display: none;
 } */
+
+
+::-webkit-scrollbar {
+    width: 5px;  /* Horizontal scrollbar */
+    height: 5px; /* Vertical scrollbar */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #7FD83B;; /* Thumb color */
+    border-radius: 10px;  /* Optional: Adds rounded corners */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Track color */
+    border-radius: 10px;  /* Optional: Adds rounded corners */
+  }
+
 .calendar-main-wrapper{
     width: 100%;
     position: absolute;
@@ -3282,4 +3299,12 @@ button.green-btn{
     transform: translate(-50%, 0);
     width: 1000px; */
     width: 1400px;
+}
+#calendar-main{
+    background-color: #ffffff;
+    border: 1px solid #7FD83B;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 34px -20px #000;
 }
