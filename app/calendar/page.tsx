@@ -196,26 +196,28 @@ const CalendarHomePage: React.FC = () => {
 
     return (
         <main className="site-content">
-            <Header title="Meals Calendar" backUrl="/homepage" />
-            <div className="flex items-center publish-btn-wrapper mt-4">
-                <div className="flex-auto">
-                    <h2>Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
+            <div className="fixed" >
+                <Header title="Meals Calendar" backUrl="/homepage" />
+                <div className="flex items-center publish-btn-wrapper mt-4">
+                    <div className="flex-auto">
+                        <h2>Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
+                    </div>
+                    <button type="button" className="green-btn" onClick={handlePublishingCalendar}>
+                        {isPublished ? 'Unpublish' : 'Publish'}
+                    </button>
                 </div>
-                <button type="button" className="green-btn" onClick={handlePublishingCalendar}>
-                    {isPublished ? 'Unpublish' : 'Publish'}
-                </button>
+                <br />
+                {isPublished && (
+                    <p>
+                        <span>Public URL: </span>
+                        <Link href={calendarPageUrl} target="_blank" style={{ textDecoration: "underline" }}>
+                            {calendarPageUrl}
+                        </Link>
+                    </p>
+                )}
             </div>
-            <br />
-            {isPublished && (
-                <p>
-                    <span>Public URL: </span>
-                    <Link href={calendarPageUrl} target="_blank" style={{ textDecoration: "underline" }}>
-                        {calendarPageUrl}
-                    </Link>
-                </p>
-            )}
-            <div className="pb-20 mt-5" id="calendar-main">
-                <div className="container">
+            <div className="calendar-main-wrapper" >
+                <div className="pb-20 mt-48 calendar-main mx-auto" id="calendar-main">
                     <Calendar
                         localizer={localizer}
                         defaultDate={new Date()}

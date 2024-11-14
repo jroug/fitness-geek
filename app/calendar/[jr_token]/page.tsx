@@ -153,29 +153,27 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
     const currentDate = new Date();
 
     return (
-        <main className="site-content">
-            <div className="text-center font-bold text-2xl publish-btn-wrapper mt-4">
+        <main className="site-content calendar-main-wrapper">
+            <div className="text-center font-bold text-2xl publish-btn-wrapper mt-8 calendar-main mx-auto">
                 <h2>{userDisplayName} Diet Calendar</h2>
             </div>
-            <div className="pb-20 mt-5" id="calendar-main">
-                <div className="container">
-                    <Calendar
-                        localizer={localizer}
-                        defaultDate={new Date()}
-                        defaultView="week"
-                        events={userMealsList}
-                        views={{ day: true, week: true }}
-                        step={150}
-                        timeslots={1}
-                        min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
-                        max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
-                        components={{
-                            event: CustomEvent,  
-                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
-                            timeGutterWrapper: CustomTimeGutter,  
-                        }}
-                    />
-                </div>
+            <div className="pb-20 mt-8 calendar-main mx-auto" id="calendar-main">
+                <Calendar
+                    localizer={localizer}
+                    defaultDate={new Date()}
+                    defaultView="week"
+                    events={userMealsList}
+                    views={{ day: true, week: true }}
+                    step={150}
+                    timeslots={1}
+                    min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
+                    max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
+                    components={{
+                        event: CustomEvent,  
+                        dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
+                        timeGutterWrapper: CustomTimeGutter,  
+                    }}
+                />
             </div>
         </main>
     );

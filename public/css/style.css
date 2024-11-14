@@ -2251,9 +2251,7 @@ ul.nav.nav-tabs.focus-tab-main{
 #msform fieldset:not(:first-of-type) {
     display: none;
 }
-::-webkit-scrollbar {
-    display: none;
-}
+
 #select-gender-main .nav-tabs {
     border: 0;
     display: flex;
@@ -3182,13 +3180,7 @@ ul.nav.nav-tabs.focus-tab-main{
     width:150px;
 }
 
-#calendar-main{
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%, 0);
-    width: 1000px;
-    width: 1400px;
-}
+
 
 /* react big calendar timeslot wrapper */
 .rbc-time-slot {
@@ -3272,4 +3264,22 @@ button.green-btn{
 }
 .custom-text-cal-header{
     font-weight: bold;
+}
+
+/* ::-webkit-scrollbar {
+    display: none;
+} */
+.calendar-main-wrapper{
+    width: 100%;
+    position: absolute;
+    left: 0;
+}
+
+
+.calendar-main{
+    position: relative;
+    /* left: 50%;
+    transform: translate(-50%, 0);
+    width: 1000px; */
+    width: 1400px;
 }
