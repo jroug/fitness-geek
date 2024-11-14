@@ -16,19 +16,30 @@ const localizer = momentLocalizer(moment);
 const getPublicCalendarData = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-public-calendar-data`;
 const checkUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-user-calendar-token`;
 
+
+interface Meals{
+    f_title: string;
+    f_category: string;
+}
+
+
+interface Meals{
+    f_title: string;
+    f_category: string;
+}
+
 interface MealEvent {
     start: Date;
     end: Date;
     title: string;
-}
-
-interface GroupedMealEvent extends MealEvent {
-    meals: string[];
+    meals?: Meals[];
+    category?: string;
 }
 
 interface UserMealData {
     datetime_of_meal: moment.MomentInput;
     food_name: string;
+    category: string;
     serving_size: number;
     meal_quantity: number;
     meal_quantity_type: string;
@@ -91,13 +102,14 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
                     start: moment(item.datetime_of_meal).toDate(),
                     end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
                     title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ' - ' + Math.round(item.meal_quantity * item.serving_size) + 'gr'}`,
+                    category: item.category
                 });
                 return acc;
             }, {} as Record<string, MealEvent[]>);
 
-            const transformedMealData: GroupedMealEvent[] = Object.values(groupedData).map((group) => ({
+            const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
                 title: moment(group[0].start).format("hh:mm a"),
-                meals: group.map(event => event.title ),
+                meals: group.map(event => ({ f_title: event.title, f_category: event.category || "" })),
                 start: adjustTime(group[0].start),
                 end: group[0].end,
             }));

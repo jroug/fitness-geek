@@ -3324,3 +3324,14 @@ button.green-btn{
     margin-left: 10px;
     max-width:480px;
 }
+
+.Alcohol{
+    padding: 4px;
+    background: red;
+    border-radius: 10px;
+}
+.Junk{
+    padding: 4px;
+    background: red;
+    border-radius: 10px;
+}
