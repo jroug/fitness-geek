@@ -72,7 +72,7 @@ interface CalendarPageProps {
 const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
     const { jr_token } = params;
 
-    const [userMealsList, setUserMealsList] = useState<GroupedMealEvent[]>([]);
+    const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
     
