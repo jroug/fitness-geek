@@ -216,8 +216,8 @@ const CalendarHomePage: React.FC = () => {
                     </p>
                 )}
             </div>
-            <div className="calendar-main-wrapper" >
-                <div className="pb-20 mt-48 calendar-main mx-auto" id="calendar-main">
+            <div className="calendar-main-wrapper top-210px" >
+                <div className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <Calendar
                         localizer={localizer}
                         defaultDate={new Date()}
