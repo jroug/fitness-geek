@@ -159,22 +159,24 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
             </div>
             <div className="calendar-main-wrapper top-110px" >
                 <div className="pb-20 calendar-main mx-auto" id="calendar-main">
-                    <Calendar
-                        localizer={localizer}
-                        defaultDate={new Date()}
-                        defaultView="week"
-                        events={userMealsList}
-                        views={{ day: true, week: true }}
-                        step={150}
-                        timeslots={1}
-                        min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
-                        max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
-                        components={{
-                            event: CustomEvent,  
-                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
-                            timeGutterWrapper: CustomTimeGutter,  
-                        }}
-                    />
+                    <div className="padding-wrapper" >
+                        <Calendar
+                            localizer={localizer}
+                            defaultDate={new Date()}
+                            defaultView="week"
+                            events={userMealsList}
+                            views={{ day: true, week: true }}
+                            step={150}
+                            timeslots={1}
+                            min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
+                            max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
+                            components={{
+                                event: CustomEvent,  
+                                dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
+                                timeGutterWrapper: CustomTimeGutter,  
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </main>

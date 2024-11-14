@@ -3300,15 +3300,18 @@ button.green-btn{
     width: 1000px; */
     width: 1400px;
 }
-#calendar-main{
-    background-color: #ffffff;
-    border: 1px solid #7FD83B;
+.padding-wrapper{
     padding:10px;
     margin-bottom:10px;
-    margin-left:10px;
-    margin-right:10px;
     border-radius: 10px;
     box-shadow: 0px 0px 34px -20px #000;
+    background-color: #ffffff;
+    border: 1px solid #7FD83B;
+}
+#calendar-main{
+
+    padding:10px;
+
 }
 .top-110px{
     top:110px;
@@ -3319,4 +3322,5 @@ button.green-btn{
 .custom_margin{
     width: calc(100% - 20px);
     margin-left: 10px;
+    max-width:480px;
 }

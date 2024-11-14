@@ -218,22 +218,24 @@ const CalendarHomePage: React.FC = () => {
             </div>
             <div className="calendar-main-wrapper top-210px" >
                 <div className="pb-20 calendar-main mx-auto" id="calendar-main">
-                    <Calendar
-                        localizer={localizer}
-                        defaultDate={new Date()}
-                        defaultView="week"
-                        events={userMealsList}
-                        views={{ day: true, week: true }}
-                        step={150}
-                        timeslots={1}
-                        min={new Date(new Date().setHours(9, 0))}
-                        max={new Date(new Date().setHours(23, 59))}
-                        components={{
-                            event: CustomEvent,  
-                            dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
-                            timeGutterWrapper: CustomTimeGutter,  
-                        }}
-                    />
+                    <div className="padding-wrapper" >
+                        <Calendar
+                            localizer={localizer}
+                            defaultDate={new Date()}
+                            defaultView="week"
+                            events={userMealsList}
+                            views={{ day: true, week: true }}
+                            step={150}
+                            timeslots={1}
+                            min={new Date(new Date().setHours(9, 0))}
+                            max={new Date(new Date().setHours(23, 59))}
+                            components={{
+                                event: CustomEvent,  
+                                dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
+                                timeGutterWrapper: CustomTimeGutter,  
+                            }}
+                        />
+                    </div>
                 </div>
             </div>
         </main>
