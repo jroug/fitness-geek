@@ -3305,6 +3305,8 @@ button.green-btn{
     border: 1px solid #7FD83B;
     padding:10px;
     margin-bottom:10px;
+    margin-left:10px;
+    margin-right:10px;
     border-radius: 10px;
     box-shadow: 0px 0px 34px -20px #000;
 }
@@ -3313,4 +3315,8 @@ button.green-btn{
 }
 .top-210px{
     top:210px;
+}
+.custom_margin{
+    width: calc(100% - 20px);
+    margin-left: 10px;
 }

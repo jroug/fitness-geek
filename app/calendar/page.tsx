@@ -196,7 +196,7 @@ const CalendarHomePage: React.FC = () => {
 
     return (
         <main className="site-content">
-            <div className="fixed" >
+            <div className="fixed custom_margin" >
                 <Header title="Meals Calendar" backUrl="/homepage" />
                 <div className="flex items-center publish-btn-wrapper mt-4">
                     <div className="flex-auto">
@@ -211,7 +211,7 @@ const CalendarHomePage: React.FC = () => {
                     <p>
                         <span>Public URL: </span>
                         <Link href={calendarPageUrl} target="_blank" style={{ textDecoration: "underline" }}>
-                            {calendarPageUrl}
+                            click here!
                         </Link>
                     </p>
                 )}
