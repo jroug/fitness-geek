@@ -17,13 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="antialiased">
-        {
-           process.env.NEXT_PUBLIC_ENV_NAME === 'develop' ? 
-           <div>NO ACCESS</div> 
-           : 
-           <PageAnimatePresence>{children}</PageAnimatePresence>
-        }
-        
+        <PageAnimatePresence>{children}</PageAnimatePresence>
       </body>
     </html>
   );
