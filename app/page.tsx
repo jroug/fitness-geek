@@ -16,7 +16,6 @@ export default async function LandingPage() {
   const response = await fetch(fetchLandingPageDataUrl);
   const data = await response.json();
   const pageData = data[0];
-
   
   
   return (
