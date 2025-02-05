@@ -18,7 +18,7 @@ export default async function LandingPage() {
   const pageData = data[0];
 
   
-
+  
   return (
     <main className="site-content">
         {/* <Loading/> */}
