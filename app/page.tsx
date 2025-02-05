@@ -79,7 +79,7 @@ export default async function LandingPage() {
                       </Link>
                     </div>
                     <div>
-                      <p className="text-xs font-medium mt-2 text-center">Twitter</p>
+                      <p className="text-xs font-medium mt-2 text-center">X.COM</p>
                     </div>
                   </div>
                   <div className="social-detail-about flex flex-col items-center">
