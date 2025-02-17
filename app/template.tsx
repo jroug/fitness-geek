@@ -19,7 +19,7 @@ const pageTransition = {
     ease: "easeInOut",
 }
 
-console.log('env:' + process.env.NEXT_PUBLIC_ENV_NAME);
+// console.log('env:' + process.env.NEXT_PUBLIC_ENV_NAME);
 
 export default function Template({ children }: TemplateProps) {
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from 'next/navigation';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -63,14 +63,15 @@ interface CalendarData {
     workout_list: UserWorkoutData[];
 }
 
-interface CalendarPageProps {
-    params: {
-        jr_token: string;
-    };
-}
+// interface CalendarPageProps {
+//     params: { jr_token: string };
+// }
+type Params = Promise<{ jr_token: string }>
 
-const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
-    const { jr_token } = params;
+export default function CalendarPage(props: { params: Params }) {
+    const params = use(props.params);
+    const  jr_token  = params.jr_token; // Extract the token from params
+ 
 
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
@@ -193,6 +194,6 @@ const CalendarPage: React.FC<CalendarPageProps> = ({ params }) => {
             </div>
         </main>
     );
-};
+}
 
-export default CalendarPage;
+ 

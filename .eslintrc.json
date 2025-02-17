@@ -32,7 +32,8 @@
     "react/react-in-jsx-scope": "off", // React import not needed in Next.js
     "react-hooks/rules-of-hooks": "error", // Checks the rules of hooks
     "react-hooks/exhaustive-deps": "warn", // Checks dependency arrays in useEffect
-    
+    "react/prop-types": "off", // Disable prop-types rule
+
     // General JavaScript rules
     "no-console": ["warn", { "allow": ["warn", "error"] }], // Allows console.warn and console.error
     "no-unused-vars": "off", // Disables no-unused-vars in favor of TypeScript's rule

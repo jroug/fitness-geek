@@ -1,7 +1,6 @@
 'use client'
 
 import { ReactNode } from 'react'
-import PropTypes from 'prop-types'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import FrozenRoute from './FrozenRoute'
@@ -40,9 +39,6 @@ const PageAnimatePresence: React.FC<PageAnimatePresenceProps> = ({ children }) =
   )
 }
 
-// Add PropTypes for ESLint validation
-PageAnimatePresence.propTypes = {
-  children: PropTypes.node.isRequired,
-}
+ 
 
 export default PageAnimatePresence
