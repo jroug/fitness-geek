@@ -1,14 +1,16 @@
 // utils/mealMapper.ts
 
+export const mealTypeOpts = [
+    { key: "B", label: "Breakfast" },
+    { key: "MS", label: "Morning Snack" },
+    { key: "L", label: "Lunch" },
+    { key: "AS", label: "Afternoon Snack" },
+    { key: "PW", label: "Post Workout" },
+    { key: "D", label: "Dinner" },
+    { key: "OTH", label: "Other" }
+] as const;
+
 export function mealTypeOptions(code: string): string {
-    const mealTypeOpts: { [key: string]: string } = {
-        "B": "Breakfast",
-        "MS": "Morning Snack",
-        "L": "Lunch",
-        "AS": "Afternoon Snack",
-        "D": "Dinner",
-        "PW": "Post Workout",
-        "OTH": "Other"
-    };
-    return mealTypeOpts[code] || "Unknown meal"; // Default to "Unknown meal" if code isn't found
+    const meal = mealTypeOpts.find(item => item.key === code);
+    return meal ? meal.label : "Unknown meal";
 }

@@ -7,6 +7,8 @@ import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
 import Popup from "@/components/Popup";
+import { mealTypeOpts } from '@/lib/mealTypeOptions';
+
 
 // Define interfaces for meal data
 interface MealSuggestion {
@@ -33,8 +35,82 @@ interface MealInputData {
 const AddMeal: React.FC = () => {
     const router = useRouter();
 
+
+ 
+ 
+
+ 
+    const getMealTypeFromTime = (pDate:string): string => {
+
+        const passedDate = new Date(pDate); // Create a new date based on stTime
+ 
+        const passedHours = passedDate.getHours();
+        const passedMinutes = passedDate.getMinutes();
+
+        // Check the range and set the target time accordingly
+        if ((passedHours >= 7 && passedHours < 11) || (passedHours === 11 && passedMinutes < 30)) {
+            // Between 7:00 AM and 11:30 AM
+            return "B"; // "Breakfast"
+        } else if ((passedHours === 11 && passedMinutes >= 30) || (passedHours >= 12 && passedHours < 14)) {
+            // Between 11:30 AM and 2:00 PM
+            return "MS"; // "Morning Snack"
+        } else if ((passedHours >= 14 && passedHours < 16) || (passedHours === 16 && passedMinutes < 30)) {
+            // Between 2:00 PM and 4:30 PM
+            return "L"; // "Lunch"
+        } else if ((passedHours === 16 && passedMinutes >= 30) || (passedHours >= 17 && passedHours < 19)) {
+            // Between 4:30 PM and 7:00 PM
+            return "AS"; // "Afternoon Snack"
+        } else if ((passedHours >= 19 && passedHours < 21) || (passedHours === 21 && passedMinutes < 30)) {
+            // Between 7:00 PM and 9:30 PM
+            return "PW"; // "Post Workout"
+        } else if ((passedHours === 21 && passedMinutes >= 30) || (passedHours >= 21 && passedHours < 23)) {
+            // Between 7:00 PM and 9:30 PM
+            return "D"; // "Dinner"
+        } else {
+            // Any other time
+            return "OTH"; // "OTHER"
+        }
+
+    };
+    
+    const geTimeFromMealType = (mealT : string): string => {
+        let retTime = '';
+
+        const currentDate = new Date(); // Create a new date based on stTime
+        const currentYear = currentDate.getFullYear();
+        const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
+        const currentDay = String(currentDate.getDate()).padStart(2, '0');
+        
+        switch (mealT) {
+            case "B":
+                retTime = '09:00';
+                break;
+            case "MS":
+                retTime = '11:30';
+                break;
+            case "L":
+                retTime = '14:00';
+                break;
+            case "AS":
+                retTime = '16:30';
+                break;
+            case "PW":
+                retTime = '19:00';
+                break;
+            case "D":
+                retTime = '21:30';
+                break;
+            default:
+                retTime = '23:00';
+        }
+
+        return `${currentYear}-${currentMonth}-${currentDay}T${retTime}`;
+    }
+
+
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
+    const [mealType, setMealType] = useState('');
     const [mealQuantity, setMealQuantity] = useState<number>(1);
     const [mealQuantityType, setMealQuantityType] = useState<string>('N');
     const [dateTime, setDateTime] = useState<string>('');
@@ -54,22 +130,7 @@ const AddMeal: React.FC = () => {
     const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
     const [popupData, setPopupData] = useState({ title: '', message: '', show_popup: false });
 
-    const getCurrentDateTime = (): string => {
-        const now = new Date();
-        const options: Intl.DateTimeFormatOptions = {
-            timeZone: 'Europe/Athens',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-        };
-        const athensTime = new Intl.DateTimeFormat('en-GB', options).format(now);
-        const [datePart, timePart] = athensTime.split(', ');
-        const formattedDate = datePart.split('/').reverse().join('-');
-        return `${formattedDate}T${timePart.replace(':', ':')}`;
-    };
+
 
     const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
         const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
@@ -78,6 +139,22 @@ const AddMeal: React.FC = () => {
         setSuggestionMeals(data);
         return data;
     };
+
+    const handleMealTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const mealT = e.target.value;
+        const mealD = geTimeFromMealType(mealT);
+
+        setDateTime(mealD);
+        setMealType(mealT);
+    }
+
+    const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const mealD = e.target.value;
+        const mealT = getMealTypeFromTime(mealD);
+
+        setDateTime(mealD);
+        setMealType(mealT);
+    }
 
     const addMealToDB = async (input_data: MealInputData) => {
         const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
@@ -118,10 +195,10 @@ const AddMeal: React.FC = () => {
         getAddMealPageData();
     }, [router]);
 
-    const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        setDateTime(getCurrentDateTime());
-    };
+    // const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    //     e.preventDefault();
+    //     setDateTime(getCurrentDateTime());
+    // };
 
     const handleMealSuggestionsInputChange = (_: React.SyntheticEvent, newValue: MealSuggestion | null) => {
         if (newValue) setMealSelected(newValue);
@@ -163,6 +240,8 @@ const AddMeal: React.FC = () => {
         }
     };
 
+
+
     return (
         <>
             <main className="site-content">
@@ -170,17 +249,37 @@ const AddMeal: React.FC = () => {
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
                         <div className="feedback-content mt-16">
-                            <div className="green-btn mt-4">
+                            {/* <div className="green-btn mt-4">
                                 <Link href="#" onClick={handleSetCurrentDateAndMeal}>Set Current Date & Type</Link>
-                            </div>
+                            </div> */}
                             <form className="feedback-form" onSubmit={handleFormSubmit}>
                                 <div className="addmeal-div feedback-email">
+                                    <label htmlFor="quantity-type" className="custom-lbl-feedback">What type?</label>
+                                    <div className="custom-select-subject mt-8">
+                                        <select 
+                                            id="quantity-type" 
+                                            value={mealType} 
+                                            onChange={handleMealTypeChange}
+                                            className="arrow-icon sm-font-sans border-green-1"
+                                        >
+                                            <option key={"00"} value="" >...</option>
+                                            {
+                                                mealTypeOpts.map((meal) => {
+                                                    return (
+                                                        <option key={meal.key} value={meal.key} >{meal.label}</option>
+                                                    )
+                                                })
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className="addmeal-div feedback-email ">
                                     <label htmlFor="datetime-local" className="custom-lbl-feedback">Date & Time of meal*</label>
                                     <input 
                                         type="datetime-local" 
                                         id="datetime-local" 
                                         value={dateTime} 
-                                        onChange={(e) => setDateTime(e.target.value)} 
+                                        onChange={handleDateTimeChange} 
                                         className={`border-green-1 ${dateTimeErrorClass}`}
                                     />
                                 </div>
