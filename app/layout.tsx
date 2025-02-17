@@ -20,7 +20,7 @@ export default function RootLayout({
       <body className="antialiased">
         <PageAnimatePresence>{children}</PageAnimatePresence>
         {
-          process.env.NEXT_PUBLIC_ENV_NAME === 'live' && <Analytics/>
+          process.env.NEXT_PUBLIC_ENV_NAME === 'live' && <Analytics/> // Only load the analytics script in production
         }
       </body>
     </html>
