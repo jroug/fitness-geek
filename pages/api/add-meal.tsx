@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // console.log(data);
         
         return res.status(200).json({ 
-            message: 'Meal Added successfully',
+            message: 'Meal Added',
             user_meal_added: true
         });
 

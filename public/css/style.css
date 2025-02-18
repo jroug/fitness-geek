@@ -1545,6 +1545,24 @@ div#ui-datepicker-div {
     background: var(--1, #FFF);
 }
 
+.toast-complete-modal .modal-body{
+    padding: 24px 16px !important;
+}
+.toast-complete-modal .modal-dialog {
+    position: fixed;
+    top: calc(50% - 150px);
+    right: 0;
+    left: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+    max-width:600px;
+}
+.toast-complete-modal .modal-content {
+    border-radius: 24px 24px;
+    background: var(--1, #FFF);
+}
+
 /************************ 29.Workout Category1 Css ***************************/
 #wokout-category1-main .workout-time,
 #discover-workout-main .workout-time,

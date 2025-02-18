@@ -5,7 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
-import Popup from "@/components/Popup";
+import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 
 
@@ -127,7 +127,7 @@ const AddMeal: React.FC = () => {
     });
     const [mealComments, setMealComments] = useState<string>('');
     const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
-    const [popupData, setPopupData] = useState({ title: '', message: '', show_popup: false });
+    const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
 
 
 
@@ -164,7 +164,7 @@ const AddMeal: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_meal_added) {
-            setPopupData({ title: 'Message', message: data.message, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:1500, show_popup: true });
             setDateTime('');
             setMealQuantity(1);
             setMealQuantityType('N');
@@ -181,8 +181,9 @@ const AddMeal: React.FC = () => {
                 comments: ""
             });
             setMealComments('');
+            setMealType('');
         } else {
-            setPopupData({ title: 'Message', message: 'Something went wrong!', show_popup: false });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:4000, show_popup: true });
         }
     };
 
@@ -235,7 +236,7 @@ const AddMeal: React.FC = () => {
             };
             addMealToDB(input_data);
         } else {
-            alert('Complete all necessary fields!');
+            // alert('Complete all necessary fields!');
         }
     };
 
@@ -367,7 +368,7 @@ const AddMeal: React.FC = () => {
                     </div>
                 </div>
             </main>
-            <Popup popupData={popupData} setPopupData={setPopupData} />
+            <Toast popupData={popupData} setPopupData={setPopupData} />
         </>
     );
 };
