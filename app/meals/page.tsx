@@ -164,7 +164,7 @@ const AddMeal: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_meal_added) {
-            setPopupData({ title: 'Message', message: data.message, time:1500, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:1300, show_popup: true });
             setDateTime('');
             setMealQuantity(1);
             setMealQuantityType('N');

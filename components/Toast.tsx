@@ -28,7 +28,7 @@ const Toast: React.FC<PopupProps> = ({ setPopupData, popupData }) => {
             // Delay the GIF appearance by 1 second
             const gifTimeout = setTimeout(() => {
                 setShowGif(true);
-            }, 500);
+            }, 300);
 
             return () => clearTimeout(gifTimeout);
         } else {
