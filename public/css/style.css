@@ -509,7 +509,7 @@ header {
 .manage-data-sec{
     border-radius: 12px;
     background-color: var(--1, #FFF);
-    padding: 14px;
+    padding: 15px;
     width: 100%;
 }
 .arrow-icon {
@@ -3354,4 +3354,16 @@ button.green-btn{
     padding: 4px;
     background: red;
     border-radius: 10px;
+}
+
+#datetime-local{
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding:0 !important;
+    height: 56px;
+}
+
+.meal-details-table td{
+    padding:0 10px 0 0;
 }

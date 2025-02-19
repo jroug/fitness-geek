@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import tick from "../public/images/toast/tick-1.gif";
+import tick from "../public/images/toast/tick-3.gif";
 
 interface PopupData {
     title: string;
@@ -28,7 +28,7 @@ const Toast: React.FC<PopupProps> = ({ setPopupData, popupData }) => {
             // Delay the GIF appearance by 1 second
             const gifTimeout = setTimeout(() => {
                 setShowGif(true);
-            }, 300);
+            }, 100);
 
             return () => clearTimeout(gifTimeout);
         } else {
