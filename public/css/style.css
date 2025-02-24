@@ -3360,8 +3360,13 @@ button.green-btn{
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
-    padding:0 !important;
+    padding:15px;
     height: 56px;
+}
+@media only screen and (max-width: 600px)  {
+    #datetime-local{
+        padding:0 !important;
+    }
 }
 
 .meal-details-table td{

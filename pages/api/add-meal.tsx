@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
 
-     //  console.log(`${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
+      console.log(`${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
 
       try {
 

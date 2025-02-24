@@ -8,7 +8,6 @@ import Header from "@/components/Header";
 import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 
-
 // Define interfaces for meal data
 interface MealSuggestion {
     id: string;
@@ -34,11 +33,15 @@ interface MealInputData {
 const AddMeal: React.FC = () => {
     const router = useRouter();
 
+    const getCurrentDateTime = () => {
+        const now = new Date();
+        return now.getFullYear() +
+        '-' + String(now.getMonth() + 1).padStart(2, '0') +
+        '-' + String(now.getDate()).padStart(2, '0') +
+        'T' + String(now.getHours()).padStart(2, '0') +
+        ':' + String(now.getMinutes()).padStart(2, '0');   
+    }
 
- 
- 
-
- 
     const getMealTypeFromTime = (pDate:string): string => {
 
         const passedDate = new Date(pDate); // Create a new date based on stTime
@@ -107,12 +110,15 @@ const AddMeal: React.FC = () => {
     }
 
 
+
+    const currentDateTime = getCurrentDateTime();
+
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
-    const [mealType, setMealType] = useState('');
+    const [dateTime, setDateTime] = useState<string>(currentDateTime);
+    const [mealType, setMealType] = useState(getMealTypeFromTime(currentDateTime));
     const [mealQuantity, setMealQuantity] = useState<number>(1);
     const [mealQuantityType, setMealQuantityType] = useState<string>('N');
-    const [dateTime, setDateTime] = useState<string>('');
     const [mealSelected, setMealSelected] = useState<MealSuggestion>({
         id: "",
         food_name: "",
@@ -128,8 +134,6 @@ const AddMeal: React.FC = () => {
     const [mealComments, setMealComments] = useState<string>('');
     const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
     const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
-
-
 
     const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
         const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
