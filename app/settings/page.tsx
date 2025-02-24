@@ -176,7 +176,7 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link href="security.html">
+                            {/* <Link href="security.html">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
                                         <Image src={setting7} alt="setting-icon" />
@@ -190,8 +190,8 @@ const Settings = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </Link>
-                            <Link href="language.html">
+                            </Link> */}
+                            {/* <Link href="language.html">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
                                         <Image src={setting8} alt="setting-icon" />
@@ -208,25 +208,7 @@ const Settings = () => {
                                         </div>
                                     </div>
                                 </div>
-                            </Link>
-                            <Link href="currency.html">
-                                <div className="send-money-contact-tab border-bottom1">
-                                    <div className="setting-icon">
-                                        <Image src={setting18} alt="setting-icon" />
-                                    </div>
-                                    <div className="setting-title">
-                                        <h3>Currency</h3>
-                                    </div>
-                                    <div className="contact-star">
-                                        <div className="star-favourite">
-                                            <span className="setting-lanuage">USD</span>
-                                            <span>
-                                                <Image src={rightArrow} alt="edit-icon" />
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </Link>
+                            </Link> */}
                             <Link href="/faq">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
@@ -257,7 +239,7 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link href="privacy-policy.html">
+                            <Link href="/privacy">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
                                         <Image src={setting11} alt="setting-icon" />
@@ -272,7 +254,7 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link href="terms-condition.html">
+                            <Link href="/terms">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
                                         <Image src={setting12} alt="setting-icon" />
@@ -287,7 +269,7 @@ const Settings = () => {
                                     </div>
                                 </div>
                             </Link>
-                            <Link href="contact-us.html">
+                            <Link href="/contact">
                                 <div className="send-money-contact-tab border-bottom1">
                                     <div className="setting-icon">
                                         <Image src={setting13} alt="setting-icon" />

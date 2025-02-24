@@ -7,7 +7,7 @@ export default async function about() {
 
    
  
-    const fetchPageDataUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=about&_fields=id,title,content`;
+    const fetchPageDataUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=contact&_fields=id,title,content`;
     const response = await fetch(fetchPageDataUrl);
     const data = await response.json();
     const pageData = data[0];

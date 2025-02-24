@@ -1,10 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import Link from "next/link";
+// import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
-import Popup from "@/components/Popup";
+// import Popup from "@/components/Popup";
+import Toast from "@/components/Toast";
 
 // Define interfaces for meal data
 
@@ -17,20 +18,6 @@ interface WeighingInputData {
 const Weighing: React.FC = () => {
     
     const router = useRouter();
-
-    const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
-    const [weightErrorClass, setWeightErrorClass] = useState('');
-
-    const [dateTime, setDateTime] = useState('');
-    const [weightVal, setWeightVal] = useState('');
-    
- 
-    const [weightComments, setWeightComments] = useState('');
-
-    const [popupData, setPopupData] = useState({ title: '', message: '', show_popup: false });
-
-    // Function to determine the meal based on the current time
- 
 
     const getCurrentDateTime = (): string => {
         const now = new Date();
@@ -49,7 +36,19 @@ const Weighing: React.FC = () => {
         const formattedDate = datePart.split('/').reverse().join('-');
         return `${formattedDate}T${timePart.replace(':', ':')}`;
     };
+    
+    const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
+    const [weightErrorClass, setWeightErrorClass] = useState('');
 
+    const [dateTime, setDateTime] = useState(getCurrentDateTime);
+    const [weightVal, setWeightVal] = useState('');
+    
+ 
+    const [weightComments, setWeightComments] = useState('');
+
+    const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
+
+    // Function to determine the meal based on the current time
  
 
     const addWeightToDB = async (input_data: WeighingInputData) => {
@@ -63,12 +62,12 @@ const Weighing: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_weight_added) {
-            setPopupData({ title: 'Message', message: data.message, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:1900, show_popup: true });
             setDateTime('');
             setWeightVal('');
             setWeightComments('');
         } else {
-            setPopupData({ title: 'Message', message: 'Something went wrong!', show_popup: false });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:4000, show_popup: true });
         }
     };
 
@@ -76,10 +75,10 @@ const Weighing: React.FC = () => {
         checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
     }, [router]);
 
-    const handleSetCurrentDateAndTime = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        setDateTime(getCurrentDateTime());
-    };
+    // const handleSetCurrentDateAndTime = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    //     e.preventDefault();
+    //     setDateTime(getCurrentDateTime());
+    // };
 
  
 
@@ -124,9 +123,9 @@ const Weighing: React.FC = () => {
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
                         <div className="feedback-content mt-16">
-                            <div className="green-btn mt-4">
+                            {/* <div className="green-btn mt-4">
                                 <Link href="#" onClick={handleSetCurrentDateAndTime}>Set Current Date & Time</Link>
-                            </div>
+                            </div> */}
                             <form className="feedback-form" onSubmit={handleFormSubmit}>
                                 <div className="form-div feedback-email">
                                     <label htmlFor="datetime-local" className="custom-lbl-feedback">Date & Time of Weighing*</label>
@@ -160,7 +159,8 @@ const Weighing: React.FC = () => {
                     </div>
                 </div>
             </main>
-            <Popup popupData={popupData} setPopupData={setPopupData} />
+            {/* <Popup popupData={popupData} setPopupData={setPopupData} /> */}
+            <Toast popupData={popupData} setPopupData={setPopupData} />
         </>
     );
 };

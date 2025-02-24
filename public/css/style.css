@@ -1868,7 +1868,8 @@ li.list.active i {
 #setting-main .setting-title h3,
 .menu-sidebar .setting-title h3,
 .diffrent-chat-dropdown ul li a{
-    color: var(--4, #12151C);
+    /* color: var(--4, #12151C); */
+    color: #ffffff;
     font-family: "DM Sans";
     font-size: 16px;
     font-style: normal;
@@ -3077,7 +3078,7 @@ ul.nav.nav-tabs.focus-tab-main{
     top: 0;
     height: 100%; 
     transition: left 0.3s ease;
-    background-color: #fff;
+    background-color: #212121;
     padding:10px;
 }
 
@@ -3371,4 +3372,8 @@ button.green-btn{
 
 .meal-details-table td{
     padding:0 10px 0 0;
+}
+
+.logout-screen-full{
+    height: calc(100vh - 260px);
 }

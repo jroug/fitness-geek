@@ -6,7 +6,8 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
-import Popup from "@/components/Popup";
+// import Popup from "@/components/Popup";
+import Toast from "@/components/Toast";
 
 // Define interfaces for meal data
 interface WorkoutSuggestion {
@@ -28,25 +29,6 @@ const AddWorkout: React.FC = () => {
     
     const router = useRouter();
 
-    const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
-    const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
-
-    const [dateTime, setDateTime] = useState('');
-
-    const [workoutSelected, setWorkoutSelected] = useState<WorkoutSuggestion>({
-        id: "",
-        w_title: "",
-        w_description: "",
-        w_type: "",
-        w_calories: "",
-        w_time: ""
-    });
-
-    const [workoutComments, setWorkoutComments] = useState('');
-
-    const [suggestionWorkouts, setSuggestionWorkouts] = useState<WorkoutSuggestion[]>([]);
-    const [popupData, setPopupData] = useState({ title: '', message: '', show_popup: false });
-
     const getCurrentDateTime = (): string => {
         const now = new Date();
         const options: Intl.DateTimeFormatOptions = {
@@ -64,6 +46,27 @@ const AddWorkout: React.FC = () => {
         const formattedDate = datePart.split('/').reverse().join('-');
         return `${formattedDate}T${timePart.replace(':', ':')}`;
     };
+    
+    const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
+    const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
+
+    const [dateTime, setDateTime] = useState(getCurrentDateTime);
+
+    const [workoutSelected, setWorkoutSelected] = useState<WorkoutSuggestion>({
+        id: "",
+        w_title: "",
+        w_description: "",
+        w_type: "",
+        w_calories: "",
+        w_time: ""
+    });
+
+    const [workoutComments, setWorkoutComments] = useState('');
+
+    const [suggestionWorkouts, setSuggestionWorkouts] = useState<WorkoutSuggestion[]>([]);
+    const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
+
+
 
     const getWorkoutSuggestions = async (): Promise<WorkoutSuggestion[]> => {
         const fetchSuggestedWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-workouts`;
@@ -84,7 +87,7 @@ const AddWorkout: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_workout_added) {
-            setPopupData({ title: 'Message', message: data.message, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:1900, show_popup: true });
             setDateTime('');
             setWorkoutSelected({
                 id: "",
@@ -96,7 +99,7 @@ const AddWorkout: React.FC = () => {
             });
             setWorkoutComments('');
         } else {
-            setPopupData({ title: 'Message', message: 'Something went wrong!', show_popup: false });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:4000, show_popup: true });
         }
     };
 
@@ -110,10 +113,10 @@ const AddWorkout: React.FC = () => {
         getAddMealPageData();
     }, [router]);
 
-    const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
-        e.preventDefault();
-        setDateTime(getCurrentDateTime());
-    };
+    // const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    //     e.preventDefault();
+    //     setDateTime(getCurrentDateTime());
+    // };
 
     const handleWorkoutSuggestionsInputChange = (event: React.SyntheticEvent, newValue: WorkoutSuggestion | null) => {
         if (newValue) setWorkoutSelected(newValue);
@@ -160,9 +163,9 @@ const AddWorkout: React.FC = () => {
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
                         <div className="feedback-content mt-16">
-                            <div className="green-btn mt-4">
+                            {/* <div className="green-btn mt-4">
                                 <Link href="#" onClick={handleSetCurrentDateAndMeal}>Set Current Date & Type</Link>
-                            </div>
+                            </div> */}
                             <form className="feedback-form" onSubmit={handleFormSubmit}>
                                 <div className="addmeal-div feedback-email">
                                     <label htmlFor="datetime-local" className="custom-lbl-feedback">Date & Time of meal*</label>
@@ -226,7 +229,8 @@ const AddWorkout: React.FC = () => {
                     </div>
                 </div>
             </main>
-            <Popup popupData={popupData} setPopupData={setPopupData} />
+            {/* <Popup popupData={popupData} setPopupData={setPopupData} /> */}
+            <Toast popupData={popupData} setPopupData={setPopupData} />
         </>
     );
 };

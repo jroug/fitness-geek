@@ -16,16 +16,32 @@ import setting13 from "../public/images/setting/setting13.svg";
 // import setting15 from "../public/images/setting/setting15.svg";
 import setting17 from "../public/images/setting/setting17.svg";
 
-import right_arrow from "../public/svg/right-arrow.svg";
+import right_arrow from "../public/svg/right-arrow-white.svg";
 // import up_arrow from "../public/svg/up-arrow.svg";
 import Logout from "./Logout";
-
+import { useRouter } from 'next/navigation';
 
 const SideBar = () => {
+
+	const router = useRouter();
+
 	// Function to show the logout modal
-	const showModal = () => {
-		document.getElementById('workout-complete-modal')?.classList.add('show-modal');
+	const handleLogout = () => {
+		logout();
 	}
+
+	const logout = async () => {
+		const res = await fetch('/api/logout', {
+			method: 'POST',
+		});
+		
+		if (res.ok) {
+			// console.log('Logged out successfully');
+			router.push('/logout');
+		} else {
+			alert('Logout failed');
+		}
+	};
 
     return (
 		<>
@@ -119,7 +135,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/settings">
+									{/* <Link href="/settings">
 										<div className="send-money-contact-tab border-bottom1">
 											<div className="setting-icon">
 												<Image src={setting7} alt="setting-icon" />
@@ -133,7 +149,7 @@ const SideBar = () => {
 												</div>
 											</div>
 										</div>
-									</Link> 
+									</Link>  */}
 									{/* <Link href="set-biometric.html">
 										<div className="send-money-contact-tab border-bottom1">
 											<div className="setting-icon">
@@ -232,7 +248,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									<Link href="contact-us.html">
+									<Link href="/contact">
 										<div className="send-money-contact-tab border-bottom1 ">
 											<div className="setting-icon">
 												<Image src={setting13} alt="setting-icon" />
@@ -262,7 +278,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>  */}
-									<Link href="#" onClick={showModal} data-bs-toggle="modal" data-bs-target="#workout-complete-modal">
+									<Link href="#" onClick={handleLogout} data-bs-toggle="modal" data-bs-target="#workout-complete-modal">
 										<div className="send-money-contact-tab">
 											<div className="setting-icon bg-red">
 												<Image src={setting17} alt="setting-icon" />
@@ -284,7 +300,7 @@ const SideBar = () => {
 				</div>
 				<div className="offcanvas-backdrop fade show"></div>
 			</div>
-			<Logout />
+			{/* <Logout /> */}
 		</>
     );
 };
