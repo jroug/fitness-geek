@@ -18,7 +18,7 @@ import setting17 from "../public/images/setting/setting17.svg";
 
 import right_arrow from "../public/svg/right-arrow-white.svg";
 // import up_arrow from "../public/svg/up-arrow.svg";
-import Logout from "./Logout";
+// import Logout from "./Logout";
 import { useRouter } from 'next/navigation';
 
 const SideBar = () => {
