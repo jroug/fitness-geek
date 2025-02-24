@@ -5,6 +5,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
+import InnerLink from "@/components/InnerLink";
 import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 
@@ -170,7 +171,7 @@ const AddMeal: React.FC = () => {
         if (data.user_meal_added) {
             setPopupData({ title: 'Message', message: data.message, time:1900, show_popup: true });
             setDateTime('');
-            setMealQuantity(0.5);
+            setMealQuantity(1);
             setMealQuantityType('N');
             setMealSelected({
                 id: "",
@@ -244,12 +245,11 @@ const AddMeal: React.FC = () => {
         }
     };
 
-
-
     return (
         <>
             <main className="site-content">
                 <Header title="Add Meal" backUrl="/homepage" />
+                <InnerLink title="Calendar" goToUrl="/calendar" />
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
                         <div className="feedback-content">

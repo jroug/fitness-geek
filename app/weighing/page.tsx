@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
+import InnerLink from '@/components/InnerLink';
 // import Popup from "@/components/Popup";
 import Toast from "@/components/Toast";
 
@@ -120,6 +121,7 @@ const Weighing: React.FC = () => {
         <>
             <main className="site-content">
                 <Header title="Add Weighing" backUrl="/homepage" />
+                <InnerLink title="Calendar" goToUrl="/calendar" />
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
                         <div className="feedback-content mt-16">

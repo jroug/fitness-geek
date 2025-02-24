@@ -273,6 +273,10 @@ header {
     height: 24px;
     display: inline-flex;
 }
+.header-name{
+    width:100%;
+    text-align:center;
+}
 .header-name p,
 .friend-no,
 .billing-price{
@@ -3376,4 +3380,8 @@ button.green-btn{
 
 .logout-screen-full{
     height: calc(100vh - 260px);
+}
+
+.inner-link-wrap p{
+    line-height: 25px;
 }

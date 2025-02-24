@@ -205,7 +205,7 @@ const CalendarHomePage: React.FC = () => {
     return (
         <main className="site-content">
             <div className="fixed custom_margin" >
-                <Header title="Meals Calendar" backUrl="/homepage" />
+                <Header title="Calendar" backUrl="/homepage" />
                 <div className="flex items-center publish-btn-wrapper mt-4">
                     <div className="flex-auto">
                         <h2>Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
