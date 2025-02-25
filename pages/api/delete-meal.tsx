@@ -23,7 +23,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
 
         const { mids } = req.query;
-        // console.log('mids', mids);
         if (!mids || typeof mids !== 'string') {
             return res.status(400).json({ message: 'Invalid or missing meal IDs' });
         }
@@ -38,9 +37,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             },
         });
 
-// console.log('deleteMealsUrl', deleteMealsUrl);
-// console.log('response', response);
-
         if (!response.ok) {
             return res.status(response.status).json({ message: 'Failed to delete meal(s)' });
         }
@@ -48,9 +44,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         const data: DeleteResponse = await response.json();
         return res.status(200).json(data);
 
-
-    } catch (error: any) {
+    } catch (error: unknown) {
         console.error('Server error:', error);
-        return res.status(500).json({ message: 'Server error' });
+
+        // Ensure error is properly casted before accessing properties
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+        return res.status(500).json({ message: `Server error: ${errorMessage}` });
     }
 }
