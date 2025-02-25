@@ -31,7 +31,7 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event }) => {
                     throw new Error('Failed to delete meals');
                 }
 
-                const data = await res.json();
+                // const data = await res.json();
                 // console.log('Delete Response:', data);
                 location.reload();
             } catch (error) {

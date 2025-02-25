@@ -23,7 +23,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
         }
 
         const { mids } = req.query;
-        console.log('mids', mids);
+        // console.log('mids', mids);
         if (!mids || typeof mids !== 'string') {
             return res.status(400).json({ message: 'Invalid or missing meal IDs' });
         }

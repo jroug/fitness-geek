@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from 'next/link';
 // import setting1 from "../public/images/setting/setting1.svg";
  
-import setting7 from "../public/images/setting/setting7.svg";
+// import setting7 from "../public/images/setting/setting7.svg";
 import setting3 from "../public/images/setting/setting3.svg";
 // import setting5 from "../public/images/setting/setting5.svg";
 import setting6 from "../public/images/setting/setting6.svg";

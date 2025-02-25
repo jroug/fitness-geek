@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from 'next/link';
+// import Image from "next/image";
+// import Link from 'next/link';
 // import Loading from "../components/Loading";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
