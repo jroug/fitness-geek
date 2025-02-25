@@ -5,7 +5,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
 
-      console.log(`${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
+      // console.log(`${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/add-meal/`);
 
       try {
 
@@ -20,7 +20,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             body: JSON.stringify(req.body)
         });
 
-        
         if (response.status === 400) {
             return res.status(400).json({ message: 'Empty fields' });
         }

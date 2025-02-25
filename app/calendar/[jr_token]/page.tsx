@@ -17,51 +17,7 @@ const getPublicCalendarData = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.
 const checkUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-user-calendar-token`;
 
 
-interface Meals{
-    f_title: string;
-    f_category: string;
-}
 
-
-interface Meals{
-    f_title: string;
-    f_category: string;
-}
-
-interface MealEvent {
-    start: Date;
-    end: Date;
-    title: string;
-    meals?: Meals[];
-    category?: string;
-}
-
-interface UserMealData {
-    datetime_of_meal: moment.MomentInput;
-    food_name: string;
-    category: string;
-    serving_size: number;
-    meal_quantity: number;
-    meal_quantity_type: string;
-}
-
-interface UserWeightData {
-    date_of_weighing: moment.MomentInput;
-    weight: string;
-}
-
-interface UserWorkoutData {
-    date_of_workout: moment.MomentInput;
-    w_title: string;
-    w_type: string;
-}
-
-interface CalendarData {
-    user_display_name: string;
-    meals_list: UserMealData[];
-    weight_list: UserWeightData[];
-    workout_list: UserWorkoutData[];
-}
 
 // interface CalendarPageProps {
 //     params: { jr_token: string };
@@ -72,7 +28,6 @@ export default function CalendarPage(props: { params: Params }) {
     const params = use(props.params);
     const  jr_token  = params.jr_token; // Extract the token from params
  
-
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
@@ -86,7 +41,7 @@ export default function CalendarPage(props: { params: Params }) {
             const res = await fetch(`${getPublicCalendarData}?jr_token=${jr_token}`, { method: 'GET' });
             const data: CalendarData = await res.json();
 
-            setUserDisplayName(data.user_display_name);
+            setUserDisplayName( data.user_display_name ? data.user_display_name : '' );
 
             if (!data || !data.meals_list || data.meals_list.length === 0) {
                 setUserWorkoutList({});
@@ -100,17 +55,19 @@ export default function CalendarPage(props: { params: Params }) {
                 const mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD hh A");
                 if (!acc[mealDateTime]) acc[mealDateTime] = [];
                 acc[mealDateTime].push({
+                    id:'0',
                     start: moment(item.datetime_of_meal).toDate(),
                     end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
                     title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ' - ' + Math.round(item.meal_quantity * item.serving_size) + 'gr'}`,
                     category: item.category
                 });
                 return acc;
-            }, {} as Record<string, MealEvent[]>);
+            }, {} as Record<string, MealGrouped[]>);
 
             const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
+                id: '',
                 title: moment(group[0].start).format("hh:mm a"),
-                meals: group.map(event => ({ f_title: event.title, f_category: event.category || "" })),
+                meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category || "" })),
                 start: adjustTime(group[0].start),
                 end: group[0].end,
             }));
@@ -123,6 +80,7 @@ export default function CalendarPage(props: { params: Params }) {
             const transformedWorkoutData: Record<string, UserWorkoutData> = {};
             data.workout_list.forEach((val) => {
                 transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
+                    id:0,
                     w_title: val.w_title,
                     w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
                     date_of_workout: val.date_of_workout

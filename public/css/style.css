@@ -3250,7 +3250,7 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .rbc-event{
     background: #7FD83B !important;
-
+    cursor: default !important;
 }
 .rbc-label.rbc-time-header-gutter{
     min-width: 94px !important;
