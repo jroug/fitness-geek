@@ -5,13 +5,14 @@ import { EventProps } from 'react-big-calendar';
 
 interface CustomEventProps extends EventProps {
     event: {
-        id?:string;
+        id?: string;
         title?: string;
         meals?: Meals[];
     };
+    cameFrom: string;
 }
 
-const CustomEvent: React.FC<CustomEventProps> = ({ event }) => {
+const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom }) => {
     const handleEventDelete = async () => {
         const confirmed = confirm('Are you sure?');
         if (confirmed) {
@@ -40,16 +41,20 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event }) => {
         }
     };
 
+    // console.log(cameFrom);
     return (
-        <div key={`${Math.random()}`} className="custom-event">
-            {event.id && (
-                <div key={`meal-${event.id}-${Math.random()}`} className="absolute right-0 p-[4px] bg-[red] rounded-[35px] leading-[12px]">
+        <div className="custom-event">
+            {cameFrom === 'private' && event.id
+                ?
+                <div key={`meal-${event.id}`} className="absolute right-0 p-[4px] bg-[red] rounded-[35px] leading-[12px]">
                     <button className="block mt-[-2px]" onClick={handleEventDelete}>x</button>
                 </div>
-            )}
+                :
+                <></>
+             }
             <h2 className="w-100 text-center">{event.title}</h2>
             {event.meals && event.meals.length > 0 && event.meals.map((meal, idx) => (
-                <div key={`meal-${idx}-${Math.random()}`} className={"event-description " + meal.f_category}>
+                <div key={`meal-${idx}`} className={"event-description " + meal.f_category}>
                     {meal.f_title}
                 </div>
             ))}

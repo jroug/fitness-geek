@@ -107,7 +107,27 @@ const CalendarHomePage: React.FC = () => {
 
         // User meal data
         const groupedData = data.meals_list.reduce((acc, item) => {
-            const mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD hh A");
+            
+            const hour = Number(moment(item.datetime_of_meal).format("HHmm"));
+            let mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD");
+            if (hour < 900) { // Before 9am
+                mealDateTime += "9 AM";
+            } else if (hour < 1130) {  // Before 11:30am
+                mealDateTime += "9 AM";
+            } else if (hour < 1400) {  // Before 2pm 
+                mealDateTime += "12 PM";
+            } else if (hour < 1630) {  // Before 4:30pm
+                mealDateTime += "2 PM";
+            } else if (hour < 1900) {  // Before 7pm
+                mealDateTime += "5 PM";
+            } else if (hour < 2130) {  // Before 9:30pm
+                mealDateTime += "7 PM";
+            } else {
+                mealDateTime += "10 PM";
+            }
+            // if ( moment(item.datetime_of_meal).format("YYYY-MM-DD") === "2025-02-26" ) {
+            //     console.log('hour', hour);
+            // }
             if (!acc[mealDateTime]) acc[mealDateTime] = [];
             acc[mealDateTime].push({
                 id: String(item.ID),
@@ -118,7 +138,7 @@ const CalendarHomePage: React.FC = () => {
             });
             return acc;
         }, {} as Record<string, MealGrouped[]>);
- 
+        // console.log(groupedData);
         const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
             id: group.map(event => event.id).join(','), 
             title: moment(group[0].start).format("hh:mm a"),
@@ -126,7 +146,7 @@ const CalendarHomePage: React.FC = () => {
             start: adjustTime(group[0].start),
             end: group[0].end,
         }));
- 
+        // console.log(transformedMealData);
         // User weight data
         const transformedWeightData: Record<string, string> = {};
         data.weight_list.forEach((val) => {
@@ -203,7 +223,7 @@ const CalendarHomePage: React.FC = () => {
                             min={new Date(new Date().setHours(9, 0))}
                             max={new Date(new Date().setHours(23, 59))}
                             components={{
-                                event: CustomEvent,  
+                                event: (props) => <CustomEvent {...props} cameFrom="private" />,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
                                 timeGutterWrapper: CustomTimeGutter,  
                             }}
