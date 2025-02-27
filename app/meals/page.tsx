@@ -32,6 +32,10 @@ interface MealInputData {
 }
 
 const AddMeal: React.FC = () => {
+
+    const timeSuccess = 1900;
+    const timeError = 4000;
+
     const router = useRouter();
 
     const getCurrentDateTime = () => {
@@ -169,7 +173,7 @@ const AddMeal: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_meal_added) {
-            setPopupData({ title: 'Message', message: data.message, time:1900, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:timeSuccess, show_popup: true });
             setDateTime('');
             setMealQuantity(1);
             setMealQuantityType('N');
@@ -187,8 +191,10 @@ const AddMeal: React.FC = () => {
             });
             setMealComments('');
             setMealType('');
+            return true;
         } else {
-            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:4000, show_popup: true });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:timeError, show_popup: true });
+            return false;
         }
     };
 
@@ -213,7 +219,7 @@ const AddMeal: React.FC = () => {
         setMealComments(e.target.value);
     };
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         let doSubmit = true;
 
@@ -239,7 +245,13 @@ const AddMeal: React.FC = () => {
                 meal_quantity_type: mealQuantityType,
                 comments: mealComments,
             };
-            addMealToDB(input_data);
+            // Wait for addMealToDB to complete and return true before scrolling
+            const success = await addMealToDB(input_data);
+            if (success) {
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                }, timeSuccess);
+            }
         } else {
             // alert('Complete all necessary fields!');
         }
