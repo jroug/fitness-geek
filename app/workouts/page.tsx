@@ -9,6 +9,8 @@ import Header from "@/components/Header";
 import InnerLink from '@/components/InnerLink';
 // import Popup from "@/components/Popup";
 import Toast from "@/components/Toast";
+import { globalSettings } from "@/lib/globalSettings";
+
 
 // Define interfaces for meal data
 interface WorkoutSuggestion {
@@ -88,7 +90,7 @@ const AddWorkout: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_workout_added) {
-            setPopupData({ title: 'Message', message: data.message, time:1900, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:globalSettings.frmTimeSuccess, show_popup: true });
             setDateTime('');
             setWorkoutSelected({
                 id: "",
@@ -99,8 +101,10 @@ const AddWorkout: React.FC = () => {
                 w_time: ""
             });
             setWorkoutComments('');
+            return true;
         } else {
-            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:4000, show_popup: true });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
+            return false;
         }
     };
 
@@ -127,7 +131,7 @@ const AddWorkout: React.FC = () => {
         setWorkoutComments(e.target.value);
     };
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         let doSubmit = true;
 
@@ -151,7 +155,12 @@ const AddWorkout: React.FC = () => {
                 workout_id: workoutSelected.id,
                 comments: workoutComments
             };
-            addWorkoutToDB(input_data);
+            const success = await addWorkoutToDB(input_data);
+            if (success) {
+                setTimeout(() => {
+                    window.scrollTo(0, 0);
+                }, globalSettings.frmTimeSuccess);
+            }
         } else {
             alert('Complete all necessary fields!');
         }

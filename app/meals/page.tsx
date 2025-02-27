@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import InnerLink from "@/components/InnerLink";
 import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
+import { globalSettings } from '@/lib/globalSettings';
 
 // Define interfaces for meal data
 interface MealSuggestion {
@@ -32,10 +33,7 @@ interface MealInputData {
 }
 
 const AddMeal: React.FC = () => {
-
-    const timeSuccess = 1900;
-    const timeError = 4000;
-
+ 
     const router = useRouter();
 
     const getCurrentDateTime = () => {
@@ -173,7 +171,7 @@ const AddMeal: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_meal_added) {
-            setPopupData({ title: 'Message', message: data.message, time:timeSuccess, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time:globalSettings.frmTimeSuccess, show_popup: true });
             setDateTime('');
             setMealQuantity(1);
             setMealQuantityType('N');
@@ -193,7 +191,7 @@ const AddMeal: React.FC = () => {
             setMealType('');
             return true;
         } else {
-            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:timeError, show_popup: true });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
             return false;
         }
     };
@@ -250,7 +248,7 @@ const AddMeal: React.FC = () => {
             if (success) {
                 setTimeout(() => {
                     window.scrollTo(0, 0);
-                }, timeSuccess);
+                }, globalSettings.frmTimeSuccess);
             }
         } else {
             // alert('Complete all necessary fields!');
