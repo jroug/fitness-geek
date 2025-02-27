@@ -253,6 +253,21 @@ li.list.active,
     border-bottom: 2px solid var(--9, #F5F5F5) !important;
 }
 
+.border-error{
+    border: 2px solid #f06a6a !important;
+}
+.border-bottom-error{
+ border-bottom: 2px solid #f06a6a !important;
+ padding-bottom: 16px;
+}
+.border-bottom1-error{
+    border-bottom: 1px solid #f06a6a !important;
+}
+.border-bottom2-error{
+    border-bottom: 2px solid #f06a6a !important;
+}
+
+
 /************************ 2.Delete Deactive Account Css ***************************/
 header {
     background: white;
