@@ -37,7 +37,7 @@ const SideBar = () => {
 		
 		if (res.ok) {
 			// console.log('Logged out successfully');
-			router.push('/logout');
+			router.push('/users/logout');
 		} else {
 			alert('Logout failed');
 		}
