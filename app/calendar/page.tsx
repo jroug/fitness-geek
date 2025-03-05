@@ -209,7 +209,7 @@ const CalendarHomePage: React.FC = () => {
                     </p>
                 )}
             </div>
-            <div className="calendar-main-wrapper top-210px" >
+            <div className="calendar-main-wrapper top-175px" >
                 <div className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
                         <Calendar
