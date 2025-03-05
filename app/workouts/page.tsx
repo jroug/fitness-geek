@@ -179,7 +179,7 @@ const AddWorkout: React.FC = () => {
                             </div> */}
                             <form className="feedback-form" onSubmit={handleFormSubmit}>
                                 <div className="addmeal-div feedback-email">
-                                    <label htmlFor="datetime-local" className="custom-lbl-feedback">Date & Time of meal*</label>
+                                    <label htmlFor="datetime-local" className="custom-lbl-feedback">Date & Time of workout*</label>
                                     <input 
                                         type="datetime-local" 
                                         id="datetime-local" 
@@ -189,7 +189,7 @@ const AddWorkout: React.FC = () => {
                                     />
                                 </div>
                                 <div className="addmeal-div feedback-email">
-                                    <label htmlFor="meal-short" className="custom-lbl-feedback">What did I ate?*</label>
+                                    <label htmlFor="meal-short" className="custom-lbl-feedback">Workout*</label>
                                     {/* <input type="text" id="meal-short" placeholder="Write here" className="sm-font-sans border mt-8" autoComplete="off" /> */}
                                     <Autocomplete
                                         className={"Autocomplete-green " + mealTitleErrorClass }

@@ -3222,7 +3222,7 @@ ul.nav.nav-tabs.focus-tab-main{
 
 /* react big calendar timeslot wrapper */
 .rbc-time-slot {
-    min-height: 200px;  
+    min-height: 150px;  
 }
 
 /* react big calendar event inside bubble */
@@ -3240,10 +3240,10 @@ ul.nav.nav-tabs.focus-tab-main{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 10px;
+    padding: 10px 9px 10px 10px;
     font-size: 12px;
     justify-content: center;
-    height: 200px;
+    height: 150px;
 }
 .custom-time-slot strong {
     font-size: 14px;
