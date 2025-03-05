@@ -3223,12 +3223,13 @@ ul.nav.nav-tabs.focus-tab-main{
 /* react big calendar timeslot wrapper */
 .rbc-time-slot {
     min-height: 150px;  
+    max-height: 150px;  
 }
 
 /* react big calendar event inside bubble */
 .rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event{
     min-height: 90px !important;
-    height: 196px !important;
+    height: 146px !important; /* height-cell */
     border: 0 !important;
     left:2px !important;
     width: calc(100% - 2px) !important;
