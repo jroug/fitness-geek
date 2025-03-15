@@ -3423,3 +3423,7 @@ button.green-btn{
     line-height: 24px;
     text-transform: uppercase;
 }
+
+.rbc-toolbar {
+    flex-direction: row !important;
+}
