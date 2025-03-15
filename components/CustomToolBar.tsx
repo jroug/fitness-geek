@@ -1,10 +1,15 @@
 import React from "react";
-import { Views } from "react-big-calendar";
+import { NavigateAction, Views, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Link from "next/link";
 
-const CustomToolBar = (props: any) => {
-  const { label, onNavigate, onView } = props;
+interface CustomToolBarProps {
+    label: string;
+    onNavigate: (action: NavigateAction) => void;
+    onView: (view: View) => void;
+  }
+
+const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView }) => {
 
   return (
     <div className="rbc-toolbar">
@@ -31,9 +36,6 @@ const CustomToolBar = (props: any) => {
                 + workouts
             </Link>
       </span>
-
-
-
 
     </div>
   );
