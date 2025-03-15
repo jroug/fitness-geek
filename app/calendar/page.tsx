@@ -11,6 +11,7 @@ import Loading from "@/components/Loading";
 import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
+import CustomToolBar from '@/components/CustomToolBar';
 import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 
@@ -199,7 +200,6 @@ const CalendarHomePage: React.FC = () => {
                         {isPublished ? 'Unpublish' : 'Publish'}
                     </button>
                 </div>
-                <br />
                 {isPublished && (
                     <p>
                         <span>Public URL: </span>
@@ -208,6 +208,23 @@ const CalendarHomePage: React.FC = () => {
                         </Link>
                     </p>
                 )}
+                {/* <div className="w-full text-right grid grid-cols-3 gap-4 p-3">
+                    <div  className="text-center" >
+                        <Link href="/meals" className="green-link-btn"  >
+                            + Meal
+                        </Link>
+                    </div>
+                    <div className="text-center" >
+                        <Link href="/meals" className="green-link-btn"  >
+                            + Weighing
+                        </Link>
+                    </div>
+                    <div className="text-center" >
+                        <Link href="/meals" className="green-link-btn" >
+                            + workouts
+                        </Link>
+                    </div>
+                </div> */}
             </div>
             <div className="calendar-main-wrapper top-175px" >
                 <div className="pb-20 calendar-main mx-auto" id="calendar-main">
@@ -225,7 +242,8 @@ const CalendarHomePage: React.FC = () => {
                             components={{
                                 event: (props) => <CustomEvent {...props} cameFrom="private" />,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
-                                timeGutterWrapper: CustomTimeGutter,  
+                                timeGutterWrapper: CustomTimeGutter, 
+                                toolbar: CustomToolBar
                             }}
                         />
                     </div>

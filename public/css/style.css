@@ -3362,6 +3362,9 @@ button.green-btn{
 .top-175px{
     top:175px;
 }
+.top-195px{
+    top:195px;
+}
 .top-210px{
     top:210px;
 }
@@ -3405,4 +3408,18 @@ button.green-btn{
 
 .inner-link-wrap p{
     line-height: 25px;
+}
+
+.green-link-btn{
+    padding:10px;
+    margin:0 5px;
+    background-color: var(--2, #7FD83B);
+    border-radius:12px;
+    color:#ffffff;
+    font-family: "Zen Dots";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: uppercase;
 }
