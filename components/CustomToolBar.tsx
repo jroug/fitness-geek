@@ -29,11 +29,11 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView
             <Link href="/meals" className="green-link-btn"  >
                 + Meal
             </Link>
-            <Link href="/meals" className="green-link-btn"  >
-                + Weighing
+            <Link href="/weighing" className="green-link-btn"  >
+                + Weighing  
             </Link>
-            <Link href="/meals" className="green-link-btn" >
-                + workouts
+            <Link href="/workouts" className="green-link-btn" >
+                + workouts 
             </Link>
       </span>
 
