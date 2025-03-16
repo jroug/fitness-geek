@@ -15,6 +15,9 @@ import CustomToolBar from '@/components/CustomToolBar';
 import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 
+
+moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
+
 const localizer = momentLocalizer(moment);
 
 const calendarDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-calendar-data`;
