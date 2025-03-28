@@ -118,9 +118,13 @@ const AddMeal: React.FC = () => {
 
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
+    const [quantityErrorClass, setQuantityErrorClass] = useState('');
+
+    
+
     const [dateTime, setDateTime] = useState<string>(currentDateTime);
     const [mealType, setMealType] = useState(getMealTypeFromTime(currentDateTime));
-    const [mealQuantity, setMealQuantity] = useState<number>(1);
+    const [mealQuantity, setMealQuantity] = useState<number>(1) || '';
     const [mealQuantityType, setMealQuantityType] = useState<string>('N');
     const [mealSelected, setMealSelected] = useState<MealSuggestion>({
         id: "",
@@ -235,6 +239,13 @@ const AddMeal: React.FC = () => {
             setDateTimeErrorClass("");
         }
 
+        if (!mealQuantity) {
+            doSubmit = false;
+            setQuantityErrorClass("error");
+        } else {
+            setQuantityErrorClass("");
+        }
+
         if (doSubmit) {
             const input_data: MealInputData = {
                 datetime_of_meal: dateTime,
@@ -301,50 +312,52 @@ const AddMeal: React.FC = () => {
                                     </div>
                                 </div>
 
-                                <div className="grid grid-cols-[4fr,1fr] gap-3" >
+                                <div className="addmeal-div feedback-email">
+                                    <label htmlFor="meal-short" className="custom-lbl-feedback">What did I eat?*</label>
+                                    <Autocomplete
+                                        className={`Autocomplete-green ${mealTitleErrorClass}`}
+                                        value={mealSelected}
+                                        options={suggestionMeals}
+                                        getOptionLabel={(option) => (option.food_name ? option.food_name + ' - ' + Math.round(parseInt(option.serving_size)) + 'gr' : '') }
+                                        onChange={handleMealSuggestionsInputChange}
+                                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                                        renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+                                    />
+                                </div>
+                                
+                                <div className="grid grid-cols-2 gap-3" >
                                     <div className="addmeal-div feedback-email">
-                                        <label htmlFor="meal-short" className="custom-lbl-feedback">What did I eat?*</label>
-                                        <Autocomplete
-                                            className={`Autocomplete-green ${mealTitleErrorClass}`}
-                                            value={mealSelected}
-                                            options={suggestionMeals}
-                                            getOptionLabel={(option) => (option.food_name ? option.food_name + ' - ' + Math.round(parseInt(option.serving_size)) + 'gr' : '') }
-                                            onChange={handleMealSuggestionsInputChange}
-                                            isOptionEqualToValue={(option, value) => option.id === value.id}
-                                            renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
-                                        />
+                                        <label htmlFor="quantity-type" className="custom-lbl-feedback">Type*</label>
+                                        <div className="custom-select-subject">
+                                            <select 
+                                                id="quantity-type" 
+                                                value={mealQuantityType} 
+                                                onChange={(e) => setMealQuantityType(e.target.value)}
+                                                className="arrow-icon sm-font-sans border-green-1"
+                                            >
+                                                <option value="N">Number</option>
+                                                <option value="GR">Grams</option>
+                                            </select>
+                                        </div>
                                     </div>
                                     <div className="addmeal-div feedback-email">
                                         <label htmlFor="meal-quantity" className="custom-lbl-feedback">Quan.*</label>
                                         <div className="custom-select-subject">
-                                            <select 
+                                            <input 
+                                                type="number"
                                                 id="meal-quantity" 
                                                 value={mealQuantity} 
-                                                onChange={(e) => setMealQuantity(Number(e.target.value))} 
-                                                className="arrow-icon sm-font-sans border-green-1"
-                                            >
-                                                {Array.from({ length: 20 }, (_, i) => (i + 1) * 0.5).map(value => (
-                                                    <option key={value} value={value}>{value}</option>
-                                                ))}
-                                            </select>
+                                                onChange={(e) => {
+                                                    const value = e.target.value;
+                                                    setMealQuantity(value === '' ? ('' as unknown as number) : Number(value));
+                                                  }}
+                                                  className={`sm-font-sans border-green-1 ${quantityErrorClass}`}
+                                            />
                                         </div>
                                     </div>
                                 </div>
 
-                                <div className="addmeal-div feedback-email hidden">
-                                    <label htmlFor="quantity-type" className="custom-lbl-feedback">Type*</label>
-                                    <div className="custom-select-subject">
-                                        <select 
-                                            id="quantity-type" 
-                                            value={mealQuantityType} 
-                                            onChange={(e) => setMealQuantityType(e.target.value)}
-                                            className="arrow-icon sm-font-sans border-green-1"
-                                        >
-                                            <option value="N">Number</option>
-                                            <option value="GR">Grams</option>
-                                        </select>
-                                    </div>
-                                </div>
+
 
                                 <div className="addmeal-div">
                                     <label htmlFor="meal-details" className="custom-lbl-feedback">Details</label>

@@ -3157,6 +3157,8 @@ ul.nav.nav-tabs.focus-tab-main{
     border-radius: 12px;
 }
 
+ 
+
 .custom-accordion {
     max-width: 600px;
     margin: 20px auto;
@@ -3218,20 +3220,29 @@ ul.nav.nav-tabs.focus-tab-main{
     width:150px;
 }
 
+.event-title{
+    padding:4px 0;
+    border-bottom:1px solid black;
+    color:rgb(21, 2, 2);
+    font-style: italic;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
 
-
+:root {
+    --event-height: 200px;
+  }
 /* react big calendar timeslot wrapper */
 .rbc-time-slot {
-    min-height: 150px;  
-
+    min-height: var(--event-height);   
 }
 
  
 
 /* react big calendar event inside bubble */
 .rbc-day-slot .rbc-event, .rbc-day-slot .rbc-background-event{
-    min-height: 90px !important;
-    height: 146px !important; /* height-cell */
+    height: calc(var(--event-height) - 5px) !important;
     border: 0 !important;
     left:2px !important;
     width: calc(100% - 2px) !important;
@@ -3246,7 +3257,7 @@ ul.nav.nav-tabs.focus-tab-main{
     padding: 10px 9px 10px 10px;
     font-size: 12px;
     justify-content: center;
-    height: 150px;
+    height: var(--event-height);   
 }
 .custom-time-slot strong {
     font-size: 14px;
@@ -3267,7 +3278,8 @@ ul.nav.nav-tabs.focus-tab-main{
     font-family: "DM Sans", sans-serif;
 }
 .rbc-event{
-    background: #7FD83B !important;
+    /* background: #7FD83B !important; */
+    background: #7fd83b54 !important;
     cursor: default !important;
 }
 .rbc-label.rbc-time-header-gutter{
@@ -3341,8 +3353,17 @@ button.green-btn{
     /* left: 50%;
     transform: translate(-50%, 0);
     width: 1000px; */
-    width: 1400px;
+    /* width: 1400px; */
+    width: 1860px;
 }
+.event-description{
+    border-bottom:1px dotted black;
+    color:black;
+    padding:2px;
+    font-weight: 500;
+}
+
+ 
 .padding-wrapper{
     padding:10px;
     margin-bottom:10px;

@@ -9,6 +9,7 @@ declare global {
         id: string;
         f_title: string;
         f_category: string;
+        f_comments: string;
     }
 
     interface MealGrouped {
@@ -17,6 +18,7 @@ declare global {
         end: Date;
         title: string;
         category: string;
+        comments: string;
     }
 
     interface MealEvent {
@@ -42,6 +44,7 @@ declare global {
         serving_size: number;
         meal_quantity: number;
         meal_quantity_type: string;
+        comments: string;
     }
 
     interface UserWeightData {

@@ -2,6 +2,7 @@
  
 import React, { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from 'next/navigation';
+import { checkAuth } from "@/lib/checkAuth";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -11,22 +12,27 @@ import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
 import { adjustTime } from "@/lib/adjustTime";
 
-const localizer = momentLocalizer(moment);
+
+ 
+
 
 const getPublicCalendarData = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-public-calendar-data`;
 const checkUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-user-calendar-token`;
 
 
 
-
 // interface CalendarPageProps {
 //     params: { jr_token: string };
 // }
+
 type Params = Promise<{ jr_token: string }>
 
 export default function CalendarPage(props: { params: Params }) {
+
+    const localizer = momentLocalizer(moment);
+    
     const params = use(props.params);
-    const  jr_token  = params.jr_token; // Extract the token from params
+    const jr_token  = params.jr_token; // Extract the token from params
  
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
@@ -34,6 +40,10 @@ export default function CalendarPage(props: { params: Params }) {
     
     const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
     const [userDisplayName, setUserDisplayName] = useState<string>('');
+
+    const [isCommentsPublished, setIsCommentsPublished] = useState<boolean>(false);
+    const [isCurrentUserViewing, setIsCurrentUserViewing] = useState<boolean>(false);
+
     const router = useRouter();
 
     const getUserMealsANDNameFromToken = useCallback(async (): Promise<void> => {
@@ -78,9 +88,10 @@ export default function CalendarPage(props: { params: Params }) {
                     id: String(item.ID),
                     start: moment(item.datetime_of_meal).toDate(),
                     end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                    //title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ' - ' + Math.round(item.meal_quantity * Number(item.serving_size)) + 'gr'}`,
-                    title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
-                    category: item.category
+                    title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ': ' + Math.round(item.meal_quantity * Number(item.serving_size)) + 'gr'}`,
+                    // title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
+                    category: item.category,
+                    comments: item.comments
                 });
                 return acc;
             }, {} as Record<string, MealGrouped[]>);
@@ -88,7 +99,7 @@ export default function CalendarPage(props: { params: Params }) {
             const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
                 id: group.map(event => event.id).join(','), 
                 title: moment(group[0].start).format("hh:mm a"),
-                meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category || "" })),
+                meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category, f_comments: event.comments || "" })),
                 start: adjustTime(group[0].start),
                 end: group[0].end,
             }));
@@ -117,7 +128,21 @@ export default function CalendarPage(props: { params: Params }) {
         }
     }, [jr_token]);
 
+    const handlePublishingCommentsForCalendar = () => {
+        setIsCommentsPublished(!isCommentsPublished);
+    }
+
     useEffect(() => {
+        const checkCurrentUser = async () => {
+            const ret = await checkAuth(router);
+            if (ret === true) {
+                setIsCurrentUserViewing(true);
+            }else{
+                setIsCurrentUserViewing(false);
+            }
+        }
+
+
         const getCalendarData = async () => {
             try {
                 const res = await fetch(`${checkUserCalendarTokenUrl}?jr_token=${jr_token}`, {
@@ -135,6 +160,7 @@ export default function CalendarPage(props: { params: Params }) {
                 console.error("Error checking calendar token:", error);
             }
         };
+        checkCurrentUser();
         getCalendarData();
     }, [router, jr_token, getUserMealsANDNameFromToken]);
 
@@ -148,8 +174,19 @@ export default function CalendarPage(props: { params: Params }) {
         <main className="site-content">
             <div className="fixed w-full left-0 top-10" >
                 <h2 className="text-center font-bold text-2xl publish-btn-wrapper mx-auto" >{userDisplayName} Diet Calendar</h2>
+                <div className="w-full text-center mt-[10px]" >
+                    {
+                        isCurrentUserViewing
+                        ?
+                        <button type="button" className="green-btn" onClick={handlePublishingCommentsForCalendar}>
+                            {isCommentsPublished ? 'Close Comments' : 'Open Comments'}
+                        </button>
+                        :
+                        <></>
+                    }
+                </div>
             </div>
-            <div className="calendar-main-wrapper top-110px" >
+            <div className="calendar-main-wrapper top-175px" >
                 <div className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
                         <Calendar
@@ -157,15 +194,25 @@ export default function CalendarPage(props: { params: Params }) {
                             defaultDate={new Date()}
                             defaultView="week"
                             events={userMealsList}
-                            views={{ day: true, week: true }}
+                            views={{ 
+                                day: true, 
+                                week: true,
+                            }}
                             step={150}
                             timeslots={1}
                             min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
                             max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
+                            formats={{
+                                dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
+                                  const startFormat = localizer?.format(start, 'MMMM D', culture)
+                                  const endFormat = localizer?.format(end, 'D, YYYY', culture)
+                                  return `${startFormat} – ${endFormat}`
+                                }
+                            }}
                             components={{
-                                event: (props) => <CustomEvent {...props} cameFrom="public" />,  
+                                event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished}/>,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
-                                timeGutterWrapper: CustomTimeGutter,  
+                                timeGutterWrapper: CustomTimeGutter,     
                             }}
                         />
                     </div>

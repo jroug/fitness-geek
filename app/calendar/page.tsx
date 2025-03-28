@@ -137,9 +137,10 @@ const CalendarHomePage: React.FC = () => {
                 id: String(item.ID),
                 start: moment(item.datetime_of_meal).toDate(),
                 end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                // title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ' - ' + Math.round(item.meal_quantity * Number(item.serving_size)) + 'gr'}`,
-                title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
-                category: item.category
+                title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ': ' + Math.round(item.meal_quantity * Number(item.serving_size)) + 'gr'}`,
+                // title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
+                category: item.category,
+                comments: item.comments,
             });
             return acc;
         }, {} as Record<string, MealGrouped[]>);
@@ -147,7 +148,7 @@ const CalendarHomePage: React.FC = () => {
         const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
             id: group.map(event => event.id).join(','), 
             title: moment(group[0].start).format("hh:mm a"),
-            meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category || "" })),
+            meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category, f_comments: event.comments || "" })),
             start: adjustTime(group[0].start),
             end: group[0].end,
         }));
@@ -243,8 +244,15 @@ const CalendarHomePage: React.FC = () => {
                             timeslots={1}
                             min={new Date(new Date().setHours(9, 0))}
                             max={new Date(new Date().setHours(23, 59))}
+                            formats={{
+                                dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
+                                  const startFormat = localizer?.format(start, 'MMMM D', culture)
+                                  const endFormat = localizer?.format(end, 'D, YYYY', culture)
+                                  return `${startFormat} – ${endFormat}`
+                                }
+                            }}
                             components={{
-                                event: (props) => <CustomEvent {...props} cameFrom="private" />,  
+                                event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} />,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
                                 timeGutterWrapper: CustomTimeGutter, 
                                 toolbar: CustomToolBar
