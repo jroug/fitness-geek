@@ -3314,6 +3314,18 @@ button.green-btn{
     background: var(--2, #7FD83B);
 }
 
+button.green-btn-small{
+    font-family: "Zen Dots";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: var(--1, #FFF);
+    padding: 10px 24px;
+    border-radius: 12px;
+    background: var(--2, #7FD83B);
+}
+
 .custom-text-cal-header:first-child{
     margin-top:10px;
 }
@@ -3447,4 +3459,12 @@ button.green-btn{
 
 .rbc-toolbar {
     flex-direction: row !important;
+}
+
+.next-error-h1{
+    color: var(--2, #000000);
+}
+
+.next-error-h1 + div h2{
+    color: var(--2, #000000);
 }

@@ -13,18 +13,22 @@ type ApiResponse = JR_Token[] | ErrorResponse;
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'GET') {
         try {
- 
-            const checkPublicCalendarToken = `${process.env.WORDPRESS_API_URL}/jr_tokens/v1/calendar/token/check?jr_token=${req.query.jr_token}`;
-            // console.log(checkPublicCalendarToken);
-            const response = await fetch(checkPublicCalendarToken,{
+            const token = req.cookies.token;
+            if (!token) {
+                return res.status(401).json({ message: 'Unauthorized: No token provided' });
+            }
+
+            const createPublicCalendarToken = `${process.env.WORDPRESS_API_URL}/jr_tokens/v1/calendar/token/create`;
+            const response = await fetch(createPublicCalendarToken,{
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
                 },
             });
  
             if (!response.ok) {
-                return res.status(401).json({ message: 'Authentication failed (check-user-calendar)' });
+                return res.status(401).json({ message: 'Authentication failed (create-user-calendar-token)' });
             }
 
             const data: JR_Token[] = await response.json();

@@ -2,7 +2,7 @@
  
 import React, { useState, useEffect, useCallback, use } from "react";
 import { useRouter } from 'next/navigation';
-import { checkAuth } from "@/lib/checkAuth";
+import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -18,7 +18,8 @@ import { adjustTime } from "@/lib/adjustTime";
 
 const getPublicCalendarData = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-public-calendar-data`;
 const checkUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-user-calendar-token`;
-
+const calendarCommentsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/calendar-comments`;
+const checkWhoIsWatchingCalendarUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-calendar-who-is-watching`;
 
 
 // interface CalendarPageProps {
@@ -128,17 +129,42 @@ export default function CalendarPage(props: { params: Params }) {
         }
     }, [jr_token]);
 
-    const handlePublishingCommentsForCalendar = () => {
-        setIsCommentsPublished(!isCommentsPublished);
+    const handlePublishingCommentsForCalendar = async () => {
+        const action = isCommentsPublished ? 'closeComments' : 'openComments';
+        try {
+            const res = await fetch(`${calendarCommentsUrl}?action=${action}`, {
+                method: 'GET',
+                credentials: 'include',
+            });
+            const data = await res.json();
+
+            if (data.action_suc === true) {
+                setIsCommentsPublished(data.status);
+            } else {
+                console.error("Error :", data.message);
+                setIsCommentsPublished(false);
+            }
+        } catch (error) {
+            console.error("Error checking calendar token:", error);
+        }
     }
 
     useEffect(() => {
-        const checkCurrentUser = async () => {
-            const ret = await checkAuth(router);
-            if (ret === true) {
-                setIsCurrentUserViewing(true);
-            }else{
-                setIsCurrentUserViewing(false);
+        const getCalendarCommentsStatus = async () => {
+            try {
+                const res = await fetch(`${calendarCommentsUrl}?action=getCommentsStatus&jr_token=${jr_token}`, {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+                const data = await res.json();
+                if (data.action_suc === true) {
+                    setIsCommentsPublished(data.status);
+                } else {
+                    console.error("Error :", data.message);
+                    setIsCommentsPublished(false);
+                }
+            } catch (error) {
+                console.error("Error:", error);
             }
         }
 
@@ -152,16 +178,28 @@ export default function CalendarPage(props: { params: Params }) {
                 const data = await res.json();
 
                 if (data.jr_token === "valid") {
+                    setIsCurrentUserViewing(!data.is_guest_watching);
                     getUserMealsANDNameFromToken();
                 } else {
-                    router.push('/');
+                    router.push('/404');
                 }
             } catch (error) {
                 console.error("Error checking calendar token:", error);
             }
         };
-        checkCurrentUser();
-        getCalendarData();
+
+
+
+        const prepareCalendar = async () => {
+            const ret = await checkAuthAndRedirect(router);
+            if (ret === true) {
+                await getCalendarData();
+                await getCalendarCommentsStatus();
+            }
+        };
+        prepareCalendar();
+
+ 
     }, [router, jr_token, getUserMealsANDNameFromToken]);
 
     if (loadingMeals) {
@@ -178,9 +216,12 @@ export default function CalendarPage(props: { params: Params }) {
                     {
                         isCurrentUserViewing
                         ?
-                        <button type="button" className="green-btn" onClick={handlePublishingCommentsForCalendar}>
-                            {isCommentsPublished ? 'Close Comments' : 'Open Comments'}
+                        <>
+                        <span>Comments are {isCommentsPublished ? 'Open' : 'Close'}</span>,&nbsp;&nbsp;
+                        <button type="button" className="green-btn-small" onClick={handlePublishingCommentsForCalendar}>
+                            {isCommentsPublished ? 'Close them' : 'Open them'}
                         </button>
+                        </>
                         :
                         <></>
                     }
