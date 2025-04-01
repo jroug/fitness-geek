@@ -30,6 +30,7 @@ type Params = Promise<{ jr_token: string }>
 
 export default function CalendarPage(props: { params: Params }) {
 
+    moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
     const localizer = momentLocalizer(moment);
     
     const params = use(props.params);
