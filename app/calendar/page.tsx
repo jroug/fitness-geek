@@ -196,7 +196,7 @@ const CalendarHomePage: React.FC = () => {
         return <Loading />;
     }
 
-    const handleCopyLink = (link) => {
+    const handleCopyLink = (link:string) => {
         navigator.clipboard.writeText(link).then(() => {
             alert('Link copied to clipboard!');
         }).catch(err => {
