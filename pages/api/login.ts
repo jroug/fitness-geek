@@ -37,7 +37,18 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
             const data = await response.json();
-            const { token } = data;
+
+            // console.log('data',data);
+            const { token, roles } = data;
+
+            if (!token) {
+                return res.status(401).json({ message: 'Authentication failed' });
+            }
+            
+            // Check if the user has the required role
+            if (!roles || !Array.isArray(roles) || !roles.includes('subscriber')) {
+                return res.status(401).json({ message: 'Unauthorized: Incorrect user role' });
+            }
 
             // Set token in cookies
             res.setHeader('Set-Cookie', `token=${token}; Path=/; HttpOnly; SameSite=Strict;`);

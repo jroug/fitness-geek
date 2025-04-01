@@ -1,14 +1,15 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-interface JR_Token {
+interface JR_Tokens {
     jr_token: string;
+    login_token: string;
 }
 
 interface ErrorResponse {
     message: string;
 }
 
-type ApiResponse = JR_Token[] | ErrorResponse;
+type ApiResponse = JR_Tokens | ErrorResponse;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'GET') {
@@ -26,12 +27,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     'Authorization': `Bearer ${token}`,
                 },
             });
- 
+
             if (!response.ok) {
-                return res.status(401).json({ message: 'Authentication failed (create-user-calendar-token)' });
+                return res.status(401).json({ message: 'Authentication failed (create-user-calendar-tokens)' });
             }
 
-            const data: JR_Token[] = await response.json();
+            const data: JR_Tokens = await response.json();
 
             return res.status(200).json(data);
 

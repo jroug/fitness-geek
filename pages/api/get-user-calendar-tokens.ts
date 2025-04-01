@@ -26,7 +26,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     'Authorization': `Bearer ${token}`,
                 },
             });
-     
+            // console.log('createPublicCalendarToken', fetchPublicCalendarToken);
             if (!response.ok) {
                 return res.status(401).json({ message: 'Authentication failed (get-user-calendar)' });
             }

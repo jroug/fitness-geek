@@ -41,7 +41,7 @@ const Homepage = () => {
       // Fetch user authentication status from an API endpoint (session, cookies)
       async function getProfileDataForHome() {
         
-        const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
+        const ret = await checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
             if (ret === true){
             // User is authenticated, allow access to the page
             await fetch(profileDataFetchUrl, {

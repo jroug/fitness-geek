@@ -21,13 +21,14 @@ moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 const localizer = momentLocalizer(moment);
 
 const calendarDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-calendar-data`;
-const getUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-calendar-token`;
-const createUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/create-user-calendar-token`;
-const deleteUserCalendarTokenUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-user-calendar-token`;
+const getUserCalendarTokensUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-calendar-tokens`;
+const createUserCalendarTokensUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/create-user-calendar-tokens`;
+const deleteUserCalendarTokensUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-user-calendar-tokens`;
 
  
 interface TokenResponse {
     jr_token: string;
+    login_token: string;
     deleted?: string;
     message?: string;
 }
@@ -40,6 +41,7 @@ const CalendarHomePage: React.FC = () => {
     const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
     const [isPublished, setIsPublished] = useState<boolean>(false);
     const [jrTokenFromDb, setJrTokenFromDb] = useState<string>('');
+    const [jrLoginTokenFromDb, setJrLoginTokenFromDb] = useState<string>('');
 
     const router = useRouter();
 
@@ -52,7 +54,7 @@ const CalendarHomePage: React.FC = () => {
     };
 
     const unpublishCalendar = async (): Promise<void> => {
-        const response = await fetch(deleteUserCalendarTokenUrl, {
+        const response = await fetch(deleteUserCalendarTokensUrl, {
             method: 'GET',
             credentials: 'include',
         });
@@ -60,13 +62,14 @@ const CalendarHomePage: React.FC = () => {
         if (data.deleted === 'ok') {
             setIsPublished(false);
             setJrTokenFromDb('');
+            setJrLoginTokenFromDb('');
         } else if (data.message) {
             alert(data.message);
         }
     };
 
     const publishCalendar = async (): Promise<void> => {
-        const response = await fetch(createUserCalendarTokenUrl, {
+        const response = await fetch(createUserCalendarTokensUrl, {
             method: 'GET',
             credentials: 'include',
         });
@@ -74,20 +77,22 @@ const CalendarHomePage: React.FC = () => {
         if (data.jr_token) {
             setIsPublished(true);
             setJrTokenFromDb(data.jr_token);
+            setJrLoginTokenFromDb(data.login_token);
         } else {
             alert("Error publishing calendar");
         }
     };
 
     const getCalendarStatus = async (): Promise<void> => {
-        const response = await fetch(getUserCalendarTokenUrl, {
+        const response = await fetch(getUserCalendarTokensUrl, {
             method: 'GET',
             credentials: 'include',
         });
         const data = await response.json();
-        if (data[0]?.jr_token) {
+        if (data?.jr_token) {
             setIsPublished(true);
-            setJrTokenFromDb(data[0].jr_token);
+            setJrTokenFromDb(data.jr_token);
+            setJrLoginTokenFromDb(data.login_token);
         } else {
             setIsPublished(false);
         }
@@ -178,7 +183,7 @@ const CalendarHomePage: React.FC = () => {
 
     useEffect(() => {
         const prepareCalendar = async () => {
-            const ret = await checkAuthAndRedirect(router);
+            const ret = await checkAuthAndRedirect(router, false);
             if (ret === true) {
                 await getCalendarData();
                 await getCalendarStatus();
@@ -191,7 +196,15 @@ const CalendarHomePage: React.FC = () => {
         return <Loading />;
     }
 
+    const handleCopyLink = (link) => {
+        navigator.clipboard.writeText(link).then(() => {
+            alert('Link copied to clipboard!');
+        }).catch(err => {
+            console.error('Failed to copy: ', err);
+        });
+    }
     const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
+    const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${jrLoginTokenFromDb}`;
 
     return (
         <main className="site-content">
@@ -206,12 +219,23 @@ const CalendarHomePage: React.FC = () => {
                     </button>
                 </div>
                 {isPublished && (
-                    <p>
-                        <span>Public URL: </span>
-                        <Link href={calendarPageUrl} target="_blank" style={{ textDecoration: "underline" }}>
-                            click here!
-                        </Link>
-                    </p>
+                    <div>
+                        <p>
+                            <span>Public URL: </span>
+                            <Link href={calendarPageUrl} target="_blank" className="underline">
+                                click here!
+                            </Link>
+                        </p>
+                        <p>
+                            <span>Contributor URL: </span>
+                            <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
+                                click here!
+                            </Link>
+                             &nbsp; - OR - &nbsp;
+                            <button onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >Copy to Clipboard</button>
+                        </p>
+                    </div>
+
                 )}
                 {/* <div className="w-full text-right grid grid-cols-3 gap-4 p-3">
                     <div  className="text-center" >

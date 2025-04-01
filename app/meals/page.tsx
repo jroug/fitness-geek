@@ -202,7 +202,7 @@ const AddMeal: React.FC = () => {
 
     useEffect(() => {
         const getAddMealPageData = async () => {
-            const ret = await checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
+            const ret = await checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
             if (ret) getMealSuggestions();
         }
         getAddMealPageData();

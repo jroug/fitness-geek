@@ -76,7 +76,7 @@ const Weighing: React.FC = () => {
     };
 
     useEffect(() => {
-        checkAuthAndRedirect(router); // will redirect to root if no token found on http cookie
+        checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
     }, [router]);
 
     // const handleSetCurrentDateAndTime = (e: React.MouseEvent<HTMLAnchorElement>) => {

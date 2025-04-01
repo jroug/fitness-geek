@@ -191,7 +191,7 @@ export default function CalendarPage(props: { params: Params }) {
 
 
         const prepareCalendar = async () => {
-            const ret = await checkAuthAndRedirect(router);
+            const ret = await checkAuthAndRedirect(router, true);
             if (ret === true) {
                 await getCalendarData();
                 await getCalendarCommentsStatus();
