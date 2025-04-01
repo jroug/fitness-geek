@@ -204,7 +204,7 @@ const CalendarHomePage: React.FC = () => {
         });
     }
     const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
-    const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${jrLoginTokenFromDb}`;
+    const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
 
     return (
         <main className="site-content">
