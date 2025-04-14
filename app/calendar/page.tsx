@@ -142,7 +142,7 @@ const CalendarHomePage: React.FC = () => {
                 id: String(item.ID),
                 start: moment(item.datetime_of_meal).toDate(),
                 end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                title: `${item.food_name} ${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : ': ' + Math.round(item.meal_quantity * Number(item.serving_size)) + 'gr'}`,
+                title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : item.meal_quantity + 'x'} ${item.food_name} `,
                 // title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
                 category: item.category,
                 comments: item.comments,
