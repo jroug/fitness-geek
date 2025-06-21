@@ -3231,7 +3231,7 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 
 :root {
-    --event-height: 200px;
+    --event-height: 160px;
   }
 /* react big calendar timeslot wrapper */
 .rbc-time-slot {
