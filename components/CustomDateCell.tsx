@@ -11,12 +11,15 @@ interface UserWorkoutData {
 }
 
 interface CustomDateCellProps extends DateCellWrapperProps {
+    cameFrom: string;
+    isCommentsPublished?: boolean;
     getWeight: (dateKey: string) => string | null;
     getWorkout: (dateKey: string) => UserWorkoutData | null;
     getComment: (dateKey: string) => string | null;
+    
 }
 
-const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, getWeight, getWorkout, getComment }) => {
+const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFrom, isCommentsPublished, getWeight, getWorkout, getComment }) => {
 
     const dateKey = moment(value).format('YYYY-MM-DD');
     
@@ -85,10 +88,12 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, getWei
                 <span className="w-full block leading-none pt-[3px]" >{workoutTypeText ? workoutTypeText : `-`}  </span>
                 <span className="small-font-custom w-full">&nbsp;{workoutTitleText ? `(${workoutTitleText})` : ``}&nbsp;</span>
             </h3> 
+            { isCommentsPublished && (
              <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] custom-comment" >
                 <button className="comment-link-button" onClick={() => handleAddDailyComment(commentText, dateKey)} >+ Comment</button>
                 <p>{ commentText }</p>
             </div> 
+            )}
             
             {children}
         </div>

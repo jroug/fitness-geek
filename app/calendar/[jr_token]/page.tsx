@@ -264,6 +264,8 @@ export default function CalendarPage(props: { params: Params }) {
                             components={{
                                 event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished}/>,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} 
+                                    cameFrom="public"
+                                    isCommentsPublished={isCommentsPublished}
                                     getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
                                     getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
                                     getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}

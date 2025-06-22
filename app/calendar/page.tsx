@@ -184,7 +184,7 @@ const CalendarHomePage: React.FC = () => {
         data.comments_list.forEach((val) => {
             transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = val.comment;
         });
-        
+
 // console.log('transformedCommentsData', transformedCommentsData);
 // console.log('transformedWeightData', transformedWeightData);
 
@@ -295,6 +295,8 @@ const CalendarHomePage: React.FC = () => {
                             components={{
                                 event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} />,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} 
+                                    cameFrom="private"
+                                    isCommentsPublished={true}
                                     getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
                                     getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
                                     getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
