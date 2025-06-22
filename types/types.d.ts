@@ -34,6 +34,7 @@ declare global {
         meals_list: UserMealData[];
         weight_list: UserWeightData[];
         workout_list: UserWorkoutData[];
+        comments_list: UserCommentData[];
     }
 
     interface UserMealData {
@@ -58,6 +59,12 @@ declare global {
         date_of_workout: string | Date;
         w_title: string;
         w_type: string;
+    }
+
+    interface UserCommentData {
+        id: number;
+        date_of_comment: string | Date;
+        comment: string;
     }
 
 }

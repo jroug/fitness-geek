@@ -35,8 +35,11 @@ interface TokenResponse {
 
 const CalendarHomePage: React.FC = () => {
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
+
+    const [userCommentsList, setUserCommentsList] = useState<Record<string, string>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
+
     const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
     const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
     const [isPublished, setIsPublished] = useState<boolean>(false);
@@ -107,6 +110,7 @@ const CalendarHomePage: React.FC = () => {
         const data: CalendarData = await response.json();
 
         if (!data || !data.meals_list || data.meals_list.length === 0) {
+            setUserCommentsList({});
             setUserWorkoutList({});
             setUserWeightList({});
             setUserMealsList([]);
@@ -175,6 +179,14 @@ const CalendarHomePage: React.FC = () => {
             };
         });
 
+        // User comment data
+        const transformedCommentsData: Record<string, string> = {};
+        data.comments_list.forEach((val) => {
+            transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = val.comment;
+        });
+
+
+        setUserCommentsList(transformedCommentsData);
         setUserWorkoutList(transformedWorkoutData);
         setUserWeightList(transformedWeightData);
         setUserMealsList(transformedMealData);
@@ -205,6 +217,9 @@ const CalendarHomePage: React.FC = () => {
     }
     const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
     const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
+
+ 
+ 
 
     return (
         <main className="site-content">
@@ -277,10 +292,18 @@ const CalendarHomePage: React.FC = () => {
                             }}
                             components={{
                                 event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} />,  
-                                dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList} />, 
+                                dateCellWrapper: (props) => <CustomDateCell {...props} 
+                                    getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
+                                    getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
+                                    getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
+                                />, 
+                                // dateCellWrapper: getDateCellWrapper(userCommentsList, userWeightList, userWorkoutList),
                                 timeGutterWrapper: CustomTimeGutter, 
                                 toolbar: CustomToolBar
                             }}
+
+ 
+
                         />
                     </div>
                 </div>
