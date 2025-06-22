@@ -22,15 +22,22 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, getWei
     
     const weightValue = getWeight(dateKey);
     const workoutValue = getWorkout(dateKey);
-  
+    const commentValue = getComment(dateKey);
+
     const weightText =  weightValue ? weightValue  : '';  
     const workoutTypeText =  workoutValue ? workoutValue.w_type  : '';  
     const workoutTitleText =  workoutValue ? workoutValue.w_title  : '';  
 
-    // only comment is able to change from here
-    const commentValue = getComment(dateKey);
-    const [commentText, setCommentText] = useState<string>(commentValue ? commentValue : '');
 
+    const commentTextVal = commentValue ? commentValue : '';
+
+
+    // only comment is able to change from here
+    const [commentText, setCommentText] = useState<string>(commentTextVal);
+
+    useEffect(()=>{
+        setCommentText(commentTextVal);
+    },[commentTextVal])
 
     const handleAddDailyComment = async (comment: string, dateKey: string) => {
    

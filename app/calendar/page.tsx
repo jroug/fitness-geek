@@ -184,7 +184,9 @@ const CalendarHomePage: React.FC = () => {
         data.comments_list.forEach((val) => {
             transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = val.comment;
         });
-
+        
+// console.log('transformedCommentsData', transformedCommentsData);
+// console.log('transformedWeightData', transformedWeightData);
 
         setUserCommentsList(transformedCommentsData);
         setUserWorkoutList(transformedWorkoutData);
