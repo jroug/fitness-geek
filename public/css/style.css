@@ -3284,7 +3284,7 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .rbc-label.rbc-time-header-gutter{
     min-width: 94px !important;
-    height:250px;
+    height:228px;
 }
 
 .small-font-custom{
@@ -3298,7 +3298,7 @@ ul.nav.nav-tabs.focus-tab-main{
     font-size: 14px;
     line-height: 17px;
     height: 100%;
-    max-height: 143px;
+    max-height: 120px;
 }
 
 .comment-link-button{
