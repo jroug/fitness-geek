@@ -37,7 +37,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
             const data = await response.json();
-          
+            // console.log('data', data);
             const { auth, redirect_url, token } = data;
             if (auth===true){
                 // Set token in cookies

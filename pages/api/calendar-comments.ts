@@ -38,7 +38,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             }
 
 
-            console.log('---------------------------------', calendarCommentsUrl);
+            // console.log('---------------------------------', calendarCommentsUrl);
             const response = await fetch(calendarCommentsUrl,{
                 method: 'GET',
                 headers: headerJson

@@ -3,8 +3,9 @@ import { NavigateAction, Views, View } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Link from "next/link";
 
- 
-const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView }) => {
+
+
+const CustomToolBarPublic: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView }) => {
 
   return (
     <div className="rbc-toolbar">
@@ -13,27 +14,17 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView
         <button onClick={() => onNavigate("TODAY")}>Today</button>
         <button onClick={() => onNavigate("NEXT")}>Next →</button>
       </span>
-      <span className="rbc-btn-group">
-        <button onClick={() => onView(Views.WEEK)}>Week</button>
-        <button onClick={() => onView(Views.DAY)}>Day</button>
-      </span>
+ 
       <span className="rbc-toolbar-label">{label}</span>
 
       {/* Custom Button */}
       <span className="rbc-btn-group">
-            <Link href="/meals" className="green-link-btn"  >
-                + Meal
-            </Link>
-            <Link href="/weighing" className="green-link-btn"  >
-                + Weighing  
-            </Link>
-            <Link href="/workouts" className="green-link-btn" >
-                + workouts 
-            </Link>
+            <button onClick={() => onView(Views.WEEK)}>Week</button>
+            <button onClick={() => onView(Views.DAY)}>Day</button>
       </span>
 
     </div>
   );
 }
 
-export default CustomToolBar;
+export default CustomToolBarPublic;

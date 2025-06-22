@@ -11,7 +11,7 @@ import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
 import { adjustTime } from "@/lib/adjustTime";
-
+import CustomToolBarPublic from '@/components/CustomToolBarPublic';
 
  
 
@@ -277,7 +277,8 @@ export default function CalendarPage(props: { params: Params }) {
                                     setUserCommentsList = {setUserCommentsList}
                                     jr_token = {jr_token}
                                 />, 
-                                timeGutterWrapper: CustomTimeGutter,     
+                                timeGutterWrapper: CustomTimeGutter,    
+                                toolbar: CustomToolBarPublic
                             }}
                         />
                     </div>

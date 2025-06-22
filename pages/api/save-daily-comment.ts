@@ -28,7 +28,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             },
             body: JSON.stringify(req.body)
         });
-console.log(response);
+ 
+    
+    //   console.log(saveDailyCommentUrl);
+
         if (!response.ok) {
           return res.status(401).json({ message: 'Authentication failed (save-comment)' });
         }
@@ -44,7 +47,7 @@ console.log(response);
         return res.status(500).json({ message: 'Server error' });
       }
     } else {
-      return res.status(405).json({ message: 'Only PUT requests are allowed' });
+      return res.status(405).json({ message: 'Only POST requests are allowed' });
     }
 
 }

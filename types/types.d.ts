@@ -5,6 +5,12 @@ export {};
 
 declare global {
 
+    interface CustomToolBarProps {
+        label: string;
+        onNavigate: (action: NavigateAction) => void;
+        onView: (view: View) => void;
+    }
+    
     interface Meals{
         id: string;
         f_title: string;
