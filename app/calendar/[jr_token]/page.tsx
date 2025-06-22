@@ -37,6 +37,8 @@ export default function CalendarPage(props: { params: Params }) {
     const jr_token  = params.jr_token; // Extract the token from params
  
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
+
+    const [userCommentsList, setUserCommentsList] = useState<Record<string, string>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
     
@@ -56,6 +58,7 @@ export default function CalendarPage(props: { params: Params }) {
             setUserDisplayName( data.user_display_name ? data.user_display_name : '' );
 
             if (!data || !data.meals_list || data.meals_list.length === 0) {
+                setUserCommentsList({});
                 setUserWorkoutList({});
                 setUserWeightList({});
                 setUserMealsList([]);
@@ -121,6 +124,13 @@ export default function CalendarPage(props: { params: Params }) {
                 };
             });
 
+            // User comment data
+            const transformedCommentsData: Record<string, string> = {};
+            data.comments_list?.forEach((val) => {
+                transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = val.comment;
+            });
+
+            setUserCommentsList(transformedCommentsData);
             setUserWorkoutList(transformedWorkoutData);
             setUserWeightList(transformedWeightData);
             setUserMealsList(transformedMealData);
@@ -253,7 +263,11 @@ export default function CalendarPage(props: { params: Params }) {
                             }}
                             components={{
                                 event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished}/>,  
-                                dateCellWrapper: (props) => <CustomDateCell {...props} weightData={userWeightList} workoutData={userWorkoutList}/>, 
+                                dateCellWrapper: (props) => <CustomDateCell {...props} 
+                                    getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
+                                    getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
+                                    getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
+                                />, 
                                 timeGutterWrapper: CustomTimeGutter,     
                             }}
                         />
