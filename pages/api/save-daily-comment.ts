@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
             },
             body: JSON.stringify(req.body)
         });
-
+console.log(response);
         if (!response.ok) {
           return res.status(401).json({ message: 'Authentication failed (save-comment)' });
         }

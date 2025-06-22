@@ -35,8 +35,7 @@ interface TokenResponse {
 
 const CalendarHomePage: React.FC = () => {
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
-
-    const [userCommentsList, setUserCommentsList] = useState<Record<string, string>>({});
+    const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
 
@@ -180,13 +179,18 @@ const CalendarHomePage: React.FC = () => {
         });
 
         // User comment data
-        const transformedCommentsData: Record<string, string> = {};
+        const transformedCommentsData: Record<string, UserCommentData> = {};
         data.comments_list.forEach((val) => {
-            transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = val.comment;
+            transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = { 
+                id:val.id, 
+                user_id:val.user_id, 
+                date_of_comment:val.date_of_comment,
+                comment:val.comment 
+            };
         });
 
-// console.log('transformedCommentsData', transformedCommentsData);
-// console.log('transformedWeightData', transformedWeightData);
+        // console.log('transformedCommentsData', transformedCommentsData);
+        console.log('transformedMealData', transformedMealData);
 
         setUserCommentsList(transformedCommentsData);
         setUserWorkoutList(transformedWorkoutData);
@@ -217,6 +221,7 @@ const CalendarHomePage: React.FC = () => {
             console.error('Failed to copy: ', err);
         });
     }
+
     const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
     const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
 
@@ -254,23 +259,6 @@ const CalendarHomePage: React.FC = () => {
                     </div>
 
                 )}
-                {/* <div className="w-full text-right grid grid-cols-3 gap-4 p-3">
-                    <div  className="text-center" >
-                        <Link href="/meals" className="green-link-btn"  >
-                            + Meal
-                        </Link>
-                    </div>
-                    <div className="text-center" >
-                        <Link href="/meals" className="green-link-btn"  >
-                            + Weighing
-                        </Link>
-                    </div>
-                    <div className="text-center" >
-                        <Link href="/meals" className="green-link-btn" >
-                            + workouts
-                        </Link>
-                    </div>
-                </div> */}
             </div>
             <div className="calendar-main-wrapper top-175px" >
                 <div className="pb-20 calendar-main mx-auto" id="calendar-main">
@@ -293,13 +281,15 @@ const CalendarHomePage: React.FC = () => {
                                 }
                             }}
                             components={{
-                                event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} />,  
+                                event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} setUserMealsList={setUserMealsList} />,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} 
                                     cameFrom="private"
                                     isCommentsPublished={true}
-                                    getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
-                                    getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
-                                    getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
+                                    getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] } 
+                                    getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] } 
+                                    getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] }
+                                    setUserCommentsList = {setUserCommentsList}
+                                    jr_token = {''}
                                 />, 
                                 // dateCellWrapper: getDateCellWrapper(userCommentsList, userWeightList, userWorkoutList),
                                 timeGutterWrapper: CustomTimeGutter, 

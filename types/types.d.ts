@@ -63,6 +63,7 @@ declare global {
 
     interface UserCommentData {
         id: number;
+        user_id: number;
         date_of_comment: string | Date;
         comment: string;
     }

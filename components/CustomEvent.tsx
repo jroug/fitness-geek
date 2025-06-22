@@ -8,6 +8,7 @@ interface CustomEventProps extends EventProps {
     event: CustomEvent;
     cameFrom: string;
     isCommentsPublished?: boolean;
+    setUserMealsList: React.Dispatch<React.SetStateAction<MealEvent[]>>;
 }
 
 interface CustomEvent {
@@ -16,7 +17,7 @@ interface CustomEvent {
     meals?: Meals[];
 }
 
-const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPublished }) => {
+const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPublished, setUserMealsList }) => {
 
     const [mealEvent, setMealEvent] = useState<CustomEvent>({
         id: '',
@@ -54,11 +55,18 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
                 // const data = await res.json();
                 // console.log('Delete Response:', data);
                 // location.reload();
-                setMealEvent({
-                    id: '',
-                    title: 'Deleted',
-                    meals: [],
-                });
+                // update parent list with similar logic
+                const mealIdList = mealIds.split(',');
+
+                setUserMealsList(prev =>
+                prev
+                    .map(event => ({
+                    ...event,
+                    meals: event.meals?.filter(meal => !mealIdList.includes(meal.id)) || []
+                    }))
+                    .filter(event => event.meals && event.meals.length > 0) // keep only non-empty events
+                );
+                
             } catch (error) {
                 console.error('Error deleting meal:', error);
             }
@@ -88,15 +96,19 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
 
                     const data = await res.json();
                     if (data.user_meal_updated===true){
-                        // update the state with the cahange in comment
-                        setMealEvent(prev => ({
-                            ...prev,
-                            meals: (prev.meals ?? []).map(meal =>
-                                meal.id === mealId.toString()
-                                    ? { ...meal, f_comments: comments }
-                                    : meal
-                            ),
-                        }));
+                        // update parent list with similar logic
+                        setUserMealsList(prev =>
+                            prev.map(event =>
+                                event.meals?.some(meal => meal.id === mealId.toString())
+                                ? {
+                                    ...event,
+                                    meals: event.meals.map(meal =>
+                                        meal.id === mealId.toString() ? { ...meal, f_comments: comments } : meal
+                                    ),
+                                    }
+                                : event
+                            )
+                        );
                         // location.reload();
                     }else{
                         alert('Error: ' + data.message);
@@ -114,6 +126,7 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
     };
  
     return (
+        mealEvent && 
         <div className="custom-event">
             {cameFrom === 'private' && mealEvent.id
                 ?

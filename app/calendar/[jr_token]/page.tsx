@@ -38,7 +38,7 @@ export default function CalendarPage(props: { params: Params }) {
  
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
 
-    const [userCommentsList, setUserCommentsList] = useState<Record<string, string>>({});
+    const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
     
@@ -125,9 +125,14 @@ export default function CalendarPage(props: { params: Params }) {
             });
 
             // User comment data
-            const transformedCommentsData: Record<string, string> = {};
-            data.comments_list?.forEach((val) => {
-                transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = val.comment;
+            const transformedCommentsData: Record<string, UserCommentData> = {};
+            data.comments_list.forEach((val) => {
+                transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = { 
+                    id:val.id, 
+                    user_id: val.user_id,
+                    date_of_comment:val.date_of_comment,
+                    comment:val.comment 
+                };
             });
 
             setUserCommentsList(transformedCommentsData);
@@ -262,13 +267,15 @@ export default function CalendarPage(props: { params: Params }) {
                                 }
                             }}
                             components={{
-                                event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished}/>,  
+                                event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished} setUserMealsList={setUserMealsList} />,  
                                 dateCellWrapper: (props) => <CustomDateCell {...props} 
                                     cameFrom="public"
                                     isCommentsPublished={isCommentsPublished}
                                     getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
                                     getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
                                     getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
+                                    setUserCommentsList = {setUserCommentsList}
+                                    jr_token = {jr_token}
                                 />, 
                                 timeGutterWrapper: CustomTimeGutter,     
                             }}
