@@ -190,7 +190,7 @@ const CalendarHomePage: React.FC = () => {
         });
 
         // console.log('transformedCommentsData', transformedCommentsData);
-        console.log('transformedMealData', transformedMealData);
+        // console.log('transformedMealData', transformedMealData);
 
         setUserCommentsList(transformedCommentsData);
         setUserWorkoutList(transformedWorkoutData);
@@ -221,6 +221,47 @@ const CalendarHomePage: React.FC = () => {
             console.error('Failed to copy: ', err);
         });
     }
+
+    const calcAverageWeeklyWeight = (startDate: Date): string => {
+        let sumWeight = 0;
+        let counter = 0;
+        for (let i = 0; i < 7; i++) {
+            const nextDate = new Date(startDate);
+            nextDate.setDate(startDate.getDate() + i);
+            // Format as YYYY-MM-DD
+            const formatted = nextDate.toISOString().split('T')[0];
+            if (userWeightList[formatted] !== undefined ){
+                sumWeight += getValueFromWeightText(userWeightList[formatted]);
+                counter ++;
+            }
+        }
+        return counter > 0 ? 'AVG. ' + (sumWeight / counter).toFixed(1) + 'Kg' : 'N/A';
+    };
+
+    const getValueFromWeightText = (text: string): number => {
+        const arr = text.split('kg');
+        return parseFloat(arr[0]);
+    };
+
+    const calcNumberOfWeeklyWorkouts = (startDate: Date) => {
+
+        let counter = 0;
+        for (let i = 0; i < 7; i++) {
+            const nextDate = new Date(startDate);
+            nextDate.setDate(startDate.getDate() + i);
+            // Format as YYYY-MM-DD
+            const formatted = nextDate.toISOString().split('T')[0];
+            if (userWorkoutList[formatted] !== undefined ){
+                counter ++;
+            }
+        }
+ 
+
+        return counter > 0 ? counter + "x Training" : 'N/A';
+    }
+
+
+
 
     const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
     const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
@@ -293,7 +334,7 @@ const CalendarHomePage: React.FC = () => {
                                 />, 
                                 // dateCellWrapper: getDateCellWrapper(userCommentsList, userWeightList, userWorkoutList),
                                 timeGutterWrapper: CustomTimeGutter, 
-                                toolbar: CustomToolBar
+                                toolbar: (props) => <CustomToolBar {...props} calcAverageWeeklyWeight={calcAverageWeeklyWeight} calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts} />
                             }}
 
  

@@ -1,10 +1,13 @@
 import React from "react";
-import { NavigateAction, Views, View } from "react-big-calendar";
+import { Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Link from "next/link";
 
  
-const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView }) => {
+const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, onView, calcAverageWeeklyWeight, calcNumberOfWeeklyWorkouts }) => {
+
+ 
+   
 
   return (
     <div className="rbc-toolbar">
@@ -20,6 +23,10 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView
       <span className="rbc-toolbar-label">{label}</span>
 
       {/* Custom Button */}
+      <span className="rbc-btn-group mr-[50px]">
+        <span className="weight-info" >{calcAverageWeeklyWeight(date)} </span>
+        <span className="training-info" >{calcNumberOfWeeklyWorkouts(date)}</span>
+      </span>
       <span className="rbc-btn-group">
             <Link href="/meals" className="green-link-btn"  >
                 + Meal

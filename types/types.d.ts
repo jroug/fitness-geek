@@ -7,8 +7,11 @@ declare global {
 
     interface CustomToolBarProps {
         label: string;
+        date: Date;
         onNavigate: (action: NavigateAction) => void;
         onView: (view: View) => void;
+        calcAverageWeeklyWeight: () => string;
+        calcNumberOfWeeklyWorkouts: () => string;
     }
     
     interface Meals{

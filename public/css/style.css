@@ -3471,6 +3471,37 @@ button.green-btn-small{
     text-transform: uppercase;
 }
 
+
+.weight-info{
+    padding:10px;
+    margin:0 5px;
+    background-color: rgb(34 211 238 / var(--tw-bg-opacity, 1));
+    border-radius:12px;
+    color:#ffffff;
+    font-family: "Zen Dots";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: uppercase;
+}
+.training-info{
+    padding:10px;
+    margin:0 5px;
+    background-color: rgb(216 180 254 / var(--tw-bg-opacity, 1));
+    border-radius:12px;
+    color:#ffffff;
+    font-family: "Zen Dots";
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: uppercase;
+}
+
+
+
+
 .rbc-toolbar {
     flex-direction: row !important;
 }
