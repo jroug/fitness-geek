@@ -5,7 +5,7 @@ import Link from "next/link";
 
 
 
-const CustomToolBarPublic: React.FC<CustomToolBarProps> = ({ label, onNavigate, onView }) => {
+const CustomToolBarPublic: React.FC<CustomPublicToolBarProps> = ({ label, onNavigate, onView }) => {
 
   return (
     <div className="rbc-toolbar">

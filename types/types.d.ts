@@ -13,6 +13,12 @@ declare global {
         calcAverageWeeklyWeight: (startDate: Date) => string;
         calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
     }
+
+    interface CustomPublicToolBarProps {
+        label: string;
+        onNavigate: (action: NavigateAction) => void;
+        onView: (view: View) => void;
+    }
     
     interface Meals{
         id: string;
