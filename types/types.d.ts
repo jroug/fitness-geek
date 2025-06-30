@@ -10,8 +10,8 @@ declare global {
         date: Date;
         onNavigate: (action: NavigateAction) => void;
         onView: (view: View) => void;
-        calcAverageWeeklyWeight: () => string;
-        calcNumberOfWeeklyWorkouts: () => string;
+        calcAverageWeeklyWeight: (startDate: Date) => string;
+        calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
     }
     
     interface Meals{
