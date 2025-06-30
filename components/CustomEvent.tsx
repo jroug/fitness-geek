@@ -33,13 +33,14 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
     }, [event]);
 
 
-    const handleEventDelete = async () => {
+    const handleEventDelete = async (mids: string) => {
         const confirmed = confirm('Are you sure?');
         if (confirmed) {
             if (!event.meals || event.meals.length === 0) return;
+            if (!mids) return;
 
             // Extract meal IDs as a comma-separated string
-            const mealIds = event.meals.map(meal => meal.id).join(',');
+            const mealIds = mids;
 
             const deleteMealUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-meal?mids=${mealIds}`;
 
@@ -131,26 +132,35 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
             {cameFrom === 'private' && mealEvent.id
                 ?
                 <div key={`meal-${mealEvent.id}`} className="absolute right-0 p-[4px] bg-[red] rounded-[35px] leading-[12px]">
-                    <button className="block mt-[-2px]" onClick={handleEventDelete}>x</button>
+                    <button className="block mt-[-2px]" onClick={() => handleEventDelete(mealEvent.id)}>x - all</button>
                 </div>
                 :
                 <></>
              }
             <h2 className="w-100 text-center event-title">{mealEvent.title}</h2>
             {mealEvent.meals && mealEvent.meals.length > 0 && mealEvent.meals.map((meal, idx) => (
-                <div key={`meal-${idx}`} >
-                    <div className={"event-description " + meal.f_category}>
+                <div key={`meal-${idx}`} className="relative border-b border-dotted border-black" >
+                    <div className={"event-description w-[calc(100%-10px)]" + meal.f_category}>
                         {meal.f_title}
                         {
                             isCommentsPublished
                             ?
-                            <span className={"event-comments " + (meal.f_comments ? "text-[red]" : "text-[blue]") }>
+                            <span className={"event-comments justify-right " + (meal.f_comments ? "text-[red]" : "text-[blue]") }>
                                 &nbsp;<button className="text-left" onClick={() => handleAddComment(Number(meal.id), meal.f_comments)} >*({ meal.f_comments ? meal.f_comments : '+' })</button>
                             </span>
                             :
                             <></>
                         }
                     </div>
+                    {
+                        isCommentsPublished
+                        ?
+                        <span className="text-[white] w-[20px] absolute right-[1px] top-[1px] h-full" >
+                            <button className="block mt-[-2px] rounded-[35px] bg-[red] w-[18px] h-[18px] pb-[2px] absolute top-[50%] translate-y-[-50%]" onClick={ () => handleEventDelete(meal.id) }>x</button>
+                        </span>
+                        :
+                        <></>
+                    }
                 </div>
             ))}
         </div>

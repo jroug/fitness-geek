@@ -3384,9 +3384,8 @@ button.green-btn-small{
     width: 2250px;
 }
 .event-description{
-    border-bottom:1px dotted black;
     color:black;
-    padding:2px;
+    padding:5px 0px;
     font-weight: 500;
 }
 
