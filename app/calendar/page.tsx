@@ -223,6 +223,7 @@ const CalendarHomePage: React.FC = () => {
     }
 
     const calcAverageWeeklyWeight = (startDate: Date): string => {
+        // console.log(startDate);
         let sumWeight = 0;
         let counter = 0;
         for (let i = 0; i < 7; i++) {
@@ -251,6 +252,8 @@ const CalendarHomePage: React.FC = () => {
             nextDate.setDate(startDate.getDate() + i);
             // Format as YYYY-MM-DD
             const formatted = nextDate.toISOString().split('T')[0];
+            // console.log('formatted', formatted);
+
             if (userWorkoutList[formatted] !== undefined ){
                 counter ++;
             }
