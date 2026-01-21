@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   description: "Fitness & Nutrition tracking and goal setting app, for better health!",
 };
 
+
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -1,12 +1,28 @@
 'use client'
 
-import { useContext, useRef, ReactNode } from 'react'
-import { LayoutRouterContext } from 'next/dist/shared/lib/app-router-context.shared-runtime'
+import type { ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
+import { AnimatePresence, motion } from 'framer-motion'
 
-const FrozenRoute = ({ children }: { children: ReactNode }) => {
-  const context = useContext(LayoutRouterContext)
-  const frozen = useRef(context).current
-  return <LayoutRouterContext.Provider value={frozen}>{children}</LayoutRouterContext.Provider>
+export default function PageAnimatePresence({
+  children,
+}: {
+  children: ReactNode
+}) {
+  const pathname = usePathname()
+
+  return (
+    <AnimatePresence mode="wait" initial={false}>
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: -10 }}
+        transition={{ duration: 0.25 }}
+        style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}
+      >
+        {children}
+      </motion.div>
+    </AnimatePresence>
+  )
 }
-
-export default FrozenRoute
