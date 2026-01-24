@@ -168,6 +168,7 @@ export default function CalendarPage(props: { params: Params }) {
         }
     }
 
+
     // fix calendar width according to viewport width
     useEffect(() => {
         if (loadingMeals || loadingStatus) return;
@@ -177,7 +178,15 @@ export default function CalendarPage(props: { params: Params }) {
 
         const update = () => {
             const vw = window.innerWidth;
-            const scale = Math.min(1, vw / 2250); // don’t upscale beyond 1
+            
+
+            // run ONLY on desktop (>= 1024px)
+            if (vw < 1024) {
+                main.style.removeProperty("--cal-scale");
+                return;
+            }
+
+            const scale = Math.max(0.672, Math.min(1, vw / 2250)); // don’t upscale beyond 1 dont downscale below 0.672.
             main.style.setProperty("--cal-scale", String(scale));
         };
 

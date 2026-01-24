@@ -14,6 +14,8 @@ import CustomEvent from '@/components/CustomEvent';
 import CustomToolBar from '@/components/CustomToolBar';
 import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
+import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
+import PopupForm from "@/components/PopupForm";
 
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
@@ -35,6 +37,9 @@ interface TokenResponse {
 
 const CalendarHomePage: React.FC = () => {
     const calendarMainRef = useRef<HTMLDivElement | null>(null);
+    
+    const [popupFormData, setPopupFormData] = useState({ title: 'test', message: 'test', show_popup: false });
+
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
@@ -209,7 +214,15 @@ const CalendarHomePage: React.FC = () => {
 
         const update = () => {
             const vw = window.innerWidth;
-            const scale = Math.min(1, vw / 2250); // don’t upscale beyond 1
+            
+
+            // run ONLY on desktop (>= 1024px)
+            if (vw < 1024) {
+                main.style.removeProperty("--cal-scale");
+                return;
+            }
+
+            const scale = Math.max(0.672, Math.min(1, vw / 2250)); // don’t upscale beyond 1 dont downscale below 0.672.
             main.style.setProperty("--cal-scale", String(scale));
         };
 
@@ -245,16 +258,18 @@ const CalendarHomePage: React.FC = () => {
         // console.log(startDate);
         let sumWeight = 0;
         let counter = 0;
-        for (let i = 0; i < 7; i++) {
+        for (let i = 1; i <= 7; i++) {
             const nextDate = new Date(startDate);
             nextDate.setDate(startDate.getDate() + i);
             // Format as YYYY-MM-DD
             const formatted = nextDate.toISOString().split('T')[0];
-            if (userWeightList[formatted] !== undefined ){
+            // console.log('formatted', formatted);
+            if (userWeightList[formatted] !== undefined && userWeightList[formatted] !== '') {
                 sumWeight += getValueFromWeightText(userWeightList[formatted]);
                 counter ++;
             }
         }
+        // console.log(userWeightList);
         return counter > 0 ? 'AVG. ' + (sumWeight / counter).toFixed(1) + 'Kg' : 'N/A';
     };
 
@@ -291,7 +306,12 @@ const CalendarHomePage: React.FC = () => {
  
  
 
+    function openFoodModal(arg0: { start: Date; end: Date; }) {
+        alert('Open food modal for ' + arg0.start);
+    }
+
     return (
+        <>
         <main className="site-content">
             <div className="fixed custom_margin" >
                 <Header title="Calendar" backUrl="/homepage" />
@@ -327,6 +347,7 @@ const CalendarHomePage: React.FC = () => {
                 <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
                         <Calendar
+                            
                             localizer={localizer}
                             defaultDate={new Date()}
                             defaultView="week"
@@ -336,6 +357,7 @@ const CalendarHomePage: React.FC = () => {
                             timeslots={1}
                             min={new Date(new Date().setHours(9, 0))}
                             max={new Date(new Date().setHours(23, 59))}
+
                             formats={{
                                 dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
                                   const startFormat = localizer?.format(start, 'MMMM D', culture)
@@ -343,8 +365,10 @@ const CalendarHomePage: React.FC = () => {
                                   return `${startFormat} – ${endFormat}`
                                 }
                             }}
+
                             components={{
-                                event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} setUserMealsList={setUserMealsList} />,  
+
+                                // these are the cells above the dates with weight workouts and comments of the day
                                 dateCellWrapper: (props) => <CustomDateCell {...props} 
                                     cameFrom="private"
                                     isCommentsPublished={true}
@@ -354,18 +378,41 @@ const CalendarHomePage: React.FC = () => {
                                     setUserCommentsList = {setUserCommentsList}
                                     jr_token = {''}
                                 />, 
+
+                                // it is found in components/CustomEvent.tsx - and it sets the daily meals
+                                event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} setUserMealsList={setUserMealsList} />,  
+
                                 // dateCellWrapper: getDateCellWrapper(userCommentsList, userWeightList, userWorkoutList),
                                 timeGutterWrapper: CustomTimeGutter, 
-                                toolbar: (props) => <CustomToolBar {...props} calcAverageWeeklyWeight={calcAverageWeeklyWeight} calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts} />
+                                toolbar: (props) => <CustomToolBar {...props} calcAverageWeeklyWeight={calcAverageWeeklyWeight} calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts} />,
+                                timeSlotWrapper: (props) => (
+                                    <TimeSlotWrapper
+                                        {...props}
+                                        onAddFood={(date) => {
+                                            // open your popup/modal with this slot date
+                                            openFoodModal({
+                                                start: date,
+                                                end: date
+                                            });
+                                            // setPopupFormData({ title: 'test', message: 'test', show_popup: true });
+                                        } }
+                                        setPopupFormData={setPopupFormData}
+                                    />
+                                ),
                             }}
 
- 
 
                         />
                     </div>
                 </div>
             </div>
         </main>
+        <PopupForm
+            setPopupFormData={setPopupFormData}
+            popupFormData={popupFormData}
+        />
+           
+        </>
     );
 };
 

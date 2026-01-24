@@ -1,19 +1,25 @@
 import React from 'react';
 import Image from "next/image";
 import Link from 'next/link';
-// import setting1 from "../public/images/setting/setting1.svg";
- 
-// import setting7 from "../public/images/setting/setting7.svg";
-import setting3 from "../public/images/setting/setting3.svg";
-// import setting5 from "../public/images/setting/setting5.svg";
-import setting6 from "../public/images/setting/setting6.svg";
+
+import setting1 from "../public/images/setting/setting1.svg";
+
 // import setting8 from "../public/images/setting/setting8.svg";
-import setting9 from "../public/images/setting/setting9.svg";
 // import setting10 from "../public/images/setting/setting10.svg";
+// import setting15 from "../public/images/setting/setting15.svg";
+// import setting7 from "../public/images/setting/setting7.svg";
+
+
+import setting3 from "../public/images/setting/setting3.svg";
+import setting5 from "../public/images/setting/setting5.svg";
+import setting6 from "../public/images/setting/setting6.svg";
+
+import setting9 from "../public/images/setting/setting9.svg";
+
 import setting11 from "../public/images/setting/setting11.svg";
 import setting12 from "../public/images/setting/setting12.svg";
 import setting13 from "../public/images/setting/setting13.svg";
-// import setting15 from "../public/images/setting/setting15.svg";
+
 import setting17 from "../public/images/setting/setting17.svg";
 
 import right_arrow from "../public/svg/right-arrow-white.svg";
@@ -90,7 +96,7 @@ const SideBar = () => {
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
-													<Image src={setting6} alt="setting-icon" />
+													<Image src={setting1} alt="setting-icon" />
 												</div>
 												<div className="setting-title">
 													<h3>Add Workout</h3>
@@ -111,6 +117,40 @@ const SideBar = () => {
 												</div>
 												<div className="setting-title">
 													<h3>Calendar</h3>
+												</div>
+												<div className="contact-star">
+													<div className="star-favourite">
+														<Image src={right_arrow} alt="edit-icon" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</Link>
+									<Link href="/charts/weight">
+										<div className="Char-content border-bottom1">
+											<div className="send-money-contact-tab ">
+												<div className="setting-icon">
+													<Image src={setting5} alt="setting-icon" />
+												</div>
+												<div className="setting-title">
+													<h3>Weight Chart</h3>
+												</div>
+												<div className="contact-star">
+													<div className="star-favourite">
+														<Image src={right_arrow} alt="edit-icon" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</Link>
+									<Link href="/charts/workouts">
+										<div className="Char-content border-bottom1">
+											<div className="send-money-contact-tab ">
+												<div className="setting-icon">
+													<Image src={setting5} alt="setting-icon" />
+												</div>
+												<div className="setting-title">
+													<h3>Workouts Chart</h3>
 												</div>
 												<div className="contact-star">
 													<div className="star-favourite">

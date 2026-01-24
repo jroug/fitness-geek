@@ -90,7 +90,7 @@ p {
     padding: 0;
 }
 body {
-    max-width: 600px;
+    /* max-width: 600px; */
     margin: 0 auto;
     height: 100%;
 }
@@ -267,6 +267,18 @@ li.list.active,
     border-bottom: 2px solid #f06a6a !important;
 }
 
+
+.site-content {
+    max-width: 700px;
+    margin: 0 auto;
+}
+.site-content.full-width{
+    max-width: 100%;
+}
+#top-header{
+    max-width: 700px;
+    margin: 0 auto;
+}
 
 /************************ 2.Delete Deactive Account Css ***************************/
 header {
@@ -3514,4 +3526,19 @@ button.green-btn-small{
 
 .next-error-h1 + div h2{
     color: var(--2, #000000);
+}
+
+.rbc-add-food-btn {
+    background-color: var(--2, #7FD83B);
+    color: var(--1, #FFF);
+    font-family: "Zen Dots";
+    font-size: 20px;
+    font-style: normal;
+    text-transform: uppercase;
+    padding: 0px 9px 1px;
+    border-radius: 15px;
+    position: absolute;
+    z-index: 100000 ;
+    bottom: 2px;
+    right: 2px;
 }
