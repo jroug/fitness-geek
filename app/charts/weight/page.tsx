@@ -97,7 +97,7 @@ export default function ChartsWeightPage() {
                 <div className="setting-bottom-img p-0 mt-16">
                   <div className="verify-email-img-sec">
                     <div className="main-img-top">
-                      <Bar options={options} data={data} />  
+                      <Bar options={options} data={data} />       
                     </div>
                   </div>
                 </div>
