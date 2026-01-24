@@ -1,6 +1,6 @@
 'use client';
  
-import React, { useState, useEffect, useCallback, use } from "react";
+import React, { useState, useEffect, useCallback, use, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -36,6 +36,8 @@ export default function CalendarPage(props: { params: Params }) {
     const params = use(props.params);
     const jr_token  = params.jr_token; // Extract the token from params
  
+    const calendarMainRef = useRef<HTMLDivElement | null>(null);
+
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
 
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
@@ -43,6 +45,7 @@ export default function CalendarPage(props: { params: Params }) {
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
     
     const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
+    const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
     const [userDisplayName, setUserDisplayName] = useState<string>('');
 
     const [isCommentsPublished, setIsCommentsPublished] = useState<boolean>(false);
@@ -165,6 +168,24 @@ export default function CalendarPage(props: { params: Params }) {
         }
     }
 
+    // fix calendar width according to viewport width
+    useEffect(() => {
+        if (loadingMeals || loadingStatus) return;
+
+        const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
+        if (!main) return;
+
+        const update = () => {
+            const vw = window.innerWidth;
+            const scale = Math.min(1, vw / 2250); // don’t upscale beyond 1
+            main.style.setProperty("--cal-scale", String(scale));
+        };
+
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, [loadingMeals, loadingStatus]);
+
     useEffect(() => {
         const getCalendarCommentsStatus = async () => {
             try {
@@ -218,7 +239,7 @@ export default function CalendarPage(props: { params: Params }) {
  
     }, [router, jr_token, getUserMealsANDNameFromToken]);
 
-    if (loadingMeals) {
+    if (loadingMeals || loadingStatus) {
         return <Loading />;
     }
 
@@ -244,7 +265,7 @@ export default function CalendarPage(props: { params: Params }) {
                 </div>
             </div>
             <div className="calendar-main-wrapper top-175px" >
-                <div className="pb-20 calendar-main mx-auto" id="calendar-main">
+                <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
                         <Calendar
                             localizer={localizer}

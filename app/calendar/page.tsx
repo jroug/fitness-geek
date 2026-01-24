@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Header from "@/components/Header";
@@ -34,6 +34,7 @@ interface TokenResponse {
 }
 
 const CalendarHomePage: React.FC = () => {
+    const calendarMainRef = useRef<HTMLDivElement | null>(null);
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
@@ -199,6 +200,24 @@ const CalendarHomePage: React.FC = () => {
         setLoadingMeals(false);
     };
 
+    // fix calendar width according to viewport width
+    useEffect(() => {
+        if (loadingMeals || loadingStatus) return;
+
+        const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
+        if (!main) return;
+
+        const update = () => {
+            const vw = window.innerWidth;
+            const scale = Math.min(1, vw / 2250); // don’t upscale beyond 1
+            main.style.setProperty("--cal-scale", String(scale));
+        };
+
+        update();
+        window.addEventListener("resize", update);
+        return () => window.removeEventListener("resize", update);
+    }, [loadingMeals, loadingStatus]);
+
     useEffect(() => {
         const prepareCalendar = async () => {
             const ret = await checkAuthAndRedirect(router, false);
@@ -305,7 +324,7 @@ const CalendarHomePage: React.FC = () => {
                 )}
             </div>
             <div className="calendar-main-wrapper top-175px" >
-                <div className="pb-20 calendar-main mx-auto" id="calendar-main">
+                <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
                         <Calendar
                             localizer={localizer}

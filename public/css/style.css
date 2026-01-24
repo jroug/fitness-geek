@@ -3382,6 +3382,8 @@ button.green-btn-small{
     /* width: 1400px; */
     /* width: 1860px; */
     width: 2250px;
+    transform: scale(var(--cal-scale, 1));
+    transform-origin: top left;
 }
 .event-description{
     color:black;
