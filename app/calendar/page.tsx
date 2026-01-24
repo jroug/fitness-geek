@@ -396,7 +396,6 @@ const CalendarHomePage: React.FC = () => {
                                             });
                                             // setPopupFormData({ title: 'test', message: 'test', show_popup: true });
                                         } }
-                                        setPopupFormData={setPopupFormData}
                                     />
                                 ),
                             }}

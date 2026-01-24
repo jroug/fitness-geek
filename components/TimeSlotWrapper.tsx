@@ -4,32 +4,32 @@ type Props = {
   children?: React.ReactNode;
   value?: Date;
   onAddFood?: (date: Date) => void;
-  setPopupFormData: (data: { title: string; message: string; show_popup: boolean }) => void;
 };
 
+type SlotChildProps = {
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
+  className?: string;
+};
 
-export function TimeSlotWrapper(props: Props) {
-  const { children, value, onAddFood, setPopupFormData } = props;
-
-  // RBC passes the slot date/time in `value`
+export function TimeSlotWrapper({ children, value, onAddFood }: Props) {
   const slotDate = value ?? new Date();
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     e.stopPropagation();
     onAddFood?.(slotDate);
-    // setPopupFormData({ title: 'test', message: 'test', show_popup: false });
   };
 
-  // Wrapper components should NOT replace the slot element.
-  // Clone the existing child element and inject our button.
   if (!children) return null;
-  const child = React.Children.only(children) as React.ReactElement<any>;
+
+  // ✅ no `any`
+  const child = React.Children.only(children) as React.ReactElement<SlotChildProps>;
 
   return React.cloneElement(child, {
     ...child.props,
     style: {
-      ...(child.props?.style ?? {}),
+      ...(child.props.style ?? {}),
       position: "relative",
     },
     children: (

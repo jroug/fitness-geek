@@ -23,7 +23,7 @@ ChartJS.register(
   Legend
 );
 
-export const options = {
+const options = {
   responsive: true,
   plugins: {
     legend: {
@@ -54,7 +54,7 @@ const labels = [
   "Week 15",
 ];
 
-export const data = {
+const data = {
   labels,
   datasets: [
     {
