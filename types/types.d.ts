@@ -83,4 +83,25 @@ declare global {
         comment: string;
     }
 
+    // Define interfaces for meal data
+    interface MealSuggestion {
+        id: string;
+        food_name: string;
+        calories: string;
+        protein: string;
+        carbohydrates: string;
+        fat: string;
+        fiber: string;
+        category: string;
+        serving_size: string;
+        comments: string;
+    }
+
+    interface MealInputData {
+        datetime_of_meal: string;
+        meal_id: string;
+        meal_quantity: number;
+        meal_quantity_type: string;
+        comments: string;
+    }
 }

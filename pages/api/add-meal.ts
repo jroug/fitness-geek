@@ -28,12 +28,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return res.status(401).json({ message: 'Authentication failed (add-meal)' });
         }
   
-        // const data = await response.json();
+        const data = await response.json();
         // console.log(data);
         
         return res.status(200).json({ 
-            message: 'Meal Added',
-            user_meal_added: true
+            message: data.message,
+            user_meal_added: data.user_meal_added,
+            meal_return_object: data.meal_return_object
         });
 
       } catch {

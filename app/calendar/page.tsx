@@ -38,9 +38,11 @@ interface TokenResponse {
 const CalendarHomePage: React.FC = () => {
     const calendarMainRef = useRef<HTMLDivElement | null>(null);
     
-    const [popupFormData, setPopupFormData] = useState({ title: 'test', message: 'test', show_popup: false });
+    const [popupFormData, setPopupFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
 
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
+    console.log('userMealsList', userMealsList);
+    
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
@@ -307,7 +309,8 @@ const CalendarHomePage: React.FC = () => {
  
 
     function openFoodModal(arg0: { start: Date; end: Date; }) {
-        alert('Open food modal for ' + arg0.start);
+        setPopupFormData({ title: 'Add Meal', dateSelected: arg0.start, show_popup: true });
+        // arg0.start, arg0.end
     }
 
     return (
@@ -409,6 +412,7 @@ const CalendarHomePage: React.FC = () => {
         <PopupForm
             setPopupFormData={setPopupFormData}
             popupFormData={popupFormData}
+            setUserMealsList={setUserMealsList}
         />
            
         </>
