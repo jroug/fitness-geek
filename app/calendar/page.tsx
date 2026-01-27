@@ -41,7 +41,7 @@ const CalendarHomePage: React.FC = () => {
     const [popupFormData, setPopupFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
 
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
-    console.log('userMealsList', userMealsList);
+    // console.log('userMealsList', userMealsList);
     
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
@@ -260,19 +260,20 @@ const CalendarHomePage: React.FC = () => {
         // console.log(startDate);
         let sumWeight = 0;
         let counter = 0;
-        for (let i = 1; i <= 7; i++) {
+        for (let i = 0; i < 7; i++) {
             const nextDate = new Date(startDate);
             nextDate.setDate(startDate.getDate() + i);
+
             // Format as YYYY-MM-DD
             const formatted = nextDate.toISOString().split('T')[0];
             // console.log('formatted', formatted);
-            if (userWeightList[formatted] !== undefined && userWeightList[formatted] !== '') {
+            if (userWeightList[formatted] !== undefined) {
                 sumWeight += getValueFromWeightText(userWeightList[formatted]);
                 counter ++;
             }
         }
         // console.log(userWeightList);
-        return counter > 0 ? 'AVG. ' + (sumWeight / counter).toFixed(1) + 'Kg' : 'N/A';
+        return counter > 0 ? 'AVG. ' + Math.round((sumWeight / counter) * 10) / 10 + 'Kg' : 'N/A';
     };
 
     const getValueFromWeightText = (text: string): number => {
