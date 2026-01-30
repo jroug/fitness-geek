@@ -112,13 +112,20 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFr
                 <span className="small-font-custom w-full">&nbsp;{workoutTitleText ? `(${workoutTitleText})` : ``}&nbsp;</span>
             </h3> 
             { isCommentsPublished && (
-             <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] custom-comment" >
-                <button className="comment-link-button" onClick={() => handleAddDailyComment(commentObj, dateKey)} >+ Comment</button>
-                <p>{ commentObj?.comment }</p>
-            </div> 
+                <>
+                    <div className="custom-text-cal-header text-center bg-yellow-300 p-[2px] m-[2px] rounded-[4px] custom-grade" >
+                        <button className="comment-link-button" onClick={() => handleAddDailyComment(commentObj, dateKey)} >+ Grade</button>
+                        <p>{ commentObj?.comment }</p>
+                    </div> 
+                    <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] custom-comment" >
+                        <button className="comment-link-button" onClick={() => handleAddDailyComment(commentObj, dateKey)} >+ Comment</button>
+                        <p>{ commentObj?.comment }</p>
+                    </div> 
+                </>
             )}
             
             {children}
+
         </div>
     );
 

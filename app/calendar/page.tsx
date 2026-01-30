@@ -347,7 +347,7 @@ const CalendarHomePage: React.FC = () => {
 
                 )}
             </div>
-            <div className="calendar-main-wrapper top-175px" >
+            <div className="calendar-main-wrapper top-120px" >
                 <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
                         <Calendar

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect, useState } from "react";
 import Header from "@/components/Header";
 
 import {
@@ -13,6 +13,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+ 
 
 ChartJS.register(
   CategoryScale,
@@ -22,73 +23,179 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+ 
+interface userChartData {
+  labels: string[];
+  datasets: {
+    label: string;
+    data: number[];
+    backgroundColor: string[];
+  }[];
+}
 
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top" as const,
-    },
-    title: {
-      display: true,
-      text: "Weight chart",
-    },
-  },
+
+
+
+const ChartsWeightPage: React.FC = () => {
+
+  const pageTitle = "Weight chart";
+  const pageContent = "";
+  const [startDate, setStartDate] = useState<string>(() => {
+    const today = new Date();
+    const priorDate = new Date().setDate(today.getDate() - 30);
+    return new Date(priorDate).toISOString().split("T")[0];
+  });
+  const [endDate, setEndDate] = useState<string>(() => {
+    const today = new Date();
+    return today.toISOString().split("T")[0];
+  });
+  const chartDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-weighing-data?startDate=${startDate}&endDate=${endDate}`;
+  
+const colors: Record<number, string> = {
+  0: "#4F81BD", // January – blue
+  1: "#F79646", // February – orange
+  2: "#cb2a2a", // March – gray
+  3: "#FFC000", // April – yellow
+  4: "#5B9BD5", // May – light blue
+  5: "#70AD47", // June – green
+  6: "#2F5597", // July – dark blue
+  7: "#C55A11", // August – brown/orange
+  8: "#7F7F7F", // September – dark gray
+  9: "#BF9000", // October – mustard
+  10: "#255E91", // November – navy
+  11: "#b8f392", // December – dark green
 };
 
-const labels = [
-  "Week 1",
-  "Week 2",
-  "Week 3",
-  "Week 4",
-  "Week 5",
-  "Week 6",
-  "Week 7",
-  "Week 8",
-  "Week 9",
-  "Week 10",
-  "Week 11",
-  "Week 12",
-  "Week 13",
-  "Week 14",
-  "Week 15",
-];
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "",
+      },
+    },
+    scales: {
+      y: {
+        min: 70,
+        max: 110,
+        ticks: {
+          stepSize: 5, // optional but nice
+          callback: (value: string | number) => `${value} kg`,
+        },
+      },
+    },
+  };
 
-const data = {
-  labels,
+
+  const [chartData, setChartData] = useState<userChartData>({
+  labels: [],
   datasets: [
     {
-      label: "Weekly average weight (kg)",
-      data: [
-        83.2,
-        82.9,
-        82.6,
-        82.3,
-        82.1,
-        81.9,
-        81.8,
-        71.6,
-        81.5,
-        81.4,
-        81.3,
-        81.2,
-        81.1,
-        81.0,
-        70.9,
-      ],
-      backgroundColor: "rgba(53, 162, 235, 0.6)",
+      label: "",
+      data: [],
+      backgroundColor: [],
     },
   ],
-};
+})
 
-export default function ChartsWeightPage() {
-  const pageTitle = "Test title";
-  const pageContent = "<p>test content</p>";
+
+  useEffect(() => {
+    getCalendarData();
+  }, []);
+
+  const getCalendarData = async (): Promise<void> => {
+    const response = await fetch(chartDataFetchUrl, {
+        method: 'GET',
+        credentials: 'include',
+    });
+
+    const data: UserWeighingData[] = await response.json();
+    console.log(data);
+
+    // process data and populate helper arrays to fit chart data format
+    const _labels: string[] = [];
+    const _data: number[] = [];
+    const _backgroundColor: string[] = [];
+ 
+    let storeMonth = -1;
+    data.forEach(item => {
+        const dateObj = new Date(item.date_of_weighing);
+        const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
+        // console.log("New month1:", dateObj.getMonth());
+        if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
+          storeMonth = dateObj.getMonth();
+          console.log("storeMonth:", storeMonth);
+      
+        }
+        _labels.push(formattedDate);
+        _data.push(item.weight);
+        _backgroundColor.push(colors[storeMonth]);
+    });
+
+
+    // process data to fit chart format
+    const processedData = {
+      labels: _labels,
+      datasets: [
+        {
+          label: "Daily weight (kg)",
+          data: _data,
+          backgroundColor: _backgroundColor,
+        },
+      ],
+    };
+
+    console.log('processedData', processedData);
+    setChartData(processedData);
+
+    return;
+  }
+
+
+
 
   return (
     <main className="site-content full-width">
       <Header backUrl="/homepage" title={pageTitle} />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 chart-dates-filter-wrap flex items-center mt-[50px] mx-auto">
+          <div className="flex flex-col">
+            <label className="text-sm mb-1">Start date</label>
+            <input
+              type="date"
+              value={startDate}
+              onChange={(e) => setStartDate(e.target.value)}
+              className="border rounded px-3 py-2"
+              max={endDate}
+            />
+          </div>
 
+          <div className="flex flex-col">
+            <label className="text-sm mb-1">End date</label>
+            <input
+              type="date"
+              value={endDate}
+              onChange={(e) => setEndDate(e.target.value)}
+              className="border rounded px-3 py-2"
+              min={startDate}
+            />
+          </div>
+          <div className="flex flex-col">
+            <button
+              type="button"
+              className="green-btn mt-[25px] dateApplyBtn"
+              onClick={() => {
+                if (!startDate || !endDate) return;
+                if (startDate > endDate) return;
+                getCalendarData();
+              }}
+            >
+              Apply
+            </button>
+          </div>
+      </div>
       <div className="verify-email pb-20" id="charts-weight">
         <div className="container mx-auto">
           <div className="about-us-section-wrap">
@@ -97,11 +204,10 @@ export default function ChartsWeightPage() {
                 <div className="setting-bottom-img p-0 mt-16">
                   <div className="verify-email-img-sec">
                     <div className="main-img-top">
-                      <Bar options={options} data={data} />       
+                      <Bar options={options} data={chartData} />       
                     </div>
                   </div>
                 </div>
-
                 <div
                   className="page-content mt-4"
                   dangerouslySetInnerHTML={{ __html: pageContent }}
@@ -114,3 +220,5 @@ export default function ChartsWeightPage() {
     </main>
   );
 }
+
+export default ChartsWeightPage;

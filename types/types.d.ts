@@ -104,4 +104,14 @@ declare global {
         meal_quantity_type: string;
         comments: string;
     }
+
+    interface UserWeighingData {
+        id: string;
+        weight: number;
+        date_of_weighing: string;
+    }
+
+
+
+
 }
