@@ -112,11 +112,11 @@ declare global {
         date_of_weighing: string;
     }
 
-    interface UserWorkoutData {
+    interface UserWorkoutDataForChart { 
         date_of_workout: string | Date;
-        w_title: string;
-        w_type: string;
-        w_calories: number;
+        w_title?: string;
+        w_type?: string;
+        w_calories?: number;
         w_time: number;
     }
 }

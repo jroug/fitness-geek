@@ -112,7 +112,7 @@ const colors: Record<number, string> = {
         credentials: 'include',
     });
 
-    const data: UserWorkoutData[] = await response.json();
+    const data: UserWorkoutDataForChart[] = await response.json();
     console.log(data);
 
     // process data and populate helper arrays to fit chart data format
