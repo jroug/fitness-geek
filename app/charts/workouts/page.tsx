@@ -13,7 +13,7 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
- 
+import { chart_colors } from "@/lib/globalSettings";
 
 ChartJS.register(
   CategoryScale,
@@ -33,9 +33,6 @@ interface userChartData {
   }[];
 }
 
-
-
-
 const ChartsWorkoutsPage: React.FC = () => {
 
   const pageTitle = "Workouts chart";
@@ -51,20 +48,7 @@ const ChartsWorkoutsPage: React.FC = () => {
   });
   const chartDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-workout-data?startDate=${startDate}&endDate=${endDate}`;
   
-const colors: Record<number, string> = {
-  0: "#4F81BD", // January – blue
-  1: "#F79646", // February – orange
-  2: "#cb2a2a", // March – gray
-  3: "#FFC000", // April – yellow
-  4: "#5B9BD5", // May – light blue
-  5: "#70AD47", // June – green
-  6: "#2F5597", // July – dark blue
-  7: "#C55A11", // August – brown/orange
-  8: "#7F7F7F", // September – dark gray
-  9: "#BF9000", // October – mustard
-  10: "#255E91", // November – navy
-  11: "#b8f392", // December – dark green
-};
+ 
 
   const options = {
     responsive: true,
@@ -132,7 +116,7 @@ const colors: Record<number, string> = {
         }
         _labels.push(formattedDate);
         _data.push(item.w_time);
-        _backgroundColor.push(colors[storeMonth]);
+        _backgroundColor.push(chart_colors[storeMonth]);
     });
 
 

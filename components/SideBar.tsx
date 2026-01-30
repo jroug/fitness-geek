@@ -160,6 +160,23 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
+									<Link href="/charts/grades">
+										<div className="Char-content border-bottom1">
+											<div className="send-money-contact-tab ">
+												<div className="setting-icon">
+													<Image src={setting5} alt="setting-icon" />
+												</div>
+												<div className="setting-title">
+													<h3>Grades Chart</h3>
+												</div>
+												<div className="contact-star">
+													<div className="star-favourite">
+														<Image src={right_arrow} alt="edit-icon" />
+													</div>
+												</div>
+											</div>
+										</div>
+									</Link>
 									<Link href="/users/profile">
 										<div className="send-money-contact-tab border-bottom1 pt-0">
 											<div className="setting-icon">

@@ -36,9 +36,9 @@ interface userChartData {
 
 
 
-const ChartsWeightPage: React.FC = () => {
+const ChartsGradesPage: React.FC = () => {
 
-  const pageTitle = "Weight chart";
+  const pageTitle = "Grades chart";
   const pageContent = "";
   const [startDate, setStartDate] = useState<string>(() => {
     const today = new Date();
@@ -49,9 +49,9 @@ const ChartsWeightPage: React.FC = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
-  const chartDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-weighing-data?startDate=${startDate}&endDate=${endDate}`;
+  const chartDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-grades-data?startDate=${startDate}&endDate=${endDate}`;
   
- 
+
   const options = {
     responsive: true,
     plugins: {
@@ -65,11 +65,11 @@ const ChartsWeightPage: React.FC = () => {
     },
     scales: {
       y: {
-        min: 70,
-        max: 110,
+        min: 0,
+        max: 10,
         ticks: {
-          stepSize: 5, // optional but nice
-          callback: (value: string | number) => `${value} kg`,
+          stepSize: 1, // optional but nice
+          callback: (value: string | number) => `${value}`,
         },
       },
     },
@@ -77,15 +77,15 @@ const ChartsWeightPage: React.FC = () => {
 
 
   const [chartData, setChartData] = useState<userChartData>({
-  labels: [],
-  datasets: [
-    {
-      label: "",
-      data: [],
-      backgroundColor: [],
-    },
-  ],
-})
+    labels: [],
+    datasets: [
+        {
+            label: "",
+            data: [],
+            backgroundColor: [],
+        },
+    ],
+  })
 
 
   useEffect(() => {
@@ -98,7 +98,7 @@ const ChartsWeightPage: React.FC = () => {
         credentials: 'include',
     });
 
-    const data: UserWeighingData[] = await response.json();
+    const data: UserGradeDataForChart[] = await response.json();
     console.log(data);
 
     // process data and populate helper arrays to fit chart data format
@@ -108,7 +108,7 @@ const ChartsWeightPage: React.FC = () => {
  
     let storeMonth = -1;
     data.forEach(item => {
-        const dateObj = new Date(item.date_of_weighing);
+        const dateObj = new Date(item.date_of_comment);
         const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
         // console.log("New month1:", dateObj.getMonth());
         if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
@@ -117,7 +117,7 @@ const ChartsWeightPage: React.FC = () => {
       
         }
         _labels.push(formattedDate);
-        _data.push(item.weight);
+        _data.push(item.grade);
         _backgroundColor.push(chart_colors[storeMonth]);
     });
 
@@ -127,7 +127,7 @@ const ChartsWeightPage: React.FC = () => {
       labels: _labels,
       datasets: [
         {
-          label: "Daily weight (kg)",
+          label: "Daily workout (minutes)",
           data: _data,
           backgroundColor: _backgroundColor,
         },
@@ -207,4 +207,4 @@ const ChartsWeightPage: React.FC = () => {
   );
 }
 
-export default ChartsWeightPage;
+export default ChartsGradesPage;

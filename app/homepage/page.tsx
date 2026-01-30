@@ -12,7 +12,8 @@ import header_logo from "../../public/images/splashscreen/header-logo.png";
 import settings_icon from "../../public/svg/setting-icon.svg";
 import home1 from "../../public/images/homescreen/home1.png";
 import bottom from "../../public/images/homescreen/bottom.png";
-import shoulders from "../../public/images/homescreen/shoulders.png";
+ 
+import body_muscles from "../../public/images/homescreen/muscles/body-muscles.png";
 
 import Loading from "../../components/Loading";
 import SlickCustomNextArrow from "../../components/SlickCustomNextArrow";
@@ -23,6 +24,7 @@ import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
  
 const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
+const fetchSuggestedWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-workouts`;
 
 const Homepage = () => {
 
@@ -33,35 +35,52 @@ const Homepage = () => {
         user_name: '',
         user_registered: '',
     });
+    const [workouts, setWorkouts] = useState([]);
     const [loading, setLoading] = useState(true);
     const router = useRouter();
   
-    useEffect(() => {
+        useEffect(() => {
+        async function getDataForHome() {
+            const isAuth = await checkAuthAndRedirect(router, false);
+            if (!isAuth) return;
 
-      // Fetch user authentication status from an API endpoint (session, cookies)
-      async function getProfileDataForHome() {
-        
-        const ret = await checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
-            if (ret === true){
-            // User is authenticated, allow access to the page
-            await fetch(profileDataFetchUrl, {
-                method: 'GET',
-                credentials: 'include', // Include cookies in the request
-            })
-            .then((res) => res.json())
-            .then((data) => {
-                    setProfileData(data)
-                    setLoading(false)
-            });
+            try {
+                setLoading(true);
+
+                const [profileRes, workoutRes] = await Promise.all([
+                    fetch(profileDataFetchUrl, {
+                        method: "GET",
+                        credentials: "include",
+                    }),
+                    fetch(fetchSuggestedWorkoutUrl, {
+                        method: "GET",
+                        credentials: "include",
+                    }),
+                ]);
+
+                const [profileData, workoutsData] = await Promise.all([
+                    profileRes.json(),
+                    workoutRes.json(),
+                ]);
+
+                setProfileData(profileData);
+                setWorkouts(workoutsData);
+
+            } catch (err) {
+                console.error("Failed to load home data", err);
+            } finally {
+                setLoading(false);
             }
         }
-  
-      getProfileDataForHome();
-    }, [router]);
+
+        getDataForHome();
+        }, [router]);
   
     if (loading) {
       return <Loading />; // Display a loading state while checking authentication
     }
+
+    // console.log('Suggested Workouts:', workouts);
 
     const settings = {
         // slidesToShow: 2,
@@ -135,89 +154,57 @@ const Homepage = () => {
                         <div className="home-slider-wrap mt-16" >
                             <Slider {...settings}  >
                                 {/* <!-- slide start --> */}
-                                <div className="workout-details">
-                                    <Link href="#">
-                                        <div className="verify-email-img-sec ">
-                                            <div className="main-img-top">
-                                                <Image src={home1} priority={true} alt="notification-img" />
-                                            </div>
-                                            <div className="main-img-bottom">
-                                                <Image src={bottom} priority={true} alt="notification-img" />
-                                            </div>
-                                            <div className="workout-plan-ready-details">
-                                                <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
-                                                <p>sssssssss  |  Beginner</p>
-                                            </div>
+                                {
+                                    workouts.map((workout: any) => (
+                                        <div className="workout-details" key={workout.id}>
+                                            <Link href={`#/workout/${workout.id}`}>
+                                                <div className="verify-email-img-sec ">
+                                                    <div className="main-img-top">
+                                                        <div className="palceholder-1"></div> 
+                                                    </div>
+                                                    <div className="workout-plan-ready-details">
+                                                        <h2 className="md-font-sans fw-700 color-white">{workout.w_type}</h2>
+                                                        <h3 className="md-font-sans fw-700 color-green">{workout.w_title}</h3>
+                                                        <h4 className="md-font-sans fw-700 color-green">{workout.w_title===workout.w_description ? "" : workout.w_description}</h4>
+                                                        <p>{parseInt(workout.w_calories)} cal </p>
+                                                        <p>{parseInt(workout.w_time)} min</p>
+                                                    </div>
+                                                </div>
+                                            </Link>
                                         </div>
-                                    </Link>
-                                </div>
-                                {/* <!-- slide end --> */}
-                                {/* <!-- slide start --> */}
-                                <div className="workout-details">
-                                    <Link href="#">
-                                        <div className="verify-email-img-sec ">
-                                            <div className="main-img-top">
-                                                <Image src={home1} priority={true} alt="notification-img" />
-                                            </div>
-                                            <div className="main-img-bottom">
-                                                <Image src={bottom} priority={true} alt="notification-img" />
-                                            </div>
-                                            <div className="workout-plan-ready-details">
-                                                <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
-                                                <p>sssssssss  |  Beginner</p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                </div>
-                                {/* <!-- slide end --> */}
-                                {/* <!-- slide start --> */}
-                                <div className="workout-details">
-                                    <Link href="#">
-                                        <div className="verify-email-img-sec ">
-                                            <div className="main-img-top">
-                                                <Image src={home1} priority={true} alt="notification-img" />
-                                            </div>
-                                            <div className="main-img-bottom">
-                                                <Image src={bottom} priority={true} alt="notification-img" />
-                                            </div>
-                                            <div className="workout-plan-ready-details">
-                                                <h3 className="md-font-sans fw-700 color-green">Daily Exercise</h3>
-                                                <p>sssssssss  |  Beginner</p>
-                                            </div>
-                                        </div>
-                                    </Link>
-                                </div>
+                                    ))
+                                }
                                 {/* <!-- slide end --> */}
                             </Slider>
                         </div>
                     </div>
                     <div className="home-second">
-                        <h2 className="text-left container mx-8">Body focus area</h2>
+                        <h2 className="text-left container mx-8">Body focus areas</h2>
                         <div className="home-second-wrap mt-12">
                             <div className="focus-content shoulder-redirect">
-                                <Image src={shoulders} alt="body-img" />
+                                <div className="small-img"><Image src={body_muscles} alt="body-img" className="shoulders"/></div>
                                 <p className="mt-8 color-black">Shoulders</p>	
                             </div>
                             <div className="focus-content shoulder-redirect">
-                                <Image src={shoulders} alt="body-img" />
+                                <div className="small-img"><Image src={body_muscles} alt="body-img" className="chest" /></div>
                                 <p className="mt-8 color-black">Chest</p>	
                             </div>
                             <div className="focus-content shoulder-redirect">
-                                <Image src={shoulders} alt="body-img" />
+                                <div className="small-img"><Image src={body_muscles} alt="body-img" className="legs" /></div>
                                 <p className="mt-8 color-black">Legs</p>	
                             </div>
                         </div>
                         <div className="home-second-wrap mt-12">
                             <div className="focus-content shoulder-redirect">
-                                <Image src={shoulders} alt="body-img" />
+                                <div className="small-img"><Image src={body_muscles} alt="body-img" className="back" /></div>
                                 <p className="mt-8 color-black">Back</p>	
                             </div>
                             <div className="focus-content shoulder-redirect">
-                                <Image src={shoulders} alt="body-img" />
+                                <div className="small-img"><Image src={body_muscles} alt="body-img" className="arms" /></div>
                                 <p className="mt-8 color-black">Arms</p>	
                             </div>
                             <div className="focus-content shoulder-redirect">
-                                <Image src={shoulders} alt="body-img" />
+                                <div className="small-img"><Image src={body_muscles} alt="body-img" className="stomach" /></div>
                                 <p className="mt-8 color-black">Stomach</p>	
                             </div>
                         </div>

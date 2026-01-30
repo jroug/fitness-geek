@@ -119,4 +119,10 @@ declare global {
         w_calories?: number;
         w_time: number;
     }
+
+    interface UserGradeDataForChart {
+        date_of_comment: string | Date;
+        grade: number;
+    }
+ 
 }
