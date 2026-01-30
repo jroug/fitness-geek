@@ -155,7 +155,7 @@ const Homepage = () => {
                             <Slider {...settings}  >
                                 {/* <!-- slide start --> */}
                                 {
-                                    workouts.map((workout: any) => (
+                                    workouts.map((workout: UserWorkoutData) => (
                                         <div className="workout-details" key={workout.id}>
                                             <Link href={`#/workout/${workout.id}`}>
                                                 <div className="verify-email-img-sec ">
@@ -166,8 +166,8 @@ const Homepage = () => {
                                                         <h2 className="md-font-sans fw-700 color-white">{workout.w_type}</h2>
                                                         <h3 className="md-font-sans fw-700 color-green">{workout.w_title}</h3>
                                                         <h4 className="md-font-sans fw-700 color-green">{workout.w_title===workout.w_description ? "" : workout.w_description}</h4>
-                                                        <p>{parseInt(workout.w_calories)} cal </p>
-                                                        <p>{parseInt(workout.w_time)} min</p>
+                                                        <p>{parseInt(workout.w_calories || '0')} cal </p>
+                                                        <p>{parseInt(workout.w_time || '0')} min</p>
                                                     </div>
                                                 </div>
                                             </Link>

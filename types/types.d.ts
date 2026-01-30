@@ -73,7 +73,10 @@ declare global {
         id: number;
         date_of_workout: string | Date;
         w_title: string;
+        w_description?: string;
         w_type: string;
+        w_calories?: string;
+        w_time?: string;
     }
 
     interface UserCommentData {
