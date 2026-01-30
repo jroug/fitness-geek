@@ -119,3 +119,4 @@ declare global {
         w_calories: number;
         w_time: number;
     }
+}
