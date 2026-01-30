@@ -81,6 +81,7 @@ declare global {
         user_id: number;
         date_of_comment: string | Date;
         comment: string;
+        grade: number;
     }
 
     // Define interfaces for meal data
@@ -111,7 +112,10 @@ declare global {
         date_of_weighing: string;
     }
 
-
-
-
-}
+    interface UserWorkoutData {
+        date_of_workout: string | Date;
+        w_title: string;
+        w_type: string;
+        w_calories: number;
+        w_time: number;
+    }

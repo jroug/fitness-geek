@@ -193,7 +193,8 @@ const CalendarHomePage: React.FC = () => {
                 id:val.id, 
                 user_id:val.user_id, 
                 date_of_comment:val.date_of_comment,
-                comment:val.comment 
+                comment:val.comment, 
+                grade:val.grade 
             };
         });
 

@@ -32,7 +32,6 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFr
     const workoutTypeText =  workoutValue ? workoutValue.w_type  : '';  
     const workoutTitleText =  workoutValue ? workoutValue.w_title  : '';  
 
- 
     // console.log('commentObjInit', commentObjInit);
 
     // only comment is able to change from here
@@ -40,12 +39,65 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFr
         id: 0,
         user_id: 0,
         date_of_comment: '', 
-        comment: ''
+        comment: '',
+        grade: 0
     });
 
     useEffect(()=>{
         setCommentObject(commentObjInit);
     },[commentObjInit])
+
+    const handleAddDailyGrade = async (commentObject: UserCommentData, dateKey: string) => {
+            
+        const grade_new_str = prompt("Add a grade (1-10):", commentObject?.grade > 0 ? commentObject?.grade.toString() : '');
+        const grade_new = grade_new_str ? parseInt(grade_new_str) : 0;
+        if (grade_new_str!==null){ // null is when canceled
+            if (grade_new >=1 && grade_new <=10) {
+                const editMealCommentUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/save-daily-grade`;
+                try {
+                    const res = await fetch(editMealCommentUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            action: 'update_grade_daily',
+                            grade_new: grade_new,
+                            user_id : commentObject?.user_id,
+                            dateKey: dateKey,
+                            comment_id: commentObject?.id,
+                            jr_token: jr_token
+                        }),
+                    });
+                    
+                    if (!res.ok) {
+                        throw new Error('Failed to add grade');
+                    }
+                    const data = await res.json();
+                    if (data.action_suc===true){
+                        // setCommentObject({
+                        //     id: data.id,
+                        //     user_id : commentObject.user_id,
+                        //     date_of_comment: commentObject.date_of_comment, 
+                        //     grade: grade_new,
+                        //     comment: commentObject.comment
+                        // });
+                        
+                        // populate the list on father to keep data corect when rerendering
+                        setUserCommentsList((prev) => ({
+                            ...prev,
+                            [dateKey]: {
+                                ...prev[dateKey],
+                                grade: grade_new
+                            }
+                        }));
+                    }
+                } catch (error) {
+                    console.error('Error adding grade:', error);
+                }
+            }
+        }
+        
+        return false;
+}
 
     const handleAddDailyComment = async (commentObject: UserCommentData, dateKey: string) => {
    
@@ -114,8 +166,8 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFr
             { isCommentsPublished && (
                 <>
                     <div className="custom-text-cal-header text-center bg-yellow-300 p-[2px] m-[2px] rounded-[4px] custom-grade" >
-                        <button className="comment-link-button" onClick={() => handleAddDailyComment(commentObj, dateKey)} >+ Grade</button>
-                        <p>{ commentObj?.comment }</p>
+                        <button className="comment-link-button" onClick={() => handleAddDailyGrade(commentObj, dateKey)} >+ Grade</button>
+                        <p className="font-bold leading-[20px] ">{ commentObj?.grade>0 ? commentObj?.grade + '/10' : `-`}</p>
                     </div> 
                     <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] custom-comment" >
                         <button className="comment-link-button" onClick={() => handleAddDailyComment(commentObj, dateKey)} >+ Comment</button>
