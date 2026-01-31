@@ -1,11 +1,16 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 interface ProfileData {
+    acf: {
+        date_of_birth?: string;
+        profile_picture?: string;
+    };
     name: string;
     first_name: string;
     last_name: string;
     user_registered: string;
     email: string;
+    date_of_birth?: string;
 }
 
 interface SuccessResponse {
@@ -15,6 +20,8 @@ interface SuccessResponse {
     last_name: string;
     user_registered: string;
     email: string;
+    date_of_birth?: string;
+    profile_picture?: string;
 }
 
 interface ErrorResponse {
@@ -32,8 +39,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 return res.status(401).json({ message: 'Unauthorized: No token provided' });
             }
 
-            const profileDataFetchUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/users/me?context=edit`;
-            // console.log(token);
+            const profileDataFetchUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/users/me?context=edit&acf_format=standard`;
+            // console.log(profileDataFetchUrl);
             const response = await fetch(profileDataFetchUrl, {
                 method: 'GET',
                 headers: {
@@ -55,7 +62,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 last_name: data.last_name,
                 user_registered: data.user_registered,
                 email: data.email,
+                date_of_birth: data.acf.date_of_birth,
+                profile_picture: data.acf.profile_picture,
             });
+            
         } catch {
             return res.status(500).json({ message: 'Server error' });
         }

@@ -142,7 +142,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFr
                             }
                         }));
                     }else{
-                        console.log('Message: ' + data.message);
+                        // console.log('Message: ' + data.message);
                     } 
 
                 } catch (error) {

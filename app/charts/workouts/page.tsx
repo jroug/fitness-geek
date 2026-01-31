@@ -1,6 +1,6 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
+import React, {  useEffect, useState } from "react";
 import Header from "@/components/Header";
 
 import {
@@ -88,7 +88,7 @@ const ChartsWorkoutsPage: React.FC = () => {
 
   useEffect(() => {
     getCalendarData();
-  }, []);
+  });
 
   const getCalendarData = async (): Promise<void> => {
     const response = await fetch(chartDataFetchUrl, {
@@ -97,7 +97,7 @@ const ChartsWorkoutsPage: React.FC = () => {
     });
 
     const data: UserWorkoutDataForChart[] = await response.json();
-    console.log(data);
+    // console.log(data);
 
     // process data and populate helper arrays to fit chart data format
     const _labels: string[] = [];
@@ -111,7 +111,7 @@ const ChartsWorkoutsPage: React.FC = () => {
         // console.log("New month1:", dateObj.getMonth());
         if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
           storeMonth = dateObj.getMonth();
-          console.log("storeMonth:", storeMonth);
+          // console.log("storeMonth:", storeMonth);
       
         }
         _labels.push(formattedDate);
@@ -132,7 +132,7 @@ const ChartsWorkoutsPage: React.FC = () => {
       ],
     };
 
-    console.log('processedData', processedData);
+    // console.log('processedData', processedData);
     setChartData(processedData);
 
     return;

@@ -128,7 +128,7 @@ const Homepage = () => {
                 <header id="top-header">
                     <div className="header-wrap-home">
                         <div className="header-logo-home">
-                            <Link href="#">
+                            <Link href="/homepage">
                                 <Image src={header_logo} alt="back-btn-icon" />
                             </Link>
                         </div>
@@ -157,7 +157,7 @@ const Homepage = () => {
                                 {
                                     workouts.map((workout: UserWorkoutData) => (
                                         <div className="workout-details" key={workout.id}>
-                                            <Link href={`#/workout/${workout.id}`}>
+                                            <Link href={`/workouts?workoutId=${workout.id}`}>
                                                 <div className="verify-email-img-sec ">
                                                     <div className="main-img-top">
                                                         <div className="palceholder-1"></div> 

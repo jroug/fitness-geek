@@ -4,7 +4,7 @@ import "../public/css/style.css";
 import "../public/css/all.min.css"; // Importing the CSS file directly
 import { Analytics } from "@vercel/analytics/react"
 import PageAnimatePresence from '../components/PageAnimatePresence'
-import BottomBar from "@/components/BottomBar";
+// import BottomBar from "@/components/BottomBar";
 
 export const metadata: Metadata = {
   title: "Fitness Geek",

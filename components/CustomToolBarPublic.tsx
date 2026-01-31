@@ -1,7 +1,7 @@
 import React from "react";
-import { NavigateAction, Views, View } from "react-big-calendar";
+import { Views } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Link from "next/link";
+
 
 
 

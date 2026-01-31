@@ -1,12 +1,12 @@
 import React from 'react';
-import Link from 'next/link';
-import Image from "next/image";
-import icon1 from "../public/images/homescreen/icon1.svg";
-import icon2 from "../public/images/homescreen/icon2.svg";
-import icon3 from "../public/images/homescreen/icon3.svg";
-import icon4 from "../public/images/homescreen/icon4.svg";
-import icon5 from "../public/images/homescreen/icon5.svg";
-import shape from "../public/images/shape.png";
+// import Link from 'next/link';
+// import Image from "next/image";
+// import icon1 from "../public/images/homescreen/icon1.svg";
+// import icon2 from "../public/images/homescreen/icon2.svg";
+// import icon3 from "../public/images/homescreen/icon3.svg";
+// import icon4 from "../public/images/homescreen/icon4.svg";
+// import icon5 from "../public/images/homescreen/icon5.svg";
+// import shape from "../public/images/shape.png";
 
 
 const BottomBar = () => {

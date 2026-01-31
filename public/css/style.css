@@ -1946,6 +1946,12 @@ li.list.active i {
     padding: 0;
     padding-right: 30px;
 }
+
+#profile-main .personal-name input[type="date"]{
+    padding-right: 0;
+}
+
+
 .gol3.profile{
     background-color: #7FD83B !important; 
 }

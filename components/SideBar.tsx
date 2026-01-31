@@ -14,11 +14,11 @@ import setting3 from "../public/images/setting/setting3.svg";
 import setting5 from "../public/images/setting/setting5.svg";
 import setting6 from "../public/images/setting/setting6.svg";
 
-import setting9 from "../public/images/setting/setting9.svg";
+// import setting9 from "../public/images/setting/setting9.svg";
 
 import setting11 from "../public/images/setting/setting11.svg";
 import setting12 from "../public/images/setting/setting12.svg";
-import setting13 from "../public/images/setting/setting13.svg";
+// import setting13 from "../public/images/setting/setting13.svg";
 
 import setting17 from "../public/images/setting/setting17.svg";
 
@@ -258,7 +258,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>  */}
-									<Link href="/faq">
+									{/* <Link href="/faq">
 										<div className="send-money-contact-tab border-bottom1 ">
 											<div className="setting-icon">
 												<Image src={setting9} alt="setting-icon" />
@@ -272,7 +272,7 @@ const SideBar = () => {
 												</div>
 											</div>
 										</div>
-									</Link> 
+									</Link>  */}
 									{/* <Link href="data-privacy.html">
 										<div className="send-money-contact-tab border-bottom1 ">
 											<div className="setting-icon">
@@ -305,7 +305,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									<Link href="/contact">
+									{/* <Link href="/contact">
 										<div className="send-money-contact-tab border-bottom1 ">
 											<div className="setting-icon">
 												<Image src={setting13} alt="setting-icon" />
@@ -319,7 +319,7 @@ const SideBar = () => {
 												</div>
 											</div>
 										</div>
-									</Link> 
+									</Link>  */}
 									{/* <Link href="Invite-friend.html">
 										<div className="send-money-contact-tab border-bottom1 ">
 											<div className="setting-icon">

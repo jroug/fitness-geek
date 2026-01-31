@@ -9,7 +9,7 @@ export default function MagicLoginPage(props: { params: Params }) {
     
     const params = use(props.params);
     const login_token  = params.login_token; // Extract the token from params
-    console.log('login_token', login_token);
+    // console.log('login_token', login_token);
     // login and redirect
 
 
@@ -25,7 +25,8 @@ export default function MagicLoginPage(props: { params: Params }) {
 
             if (res.ok) {
                 const data = await res.json();
-                const { message, redirect_url } = data;
+                // const { message, redirect_url } = data;
+                const { redirect_url } = data;
                 window.location.href = redirect_url;
             } else {
                 console.error('Login failed');
