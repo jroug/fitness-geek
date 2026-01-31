@@ -140,7 +140,7 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
             <h2 className="w-100 text-center event-title">{mealEvent.title}</h2>
             {mealEvent.meals && mealEvent.meals.length > 0 && mealEvent.meals.map((meal, idx) => (
                 <div key={`meal-${idx}`} className="relative border-b border-dotted border-black" >
-                    <div className={"event-description w-[calc(100%-20px)]" + meal.f_category}>
+                    <div className={"event-description w-[calc(100%-20px)] " + meal.f_category}>
                         {meal.f_title}
                         {
                             isCommentsPublished

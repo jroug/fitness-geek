@@ -11,56 +11,60 @@ import shape from "../public/images/shape.png";
 
 const BottomBar = () => {
     return (
-		<div className="bottom-tabbar">
-			<div className="bottom-menu-svg-main">
-				<div className="bottom-menu-svg">
-					<div className="gol3">
-						<div className="add-to-cart-icon">
-							<Link href="workout-history.html">
-								<Image src={icon3} alt="tabbar-icon" />
-							</Link>
-						</div>
-					</div>
-					<Image src={shape} priority={true} alt="shape-icon" className="shape-icon-bottom" />
-				</div>
-			</div>
-			<div className="navigation">
-				<ul className="listWrap">
-					<li className="list active ">
-						<Link href="/homescreen">
-							<i className="icon">
-								<Image src={icon1} alt="tabbar-icon" />	
-							</i>
-							<span className="text"></span>
-						</Link>
-					</li>
-					<li className="list">
-						<Link href="#">
-							<i className="icon">
-								<Image src={icon2} alt="tabbar-icon" />
-							</i>
-							<span className="text"></span>
-						</Link>
-					</li>
-					<li className="list ">
-						<Link href="#">
-							<i className="icon">
-								<Image src={icon4} alt="tabbar-icon" />	
-							</i>
-							<span className="text"></span>
-						</Link>
-					</li>
-					<li className="list">
-						<Link href="#">
-							<i className="icon">
-								<Image src={icon5} alt="tabbar-icon" />	
-							</i>
-							<span className="text"></span>
-						</Link>
-					</li>
-				</ul>
-			</div> 
-		</div>
+		<div className="footer-bar">	</div>
+		// <div className="bottom-tabbar">
+		// 	<div className="bottom-menu-svg-main">
+		// 		<div className="bottom-menu-svg">
+		// 			<div className="gol3">
+		// 				<div className="add-to-cart-icon">
+		// 					<div className="footer-bar">
+
+		// 					</div>
+		// 					<Link href="workout-history.html"> 
+		// 						<Image src={icon3} alt="tabbar-icon" />
+		// 					</Link>
+		// 				</div>
+		// 			</div>
+		// 			{/* <Image src={shape} priority={true} alt="shape-icon" className="shape-icon-bottom" /> */}
+		// 		</div>
+		// 	</div>
+		// 	<div className="navigation">
+		// 		<ul className="listWrap">
+		// 			<li className="list active ">
+		// 				<Link href="/homescreen">
+		// 					<i className="icon">
+		// 						<Image src={icon1} alt="tabbar-icon" />	
+		// 					</i>
+		// 					<span className="text"></span>
+		// 				</Link>
+		// 			</li>
+		// 			<li className="list">
+		// 				<Link href="#">
+		// 					<i className="icon">
+		// 						<Image src={icon2} alt="tabbar-icon" />
+		// 					</i>
+		// 					<span className="text"></span>
+		// 				</Link>
+		// 			</li>
+		// 			<li className="list ">
+		// 				<Link href="#">
+		// 					<i className="icon">
+		// 						<Image src={icon4} alt="tabbar-icon" />	
+		// 					</i>
+		// 					<span className="text"></span>
+		// 				</Link>
+		// 			</li>
+		// 			<li className="list">
+		// 				<Link href="#">
+		// 					<i className="icon">
+		// 						<Image src={icon5} alt="tabbar-icon" />	
+		// 					</i>
+		// 					<span className="text"></span>
+		// 				</Link>
+		// 			</li>
+		// 		</ul>
+		// 	</div> 
+		// </div>
     );
 };
 

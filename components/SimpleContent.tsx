@@ -1,5 +1,7 @@
 import React from 'react';
-import settingImg from "@/public/images/main-img/setting-img.png";
+// import settingImg from "@/public/images/main-img/setting-img.png";
+// import fitnessGeekLogo from "@/public/images/logo/fitness-geek-logo.png";
+import fitnessGeekLogo from "@/public/images/logo/fitness-geek-logo-boomer.png";
 import Image from 'next/image';
 
 interface SimpleContentProps {
@@ -15,8 +17,8 @@ const SimpleContent: React.FC<SimpleContentProps> = ({ pageContent }) => {
                         <div className="max-w-4xl mx-auto bg-white rounded-lg mt-4 mb-6">
                             <div className="setting-bottom-img p-0 mt-16">
                                 <div className="verify-email-img-sec">
-                                    <div className="main-img-top">
-                                        <Image src={settingImg} alt="notification-img" />
+                                    <div className="main-img-top main-img-top-logo">
+                                        <Image src={fitnessGeekLogo} alt="notification-img" />
                                     </div>
                                 </div>
                             </div>

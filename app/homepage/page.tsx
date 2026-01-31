@@ -10,8 +10,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css'; 
 import header_logo from "../../public/images/splashscreen/header-logo.png";
 import settings_icon from "../../public/svg/setting-icon.svg";
-import home1 from "../../public/images/homescreen/home1.png";
-import bottom from "../../public/images/homescreen/bottom.png";
+// import home1 from "../../public/images/homescreen/home1.png";
+// import bottom from "../../public/images/homescreen/bottom.png";
  
 import body_muscles from "../../public/images/homescreen/muscles/body-muscles.png";
 

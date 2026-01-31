@@ -14,6 +14,7 @@ import {
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import { chart_colors } from "@/lib/globalSettings";
+import BottomBar from "@/components/BottomBar";
 
 ChartJS.register(
   CategoryScale,
@@ -144,6 +145,7 @@ const ChartsGradesPage: React.FC = () => {
 
 
   return (
+    <>
     <main className="site-content full-width">
       <Header backUrl="/homepage" title={pageTitle} />
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 chart-dates-filter-wrap flex items-center mt-[50px] mx-auto">
@@ -204,6 +206,8 @@ const ChartsGradesPage: React.FC = () => {
         </div>
       </div>
     </main>
+    <BottomBar />
+    </>
   );
 }
 

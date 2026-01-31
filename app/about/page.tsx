@@ -13,7 +13,7 @@ export default async function about() {
     const pageData = data[0];
     const pageTitle = pageData.title.rendered;
     const pageContent = pageData.content.rendered;
-
+ 
  
     return (
         <main className="site-content">

@@ -478,6 +478,10 @@ header {
     outline: 0;
     margin: 0;
 }
+.main-img-top-logo {
+    max-width:80%;
+    margin: 0 auto;
+}
 .main-img-top img,
 #homescreen-main .main-img-top img,
 #homescreen-main .main-img-bottom img{
@@ -3312,6 +3316,25 @@ ul.nav.nav-tabs.focus-tab-main{
 
 }
 
+.page-content p{
+    margin-bottom:20px;
+}
+.page-content ul{
+    margin-bottom:20px;
+}
+.page-content ul li{
+    margin-bottom:10px; 
+      list-style-type: disc;
+        margin-left: 20px;
+
+}
+
+.landing-page-content .wp-block-image img{
+    max-width:100%;
+    border-radius:12px;
+    margin-bottom:20px;
+}
+
 #meal-long table{
     width:100%;
 }
@@ -3651,4 +3674,13 @@ button.green-btn-small{
 
 .green-btn.dateApplyBtn{
     padding:12px 20px;
+}
+
+/* footer */
+.footer-bar{
+    width:100%;
+    height:40px;
+    background-color:black;
+    position: fixed;
+    bottom:0;
 }

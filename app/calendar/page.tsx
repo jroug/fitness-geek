@@ -16,6 +16,7 @@ import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
 import PopupForm from "@/components/PopupForm";
+import BottomBar from "@/components/BottomBar";
 
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
@@ -411,6 +412,8 @@ const CalendarHomePage: React.FC = () => {
                 </div>
             </div>
         </main>
+        <BottomBar />
+ 
         <PopupForm
             setPopupFormData={setPopupFormData}
             popupFormData={popupFormData}
