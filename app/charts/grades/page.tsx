@@ -91,7 +91,7 @@ const ChartsGradesPage: React.FC = () => {
 
   useEffect(() => {
     getCalendarData();
-  });
+  }, []);
 
   const getCalendarData = async (): Promise<void> => {
     const response = await fetch(chartDataFetchUrl, {

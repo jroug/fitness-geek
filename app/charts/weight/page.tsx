@@ -90,7 +90,7 @@ const ChartsWeightPage: React.FC = () => {
 
   useEffect(() => {
     getCalendarData();
-  });
+  }, []);
 
   const getCalendarData = async (): Promise<void> => {
     const response = await fetch(chartDataFetchUrl, {
@@ -175,7 +175,7 @@ const ChartsWeightPage: React.FC = () => {
               onClick={() => {
                 if (!startDate || !endDate) return;
                 if (startDate > endDate) return;
-                getCalendarData();
+                  getCalendarData();
               }}
             >
               Apply
