@@ -1,5 +1,5 @@
 // import Image from "next/image";
-// import Link from 'next/link';
+import Link from 'next/link';
 // import Loading from "../components/Loading";
 import PublicHeader from "@/components/PublicHeader";
 import PublicFooter from "@/components/PublicFooter";
@@ -26,7 +26,17 @@ export default async function LandingPage() {
               <div className="about-us-screen-full border-b-2 border-gray-200">
                 <div className="max-w-4xl mx-auto bg-white rounded-lg ">
                   <h2 className="text-4xl font-bold text-gray-900 mb-6 mt-4">{pageData.title.rendered}</h2>
-                  <div className="landing-page-content" dangerouslySetInnerHTML={{ __html: pageData.content.rendered }} />
+                  <p>I had some text for here… but you know what it’s all about.</p>
+                  <br/>
+                  <p>So what are you waiting for?</p>
+                  <br/>
+                  <div className="flex justify-center">
+                    <Link href="/" className="black-link-btn">ENTER</Link>
+                  </div>
+                  <br/>
+                  <Link href="/" >
+                    <div className="landing-page-content" dangerouslySetInnerHTML={{ __html: pageData.content.rendered }} />
+                  </Link>
                 </div>
               </div>
               <PublicFooter />

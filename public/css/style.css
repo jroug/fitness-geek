@@ -3651,6 +3651,20 @@ button.green-btn-small{
     text-transform: uppercase;
 }
 
+.black-link-btn{
+        padding:10px;
+    margin:0 5px;
+    background-color: var(--2, #000000);
+    border-radius:12px;
+    color:#ffffff;
+    font-family: "Zen Dots";
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    text-transform: uppercase;
+}
+
 
 .weight-info{
     padding:10px;

@@ -5,7 +5,7 @@ import useSWR, { mutate } from "swr";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Loading from "@/components/Loading";
+// import Loading from "@/components/Loading";
 import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
@@ -229,11 +229,11 @@ const CalendarHomePage: React.FC = () => {
     }, [isLoading]);
 
     if (isLoading) {
-        return <Loading />;
+        return <></>;
     }
 
     if (calendarError || tokenError) {
-        return <Loading />;
+        return <></>;
     }
 
     const handleCopyLink = (link: string) => {

@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useRouter } from 'next/navigation';
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
 
@@ -44,8 +43,7 @@ type MealEventLike = {
 const toDate = (d: Date | string): Date => (d instanceof Date ? d : new Date(d));
 const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, setUserMealsList }) => {
 
-    
-       const router = useRouter();
+ 
    
        const getSelectedDateTime = useCallback(() => {
            const now = popupFormData.dateSelected ? new Date(popupFormData.dateSelected) : new Date();

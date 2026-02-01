@@ -3,7 +3,6 @@
 import { ReactNode } from 'react'
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
-import FrozenRoute from './FrozenRoute'
 
 interface PageAnimatePresenceProps {
   children: ReactNode
@@ -33,7 +32,7 @@ const PageAnimatePresence: React.FC<PageAnimatePresenceProps> = ({ children }) =
         transition={pageTransition}
         className="outer-motion-div"
       >
-        <FrozenRoute>{children}</FrozenRoute>
+       {children}
       </motion.div>
     </AnimatePresence>
   )
