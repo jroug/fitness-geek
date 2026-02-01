@@ -11,8 +11,8 @@ const PublicHeader = () => {
             </Link>
           </div>
           <div className="flex justify-end" >
-          <Link href="/users/enter" className="" >Enter</Link>
-          &nbsp;&nbsp;/&nbsp;&nbsp;
+          {/* <Link href="/users/enter" className="" >Enter</Link> */}
+          {/* &nbsp;&nbsp;/&nbsp;&nbsp; */}
           <Link href="/users/join" className="" >Join</Link>
           </div>
         </div>

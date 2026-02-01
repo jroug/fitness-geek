@@ -29,10 +29,10 @@ export default async function LandingPage() {
                   <p>I had some text for here… but you know what it’s all about.</p>
                   <br/>
                   <p>So what are you waiting for?</p>
-                  <br/>
+                  {/* <br/>
                   <div className="flex justify-center">
                     <Link href="/" className="black-link-btn">ENTER</Link>
-                  </div>
+                  </div> */}
                   <br/>
                   <Link href="/" >
                     <div className="landing-page-content" dangerouslySetInnerHTML={{ __html: pageData.content.rendered }} />
