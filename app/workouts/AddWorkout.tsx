@@ -1,14 +1,17 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-// import Link from "next/link";
+
+import React, { useEffect, useRef, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
-// import Popup from "@/components/Popup";
+import { useSearchParams } from 'next/navigation';
 import Toast from "@/components/Toast";
 import { globalSettings } from "@/lib/globalSettings";
-
+import useSWR from 'swr';
+ 
+const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
+    if (!res.ok) throw new Error('Failed to fetch workouts');
+    return res.json();
+});
 
 // Define interfaces for meal data
 interface WorkoutSuggestion {
@@ -28,7 +31,6 @@ interface WorkoutInputData {
 
 const AddWorkout: React.FC = () => {
     
-    const router = useRouter();
     const searchParams = useSearchParams();
     const preselectWorkoutId = searchParams?.get('workoutId') || null;
 
@@ -66,18 +68,7 @@ const AddWorkout: React.FC = () => {
 
     const [workoutComments, setWorkoutComments] = useState('');
 
-    const [suggestionWorkouts, setSuggestionWorkouts] = useState<WorkoutSuggestion[]>([]);
     const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
-
-
-
-    const getWorkoutSuggestions = async (): Promise<WorkoutSuggestion[]> => {
-        const fetchSuggestedWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-workouts`;
-        const res = await fetch(fetchSuggestedWorkoutUrl);
-        const data = await res.json();
-        setSuggestionWorkouts(data);
-        return data;
-    };
 
     const addWorkoutToDB = async (input_data: WorkoutInputData) => {
         const addWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-workout`;
@@ -108,27 +99,7 @@ const AddWorkout: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        const getAddMealPageData = async () => {
-            const ret = await checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
-            if (ret === true) {
-                const workouts = await getWorkoutSuggestions();
-
-                // Preselect workout from URL, e.g. /workouts?workoutId=1515
-                if (preselectWorkoutId) {
-                    const found = workouts.find((w) => w.id === preselectWorkoutId);
-                    if (found) setWorkoutSelected(found);
-                }
-            }
-        };
-
-        getAddMealPageData();
-    }, [router, preselectWorkoutId]);
-
-    // const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    //     e.preventDefault();
-    //     setDateTime(getCurrentDateTime());
-    // };
+ 
 
     const handleWorkoutSuggestionsInputChange = (event: React.SyntheticEvent, newValue: WorkoutSuggestion | null) => {
         if (newValue) setWorkoutSelected(newValue);
@@ -173,6 +144,42 @@ const AddWorkout: React.FC = () => {
         }
     };
 
+    const {
+        data: suggestionWorkouts = [],
+        error: workoutsError,
+        isLoading,
+    } = useSWR<WorkoutSuggestion[]>('/api/get-all-workouts', fetcher, {
+        dedupingInterval: 60_000, // 1 minute
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
+    const didPreselectRef = useRef<string | null>(null);
+
+    useEffect(() => {
+        if (!preselectWorkoutId) return;
+        if (!suggestionWorkouts.length) return;
+
+        // Prevent overwriting user selection on SWR revalidation
+        if (didPreselectRef.current === preselectWorkoutId) return;
+
+        const found = suggestionWorkouts.find((w) => w.id === preselectWorkoutId);
+        if (found) {
+            setWorkoutSelected(found);
+            didPreselectRef.current = preselectWorkoutId;
+        }
+    }, [preselectWorkoutId, suggestionWorkouts]);
+
+
+ 
+
+    if (isLoading || workoutsError) {
+        return (
+            <></>
+        );
+    }
+
+
     return (
         <>
                 <div className="verify-email pb-20" id="feedback-main">
@@ -194,7 +201,6 @@ const AddWorkout: React.FC = () => {
                                 </div>
                                 <div className="addmeal-div feedback-email">
                                     <label htmlFor="meal-short" className="custom-lbl-feedback">Workout*</label>
-                                    {/* <input type="text" id="meal-short" placeholder="Write here" className="sm-font-sans border mt-8" autoComplete="off" /> */}
                                     <Autocomplete
                                         className={"Autocomplete-green " + mealTitleErrorClass }
                                         value={workoutSelected}
@@ -243,7 +249,6 @@ const AddWorkout: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            {/* <Popup popupData={popupData} setPopupData={setPopupData} /> */}
             <Toast popupData={popupData} setPopupData={setPopupData} />
         </>
     );

@@ -7,6 +7,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const CustomToolBarPublic: React.FC<CustomPublicToolBarProps> = ({ label, onNavigate, onView }) => {
 
+
   return (
     <div className="rbc-toolbar">
       <span className="rbc-btn-group">

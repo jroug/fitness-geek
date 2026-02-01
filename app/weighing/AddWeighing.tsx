@@ -1,9 +1,6 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-// import Link from "next/link";
-import { useRouter } from 'next/navigation';
-import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
-// import Popup from "@/components/Popup";
+import React, {  useState } from 'react';
+
 import Toast from "@/components/Toast";
 import { globalSettings } from '@/lib/globalSettings';
 
@@ -16,8 +13,6 @@ interface WeighingInputData {
 }
 
 const AddWeighing: React.FC = () => {
-    
-    const router = useRouter();
 
     const getCurrentDateTime = (): string => {
         const now = new Date();
@@ -73,9 +68,9 @@ const AddWeighing: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
-    }, [router]);
+    // useEffect(() => {
+    //     checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
+    // }, [router]);
 
     // const handleSetCurrentDateAndTime = (e: React.MouseEvent<HTMLAnchorElement>) => {
     //     e.preventDefault();

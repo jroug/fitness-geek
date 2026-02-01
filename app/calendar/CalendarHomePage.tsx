@@ -1,8 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from "react";
-import { useRouter } from 'next/navigation';
-import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
+import React, { useEffect, useRef, useState } from "react";
+import useSWR, { mutate } from "swr";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -16,17 +15,16 @@ import { adjustTime } from "@/lib/adjustTime";
 import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
 import PopupForm from "@/components/PopupForm";
 
-
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 
 const localizer = momentLocalizer(moment);
 
-const calendarDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-calendar-data`;
-const getUserCalendarTokensUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-user-calendar-tokens`;
-const createUserCalendarTokensUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/create-user-calendar-tokens`;
-const deleteUserCalendarTokensUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-user-calendar-tokens`;
+// Use relative API routes on the client
+const calendarDataFetchUrl = `/api/get-calendar-data`;
+const getUserCalendarTokensUrl = `/api/get-user-calendar-tokens`;
+const createUserCalendarTokensUrl = `/api/create-user-calendar-tokens`;
+const deleteUserCalendarTokensUrl = `/api/delete-user-calendar-tokens`;
 
- 
 interface TokenResponse {
     jr_token: string;
     login_token: string;
@@ -34,25 +32,137 @@ interface TokenResponse {
     message?: string;
 }
 
+const fetcher = async <T,>(url: string): Promise<T> => {
+    const res = await fetch(url, { method: 'GET', credentials: 'include' });
+    if (!res.ok) throw new Error('Failed to fetch data');
+    return (await res.json()) as T;
+};
+
 const CalendarHomePage: React.FC = () => {
     const calendarMainRef = useRef<HTMLDivElement | null>(null);
-    
+
     const [popupFormData, setPopupFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
 
+    // Local state lists are still kept because other components (PopupForm / CustomEvent)
+    // mutate them optimistically.
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
-    // console.log('userMealsList', userMealsList);
-    
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
     const [userWeightList, setUserWeightList] = useState<Record<string, string>>({});
     const [userWorkoutList, setUserWorkoutList] = useState<Record<string, UserWorkoutData>>({});
 
-    const [loadingMeals, setLoadingMeals] = useState<boolean>(true);
-    const [loadingStatus, setLoadingStatus] = useState<boolean>(true);
-    const [isPublished, setIsPublished] = useState<boolean>(false);
-    const [jrTokenFromDb, setJrTokenFromDb] = useState<string>('');
-    const [jrLoginTokenFromDb, setJrLoginTokenFromDb] = useState<string>('');
+    // SWR: calendar data
+    const {
+        data: calendarData,
+        error: calendarError,
+        isLoading: isCalendarLoading,
+    } = useSWR<CalendarData>(calendarDataFetchUrl, (url) => fetcher<CalendarData>(url), {
+        dedupingInterval: 60_000,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
 
-    const router = useRouter();
+    // SWR: publish status
+    const {
+        data: tokenData,
+        error: tokenError,
+        isLoading: isTokenLoading,
+    } = useSWR<TokenResponse>(getUserCalendarTokensUrl, (url) => fetcher<TokenResponse>(url), {
+        dedupingInterval: 60_000,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
+
+    const isPublished = Boolean(tokenData?.jr_token);
+    const jrTokenFromDb = tokenData?.jr_token ?? '';
+    const jrLoginTokenFromDb = tokenData?.login_token ?? '';
+
+    const isLoading = isCalendarLoading || isTokenLoading;
+
+    // Transform SWR calendar data into the local lists used by the calendar/components.
+    useEffect(() => {
+        if (!calendarData) return;
+
+        if (!calendarData.meals_list || calendarData.meals_list.length === 0) {
+            setUserCommentsList({});
+            setUserWorkoutList({});
+            setUserWeightList({});
+            setUserMealsList([]);
+            return;
+        }
+
+        // User meal data
+        const groupedData = calendarData.meals_list.reduce((acc, item) => {
+            const hour = Number(moment(item.datetime_of_meal).format("HHmm"));
+            let mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD");
+
+            if (hour < 900) {
+                mealDateTime += "9 AM";
+            } else if (hour < 1130) {
+                mealDateTime += "9 AM";
+            } else if (hour < 1400) {
+                mealDateTime += "12 PM";
+            } else if (hour < 1630) {
+                mealDateTime += "2 PM";
+            } else if (hour < 1900) {
+                mealDateTime += "5 PM";
+            } else if (hour < 2130) {
+                mealDateTime += "7 PM";
+            } else {
+                mealDateTime += "10 PM";
+            }
+
+            if (!acc[mealDateTime]) acc[mealDateTime] = [];
+            acc[mealDateTime].push({
+                id: String(item.ID),
+                start: moment(item.datetime_of_meal).toDate(),
+                end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
+                title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr ' : item.meal_quantity + 'x'} ${item.food_name} `,
+                category: item.category,
+                comments: item.comments,
+            });
+            return acc;
+        }, {} as Record<string, MealGrouped[]>);
+
+        const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
+            id: group.map(event => event.id).join(','),
+            title: moment(group[0].start).format("hh:mm a"),
+            meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category, f_comments: event.comments || "" })),
+            start: adjustTime(group[0].start),
+            end: group[0].end,
+        }));
+
+        const transformedWeightData: Record<string, string> = {};
+        calendarData.weight_list.forEach((val) => {
+            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
+        });
+
+        const transformedWorkoutData: Record<string, UserWorkoutData> = {};
+        calendarData.workout_list.forEach((val) => {
+            transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
+                id: val.id,
+                w_title: val.w_title,
+                w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
+                date_of_workout: val.date_of_workout,
+            };
+        });
+
+        const transformedCommentsData: Record<string, UserCommentData> = {};
+        calendarData.comments_list.forEach((val) => {
+            transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = {
+                id: val.id,
+                user_id: val.user_id,
+                date_of_comment: val.date_of_comment,
+                comment: val.comment,
+                grade: val.grade,
+            };
+        });
+
+        setUserCommentsList(transformedCommentsData);
+        setUserWorkoutList(transformedWorkoutData);
+        setUserWeightList(transformedWeightData);
+        setUserMealsList(transformedMealData);
+    }, [calendarData]);
 
     const handlePublishingCalendar = async (): Promise<void> => {
         if (isPublished) {
@@ -69,9 +179,7 @@ const CalendarHomePage: React.FC = () => {
         });
         const data: TokenResponse = await response.json();
         if (data.deleted === 'ok') {
-            setIsPublished(false);
-            setJrTokenFromDb('');
-            setJrLoginTokenFromDb('');
+            await mutate(getUserCalendarTokensUrl);
         } else if (data.message) {
             alert(data.message);
         }
@@ -84,139 +192,21 @@ const CalendarHomePage: React.FC = () => {
         });
         const data: TokenResponse = await response.json();
         if (data.jr_token) {
-            setIsPublished(true);
-            setJrTokenFromDb(data.jr_token);
-            setJrLoginTokenFromDb(data.login_token);
+            await mutate(getUserCalendarTokensUrl);
         } else {
             alert("Error publishing calendar");
         }
     };
 
-    const getCalendarStatus = async (): Promise<void> => {
-        const response = await fetch(getUserCalendarTokensUrl, {
-            method: 'GET',
-            credentials: 'include',
-        });
-        const data = await response.json();
-        if (data?.jr_token) {
-            setIsPublished(true);
-            setJrTokenFromDb(data.jr_token);
-            setJrLoginTokenFromDb(data.login_token);
-        } else {
-            setIsPublished(false);
-        }
-        setLoadingStatus(false);
-    };
-
-    const getCalendarData = async (): Promise<void> => {
-        const response = await fetch(calendarDataFetchUrl, {
-            method: 'GET',
-            credentials: 'include',
-        });
-        const data: CalendarData = await response.json();
-
-        if (!data || !data.meals_list || data.meals_list.length === 0) {
-            setUserCommentsList({});
-            setUserWorkoutList({});
-            setUserWeightList({});
-            setUserMealsList([]);
-            setLoadingMeals(false);
-            return;
-        }
-
-        // User meal data
-        const groupedData = data.meals_list.reduce((acc, item) => {
-            
-            const hour = Number(moment(item.datetime_of_meal).format("HHmm"));
-            let mealDateTime = moment(item.datetime_of_meal).format("YYYY-MM-DD");
-            if (hour < 900) { // Before 9am
-                mealDateTime += "9 AM";
-            } else if (hour < 1130) {  // Before 11:30am
-                mealDateTime += "9 AM";
-            } else if (hour < 1400) {  // Before 2pm 
-                mealDateTime += "12 PM";
-            } else if (hour < 1630) {  // Before 4:30pm
-                mealDateTime += "2 PM";
-            } else if (hour < 1900) {  // Before 7pm
-                mealDateTime += "5 PM";
-            } else if (hour < 2130) {  // Before 9:30pm
-                mealDateTime += "7 PM";
-            } else {
-                mealDateTime += "10 PM";
-            }
-            // if ( moment(item.datetime_of_meal).format("YYYY-MM-DD") === "2025-02-26" ) {
-            //     console.log('hour', hour);
-            // }
-            if (!acc[mealDateTime]) acc[mealDateTime] = [];
-            acc[mealDateTime].push({
-                id: String(item.ID),
-                start: moment(item.datetime_of_meal).toDate(),
-                end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr ' : item.meal_quantity + 'x'} ${item.food_name} `,
-                // title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
-                category: item.category,
-                comments: item.comments,
-            });
-            return acc;
-        }, {} as Record<string, MealGrouped[]>);
-        // console.log(groupedData);
-        const transformedMealData: MealEvent[] = Object.values(groupedData).map((group) => ({
-            id: group.map(event => event.id).join(','), 
-            title: moment(group[0].start).format("hh:mm a"),
-            meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category, f_comments: event.comments || "" })),
-            start: adjustTime(group[0].start),
-            end: group[0].end,
-        }));
-        // console.log(transformedMealData);
-        // User weight data
-        const transformedWeightData: Record<string, string> = {};
-        data.weight_list.forEach((val) => {
-            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
-        });
-
-        // User workout data
-        const transformedWorkoutData: Record<string, UserWorkoutData> = {};
-        data.workout_list.forEach((val) => {
-            transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
-                id: val.id,
-                w_title: val.w_title,
-                w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
-                date_of_workout: val.date_of_workout,
-            };
-        });
-
-        // User comment data
-        const transformedCommentsData: Record<string, UserCommentData> = {};
-        data.comments_list.forEach((val) => {
-            transformedCommentsData[moment(val.date_of_comment).format("YYYY-MM-DD")] = { 
-                id:val.id, 
-                user_id:val.user_id, 
-                date_of_comment:val.date_of_comment,
-                comment:val.comment, 
-                grade:val.grade 
-            };
-        });
-
-        // console.log('transformedCommentsData', transformedCommentsData);
-        // console.log('transformedMealData', transformedMealData);
-
-        setUserCommentsList(transformedCommentsData);
-        setUserWorkoutList(transformedWorkoutData);
-        setUserWeightList(transformedWeightData);
-        setUserMealsList(transformedMealData);
-        setLoadingMeals(false);
-    };
-
     // fix calendar width according to viewport width
     useEffect(() => {
-        if (loadingMeals || loadingStatus) return;
+        if (isLoading) return;
 
         const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
         if (!main) return;
 
         const update = () => {
             const vw = window.innerWidth;
-            
 
             // run ONLY on desktop (>= 1024px)
             if (vw < 1024) {
@@ -224,55 +214,43 @@ const CalendarHomePage: React.FC = () => {
                 return;
             }
 
-            const scale = Math.max(0.672, Math.min(1, vw / 2250)); // don’t upscale beyond 1 dont downscale below 0.672.
+            const scale = Math.max(0.672, Math.min(1, vw / 2250));
             main.style.setProperty("--cal-scale", String(scale));
         };
 
         update();
         window.addEventListener("resize", update);
         return () => window.removeEventListener("resize", update);
-    }, [loadingMeals, loadingStatus]);
+    }, [isLoading]);
 
-    useEffect(() => {
-        const prepareCalendar = async () => {
-            const ret = await checkAuthAndRedirect(router, false);
-            if (ret === true) {
-                await getCalendarData();
-                await getCalendarStatus();
-            }
-        };
-        prepareCalendar();
-    }, [router]);
-
-    if (loadingMeals || loadingStatus) {
+    if (isLoading) {
         return <Loading />;
     }
 
-    const handleCopyLink = (link:string) => {
+    if (calendarError || tokenError) {
+        return <Loading />;
+    }
+
+    const handleCopyLink = (link: string) => {
         navigator.clipboard.writeText(link).then(() => {
             alert('Link copied to clipboard!');
         }).catch(err => {
             console.error('Failed to copy: ', err);
         });
-    }
+    };
 
     const calcAverageWeeklyWeight = (startDate: Date): string => {
-        // console.log(startDate);
         let sumWeight = 0;
         let counter = 0;
         for (let i = 0; i < 7; i++) {
             const nextDate = new Date(startDate);
             nextDate.setDate(startDate.getDate() + i);
-
-            // Format as YYYY-MM-DD
             const formatted = nextDate.toISOString().split('T')[0];
-            // console.log('formatted', formatted);
             if (userWeightList[formatted] !== undefined) {
                 sumWeight += getValueFromWeightText(userWeightList[formatted]);
-                counter ++;
+                counter++;
             }
         }
-        // console.log(userWeightList);
         return counter > 0 ? 'AVG. ' + Math.round((sumWeight / counter) * 10) / 10 + 'Kg' : 'N/A';
     };
 
@@ -282,37 +260,27 @@ const CalendarHomePage: React.FC = () => {
     };
 
     const calcNumberOfWeeklyWorkouts = (startDate: Date) => {
-
         let counter = 0;
         for (let i = 0; i < 7; i++) {
             const nextDate = new Date(startDate);
             nextDate.setDate(startDate.getDate() + i);
-            // Format as YYYY-MM-DD
             const formatted = nextDate.toISOString().split('T')[0];
-            // console.log('formatted', formatted);
-
-            if (userWorkoutList[formatted] !== undefined ){
-                counter ++;
+            if (userWorkoutList[formatted] !== undefined) {
+                counter++;
             }
         }
- 
-
         return counter > 0 ? counter + "x Training" : 'N/A';
-    }
+    };
 
-
-
-
-    const calendarPageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/calendar/${jrTokenFromDb}`;
-    const magicLoginForContributorUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
-
- 
- 
+    const calendarPageUrl = `/calendar/${jrTokenFromDb}`;
+    const magicLoginForContributorUrl = `/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
 
     function openFoodModal(arg0: { start: Date; end: Date; }) {
         setPopupFormData({ title: 'Add Meal', dateSelected: arg0.start, show_popup: true });
-        // arg0.start, arg0.end
     }
+
+
+   
 
     return (
         <>
@@ -326,9 +294,8 @@ const CalendarHomePage: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className="fixed custom_margin" >
-             
 
+            <div className="fixed custom_margin" >
                 {isPublished && (
                     <div>
                         <p>
@@ -342,18 +309,20 @@ const CalendarHomePage: React.FC = () => {
                             <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
                                 click here!
                             </Link>
-                             &nbsp; - OR - &nbsp;
-                            <button onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >Copy to Clipboard</button>
+                            &nbsp; - OR - &nbsp;
+                            <button type="button" onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >
+                                Copy to Clipboard
+                            </button>
                         </p>
                     </div>
-
                 )}
             </div>
+
             <div className="calendar-main-wrapper top-140px" >
                 <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
                     <div className="padding-wrapper" >
+                   
                         <Calendar
-                            
                             localizer={localizer}
                             defaultDate={new Date()}
                             defaultView="week"
@@ -363,54 +332,55 @@ const CalendarHomePage: React.FC = () => {
                             timeslots={1}
                             min={new Date(new Date().setHours(9, 0))}
                             max={new Date(new Date().setHours(23, 59))}
-
                             formats={{
                                 dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
-                                  const startFormat = localizer?.format(start, 'MMMM D', culture)
-                                  const endFormat = localizer?.format(end, 'D, YYYY', culture)
-                                  return `${startFormat} – ${endFormat}`
+                                    const startFormat = localizer?.format(start, 'MMMM D', culture)
+                                    const endFormat = localizer?.format(end, 'D, YYYY', culture)
+                                    return `${startFormat} – ${endFormat}`
                                 }
                             }}
-
                             components={{
-
-                                // these are the cells above the dates with weight workouts and comments of the day
-                                dateCellWrapper: (props) => <CustomDateCell {...props} 
-                                    // cameFrom="private"
-                                    isCommentsPublished={true}
-                                    getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] } 
-                                    getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] } 
-                                    getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] }
-                                    setUserCommentsList = {setUserCommentsList}
-                                    jr_token = {''}
-                                />, 
-
-                                // it is found in components/CustomEvent.tsx - and it sets the daily meals
-                                event: (props) => <CustomEvent {...props} cameFrom="private" isCommentsPublished={true} setUserMealsList={setUserMealsList} />,  
-
-                                // dateCellWrapper: getDateCellWrapper(userCommentsList, userWeightList, userWorkoutList),
-                                timeGutterWrapper: CustomTimeGutter, 
-                                toolbar: (props) => <CustomToolBar {...props} calcAverageWeeklyWeight={calcAverageWeeklyWeight} calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts} />,
+                                dateCellWrapper: (props) => (
+                                    <CustomDateCell
+                                        {...props}
+                                        isCommentsPublished={true}
+                                        getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")]}
+                                        getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")]}
+                                        getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
+                                        setUserCommentsList={setUserCommentsList}
+                                        jr_token={''}
+                                    />
+                                ),
+                                event: (props) => (
+                                    <CustomEvent
+                                        {...props}
+                                        cameFrom="private"
+                                        isCommentsPublished={true}
+                                        setUserMealsList={setUserMealsList}
+                                    />
+                                ),
+                                timeGutterWrapper: CustomTimeGutter,
+                                toolbar: (props) => (
+                                    <CustomToolBar
+                                        {...props}
+                                        calcAverageWeeklyWeight={calcAverageWeeklyWeight}
+                                        calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
+                                    />
+                                ),
                                 timeSlotWrapper: (props) => (
                                     <TimeSlotWrapper
                                         {...props}
                                         onAddFood={(date) => {
-                                            // open your popup/modal with this slot date
-                                            openFoodModal({
-                                                start: date,
-                                                end: date
-                                            });
-                                            // setPopupFormData({ title: 'test', message: 'test', show_popup: true });
-                                        } }
+                                            openFoodModal({ start: date, end: date });
+                                        }}
                                     />
                                 ),
                             }}
-
-
                         />
                     </div>
                 </div>
             </div>
+
             <PopupForm
                 setPopupFormData={setPopupFormData}
                 popupFormData={popupFormData}

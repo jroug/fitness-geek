@@ -1,16 +1,20 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
-
+import useSWR from 'swr';
  
+const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
+    if (!res.ok) throw new Error('Failed to fetch meals');
+    return res.json();
+});
 
 const AddMeal: React.FC = () => {
-
-    const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
+    
+    // const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
 
     const getCurrentDateTime = () => {
         const now = new Date();
@@ -115,7 +119,7 @@ const AddMeal: React.FC = () => {
         comments: ""
     });
     const [mealComments, setMealComments] = useState<string>('');
-    const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
+    // const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
     const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
 
 
@@ -170,21 +174,19 @@ const AddMeal: React.FC = () => {
         }
     };
 
-    useEffect(() => {
-        const getMealSuggestions = async (): Promise<void> => {    
-            const res = await fetch(fetchSuggestedMealsUrl);
-            const data = await res.json();
-            setSuggestionMeals(data);
-        };
+    
+    // useEffect(() => {
 
-        getMealSuggestions();
-        console.log('useEffect');
-    }, [fetchSuggestedMealsUrl]);
+    //     const getMealSuggestions = async (): Promise<void> => {    
+    //         const res = await fetch(fetchSuggestedMealsUrl);
+    //         const data = await res.json();
+    //         setSuggestionMeals(data);
+    //     };
+    //     getMealSuggestions();
+ 
+    // }, [fetchSuggestedMealsUrl]);
 
-    // const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    //     e.preventDefault();
-    //     setDateTime(getCurrentDateTime());
-    // };
+ 
 
     const handleMealSuggestionsInputChange = (_: React.SyntheticEvent, newValue: MealSuggestion | null) => {
         if (newValue) setMealSelected(newValue);
@@ -238,6 +240,21 @@ const AddMeal: React.FC = () => {
             // alert('Complete all necessary fields!');
         }
     };
+
+    // get the data of the page
+    const { data: suggestionMeals = [], error, isLoading } = useSWR<MealSuggestion[]>('/api/get-all-meals', fetcher,
+        {
+            dedupingInterval: 60_000, // 1 minute
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        }
+    );
+
+    if (isLoading || error) {
+        return (
+            <></>
+        );
+    }
 
     return (
         <>
