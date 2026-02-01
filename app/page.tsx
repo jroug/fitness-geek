@@ -34,7 +34,7 @@ export default async function LandingPage() {
                     <Link href="/" className="black-link-btn">ENTER</Link>
                   </div> */}
                   <br/>
-                  <Link href="/" >
+                  <Link href="/users/enter" >
                     <div className="landing-page-content" dangerouslySetInnerHTML={{ __html: pageData.content.rendered }} />
                   </Link>
                 </div>
