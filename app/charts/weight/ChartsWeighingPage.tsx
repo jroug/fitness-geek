@@ -1,6 +1,6 @@
 "use client";
 
-import React, {  useEffect, useState } from "react";
+import React, {  useCallback, useEffect, useState } from "react";
 
 import {
   Chart as ChartJS,
@@ -85,59 +85,59 @@ const ChartsWeighingPage: React.FC = () => {
 })
 
 
+
+
+
+  const getChartData = useCallback(async (): Promise<void> => {
+
+        const response = await fetch(chartDataFetchUrl, {
+            method: 'GET',
+            credentials: 'include',
+        });
+
+        const data: UserWeighingData[] = await response.json();
+        // console.log(data);
+
+        // process data and populate helper arrays to fit chart data format
+        const _labels: string[] = [];
+        const _data: number[] = [];
+        const _backgroundColor: string[] = [];
+    
+        let storeMonth = -1;
+        data.forEach(item => {
+            const dateObj = new Date(item.date_of_weighing);
+            const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
+            // console.log("New month1:", dateObj.getMonth());
+            if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
+              storeMonth = dateObj.getMonth();
+              // console.log("storeMonth:", storeMonth);
+          
+            }
+            _labels.push(formattedDate);
+            _data.push(item.weight);
+            _backgroundColor.push(chart_colors[storeMonth]);
+        });
+
+
+ 
+
+        // console.log('processedData', processedData);
+        setChartData({
+          labels: _labels,
+          datasets: [
+            {
+              label: "Daily weight (kg)",
+              data: _data,
+              backgroundColor: _backgroundColor,
+            },
+          ],
+        });
+
+  }, [chartDataFetchUrl]);
+
   useEffect(() => {
     getChartData();
-  }, []);
-
-  const getChartData = async (): Promise<void> => {
-    const response = await fetch(chartDataFetchUrl, {
-        method: 'GET',
-        credentials: 'include',
-    });
-
-    const data: UserWeighingData[] = await response.json();
-    // console.log(data);
-
-    // process data and populate helper arrays to fit chart data format
-    const _labels: string[] = [];
-    const _data: number[] = [];
-    const _backgroundColor: string[] = [];
- 
-    let storeMonth = -1;
-    data.forEach(item => {
-        const dateObj = new Date(item.date_of_weighing);
-        const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
-        // console.log("New month1:", dateObj.getMonth());
-        if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
-          storeMonth = dateObj.getMonth();
-          // console.log("storeMonth:", storeMonth);
-      
-        }
-        _labels.push(formattedDate);
-        _data.push(item.weight);
-        _backgroundColor.push(chart_colors[storeMonth]);
-    });
-
-
-    // process data to fit chart format
-    const processedData = {
-      labels: _labels,
-      datasets: [
-        {
-          label: "Daily weight (kg)",
-          data: _data,
-          backgroundColor: _backgroundColor,
-        },
-      ],
-    };
-
-    // console.log('processedData', processedData);
-    setChartData(processedData);
-
-    return;
-  }
-
-
+  }, [getChartData]);
 
 
   return (

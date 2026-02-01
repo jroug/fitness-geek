@@ -3,7 +3,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
-import Header from "@/components/Header";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
@@ -16,7 +15,6 @@ import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
 import PopupForm from "@/components/PopupForm";
-import BottomBar from "@/components/BottomBar";
 
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day

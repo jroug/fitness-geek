@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
@@ -43,14 +43,16 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
     
        const router = useRouter();
    
-       const getSelectedDateTime = () => {
+       const getSelectedDateTime = useCallback(() => {
            const now = popupFormData.dateSelected ? new Date(popupFormData.dateSelected) : new Date();
-           return now.getFullYear() +
-           '-' + String(now.getMonth() + 1).padStart(2, '0') +
-           '-' + String(now.getDate()).padStart(2, '0') +
-           'T' + String(now.getHours()).padStart(2, '0') +
-           ':' + String(now.getMinutes()).padStart(2, '0');   
-       }
+           return (
+               now.getFullYear() +
+               '-' + String(now.getMonth() + 1).padStart(2, '0') +
+               '-' + String(now.getDate()).padStart(2, '0') +
+               'T' + String(now.getHours()).padStart(2, '0') +
+               ':' + String(now.getMinutes()).padStart(2, '0')
+           );
+       }, [popupFormData.dateSelected]);
    
        const getMealTypeFromTime = (pDate:string): string => {
    
@@ -144,7 +146,8 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
          setDateTimeErrorClass('');
          setMealTitleErrorClass('');
          setQuantityErrorClass('');
-       }, [popupFormData.show_popup, popupFormData.dateSelected]);
+       }, [popupFormData.show_popup, getSelectedDateTime]);
+       
        const [mealQuantity, setMealQuantity] = useState<number>(1) || '';
        const [mealQuantityType, setMealQuantityType] = useState<string>('N');
        const [mealSelected, setMealSelected] = useState<MealSuggestion>({

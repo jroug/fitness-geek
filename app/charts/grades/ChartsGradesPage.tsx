@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 import {
   Chart as ChartJS,
@@ -32,9 +32,6 @@ interface userChartData {
     backgroundColor: string[];
   }[];
 }
-
-
-
 
 const ChartsGradesPage: React.FC = () => {
 
@@ -86,43 +83,38 @@ const ChartsGradesPage: React.FC = () => {
     ],
   })
 
-
-  useEffect(() => {
-    getChartData();
-  }, []);
-
-  const getChartData = async (): Promise<void> => {
+  const getChartData = useCallback(async (): Promise<void> => {
     const response = await fetch(chartDataFetchUrl, {
-        method: 'GET',
-        credentials: 'include',
+      method: "GET",
+      credentials: "include",
     });
 
     const data: UserGradeDataForChart[] = await response.json();
-    // console.log(data);
 
     // process data and populate helper arrays to fit chart data format
     const _labels: string[] = [];
     const _data: number[] = [];
     const _backgroundColor: string[] = [];
- 
+
     let storeMonth = -1;
-    data.forEach(item => {
-        const dateObj = new Date(item.date_of_comment);
-        const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
-        // console.log("New month1:", dateObj.getMonth());
-        if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
-          storeMonth = dateObj.getMonth();
-          // console.log("storeMonth:", storeMonth);
-      
-        }
-        _labels.push(formattedDate);
-        _data.push(item.grade);
-        _backgroundColor.push(chart_colors[storeMonth]);
+    data.forEach((item) => {
+      const dateObj = new Date(item.date_of_comment);
+      const formattedDate = dateObj.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
+
+      if (storeMonth === -1 || storeMonth !== dateObj.getMonth()) {
+        storeMonth = dateObj.getMonth();
+      }
+
+      _labels.push(formattedDate);
+      _data.push(item.grade);
+      _backgroundColor.push(chart_colors[storeMonth]);
     });
 
-
-    // process data to fit chart format
-    const processedData = {
+    setChartData({
       labels: _labels,
       datasets: [
         {
@@ -131,15 +123,12 @@ const ChartsGradesPage: React.FC = () => {
           backgroundColor: _backgroundColor,
         },
       ],
-    };
+    });
+  }, [chartDataFetchUrl]);
 
-    // console.log('processedData', processedData);
-    setChartData(processedData);
-
-    return;
-  }
-
-
+  useEffect(() => {
+    getChartData();
+  }, [getChartData]);
 
 
   return (
