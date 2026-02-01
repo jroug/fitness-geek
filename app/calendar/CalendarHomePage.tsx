@@ -42,6 +42,7 @@ const CalendarHomePage: React.FC = () => {
     const calendarMainRef = useRef<HTMLDivElement | null>(null);
 
     const [popupFormData, setPopupFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
+    const [calendarDate, setCalendarDate] = useState<Date>(new Date());
 
     // Local state lists are still kept because other components (PopupForm / CustomEvent)
     // mutate them optimistically.
@@ -56,9 +57,11 @@ const CalendarHomePage: React.FC = () => {
         error: calendarError,
         isLoading: isCalendarLoading,
     } = useSWR<CalendarData>(calendarDataFetchUrl, (url) => fetcher<CalendarData>(url), {
-        dedupingInterval: 60_000,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
+        dedupingInterval: 0,          // no dedupe cache
+        revalidateOnMount: true,      // always refetch on mount
+        revalidateOnFocus: true,
+        revalidateOnReconnect: true,
+        keepPreviousData: false,      // do not keep cached data
     });
 
     // SWR: publish status
@@ -67,9 +70,11 @@ const CalendarHomePage: React.FC = () => {
         error: tokenError,
         isLoading: isTokenLoading,
     } = useSWR<TokenResponse>(getUserCalendarTokensUrl, (url) => fetcher<TokenResponse>(url), {
-        dedupingInterval: 60_000,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
+        dedupingInterval: 0,          // no dedupe cache
+        revalidateOnMount: true,      // always refetch on mount
+        revalidateOnFocus: true,
+        revalidateOnReconnect: true,
+        keepPreviousData: false,      // do not keep cached data
     });
 
 
@@ -324,7 +329,8 @@ const CalendarHomePage: React.FC = () => {
                    
                         <Calendar
                             localizer={localizer}
-                            defaultDate={new Date()}
+                            date={calendarDate}
+                            onNavigate={(newDate) => setCalendarDate(newDate)}
                             defaultView="week"
                             events={userMealsList}
                             views={{ day: true, week: true }}

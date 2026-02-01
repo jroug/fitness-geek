@@ -1,10 +1,11 @@
 import React from "react";
-import { Views } from "react-big-calendar";
+import { Views, type NavigateAction } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Link from "next/link";
 
  
 const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, onView, calcAverageWeeklyWeight, calcNumberOfWeeklyWorkouts }) => {
+  const nav = (action: NavigateAction) => onNavigate(action);
 
 
   const getStartOfWeek = (date: Date): Date => {
@@ -19,13 +20,13 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, 
   return (
     <div className="rbc-toolbar">
       <span className="rbc-btn-group">
-        <button onClick={() => onNavigate("PREV")}>← Prev</button>
-        <button onClick={() => onNavigate("TODAY")}>Today</button>
-        <button onClick={() => onNavigate("NEXT")}>Next →</button>
+        <button type="button" onClick={() => nav("PREV")}>← Prev</button>
+        <button type="button" onClick={() => nav("TODAY")}>Today</button>
+        <button type="button" onClick={() => nav("NEXT")}>Next →</button>
       </span>
       <span className="rbc-btn-group">
-        <button onClick={() => onView(Views.WEEK)}>Week</button>
-        <button onClick={() => onView(Views.DAY)}>Day</button>
+        <button type="button" onClick={() => onView(Views.WEEK)}>Week</button>
+        <button type="button" onClick={() => onView(Views.DAY)}>Day</button>
       </span>
       <span className="rbc-toolbar-label">{label}</span>
 

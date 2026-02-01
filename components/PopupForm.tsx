@@ -4,11 +4,15 @@ import React, { useCallback, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter } from 'next/navigation';
-import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
 
-
+import useSWR from 'swr';
+ 
+const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
+    if (!res.ok) throw new Error('Failed to fetch meals');
+    return res.json();
+});
 
 interface PopupFormData {
     title: string;
@@ -163,16 +167,16 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
            comments: ""
        });
        const [mealComments, setMealComments] = useState<string>('');
-       const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
+    //    const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
     //    const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
    
-       const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
-           const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
-           const res = await fetch(fetchSuggestedMealsUrl);
-           const data = await res.json();
-           setSuggestionMeals(data);
-           return data;
-       };
+    //    const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
+    //        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
+    //        const res = await fetch(fetchSuggestedMealsUrl);
+    //        const data = await res.json();
+    //        setSuggestionMeals(data);
+    //        return data;
+    //    };
    
        const handleMealTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
            const mealT = e.target.value;
@@ -296,13 +300,12 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
            }
        };
    
-       useEffect(() => {
-           const getAddMealPageData = async () => {
-               const ret = await checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
-               if (ret) getMealSuggestions();
-           }
-           getAddMealPageData();
-       }, [router]);
+    //    useEffect(() => {
+    //        const getAddMealPageData = async () => {
+    //            getMealSuggestions();
+    //        }
+    //        getAddMealPageData();
+    //    }, [router]);
    
        // const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
        //     e.preventDefault();
@@ -365,6 +368,23 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
     const handleClosePopupForm = () => {
         setPopupFormData({ title: '', dateSelected: new Date(), show_popup: false });
     };
+
+
+
+    // get the data of the page
+    const { data: suggestionMeals = [], error, isLoading } = useSWR<MealSuggestion[]>('/api/get-all-meals', fetcher,
+        {
+            dedupingInterval: 60_000, // 1 minute
+            revalidateOnFocus: false,
+            revalidateOnReconnect: false,
+        }
+    );
+
+    if (isLoading || error) {
+        return (
+            <></>
+        );
+    }
 
 
     return (
