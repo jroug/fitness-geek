@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { useRouter } from 'next/navigation';
-import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
@@ -11,8 +9,8 @@ import { globalSettings } from '@/lib/globalSettings';
  
 
 const AddMeal: React.FC = () => {
- 
-    const router = useRouter();
+
+    const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
 
     const getCurrentDateTime = () => {
         const now = new Date();
@@ -120,13 +118,7 @@ const AddMeal: React.FC = () => {
     const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
     const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
 
-    const getMealSuggestions = async (): Promise<MealSuggestion[]> => {
-        const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
-        const res = await fetch(fetchSuggestedMealsUrl);
-        const data = await res.json();
-        setSuggestionMeals(data);
-        return data;
-    };
+
 
     const handleMealTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const mealT = e.target.value;
@@ -179,12 +171,15 @@ const AddMeal: React.FC = () => {
     };
 
     useEffect(() => {
-        const getAddMealPageData = async () => {
-            const ret = await checkAuthAndRedirect(router, false); // will redirect to root if no token found on http cookie
-            if (ret) getMealSuggestions();
-        }
-        getAddMealPageData();
-    }, [router]);
+        const getMealSuggestions = async (): Promise<void> => {    
+            const res = await fetch(fetchSuggestedMealsUrl);
+            const data = await res.json();
+            setSuggestionMeals(data);
+        };
+
+        getMealSuggestions();
+        console.log('useEffect');
+    }, [fetchSuggestedMealsUrl]);
 
     // const handleSetCurrentDateAndMeal = (e: React.MouseEvent<HTMLAnchorElement>) => {
     //     e.preventDefault();
