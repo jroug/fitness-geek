@@ -10,7 +10,7 @@ interface InnerLinkProps {
 
 const InnerLink: React.FC<InnerLinkProps> = ({ title, goToUrl }) => {
     return (     
-        <Link href={goToUrl} className="inner-link-wrap flex flex-row justify-end items-center ">
+        <Link href={goToUrl} className="inner-link-wrap flex flex-row justify-end items-center mt-[20px]">
             <div className="flex">
                 <div className="inner-link-name mr-[10px]">
                     <p className="sm-font-zen fw-400">{title}</p>

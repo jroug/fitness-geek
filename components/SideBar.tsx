@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Image from "next/image";
 import Link from 'next/link';
@@ -33,6 +34,7 @@ const SideBar = () => {
 
 	// Function to show the logout modal
 	const handleLogout = () => {
+		document.body.classList.remove('open-sidebar');
 		logout();
 	}
 
@@ -49,6 +51,14 @@ const SideBar = () => {
 		}
 	};
 
+	// if click on Link close the sidebar
+	const handleLinkClick = () => {
+		const sidebar = document.querySelector('.menu-sidebar') as HTMLElement;
+		if (sidebar){ // sidebar is in a diffrent component so it needs to exist
+			document.body.classList.remove('open-sidebar');
+		}
+	}
+
     return (
 		<>
 			<div className="menu-sidebar details">
@@ -60,7 +70,7 @@ const SideBar = () => {
 						<div className="dropdown">
 							<div className="setting-page-full">
 								<div className="setting-page-wrapper">
-									<Link href="/meals">
+									<Link href="/meals" onClick={handleLinkClick}>
 										<div className="send-money-contact-tab border-bottom1 pt-0  ">
 											<div className="setting-icon">
 												<Image src={setting6} alt="setting-icon" />
@@ -75,7 +85,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									<Link href="/weighing">
+									<Link href="/weighing" onClick={handleLinkClick} >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -92,7 +102,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/workouts">
+									<Link href="/workouts" onClick={handleLinkClick} >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -109,7 +119,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/calendar">
+									<Link href="/calendar" onClick={handleLinkClick} >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -126,7 +136,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/charts/weight">
+									<Link href="/charts/weight" onClick={handleLinkClick} >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -143,7 +153,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/charts/workouts">
+									<Link href="/charts/workouts" 	onClick={handleLinkClick}  >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -160,7 +170,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/charts/grades">
+									<Link href="/charts/grades" onClick={handleLinkClick}  >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -177,7 +187,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/users/profile">
+									<Link href="/users/profile" onClick={handleLinkClick} >
 										<div className="send-money-contact-tab border-bottom1 pt-0">
 											<div className="setting-icon">
 												<Image src={setting12} alt="setting-icon" />
@@ -288,7 +298,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>  */}
-									<Link href="/about">
+									<Link href="/about" onClick={handleLinkClick} >
 										<div className="send-money-contact-tab border-bottom1">
 											<div className="setting-icon">
 												<Image src={setting11} alt="setting-icon" />

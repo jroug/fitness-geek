@@ -5,8 +5,6 @@ import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
-import Header from "@/components/Header";
-import InnerLink from '@/components/InnerLink';
 // import Popup from "@/components/Popup";
 import Toast from "@/components/Toast";
 import { globalSettings } from "@/lib/globalSettings";
@@ -177,9 +175,6 @@ const AddWorkout: React.FC = () => {
 
     return (
         <>
-            <main className="site-content">
-                <Header title="Add Workout" backUrl="/homepage" />
-                <InnerLink title="Calendar" goToUrl="/calendar" />
                 <div className="verify-email pb-20" id="feedback-main">
                     <div className="container">
                         <div className="feedback-content mt-16">
@@ -248,7 +243,6 @@ const AddWorkout: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </main>
             {/* <Popup popupData={popupData} setPopupData={setPopupData} /> */}
             <Toast popupData={popupData} setPopupData={setPopupData} />
         </>

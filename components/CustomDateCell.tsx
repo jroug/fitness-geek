@@ -11,7 +11,7 @@ interface UserWorkoutData {
 }
 
 interface CustomDateCellProps extends DateCellWrapperProps {
-    cameFrom: string;
+    // cameFrom?: string;
     isCommentsPublished?: boolean;
     getWeight: (dateKey: string) => string | null;
     getWorkout: (dateKey: string) => UserWorkoutData | null;
@@ -20,7 +20,17 @@ interface CustomDateCellProps extends DateCellWrapperProps {
     jr_token:string;
 }
 
-const CustomDateCell: React.FC<CustomDateCellProps> = ({ children, value, cameFrom, isCommentsPublished, getWeight, getWorkout, getComment, setUserCommentsList, jr_token }) => {
+const CustomDateCell: React.FC<CustomDateCellProps> = ({ 
+        children, 
+        value, 
+        // cameFrom, 
+        isCommentsPublished, 
+        getWeight, 
+        getWorkout, 
+        getComment, 
+        setUserCommentsList, 
+        jr_token 
+    }) => {
 
     const dateKey = moment(value).format('YYYY-MM-DD');
     

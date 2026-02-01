@@ -8,8 +8,8 @@ import Link from 'next/link';
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css'; 
 import 'slick-carousel/slick/slick-theme.css'; 
-import header_logo from "../../public/images/splashscreen/header-logo.png";
-import settings_icon from "../../public/svg/setting-icon.svg";
+
+
 // import home1 from "../../public/images/homescreen/home1.png";
 // import bottom from "../../public/images/homescreen/bottom.png";
  
@@ -22,6 +22,7 @@ import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
 
 import BottomBar from "../../components/BottomBar";
 import SideBar from "../../components/SideBar";
+import Header from '@/components/Header';
  
 const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
 const fetchSuggestedWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-workouts`;
@@ -95,11 +96,6 @@ const Homepage = () => {
         prevArrow: <SlickCustomPrevArrow />,
     };
 
-    const handleHomeSettingsClick = () => {
-        const sidebar = document.querySelector('.menu-sidebar') as HTMLElement;
-
-        sidebar.classList.toggle('active');
-    }
 
     const display_name = 
         profileData?.first_name && profileData.last_name
@@ -125,21 +121,8 @@ const Homepage = () => {
                 {/* <!-- Preloader end --> */}
 
                 {/* <!-- Header start --> */}
-                <header id="top-header">
-                    <div className="header-wrap-home">
-                        <div className="header-logo-home">
-                            <Link href="/homepage">
-                                <Image src={header_logo} alt="back-btn-icon" />
-                            </Link>
-                        </div>
-                        <div className="header-name">
-                            <p className="sm-font-zen fw-400">FITNESS GEEK</p>
-                        </div>
-                        <div className="home-setting">
-                            <Link href="#" onClick={handleHomeSettingsClick} ><Image src={settings_icon} alt="setting-icon" /></Link>
-                        </div>
-                    </div>
-                </header>
+                 <Header homeUrl="/homepage" title="FITNESS GEEK" />
+                 
                 {/* <!-- Header end --> */}
                 {/* <!-- Homescreen screen start --> */}
                 <div className="verify-email" id="homescreen-main">
@@ -148,14 +131,16 @@ const Homepage = () => {
                             <h1>Hi {display_name},</h1>
                             <span>Registration: {user_registered_formatted}</span>
                             <br/>
-                            <span>Workout plan for you</span>
+                            <br/>
+                            <br/>
+                            <span>Workouts for you:</span>
                         </div>
                         <h2 className="hidden">Homescreen</h2>
                         <div className="home-slider-wrap mt-16" >
                             <Slider {...settings}  >
                                 {/* <!-- slide start --> */}
                                 {
-                                    workouts.map((workout: UserWorkoutData) => (
+                                    workouts.map((workout: UserWorkoutData, index: number) => (
                                         <div className="workout-details" key={workout.id}>
                                             <Link href={`/workouts?workoutId=${workout.id}`}>
                                                 <div className="verify-email-img-sec ">
@@ -163,7 +148,7 @@ const Homepage = () => {
                                                         <div className="palceholder-1"></div> 
                                                     </div>
                                                     <div className="workout-plan-ready-details">
-                                                        <h2 className="md-font-sans fw-700 color-white">{workout.w_type}</h2>
+                                                        <h2 className="md-font-sans fw-700 color-white">{(index+1) + '. ' + workout.w_type}</h2>
                                                         <h3 className="md-font-sans fw-700 color-green">{workout.w_title}</h3>
                                                         <h4 className="md-font-sans fw-700 color-green">{workout.w_title===workout.w_description ? "" : workout.w_description}</h4>
                                                         <p>{parseInt(workout.w_calories || '0')} cal </p>

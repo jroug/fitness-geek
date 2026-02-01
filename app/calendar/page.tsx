@@ -154,7 +154,7 @@ const CalendarHomePage: React.FC = () => {
                 id: String(item.ID),
                 start: moment(item.datetime_of_meal).toDate(),
                 end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : item.meal_quantity + 'x'} ${item.food_name} `,
+                title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr ' : item.meal_quantity + 'x'} ${item.food_name} `,
                 // title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
                 category: item.category,
                 comments: item.comments,
@@ -376,7 +376,7 @@ const CalendarHomePage: React.FC = () => {
 
                                 // these are the cells above the dates with weight workouts and comments of the day
                                 dateCellWrapper: (props) => <CustomDateCell {...props} 
-                                    cameFrom="private"
+                                    // cameFrom="private"
                                     isCommentsPublished={true}
                                     getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] } 
                                     getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] } 
