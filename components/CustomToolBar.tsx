@@ -4,7 +4,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Link from "next/link";
 
  
-const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, onView, calcAverageWeeklyWeight, calcNumberOfWeeklyWorkouts }) => {
+const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, onView, calcWeeklyGrades, calcAverageWeeklyWeight, calcNumberOfWeeklyWorkouts }) => {
   const nav = (action: NavigateAction) => onNavigate(action);
 
 
@@ -32,6 +32,8 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, 
 
       {/* Custom Button */}
       <span className="rbc-btn-group mr-[50px]">
+        <span className="grades-info" >{calcWeeklyGrades(startOfWeek).total} </span>
+        <span className="grades-info" >{calcWeeklyGrades(startOfWeek).avg} </span>
         <span className="weight-info" >{calcAverageWeeklyWeight(startOfWeek)} </span>
         <span className="training-info" >{calcNumberOfWeeklyWorkouts(startOfWeek)}</span>
       </span>

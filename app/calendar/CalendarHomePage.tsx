@@ -244,6 +244,37 @@ const CalendarHomePage: React.FC = () => {
         });
     };
 
+    const calcWeeklyGrades = (startDate: Date): { avg: string; total: string; } => {
+        console.log(userCommentsList);
+        let sumGrades = 0;
+        let counter = 0;
+        for (let i = 0; i < 7; i++) {
+            const nextDate = new Date(startDate);
+            nextDate.setDate(startDate.getDate() + i);
+            const formatted = nextDate.toISOString().split('T')[0];
+            // is number between 1 and 10
+            // if (userCommentsList[formatted].grade !== ) {
+            const grade = Number(userCommentsList[formatted]?.grade);
+            console.log('grade', grade);
+            if (typeof grade === 'number' && grade >= 1 && grade <= 10) {
+                sumGrades += Number(grade);
+                counter++;
+            }
+        }
+        const grAvg = Math.round((sumGrades / counter) * 10);
+        if (counter===0){
+            return {
+                avg: 'N/A', 
+                total:'N/A'
+            };   
+        }
+
+        return {
+            avg: 'AVG: ' + grAvg.toString() + '%', 
+            total:'Score: ' + sumGrades.toString() + '/' + counter*10 + ' (MAX 70)'
+        };     
+    };
+
     const calcAverageWeeklyWeight = (startDate: Date): string => {
         let sumWeight = 0;
         let counter = 0;
@@ -369,6 +400,7 @@ const CalendarHomePage: React.FC = () => {
                                 toolbar: (props) => (
                                     <CustomToolBar
                                         {...props}
+                                        calcWeeklyGrades={calcWeeklyGrades}
                                         calcAverageWeeklyWeight={calcAverageWeeklyWeight}
                                         calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
                                     />

@@ -10,6 +10,7 @@ declare global {
         date: Date;
         onNavigate: (action: NavigateAction) => void;
         onView: (view: View) => void;
+        calcWeeklyGrades: (startDate: Date) => { avg: string; total: string; };
         calcAverageWeeklyWeight: (startDate: Date) => string;
         calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
     }
