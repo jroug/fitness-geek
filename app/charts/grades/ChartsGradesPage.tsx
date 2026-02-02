@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useEffect, useState } from "react";
-
+// import Loading from "@/components/Loading";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -129,6 +129,8 @@ const ChartsGradesPage: React.FC = () => {
   useEffect(() => {
     getChartData();
   }, [getChartData]);
+
+
 
 
   return (

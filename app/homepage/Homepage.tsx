@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Loading from '@/components/Loading';
 import Image from "next/image";
 import Link from 'next/link';
 import Slider from "react-slick";
@@ -76,7 +77,7 @@ const Homepage = () => {
 
     if (isLoading || hasError) {
         return (
-            <></>
+            <Loading />
         );
     }
 
