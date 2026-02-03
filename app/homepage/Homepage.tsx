@@ -111,9 +111,14 @@ const Homepage = () => {
 
                     </div>
  
-
                     <div className="home-section-first">
-                        <h2 className="text-left container mx-8">Workouts for you</h2>
+                        <h2 className="text-left container mx-8">Weight</h2>
+                        <div className="green-btn mt-4 max-w-[320px] mx-auto">
+                            <Link href="/add-weighing" type="submit" className="bg-blue-500 text-white py-2 rounded-full">ADD</Link>
+                        </div>
+                    </div>
+                    <div className="home-section-first">
+                        <h2 className="text-left container mx-8">Workouts</h2>
                         <div className="home-slider-wrap mt-16" >
                             <Slider {...settings}  >
                                 {/* <!-- slide start --> */}

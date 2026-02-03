@@ -58,13 +58,24 @@ Primary use: Vigor fitness Mobile App PWA
 ---------Table of contents End-----------------------------------*/
 
 /*------------------------ [Color codes] ------------------------                    
-Background: #ffffff, #7FD83B, #F5F5F5
+Background: #ffffff, var(--theme-color);, #F5F5F5
 Content:  #12151C     
 paragraph p: #555658, #FB4945, #00A266  
 -------------------------------------------------------------------*/
 
 /************************ 1.Default Css ***************************/
 
+
+
+:root {
+
+   /* green #7FD83B , blue #4C62AF*/
+  --green-color: #7FD83B;
+  --blue-color: #4C62AF;
+
+
+  --theme-color: #4C62AF;
+}
 
 html {
  scroll-behavior: smooth;
@@ -147,7 +158,7 @@ ul{
     padding-top: 32px;
 }
 .lg-font-zen{
-    color: var(--2, #7FD83B);
+    color: var(--theme-color);
     font-family: "Zen Dots";
     font-size: 48px;
     font-style: normal;
@@ -205,7 +216,7 @@ ul{
     color: #ffffff !important;
 }
 .color-green{
-    color: #7FD83B !important;
+    color: var(--green-color) !important;
 }
 .color-red{
     color: #FB4945 !important;
@@ -416,7 +427,7 @@ header {
     text-align: center;
     padding: 14px 0;
     border-radius: 12px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
     margin: auto;
     max-width: 600px;
 }
@@ -502,9 +513,10 @@ header {
 
 .small-img{
     overflow: hidden;
+    border:7px solid #F5F5F5;
     border-radius: 90px;
-    width: 90px;
-    height: 90px;
+    width: 104px;
+    height: 104px;
     margin:10px auto 0;
     background-color: #4C62AF;
 }
@@ -806,7 +818,7 @@ textarea {
 .inner {
     width: 120px;
     height: 120px;
-    background-color: #7FD83B;
+    background-color: var(--theme-color);
     animation-delay: 1s;
 }
 .inner img {
@@ -824,7 +836,7 @@ textarea {
 .verify-number-btn a {
     width: 100%;
     border-radius: 12px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
     padding: 12px 0;
     margin: auto;
     max-width: 600px;
@@ -893,7 +905,7 @@ textarea {
     left: 0;
     width: 100%;
     height: 4px;
-    background: #7FD83B;
+    background: var(--theme-color);
     border-radius: 8px;
     filter: drop-shadow(0 0 20px #00D061) drop-shadow(0 0 60px #00D061);
     animation: animate_line 4s ease-in-out infinite;
@@ -939,7 +951,7 @@ textarea {
     height: 0;
 }
 .notification-option-switch input:checked + .slider {
-    background: #7FD83B;
+    background: var(--theme-color);
     border: 1px solid transparent;
 }
 .notification-option-switch .slider {
@@ -1180,11 +1192,11 @@ div#ui-datepicker-div {
     display: none;
 }
 .ui-datepicker-calendar tbody td a.ui-state-active {
-    background-color: #7FD83B;
+    background-color: var(--theme-color);
     color: white;
 }
 .ui-datepicker-calendar tbody td a:hover {
-    background: #7fd83b6e;
+    background: #7FD83B6e;
 }
 
 /************************ 18.Linked Account Css ***************************/
@@ -1226,7 +1238,7 @@ div#ui-datepicker-div {
     background: var(--9, #F5F5F5);
 }
 .popular p {
-    color: var(--2, #7FD83B);
+    color: var(--theme-color);
     text-align: right;
     font-family: "DM Sans";
     font-size: 12px;
@@ -1242,7 +1254,7 @@ div#ui-datepicker-div {
     padding: 3px 8px;
 }
 .billing-price p {
-    color: var(--2, #7FD83B);
+    color: var(--theme-color);
     text-align: center;
     font-family: "DM Sans";
     font-size: 18px;
@@ -1366,7 +1378,7 @@ div#ui-datepicker-div {
     text-align: center;
     padding: 12px 0;
     border-radius: 12px;
-    background: var(--2, #7FD83B);    
+    background: var(--theme-color);    
     margin: auto;
     max-width: 600px;
 }
@@ -1493,7 +1505,7 @@ div#ui-datepicker-div {
 }
 .otp-section input:focus {
     border-radius: 30px;
-    border: 2px solid var(--2, #7FD83B);
+    border: 2px solid var(--theme-color);
     background: var(--1, #FFF);
     box-shadow: none !important;
 }
@@ -1580,7 +1592,7 @@ div#ui-datepicker-div {
 .report-btn,
 .select-plan {
     border-radius: 12px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
     padding: 12px;
     text-align: center;
     width: 100%;
@@ -1718,7 +1730,7 @@ div#ui-datepicker-div {
     border-top: 2px solid #F5F5F5;
 }
 .home-section-second {
-    margin-top: 50px;
+    margin-top: 75px;
     padding-top:10px;
     border-top: 2px solid #F5F5F5;
 }
@@ -1763,10 +1775,7 @@ div#ui-datepicker-div {
 #homescreen-main .home-second{
     margin-top: 70px;
 }
-#homescreen-main .slick-slide{
-    padding: 0 8px;
-    width:253px;
-}
+ 
 #homescreen-main .slick-list{
     margin-left: 12px;
 }
@@ -1898,7 +1907,7 @@ div#ui-datepicker-div {
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background-color: #7FD83B;
+    background-color: var(--theme-color);
     transition: 0.5s;
     transform: translateY(20px);
     opacity: 0;
@@ -1990,7 +1999,7 @@ li.list.active i {
 
 
 .gol3.profile{
-    background-color: #7FD83B !important; 
+    background-color: var(--theme-color) !important; 
 }
 
 /************************ 34.Setting Css ***************************/
@@ -2055,7 +2064,7 @@ li.list.active i {
     margin-left: inherit;
 }
 #setting-main .workout-time h2 {
-    color: var(--2, #7FD83B);
+    color: var(--theme-color);
     font-family: "DM Sans";
     font-size: 18px;
     font-style: normal;
@@ -2223,7 +2232,7 @@ li.list.active i {
 }
 #workout-empty-main .ui-datepicker-calendar tbody td a.ui-state-active {
     border-radius: 22px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
     color: white;
 }
 #workout-empty-main .ui-datepicker-calendar thead th {
@@ -2311,7 +2320,7 @@ li.list.active i {
 .nav-tabs.focus-tab-main .nav-link.active{
     border-radius: 8px;
     background: var(--4, #12151C);
-    color: var(--2, #7FD83B);
+    color: var(--theme-color);
 }
 ul.nav.nav-tabs.focus-tab-main{
     flex-wrap: nowrap;
@@ -2357,7 +2366,7 @@ ul.nav.nav-tabs.focus-tab-main{
 .continue-btn-form a{
    padding: 12px;
    border-radius: 12px;
-   background: var(--2, #7FD83B);
+   background: var(--theme-color);
    width: 100%;
 }
 .multistep-form-btn {
@@ -2387,12 +2396,12 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .goal.selected{
     border-radius: 8px;
-    border: 2px solid var(--2, #7FD83B);
+    border: 2px solid var(--theme-color);
     background: var(--1, #FFF);
 }
 #select-gender-main .selected {
     border-radius: 8px;
-    border: 2px solid var(--2, #7FD83B);
+    border: 2px solid var(--theme-color);
     background: var(--1, #FFF);
 }
 .form-floating>.form-control:not(:placeholder-shown)~label::after{
@@ -2435,7 +2444,7 @@ ul.nav.nav-tabs.focus-tab-main{
    padding: 6px 12px;
 }
 #select-gender-main  .nav-tabs .nav-link.active {
-    color: var(--2, #7FD83B);
+    color: var(--theme-color);
     text-align: center;
     font-family: "DM Sans";
     font-size: 14px;
@@ -2485,7 +2494,7 @@ ul.nav.nav-tabs.focus-tab-main{
   top: 0;
   width: 1em;
   height: 1em;
-  background: #7FD83B;
+  background: var(--theme-color);
   clip: rect(0 1em 1em 0.5em);
   transform: rotate(180deg);
   transition: 1.05s;
@@ -2499,7 +2508,7 @@ ul.nav.nav-tabs.focus-tab-main{
   top: 0em;
   right: 0;
   bottom: 0;
-  background: #7FD83B;
+  background: var(--theme-color);
   content: "";
 }
 .circle_inbox {
@@ -2550,8 +2559,8 @@ ul.nav.nav-tabs.focus-tab-main{
 
 .workout-plan-ready-details {
     position: absolute;
-    top: 20px;
-    left: 20px;
+    top: 35px;
+    left: 35px;
 }
 .workout-plan-ready-details h2{
     margin-bottom: 12px;
@@ -2561,21 +2570,25 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .workout-plan-ready-details h4{
     margin-bottom: 8px;
-    height:50px;
+    height:100px;
     font-size:14px;
 }
 .palceholder-1{
-    width:240px;
-    height:240px;
-    display:block;
-    background-color:#4C62AF;
-    border-radius:7%;
+    width: 300px;
+    height: 300px;
+    display: block;
+    background-color: #4C62AF;
+    border-radius: 17%;
+    border: 7px solid #F5F5F5;
 }
-
+#homescreen-main .slick-slide{
+    padding: 0 8px;
+    width:310px;
+}
 /************************ 41.Face Recognition Process Css ***************************/
 .face-img img {
     border-radius: 120px;
-    border: 2px solid var(--2, #7FD83B);
+    border: 2px solid var(--theme-color);
 }
 .face-img{
     margin-top: 100px;
@@ -2928,7 +2941,7 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .timer #progress,
 .timer #progress1 {
-    stroke: #7FD83B;
+    stroke: var(--theme-color);
     stroke-dasharray: 283; 
     stroke-dashoffset: 283;
     transition: stroke-dashoffset 1s linear;
@@ -2985,7 +2998,7 @@ ul.nav.nav-tabs.focus-tab-main{
 /************************ 46.Workout Search Css ***************************/
 #wokout-search-main .nav-pills .nav-link.active {
     border-radius: 16px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
     color: var(--4, #12151C);
     text-align: center;
     font-family: "DM Sans";
@@ -3142,7 +3155,7 @@ ul.nav.nav-tabs.focus-tab-main{
 .progress-bar {
     width: 25%; 
     height: 20px;
-    background-color: #7FD83B;
+    background-color: var(--theme-color);
     border-radius: 8px;
     color: var(--1, #FFF);
     text-align: center;
@@ -3292,7 +3305,7 @@ body.open-sidebar .header-overlay {
 
  
 .border-green-1{
-    border: 1px solid #7FD83B !important;
+    border: 1px solid var(--theme-color) !important;
 }
 
 .custom-div{
@@ -3318,7 +3331,7 @@ body.open-sidebar .header-overlay {
     border: 1px solid #FB4945 !important;
 }
 .Autocomplete-green fieldset{
-    border: 1px solid #7FD83B;
+    border: 1px solid var(--theme-color);
     border-radius: 12px;
 }
 
@@ -3462,8 +3475,8 @@ body.open-sidebar .header-overlay {
     font-family: "DM Sans", sans-serif;
 }
 .rbc-event{
-    /* background: #7FD83B !important; */
-    background: #7fd83b54 !important;
+    /* background: var(--theme-color); !important; */
+    background: #7FD83B54 !important;
     cursor: default !important;
 }
 .rbc-label.rbc-time-header-gutter{
@@ -3520,7 +3533,7 @@ button.green-btn{
     color: var(--1, #FFF);
     padding: 14px 24px;
     border-radius: 12px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
 }
 
 button.green-btn-small{
@@ -3532,7 +3545,7 @@ button.green-btn-small{
     color: var(--1, #FFF);
     padding: 10px 24px;
     border-radius: 12px;
-    background: var(--2, #7FD83B);
+    background: var(--theme-color);
 }
 
 .custom-text-cal-header:first-child{
@@ -3553,7 +3566,7 @@ button.green-btn-small{
   }
   
   ::-webkit-scrollbar-thumb {
-    background-color: #7FD83B;; /* Thumb color */
+    background-color: var(--theme-color);; /* Thumb color */
     border-radius: 10px;  /* Optional: Adds rounded corners */
   }
   
@@ -3593,7 +3606,7 @@ button.green-btn-small{
     border-radius: 10px;
     box-shadow: 0px 0px 34px -20px #000;
     background-color: #ffffff;
-    border: 1px solid #7FD83B;
+    border: 1px solid var(--theme-color);
 }
 #calendar-main{
 
@@ -3666,7 +3679,7 @@ button.green-btn-small{
 .green-link-btn{
     padding:10px;
     margin:0 5px;
-    background-color: var(--2, #7FD83B);
+    background-color: var(--theme-color);
     border-radius:12px;
     color:#ffffff;
     font-family: "Zen Dots";
@@ -3747,7 +3760,7 @@ button.green-btn-small{
 }
 
 .rbc-add-food-btn {
-    background-color: var(--2, #7FD83B);
+    background-color: var(--green-color);
     color: var(--1, #FFF);
     font-family: "Zen Dots";
     font-size: 20px;
