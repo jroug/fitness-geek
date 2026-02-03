@@ -1712,6 +1712,31 @@ div#ui-datepicker-div {
 }
 
 /************************ 31.Homescreen Css ***************************/
+.home-section-first{
+    margin-top:20px;
+    padding-top:10px;
+    border-top: 2px solid #F5F5F5;
+}
+.home-section-second {
+    margin-top: 50px;
+    padding-top:10px;
+    border-top: 2px solid #F5F5F5;
+}
+.home-section-third {
+    margin-top: 20px;
+    padding-top:10px;
+    border-top: 2px solid #F5F5F5;
+}
+
+
+
+.home-section-first h2,
+.home-section-second h2,
+.home-section-third h2{
+    font-family: "Zen Dots";
+    font-size:20px;
+}
+
 .header-wrap-home {
     display: flex;
     align-items: center;
@@ -2533,7 +2558,6 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .workout-plan-ready-details h3{
     margin-bottom: 16px;
-    height:40px;
 }
 .workout-plan-ready-details h4{
     margin-bottom: 8px;

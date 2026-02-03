@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image'; 
-import Loading from '@/components/Loading';
+import Loading from '@/components/Loader';
 import moment from "moment";
 
 // Importing images
