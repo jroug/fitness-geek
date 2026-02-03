@@ -1,7 +1,5 @@
 export const adjustTime = (stTime: Date) => {
     
- 
-    
     const targetTime = new Date(stTime); // Create a new date based on stTime
     const hours = targetTime.getHours();
     const minutes = targetTime.getMinutes();

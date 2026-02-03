@@ -6,6 +6,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { useSearchParams } from 'next/navigation';
 import Toast from "@/components/Toast";
 import { globalSettings } from "@/lib/globalSettings";
+import { getCurrentDateTime } from '@/lib/getCurrentDateTime';
 import useSWR from 'swr';
  
 const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
@@ -34,23 +35,7 @@ const AddWorkout: React.FC = () => {
     const searchParams = useSearchParams();
     const preselectWorkoutId = searchParams?.get('workoutId') || null;
 
-    const getCurrentDateTime = (): string => {
-        const now = new Date();
-        const options: Intl.DateTimeFormatOptions = {
-            timeZone: 'Europe/Athens',
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: false,
-        };
-
-        const athensTime = new Intl.DateTimeFormat('en-GB', options).format(now);
-        const [datePart, timePart] = athensTime.split(', ');
-        const formattedDate = datePart.split('/').reverse().join('-');
-        return `${formattedDate}T${timePart.replace(':', ':')}`;
-    };
+ 
     
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');

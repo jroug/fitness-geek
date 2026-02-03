@@ -5,6 +5,9 @@ import Autocomplete from '@mui/material/Autocomplete';
 import Toast from "@/components/Toast";
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
+import { getCurrentDateTime } from '@/lib/getCurrentDateTime';
+import { getMealTypeFromTime } from '@/lib/getMealTypeFromTime';
+import { geTimeFromMealType } from '@/lib/geTimeFromMealType';
 import useSWR from 'swr';
  
 const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
@@ -15,83 +18,6 @@ const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((re
 const AddMeal: React.FC = () => {
     
     // const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
-
-    const getCurrentDateTime = () => {
-        const now = new Date();
-        return now.getFullYear() +
-        '-' + String(now.getMonth() + 1).padStart(2, '0') +
-        '-' + String(now.getDate()).padStart(2, '0') +
-        'T' + String(now.getHours()).padStart(2, '0') +
-        ':' + String(now.getMinutes()).padStart(2, '0');   
-    }
-
-    const getMealTypeFromTime = (pDate:string): string => {
-
-        const passedDate = new Date(pDate); // Create a new date based on stTime
- 
-        const passedHours = passedDate.getHours();
-        const passedMinutes = passedDate.getMinutes();
-
-        // Check the range and set the target time accordingly
-        if ((passedHours >= 7 && passedHours < 11) || (passedHours === 11 && passedMinutes < 30)) {
-            // Between 7:00 AM and 11:30 AM
-            return "B"; // "Breakfast"
-        } else if ((passedHours === 11 && passedMinutes >= 30) || (passedHours >= 12 && passedHours < 14)) {
-            // Between 11:30 AM and 2:00 PM
-            return "MS"; // "Morning Snack"
-        } else if ((passedHours >= 14 && passedHours < 16) || (passedHours === 16 && passedMinutes < 30)) {
-            // Between 2:00 PM and 4:30 PM
-            return "L"; // "Lunch"
-        } else if ((passedHours === 16 && passedMinutes >= 30) || (passedHours >= 17 && passedHours < 19)) {
-            // Between 4:30 PM and 7:00 PM
-            return "AS"; // "Afternoon Snack"
-        } else if ((passedHours >= 19 && passedHours < 21) || (passedHours === 21 && passedMinutes < 30)) {
-            // Between 7:00 PM and 9:30 PM
-            return "PW"; // "Post Workout"
-        } else if ((passedHours === 21 && passedMinutes >= 30) || (passedHours >= 21 && passedHours < 23)) {
-            // Between 7:00 PM and 9:30 PM
-            return "D"; // "Dinner"
-        } else {
-            // Any other time
-            return "OTH"; // "OTHER"
-        }
-
-    };
-    
-    const geTimeFromMealType = (mealT : string): string => {
-        let retTime = '';
-
-        const currentDate = new Date(); // Create a new date based on stTime
-        const currentYear = currentDate.getFullYear();
-        const currentMonth = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are 0-based
-        const currentDay = String(currentDate.getDate()).padStart(2, '0');
-        
-        switch (mealT) {
-            case "B":
-                retTime = '09:00';
-                break;
-            case "MS":
-                retTime = '11:30';
-                break;
-            case "L":
-                retTime = '14:00';
-                break;
-            case "AS":
-                retTime = '16:30';
-                break;
-            case "PW":
-                retTime = '19:00';
-                break;
-            case "D":
-                retTime = '21:30';
-                break;
-            default:
-                retTime = '23:00';
-        }
-
-        return `${currentYear}-${currentMonth}-${currentDay}T${retTime}`;
-    }
-
 
 
     const currentDateTime = getCurrentDateTime();

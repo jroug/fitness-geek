@@ -129,4 +129,19 @@ declare global {
         grade: number;
     }
  
+    type MealApiItem = {
+      id: string;
+      f_title: string;
+      f_category: string;
+      f_comments: string;
+    };
+    
+    type MealEventLike = {
+      id?: string;
+      title?: string;
+      start: Date | string;
+      end: Date | string;
+      meals?: MealApiItem[];
+    };
+    
 }

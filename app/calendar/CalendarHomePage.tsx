@@ -86,6 +86,7 @@ const CalendarHomePage: React.FC = () => {
 
     // Transform SWR calendar data into the local lists used by the calendar/components.
     useEffect(() => {
+        console.log("useEffect");
         if (!calendarData) return;
 
         if (!calendarData.meals_list || calendarData.meals_list.length === 0) {
@@ -205,6 +206,7 @@ const CalendarHomePage: React.FC = () => {
 
     // fix calendar width according to viewport width
     useEffect(() => {
+        console.log("useEffect called");
         if (isLoading) return;
 
         const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
@@ -418,7 +420,6 @@ const CalendarHomePage: React.FC = () => {
                     </div>
                 </div>
             </div>
-
             <PopupForm
                 setPopupFormData={setPopupFormData}
                 popupFormData={popupFormData}
