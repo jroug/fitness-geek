@@ -245,7 +245,7 @@ const CalendarHomePage: React.FC = () => {
     };
 
     const calcWeeklyGrades = (startDate: Date): { avg: string; total: string; } => {
-        console.log(userCommentsList);
+        // console.log(userCommentsList);
         let sumGrades = 0;
         let counter = 0;
         for (let i = 0; i < 7; i++) {
@@ -255,7 +255,7 @@ const CalendarHomePage: React.FC = () => {
             // is number between 1 and 10
             // if (userCommentsList[formatted].grade !== ) {
             const grade = Number(userCommentsList[formatted]?.grade);
-            console.log('grade', grade);
+            // console.log('grade', grade);
             if (typeof grade === 'number' && grade >= 1 && grade <= 10) {
                 sumGrades += Number(grade);
                 counter++;

@@ -4,11 +4,7 @@ import BottomBar from "@/components/BottomBar";
 import SideBar from "@/components/SideBar";
 import Homepage from "./Homepage";
 
-export default function HomepageLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function Page() {
   return (
     <>
         <Header homeUrl="/homepage" title="FITNESS GEEK" />
