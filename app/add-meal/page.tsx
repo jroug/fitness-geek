@@ -7,8 +7,8 @@ const PageMeals = () => {
  
     return (
         <>
-            <main className="site-content">
-                <Header title="Add Meal" backUrl="/homepage" />
+            <Header title="Add Meal" backUrl="/homepage" />
+            <main className="site-content form-width">
                 <InnerLink title="Calendar" goToUrl="/calendar" />
                 <AddMeal  />
             </main>

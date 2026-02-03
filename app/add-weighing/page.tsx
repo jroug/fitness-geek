@@ -7,8 +7,8 @@ const PageWeighing = () => {
  
     return (
         <>
-            <main className="site-content">
-                <Header title="Add Weighing" backUrl="/homepage" />
+            <Header title="Add Weighing" backUrl="/homepage" />
+            <main className="site-content form-width">
                 <InnerLink title="Calendar" goToUrl="/calendar" />
                 <AddWeighing  />
             </main>

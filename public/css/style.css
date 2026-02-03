@@ -75,6 +75,9 @@ paragraph p: #555658, #FB4945, #00A266
 
 
   --theme-color: #4C62AF;
+
+  --theme-width: 1020px;
+  --form-width: 700px;
 }
 
 html {
@@ -285,19 +288,26 @@ li.list.active,
 
 
 .site-content {
-    max-width: 700px;
+    max-width: var(--theme-width);
     margin: 0 auto;
 }
+
+.site-content.form-width {
+    max-width: var(--form-width);
+    margin: 0 auto;
+}
+
+
 .site-content.full-width{
     max-width: 100%;
 }
 #top-header{
-    max-width: 700px;
+    max-width: var(--theme-width);
     margin: 0 auto;
 }
 
 .calendar-link-wrapper{
-    max-width: 700px;
+    max-width: var(--theme-width);
     margin: 0 auto;
 }
 
@@ -1392,12 +1402,19 @@ div#ui-datepicker-div {
 .current-plan h2,
 .ok-btn,
 .home-btn a,
-.home-first span,
 .skip-btn-form a,
 .continue-btn-form a,
 .report-btn a {
     font-family: "Zen Dots";
     font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+    text-transform: uppercase;
+}
+.home-first span{
+    font-family: "Zen Dots";
+    font-size: 12px;
     font-style: normal;
     font-weight: 400;
     line-height: 24px;
@@ -1791,14 +1808,7 @@ div#ui-datepicker-div {
     cursor: pointer;
     color: #000;
 }
-#homescreen-main .slick-custom-arrow-right {
-  right: 50%;
-  bottom: -25%;
-}
-#homescreen-main .slick-custom-arrow-left {
-    left: 25%;
-    bottom: -25%;
-}
+
 
 /************************ 32.Bottom Tabbar Css ***************************/
 .bottom-menu-svg-main {
@@ -2106,13 +2116,26 @@ li.list.active i {
     display: none;
 }
 #homescreen-main .slick-custom-arrow-right {
-    right: 30%;
+    right: 40%;
     bottom: -25%;
 }
 #homescreen-main .slick-custom-arrow-left {
     left: 40%;
     bottom: -25%;
 }
+
+@media only screen and (max-width: 600px)  {
+    #homescreen-main .slick-custom-arrow-right {
+        right: 30%;
+        bottom: -25%;
+    }
+    #homescreen-main .slick-custom-arrow-left {
+        left: 30%;
+        bottom: -25%;
+    }
+}
+ 
+
 /************************ 35.Payment Method Css ***************************/
 #payment-method-main .bank-img,
 #account-upgrade-processing-main .bank-img {
@@ -3405,10 +3428,24 @@ body.open-sidebar .header-overlay {
 }
 
 .landing-page-content .wp-block-image img{
-    max-width:100%;
+    max-width:75%;
     border-radius:12px;
-    margin-bottom:20px;
+    margin-top:35px;
+    margin-bottom:55px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
+
+@media (max-width: 600px) {
+    .landing-page-content .wp-block-image img{
+        max-width:100% !important;
+        margin-top:10px !important;
+        margin-bottom:20px !important;
+    }
+}
+ 
+
 
 #meal-long table{
     width:100%;
@@ -3776,7 +3813,7 @@ button.green-btn-small{
 
 /* chart page */
 .chart-dates-filter-wrap{
-    max-width: 700px;
+    max-width: var(--theme-width);
 }
 
 .green-btn.dateApplyBtn{

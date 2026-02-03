@@ -26,6 +26,7 @@ type ProfileData = {
     last_name?: string;
     user_name?: string;
     user_registered?: string;
+    date_of_birth?: string;
 };
 
 type UserWorkoutData = {
@@ -85,29 +86,39 @@ const Homepage = () => {
 
     const registeredRaw = profileData?.user_registered;
     const dateObj = registeredRaw ? new Date(registeredRaw) : null;
-    const user_registered_formatted = dateObj && !Number.isNaN(dateObj.getTime())
-        ? `${dateObj.getDate()} ${dateObj.toLocaleString('en-US', { month: 'short' })} ${dateObj.getFullYear()}`
-        : '';
+    // const user_registered_formatted = dateObj && !Number.isNaN(dateObj.getTime())
+    //     ? `${dateObj.getDate()} ${dateObj.toLocaleString('en-US', { month: 'short' })} ${dateObj.getFullYear()}`
+    //     : '';
 
     const display_name =
         profileData?.first_name && profileData?.last_name
             ? `${profileData.first_name} ${profileData.last_name}`
             : profileData?.user_name || '';
+ 
+    const calcAgeFromDOB = (dobString: string): number | null => {
+        const dob = new Date(dobString);
+        if (isNaN(dob.getTime())) {
+            return null; // Invalid date
+        }
+        const diffMs = Date.now() - dob.getTime();
+        const ageDate = new Date(diffMs);
+        return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
 
     return (
         <>
             <div className="verify-email" id="homescreen-main">
                 <div className="home-bottom-content mt-24">
                     <div className="home-first container mx-8">
-                        <h1>{display_name},</h1>
+                        <h1>{display_name}, Age {calcAgeFromDOB(profileData?.date_of_birth || '')}</h1>
                         {profileError || workoutsError ? (
                             <p className="mt-8" style={{ fontSize: 12 }}>
                                 Failed to load some data.
                             </p>
                         ) : null}
-                        {user_registered_formatted ? (
-                            <span>Registration: {user_registered_formatted}</span>
-                        ) : null}
+                        {/* {user_registered_formatted ? (
+                            <span >Registration: {user_registered_formatted}</span>
+                        ) : null} */}
 
                     </div>
  

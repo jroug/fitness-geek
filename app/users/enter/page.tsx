@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
     };
 
     return (
-        <main className="site-content">
+        <main className="site-content form-width">
             <header id="top-header" className="border-0">
                 <div className="header-wrap">
                     <div className="header-back">

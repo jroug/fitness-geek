@@ -8,7 +8,7 @@ const profilePage = () => {
     return (
         <>
             <Header backUrl="/homepage" title={'Personal Info'}  />
-            <main className="site-content">
+            <main className="site-content form-width">
                 <UserProfileInfo  />
             </main>
             <SideBar />
