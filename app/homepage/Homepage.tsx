@@ -144,7 +144,7 @@ const Homepage = () => {
                     <div className="home-section-second">
                         <h2 className="text-left container mx-8">Calendar</h2>
                         <Link href="/calendar">
-                            <Image src={calendar_thumb} alt="calendar-thumb" className="block max-w-[300px] mt-2 mx-auto" />
+                            <Image src={calendar_thumb} alt="calendar-thumb" className="block max-w-[300px] mt-2 mx-auto" /> 
                         </Link>
                     </div>
                     <div className="home-section-third">
