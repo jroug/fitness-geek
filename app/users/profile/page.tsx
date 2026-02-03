@@ -7,8 +7,8 @@ import SideBar from '@/components/SideBar';
 const profilePage = () => {
     return (
         <>
+            <Header backUrl="/homepage" title={'Personal Info'}  />
             <main className="site-content">
-                <Header backUrl="/homepage" title={'Personal Info'}  />
                 <UserProfileInfo  />
             </main>
             <SideBar />

@@ -70,7 +70,7 @@ const SideBar = () => {
 						<div className="dropdown">
 							<div className="setting-page-full">
 								<div className="setting-page-wrapper">
-									<Link href="/meals" onClick={handleLinkClick}>
+									<Link href="/add-meal" onClick={handleLinkClick}>
 										<div className="send-money-contact-tab border-bottom1 pt-0  ">
 											<div className="setting-icon">
 												<Image src={setting6} alt="setting-icon" />
@@ -85,7 +85,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link> 
-									<Link href="/weighing" onClick={handleLinkClick} >
+									<Link href="/add-weighing" onClick={handleLinkClick} >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">
@@ -102,7 +102,7 @@ const SideBar = () => {
 											</div>
 										</div>
 									</Link>
-									<Link href="/workouts" onClick={handleLinkClick} >
+									<Link href="/add-workout" onClick={handleLinkClick} >
 										<div className="Char-content border-bottom1">
 											<div className="send-money-contact-tab ">
 												<div className="setting-icon">

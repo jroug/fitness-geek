@@ -120,7 +120,7 @@ const Homepage = () => {
                                 {
                                     workouts.map((workout: UserWorkoutData, index: number) => (
                                         <div className="workout-details" key={workout.id}>
-                                            <Link href={`/workouts?workoutId=${workout.id}`}>
+                                            <Link href={`/add-workout?workoutId=${workout.id}`}>
                                                 <div className="verify-email-img-sec ">
                                                     <div className="main-img-top">
                                                         <div className="palceholder-1"></div> 

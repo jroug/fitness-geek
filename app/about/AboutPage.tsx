@@ -7,8 +7,8 @@ export default  function AboutPage({ pageTitle, pageContent }: { pageTitle: stri
 
     return (
         <>
+            <Header backUrl="/homepage" title={pageTitle}  />
             <main className="site-content">
-                <Header backUrl="/homepage" title={pageTitle}  />
                 <SimpleContent pageContent={pageContent} />
             </main>
             <SideBar />

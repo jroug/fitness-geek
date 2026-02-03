@@ -35,6 +35,8 @@ interface userChartData {
 
 const ChartsWorkoutsPage: React.FC = () => {
 
+  const [firstChartLoad, setFirstChartLoad] = useState<boolean>(false);
+  
   const [startDate, setStartDate] = useState<string>(() => {
     const today = new Date();
     const priorDate = new Date().setDate(today.getDate() - 30);
@@ -132,13 +134,16 @@ const ChartsWorkoutsPage: React.FC = () => {
 
 
   useEffect(() => {
-    getChartData();
-  }, [getChartData]);
+    if (!firstChartLoad) {
+      setFirstChartLoad(true);
+      getChartData();
+    }
+  }, [firstChartLoad, getChartData]);
 
 
   return (
     <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 chart-dates-filter-wrap flex items-center mt-[50px] mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 chart-dates-filter-wrap flex items-center mt-[50px] mx-auto px-[30px]">
           <div className="flex flex-col">
             <label className="text-sm mb-1">Start date</label>
             <input
