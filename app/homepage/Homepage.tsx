@@ -17,7 +17,7 @@ import kcal_image from "../../public/images/workout-complete/kcal.png";
 
 import useSWR from 'swr';
 // import { format } from 'path/win32';
-import { formatDate } from '@/lib/formatDate';
+// import { formatDate } from '@/lib/formatDate';
 
 
 const fetcher = async <T,>(url: string): Promise<T> => {
@@ -101,13 +101,10 @@ const Homepage = () => {
     const last_weekly_avg_weight = profileDataWithStats?.fitness_stats?.last_weekly_avg_weight || 0; // Placeholder for average weight calculation
     const this_weekly_avg_weight = profileDataWithStats?.fitness_stats?.this_weekly_avg_weight || 0; // Placeholder for average weight calculation
     const weekly_workouts_count = profileDataWithStats?.fitness_stats?.weekly_workouts_count || 0;
-    const avgGrade =   0; // Placeholder for average grade calculation
+
     const last_weighing_date = profileDataWithStats?.fitness_stats?.last_weighing_date || ''; // d//m//yyy
     
     const last_weighing = profileDataWithStats?.fitness_stats?.last_weighing || 0;
-    const formattedLastWeighingDate = last_weighing_date
-        ? formatDate(last_weighing_date) 
-        : '';
 
     const last_weighing_date_is_today = (() => {
         if (!last_weighing_date) return false;

@@ -1,13 +1,12 @@
 import CalendarPublic from "./CalendarPublic";
-import Header from "@/components/Header";
+// import Header from "@/components/Header";
 // import BottomBar from "@/components/BottomBar";
 import SideBar from "@/components/SideBar";
+ 
+type Params = Promise<{ jr_token: string }>
 
-interface CalendarPageProps {
-  params: any; // Replace 'any' with the actual Params type if available
-}
 
-export default function CalendarPage({ params }: CalendarPageProps) {
+export default function CalendarPage({ params }: { params: Params }) {
 
   return (
     <>

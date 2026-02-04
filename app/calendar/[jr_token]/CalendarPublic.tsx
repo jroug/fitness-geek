@@ -22,9 +22,9 @@ const calendarCommentsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NE
 // const checkWhoIsWatchingCalendarUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/check-calendar-who-is-watching`;
 
 
-interface CalendarPageProps {
-    params: { jr_token: string };
-}
+// interface CalendarPageProps {
+//     params: { jr_token: string };
+// }
 
 type Params = Promise<{ jr_token: string }>
 
@@ -56,7 +56,7 @@ export default function CalendarPublic(props: { params: Params }) {
         try {
             const res = await fetch(`${getPublicCalendarData}?jr_token=${jr_token}`, { method: 'GET' });
             const data: CalendarData = await res.json();
-console.log('data from public calendar API:', data);
+            // console.log('data from public calendar API:', data);
             setUserDisplayName( data.user_display_name ? data.user_display_name : '' );
 
             if (!data || !data.meals_list || data.meals_list.length === 0) {
