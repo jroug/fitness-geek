@@ -130,7 +130,17 @@ const Homepage = () => {
     })();
 
     const this_week_avg_grade = profileDataWithStats?.fitness_stats?.this_week_avg_grade || 0;
-    
+
+
+    const weightDiff = this_weekly_avg_weight - last_weekly_avg_weight;
+
+    type Trend = 'up' | 'down' | 'same';
+
+    const trend: Trend =
+    weightDiff > 0 ? 'up' :
+    weightDiff < 0 ? 'down' :
+    'same';
+
     return (
         <>
             <div className="verify-email" id="homescreen-main">
@@ -138,17 +148,22 @@ const Homepage = () => {
                     <div className="home-first container">
                         <h1 className="mx-8">{display_name}, Age {calcAgeFromDOB(profileDataWithStats?.date_of_birth || '')}</h1>
    
-                        <h2 className="text-[20px] text-center font-main">This week</h2>
+             
                         <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
                             <div className="workout-first border-green text-center">
                                 <Image src={minutes_image} className="mx-auto" alt="workout-img" />
                                 <h2>{weekly_workouts_count}</h2>
-                                <p># Workouts </p>
+                                <p># Workouts <br/> This Week</p>
                             </div>
                             <div className="workout-first border-yellow text-center">
                                 <Image src={kcal_image} className="mx-auto" alt="kcal-img" />
                                 <h2>{this_week_avg_grade}</h2>
-                                <p>AVG. Grade </p>
+                                <p>AVG. Grade <br/> This Week</p>
+                            </div>
+                            <div className={`workout-first border-trend-${trend} text-center`}>
+                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
+                                <h2>{last_weighing}<b className="text-[12px] leading-[10px]" >Kg</b></h2>
+                                <p><br/>{last_weighing_date_is_today ? 'Today' : `${days_from_last_weiing} days ago`}</p>
                             </div>
                         </div>
                     </div>
@@ -156,21 +171,25 @@ const Homepage = () => {
                     <div className="home-section-first">
                         <h2 className="text-left container mx-8">Weight Progress</h2>
                         <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
-                            <div className="workout-first border-red text-center">
-                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
-                                <h2>{last_weekly_avg_weight}<span>Kg</span></h2>
-                                <p>AVG. last week</p>
-                            </div>
-                            <div className="workout-first border-red text-center">
-                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
-                                <h2>{this_weekly_avg_weight}<span>Kg</span></h2>
-                                <p>AVG. current week</p>
-                            </div>
                             <div className="workout-first border-blue text-center">
                                 <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
-                                <h2>{last_weighing}<span>Kg</span></h2>
-                                <p>{last_weighing_date_is_today ? 'Today' : `${days_from_last_weiing} days ago`}</p>
+                                <h2>{last_weekly_avg_weight}<span className="text-[12px]">Kg</span></h2>
+                                <p>AVG. <br/>Last Week</p>
                             </div>
+                            <div className={`workout-first border-trend-${trend} text-center`}>
+                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
+                                <h2>{this_weekly_avg_weight}<span className="text-[12px]">
+                                        Kg
+                                        <span className={`trend-arrow ${trend}`}>
+                                            {trend === 'up' && '↑'}
+                                            {trend === 'down' && '↓'}
+                                            {trend === 'same' && '→'}
+                                        </span>
+                                    </span>
+                                </h2>
+                                <p>AVG. <br/>This Week</p>
+                            </div>
+
                         </div>
                         {!last_weighing_date_is_today  ? (
                             <div className="green-btn mt-4 max-w-[320px] mx-auto">

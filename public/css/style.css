@@ -3076,6 +3076,7 @@ ul.nav.nav-tabs.focus-tab-main{
 .border-yellow{
     border: 2px solid var(--6, #FFAA01);
 }
+
 .statistic-overview-content {
     display: flex;
     align-items: center;
@@ -3836,4 +3837,42 @@ button.green-btn-small{
     background-color:black;
     position: relative;
     bottom:0;
+}
+
+
+/* home shortcuts*/
+.weight-value {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.trend-arrow {
+  font-size: 29px;
+  font-weight: 700;
+  line-height: 1;
+    position: absolute;
+}
+
+.trend-arrow.up {
+  color: #dc2626; /* red */
+}
+
+.trend-arrow.down {
+  color: #16a34a; /* green */
+}
+
+.trend-arrow.same {
+  color: #9ca3af; /* gray */
+}
+
+.border-trend-up {
+  border: 2px solid #dc2626; /* red */
+}   
+.border-trend-down {
+  border: 2px solid #16a34a; /* green */
+}
+.border-trend-same {
+  border: 2px solid #9ca3af; /* gray */
 }
