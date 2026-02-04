@@ -152,16 +152,16 @@ const Homepage = () => {
                         <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
                             <div className="workout-first border-green text-center">
                                 <Image src={minutes_image} className="mx-auto" alt="workout-img" />
-                                <h2>{weekly_workouts_count}</h2>
+                                <h2>{weekly_workouts_count}<b className="text-[12px] leading-[10px]" >/4</b></h2>
                                 <p># Workouts <br/> This Week</p>
                             </div>
                             <div className="workout-first border-yellow text-center">
                                 <Image src={kcal_image} className="mx-auto" alt="kcal-img" />
-                                <h2>{this_week_avg_grade}</h2>
+                                <h2>{this_week_avg_grade}<b className="text-[12px] leading-[10px]" >/10</b></h2>
                                 <p>AVG. Grade <br/> This Week</p>
                             </div>
                             <div className={`workout-first border-trend-${trend} text-center`}>
-                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
+                                <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                 <h2>{last_weighing}<b className="text-[12px] leading-[10px]" >Kg</b></h2>
                                 <p><br/>{last_weighing_date_is_today ? 'Today' : `${days_from_last_weiing} days ago`}</p>
                             </div>
@@ -172,12 +172,12 @@ const Homepage = () => {
                         <h2 className="text-left container mx-8">Weight Progress</h2>
                         <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
                             <div className="workout-first border-blue text-center">
-                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
+                                <Image src={workout_image} className="mx-auto " alt="workout-img" />
                                 <h2>{last_weekly_avg_weight}<span className="text-[12px]">Kg</span></h2>
                                 <p>AVG. <br/>Last Week</p>
                             </div>
                             <div className={`workout-first border-trend-${trend} text-center`}>
-                                <Image src={workout_image} className="mx-auto translate-x-[-5px]" alt="workout-img" />
+                                <Image src={workout_image} className="mx-auto " alt="workout-img" />
                                 <h2>{this_weekly_avg_weight}<span className="text-[12px]">
                                         Kg
                                         <span className={`trend-arrow ${trend}`}>
@@ -215,8 +215,8 @@ const Homepage = () => {
                                                     </div>
                                                     <div className="workout-plan-ready-details">
                                                         <h3 className="md-font-sans fw-700 color-white">{(index+1) + '. ' + workout.w_type}</h3>
-                                                        <h3 className="md-font-sans fw-700 color-green">{workout.w_title}</h3>
-                                                        <h4 className="md-font-sans fw-700 color-green">{workout.w_title===workout.w_description ? "" : workout.w_description}</h4>
+                                                        <h4 className="md-font-sans fw-700 color-green">{workout.w_title}</h4>
+                                                        <h5 className="md-font-sans fw-700 color-green">{workout.w_title===workout.w_description ? "" : workout.w_description}</h5>
                                                         <p>{parseInt(workout.w_calories || '0')} cal </p>
                                                         <p>{parseInt(workout.w_time || '0')} min</p>
                                                     </div>
@@ -232,7 +232,7 @@ const Homepage = () => {
                     <div className="home-section-second">
                         <h2 className="text-left container mx-8">Calendar</h2>
                         <Link href="/calendar">
-                            <Image src={calendar_thumb} alt="calendar-thumb" className="block max-w-[300px] mt-2 mx-auto" /> 
+                            <Image src={calendar_thumb} alt="calendar-thumb" className="block max-w-[200px] mt-2 mx-auto" /> 
                         </Link>
                     </div>
                     <div className="home-section-third">

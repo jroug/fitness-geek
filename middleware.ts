@@ -5,12 +5,15 @@ const PUBLIC_PATHS = new Set([
   "/",
   "/users/enter",
   "/users/join",
-  "/users/logout",
+  "/users/logout"
 ]);
 
 function isPublicPath(pathname: string) {
   // exact matches
   if (PUBLIC_PATHS.has(pathname)) return true;
+
+  // Magic login API routes
+  if (pathname.startsWith("/users/magic-login/")) return true;
 
     // Public API routes
   if (pathname.startsWith("/api")) return true;
@@ -35,7 +38,7 @@ export function middleware(req: NextRequest) {
   
   // 1) allow public pages
   if (isPublicPath(pathname)) return NextResponse.next();
-
+console.log('middleware executed for path:', pathname);
   // 2) check auth cookie
   const token = req.cookies.get("token")?.value;
   // console.log('token:', token);

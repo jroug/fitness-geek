@@ -153,7 +153,7 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
                         }
                     </div>
                     {
-                        isCommentsPublished
+                        cameFrom === 'private'
                         ?
                         <span className="text-[white] w-[20px] absolute right-[-2px] top-[1px] h-full" >
                             <button className="block mt-[-2px] rounded-[35px] bg-[red] w-[18px] h-[18px] pb-[2px] absolute top-[50%] translate-y-[-50%] right-0" onClick={ () => handleEventDelete(meal.id) }>x</button>

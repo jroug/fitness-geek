@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
+// import React, { useEffect, useRef, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
@@ -39,7 +40,7 @@ const fetcher = async <T,>(url: string): Promise<T> => {
 };
 
 const CalendarHomePage: React.FC = () => {
-    const calendarMainRef = useRef<HTMLDivElement | null>(null);
+    // const calendarMainRef = useRef<HTMLDivElement | null>(null);
 
     const [popupFormData, setPopupFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
     const [calendarDate, setCalendarDate] = useState<Date>(new Date());
@@ -86,7 +87,7 @@ const CalendarHomePage: React.FC = () => {
 
     // Transform SWR calendar data into the local lists used by the calendar/components.
     useEffect(() => {
-        console.log("useEffect");
+        // console.log("useEffect");
         if (!calendarData) return;
 
         if (!calendarData.meals_list || calendarData.meals_list.length === 0) {
@@ -205,30 +206,30 @@ const CalendarHomePage: React.FC = () => {
     };
 
     // fix calendar width according to viewport width
-    useEffect(() => {
-        console.log("useEffect called");
-        if (isLoading) return;
+    // useEffect(() => {
+    //     console.log("useEffect called");
+    //     if (isLoading) return;
 
-        const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
-        if (!main) return;
+    //     const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
+    //     if (!main) return;
 
-        const update = () => {
-            const vw = window.innerWidth;
+    //     const update = () => {
+    //         const vw = window.innerWidth;
 
-            // run ONLY on desktop (>= 1024px)
-            if (vw < 1024) {
-                main.style.removeProperty("--cal-scale");
-                return;
-            }
+    //         // run ONLY on desktop (>= 1024px)
+    //         if (vw < 1024) {
+    //             main.style.removeProperty("--cal-scale");
+    //             return;
+    //         }
 
-            const scale = Math.max(0.672, Math.min(1, vw / 2250));
-            main.style.setProperty("--cal-scale", String(scale));
-        };
+    //         const scale = Math.max(0.672, Math.min(1, vw / 2250));
+    //         main.style.setProperty("--cal-scale", String(scale));
+    //     };
 
-        update();
-        window.addEventListener("resize", update);
-        return () => window.removeEventListener("resize", update);
-    }, [isLoading]);
+    //     update();
+    //     window.addEventListener("resize", update);
+    //     return () => window.removeEventListener("resize", update);
+    // }, [isLoading]);
 
     if (isLoading) {
         return <Loading />;
@@ -311,7 +312,7 @@ const CalendarHomePage: React.FC = () => {
     };
 
     const calendarPageUrl = `/calendar/${jrTokenFromDb}`;
-    const magicLoginForContributorUrl = `/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
+    const magicLoginForContributorUrl = `${location.origin}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
 
     function openFoodModal(arg0: { start: Date; end: Date; }) {
         setPopupFormData({ title: 'Add Meal', dateSelected: arg0.start, show_popup: true });
@@ -323,100 +324,105 @@ const CalendarHomePage: React.FC = () => {
     return (
         <>
             <div className="calendar-link-wrapper" >
-                <div className="flex items-center publish-btn-wrapper mt-4">
-                    <div className="flex-auto">
+                <div className="flex flex-col lg:flex-row items-start lg:items-center publish-btn-wrapper  w-full justify-between m-5" >
+                    <div className="flex flex-col mr-0 lg:mr-8 order-1 lg:order-none" >
                         <h2>Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
                     </div>
-                    <button type="button" className="green-btn" onClick={handlePublishingCalendar}>
-                        {isPublished ? 'Unpublish' : 'Publish'}
-                    </button>
+
+                    <div className="flex custom_margin order-3 lg:order-none mt-4 lg:mt-0" >
+                        {isPublished && (
+                            <div>
+                                <p>
+                                    <span>Public URL: </span>
+                                    <Link href={calendarPageUrl} target="_blank" className="underline">
+                                        click here!
+                                    </Link>
+                                </p>
+                                <p>
+                                    <span>Contributor URL: </span>
+                                    <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
+                                        click here!
+                                    </Link>
+                                    &nbsp; - OR - &nbsp;
+                                    <button type="button" onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >
+                                        Copy to Clipboard
+                                    </button>
+                                </p>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex order-2 lg:order-none mt-4 lg:mt-0"  >
+                        <button type="button" className="green-btn" onClick={handlePublishingCalendar}>
+                            {isPublished ? 'Unpublish' : 'Publish'}
+                        </button>
+                    </div>
                 </div>
             </div>
 
-            <div className="fixed custom_margin" >
-                {isPublished && (
-                    <div>
-                        <p>
-                            <span>Public URL: </span>
-                            <Link href={calendarPageUrl} target="_blank" className="underline">
-                                click here!
-                            </Link>
-                        </p>
-                        <p>
-                            <span>Contributor URL: </span>
-                            <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
-                                click here!
-                            </Link>
-                            &nbsp; - OR - &nbsp;
-                            <button type="button" onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >
-                                Copy to Clipboard
-                            </button>
-                        </p>
-                    </div>
-                )}
-            </div>
 
-            <div className="calendar-main-wrapper top-140px" >
-                <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
-                    <div className="padding-wrapper" >
-                   
-                        <Calendar
-                            localizer={localizer}
-                            date={calendarDate}
-                            onNavigate={(newDate) => setCalendarDate(newDate)}
-                            defaultView="week"
-                            events={userMealsList}
-                            views={{ day: true, week: true }}
-                            step={150}
-                            timeslots={1}
-                            min={new Date(new Date().setHours(9, 0))}
-                            max={new Date(new Date().setHours(23, 59))}
-                            formats={{
-                                dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
-                                    const startFormat = localizer?.format(start, 'MMMM D', culture)
-                                    const endFormat = localizer?.format(end, 'D, YYYY', culture)
-                                    return `${startFormat} – ${endFormat}`
-                                }
-                            }}
-                            components={{
-                                dateCellWrapper: (props) => (
-                                    <CustomDateCell
-                                        {...props}
-                                        isCommentsPublished={true}
-                                        getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")]}
-                                        getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")]}
-                                        getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
-                                        setUserCommentsList={setUserCommentsList}
-                                        jr_token={''}
-                                    />
-                                ),
-                                event: (props) => (
-                                    <CustomEvent
-                                        {...props}
-                                        cameFrom="private"
-                                        isCommentsPublished={true}
-                                        setUserMealsList={setUserMealsList}
-                                    />
-                                ),
-                                timeGutterWrapper: CustomTimeGutter,
-                                toolbar: (props) => (
-                                    <CustomToolBar
-                                        {...props}
-                                        calcWeeklyGrades={calcWeeklyGrades}
-                                        calcAverageWeeklyWeight={calcAverageWeeklyWeight}
-                                        calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
-                                    />
-                                ),
-                                timeSlotWrapper: (props) => (
-                                    <TimeSlotWrapper
-                                        {...props}
-                                        onAddFood={(date) => {
-                                            openFoodModal({ start: date, end: date });
-                                        }}
-                                    />
-                                ),
-                            }}
-                        />
+            <div className="calendar-wrapper" >
+                <div className="calendar-main-wrapper" >
+                    {/* <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main"> */}
+                    <div className="pb-20 calendar-main mx-auto" id="calendar-main">
+                        <div className="padding-wrapper" >
+                            <Calendar
+                                localizer={localizer}
+                                date={calendarDate}
+                                onNavigate={(newDate) => setCalendarDate(newDate)}
+                                defaultView="week"
+                                events={userMealsList}
+                                views={{ day: true, week: true }}
+                                step={150}
+                                timeslots={1}
+                                min={new Date(new Date().setHours(9, 0))}
+                                max={new Date(new Date().setHours(23, 59))}
+                                formats={{
+                                    dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
+                                        const startFormat = localizer?.format(start, 'MMMM D', culture)
+                                        const endFormat = localizer?.format(end, 'D, YYYY', culture)
+                                        return `${startFormat} – ${endFormat}`
+                                    }
+                                }}
+                                components={{
+                                    dateCellWrapper: (props) => (
+                                        <CustomDateCell
+                                            {...props}
+                                            isCommentsPublished={true}
+                                            getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")]}
+                                            getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")]}
+                                            getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
+                                            setUserCommentsList={setUserCommentsList}
+                                            jr_token={''}
+                                        />
+                                    ),
+                                    event: (props) => (
+                                        <CustomEvent
+                                            {...props}
+                                            cameFrom="private"
+                                            isCommentsPublished={true}
+                                            setUserMealsList={setUserMealsList}
+                                        />
+                                    ),
+                                    timeGutterWrapper: CustomTimeGutter,
+                                    toolbar: (props) => (
+                                        <CustomToolBar
+                                            {...props}
+                                            calcWeeklyGrades={calcWeeklyGrades}
+                                            calcAverageWeeklyWeight={calcAverageWeeklyWeight}
+                                            calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
+                                        />
+                                    ),
+                                    timeSlotWrapper: (props) => (
+                                        <TimeSlotWrapper
+                                            {...props}
+                                            onAddFood={(date) => {
+                                                openFoodModal({ start: date, end: date });
+                                            }}
+                                        />
+                                    ),
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

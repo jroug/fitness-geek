@@ -8,7 +8,7 @@ export default function CalendarPage() {
   return (
     <>
       <Header backUrl="/homepage" title={"Calendar"} />
-      <main className="site-content full-width">
+      <main className="site-content ">
           <CalendarHomePage />
       </main>
       <SideBar />
