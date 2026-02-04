@@ -5,6 +5,38 @@ export {};
 
 declare global {
 
+    interface ProfileData  { 
+        message: string;
+        user_name: string;
+        first_name: string;
+        last_name: string;
+        user_registered: string;
+        email: string;
+        date_of_birth?: string;
+        profile_picture?: string;
+ 
+    }
+
+    interface ProfileDataWithStats { 
+        message: string;
+        user_name: string;
+        first_name: string;
+        last_name: string;
+        user_registered: string;
+        email: string;
+        date_of_birth?: string;
+        profile_picture?: string;
+        fitness_stats?: {
+            last_weighing?: number;
+            last_weighing_date?: string;
+            last_weekly_avg_weight?: number;
+            this_weekly_avg_weight?: number;
+            weekly_workouts_count?: number;
+            this_week_avg_grade?: number;
+        }
+    }
+ 
+
     interface CustomToolBarProps {
         label: string;
         date: Date;

@@ -1,34 +1,32 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-interface ProfileData {
-    acf: {
-        date_of_birth?: string;
-        profile_picture?: string;
-    };
+interface ProfileDataResponse {
     name: string;
     first_name: string;
     last_name: string;
     user_registered: string;
     email: string;
-    date_of_birth?: string;
+    acf: {
+        date_of_birth?: string;
+        profile_picture?: string;
+    };
+    fitness_stats?: {
+        last_weighing?: number;
+        last_weighing_date?: string;
+        last_weekly_avg_weight?: number;
+        this_weekly_avg_weight?: number;
+        weekly_workouts_count?: number;
+        this_week_avg_grade?: number;
+    }
 }
 
-interface SuccessResponse {
-    message: string;
-    user_name: string;
-    first_name: string;
-    last_name: string;
-    user_registered: string;
-    email: string;
-    date_of_birth?: string;
-    profile_picture?: string;
-}
+ 
 
 interface ErrorResponse {
     message: string;
 }
 
-type ApiResponse = SuccessResponse | ErrorResponse;
+type ApiResponse = ProfileDataWithStats | ErrorResponse;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'GET') {
@@ -39,7 +37,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 return res.status(401).json({ message: 'Unauthorized: No token provided' });
             }
 
-            const profileDataFetchUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/users/me?context=edit&acf_format=standard`;
+            const includeFitnessStats = req.query.include_fitness_stats === '1';
+
+            const profileDataFetchUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/users/me?context=edit&acf_format=standard${includeFitnessStats ? '&include_fitness_stats=1' : ''}`;
             // console.log(profileDataFetchUrl);
             const response = await fetch(profileDataFetchUrl, {
                 method: 'GET',
@@ -53,7 +53,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 return res.status(401).json({ message: 'Authentication failed (profile-data)' });
             }
 
-            const data: ProfileData = await response.json();
+            const data: ProfileDataResponse = await response.json();
 
             return res.status(200).json({
                 message: 'Logged in successfully',
@@ -64,6 +64,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 email: data.email,
                 date_of_birth: data.acf.date_of_birth,
                 profile_picture: data.acf.profile_picture,
+                fitness_stats: {
+                    last_weighing: data.fitness_stats?.last_weighing,
+                    last_weighing_date: data.fitness_stats?.last_weighing_date,
+                    last_weekly_avg_weight: data.fitness_stats?.last_weekly_avg_weight,
+                    this_weekly_avg_weight: data.fitness_stats?.this_weekly_avg_weight,
+                    weekly_workouts_count: data.fitness_stats?.weekly_workouts_count,
+                    this_week_avg_grade: data.fitness_stats?.this_week_avg_grade,
+                }
             });
             
         } catch {

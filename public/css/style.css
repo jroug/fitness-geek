@@ -78,6 +78,12 @@ paragraph p: #555658, #FB4945, #00A266
 
   --theme-width: 1020px;
   --form-width: 700px;
+
+  --font-main: "Zen Dots", sans-serif;
+}
+
+.font-main{
+    font-family: var(--font-main);
 }
 
 html {
@@ -162,7 +168,7 @@ ul{
 }
 .lg-font-zen{
     color: var(--theme-color);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 48px;
     font-style: normal;
     line-height: 48px;
@@ -170,7 +176,7 @@ ul{
 }
 .md-font-zen{
     color: var(--4, #12151C);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 26px;
     font-style: normal;
     line-height: 36px;
@@ -178,7 +184,7 @@ ul{
 }
 .sm-font-zen{
     color: var(--4, #12151C);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 14px;
     font-style: normal;
     line-height: 20px; 
@@ -852,7 +858,7 @@ textarea {
     max-width: 600px;
     color: var(--1, #FFF);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -1006,7 +1012,7 @@ textarea {
 #workout-empty-main .ui-datepicker-title{
     color: var(--4, #12151C);
     /* text-align: center; */
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -1277,7 +1283,7 @@ div#ui-datepicker-div {
 .billing-price h2 {
     color: var(--4, #12151C);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 32px;
     font-style: normal;
     font-weight: 400;
@@ -1287,7 +1293,7 @@ div#ui-datepicker-div {
 .billing-price h1 span,
 .home-first h1 {
     color: var(--4, #12151C);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -1405,7 +1411,7 @@ div#ui-datepicker-div {
 .skip-btn-form a,
 .continue-btn-form a,
 .report-btn a {
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -1413,7 +1419,7 @@ div#ui-datepicker-div {
     text-transform: uppercase;
 }
 .home-first span{
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -1580,7 +1586,7 @@ div#ui-datepicker-div {
 .workout-first h2 {
     color: var(--4, #12151C);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
@@ -1762,7 +1768,7 @@ div#ui-datepicker-div {
 .home-section-first h2,
 .home-section-second h2,
 .home-section-third h2{
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size:20px;
 }
 
@@ -2261,7 +2267,7 @@ li.list.active i {
 #workout-empty-main .ui-datepicker-calendar thead th {
     color: var(--4, #12151C);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -2283,7 +2289,7 @@ li.list.active i {
 .empty-box-bottom h1 {
     color: var(--4, #12151C);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
@@ -2356,7 +2362,7 @@ ul.nav.nav-tabs.focus-tab-main{
 .first-focus-content h2 {
     color: var(--4, #12151C);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 20px;
     font-style: normal;
     font-weight: 400;
@@ -3058,6 +3064,9 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 
 /************************ 47.Bar Chart Css ***************************/
+.border-blue{
+    border: 2px solid var(--theme-color);
+}
 .border-red{
     border: 2px solid var(--8, #FB4945);
 }
@@ -3086,7 +3095,7 @@ ul.nav.nav-tabs.focus-tab-main{
 }
 .statistic-first h2 {
     color: var(--4, #12151C);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 18px;
     font-style: normal;
     font-weight: 400;
@@ -3243,7 +3252,7 @@ ul.nav.nav-tabs.focus-tab-main{
     transition: opacity 0.2s, transform 0.2s;
     color: var(--5, #555658);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 32px;
     font-style: normal;
     font-weight: 400;
@@ -3263,7 +3272,7 @@ ul.nav.nav-tabs.focus-tab-main{
 .single2-txt {
     color: var(--4, #12151C);
     text-align: center;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 36px;
     font-style: normal;
     font-weight: 400;
@@ -3404,7 +3413,7 @@ body.open-sidebar .header-overlay {
 
 .page-content h1 {
     color: var(--4, #12151C);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 24px;
     font-style: normal;
     font-weight: 400;
@@ -3548,7 +3557,7 @@ body.open-sidebar .header-overlay {
 
 .comment-link-button{
     font-weight: bold;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
 }
 
 /* framer motion wrapper divs */
@@ -3561,7 +3570,7 @@ body.open-sidebar .header-overlay {
 
 /* button green */
 button.green-btn{
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -3574,7 +3583,7 @@ button.green-btn{
 }
 
 button.green-btn-small{
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -3719,7 +3728,7 @@ button.green-btn-small{
     background-color: var(--theme-color);
     border-radius:12px;
     color:#ffffff;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -3733,7 +3742,7 @@ button.green-btn-small{
     background-color: var(--2, #000000);
     border-radius:12px;
     color:#ffffff;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -3747,7 +3756,7 @@ button.green-btn-small{
     background-color: rgb(253 224 71 / var(--tw-bg-opacity, 1));
     border-radius:12px;
     color:#000000;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -3760,7 +3769,7 @@ button.green-btn-small{
     background-color: rgb(34 211 238 / var(--tw-bg-opacity, 1));
     border-radius:12px;
     color:#000000;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -3773,7 +3782,7 @@ button.green-btn-small{
     background-color: rgb(216 180 254 / var(--tw-bg-opacity, 1));
     border-radius:12px;
     color:#000000;
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
     font-weight: 400;
@@ -3799,7 +3808,7 @@ button.green-btn-small{
 .rbc-add-food-btn {
     background-color: var(--green-color);
     color: var(--1, #FFF);
-    font-family: "Zen Dots";
+    font-family: var(--font-main);
     font-size: 20px;
     font-style: normal;
     text-transform: uppercase;
