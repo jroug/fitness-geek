@@ -1,18 +1,18 @@
 'use client';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import Image from "next/image";
 import Link from 'next/link';
 
 import setting1 from "../public/images/setting/setting1.svg";
 
-// import setting8 from "../public/images/setting/setting8.svg";
+import dash_board_icon from "../public/images/setting/setting4.svg";
 // import setting10 from "../public/images/setting/setting10.svg";
 // import setting15 from "../public/images/setting/setting15.svg";
 // import setting7 from "../public/images/setting/setting7.svg";
 
 
 import setting3 from "../public/images/setting/setting3.svg";
-import setting5 from "../public/images/setting/setting5.svg";
+import chart_icon from "../public/images/setting/setting5.svg";
 import setting6 from "../public/images/setting/setting6.svg";
 
 // import setting9 from "../public/images/setting/setting9.svg";
@@ -23,14 +23,89 @@ import setting12 from "../public/images/setting/setting12.svg";
 
 import setting17 from "../public/images/setting/setting17.svg";
 
-import right_arrow from "../public/svg/right-arrow-white.svg";
-// import up_arrow from "../public/svg/up-arrow.svg";
+import down_arrow from "../public/svg/down-arrow-white.svg";
+
 // import Logout from "./Logout";
 import { useRouter } from 'next/navigation';
 
 const SideBar = () => {
 
 	const router = useRouter();
+
+	type MenuItem = {
+	  key: string;
+	  label: string;
+	  href?: string;
+	  icon: any;
+	  iconBgClassName?: string;
+	  children?: Array<{ key: string; label: string; href: string }>;
+	};
+
+	const menuItems: MenuItem[] = useMemo(
+	  () => [
+		{
+		  key: 'dashboard',
+		  label: 'Dashboard',
+		  href: '/dashboard',
+		  icon: dash_board_icon,
+		},
+		{
+		  key: 'add-meal',
+		  label: 'Add Meal',
+		  href: '/add-meal',
+		  icon: setting6,
+		},
+		{
+		  key: 'add-weighing',
+		  label: 'Add Weighing',
+		  href: '/add-weighing',
+		  icon: setting6,
+		},
+		{
+		  key: 'add-workout',
+		  label: 'Add Workout',
+		  href: '/add-workout',
+		  icon: setting1,
+		},
+		{
+		  key: 'calendar',
+		  label: 'Calendar',
+		  href: '/calendar',
+		  icon: setting3,
+		},
+		{
+		  key: 'charts',
+		  label: 'Charts',
+		  icon: chart_icon,
+		  children: [
+			{ key: 'charts-weight', label: 'Weight Chart', href: '/charts/weight' },
+			{ key: 'charts-workouts', label: 'Workouts Chart', href: '/charts/workouts' },
+			{ key: 'charts-grades', label: 'Grades Chart', href: '/charts/grades' },
+		  ],
+		},
+		{
+		  key: 'personal-info',
+		  label: 'Personal Info',
+		  href: '/users/profile',
+		  icon: setting12,
+		},
+		{
+		  key: 'about',
+		  label: 'About Fitness Geek',
+		  href: '/about',
+		  icon: setting11,
+		},
+		{
+		  key: 'logout',
+		  label: 'Logout',
+		  icon: setting17,
+		  iconBgClassName: 'bg-red',
+		},
+	  ],
+	  []
+	);
+
+	const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
 	// Function to show the logout modal
 	const handleLogout = () => {
@@ -59,6 +134,11 @@ const SideBar = () => {
 		}
 	}
 
+	const handleDropDownClick = (e: React.MouseEvent, key: string) => {
+		e.preventDefault();
+		setOpenDropdowns((prev) => ({ ...prev, [key]: !prev[key] }));
+	};
+
     return (
 		<>
 			<div className="menu-sidebar details">
@@ -70,296 +150,83 @@ const SideBar = () => {
 						<div className="dropdown">
 							<div className="setting-page-full">
 								<div className="setting-page-wrapper">
-									<Link href="/add-meal" onClick={handleLinkClick}>
-										<div className="send-money-contact-tab border-bottom1 pt-0  ">
-											<div className="setting-icon">
-												<Image src={setting6} alt="setting-icon" />
+								  {menuItems.map((item) => {
+									const isDropdown = Array.isArray(item.children) && item.children.length > 0;
+									const isOpen = !!openDropdowns[item.key];
+
+									// Special case: Logout (keeps your existing behavior)
+									if (item.key === 'logout') {
+									  return (
+										<Link
+										  key={item.key}
+										  href="#"
+										  onClick={handleLogout}
+										  data-bs-toggle="modal"
+										  data-bs-target="#workout-complete-modal"
+										>
+										  <div className="send-money-contact-tab">
+											<div className={`setting-icon ${item.iconBgClassName ?? ''}`.trim()}>
+											  <Image src={item.icon} alt="setting-icon" />
 											</div>
 											<div className="setting-title">
-												<h3>Add Meal</h3>
+											  <h3>{item.label}</h3>
+											</div>
+										  </div>
+										</Link>
+									  );
+									}
+
+									// Dropdown group
+									if (isDropdown) {
+									  return (
+										<div key={item.key} className="Char-content border-bottom1">
+										  <div className="send-money-contact-tab ">
+											<div className="setting-icon">
+											  <Image src={item.icon} alt="setting-icon" />
+											</div>
+											<div className="setting-title">
+											  <h3>{item.label}</h3>
 											</div>
 											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
+											  <div className="star-favourite">
+												<Link href="#" onClick={(e) => handleDropDownClick(e, item.key)}>
+												 	<Image src={down_arrow} alt="edit-icon" />
+												</Link>
+											  </div>
 											</div>
+										  </div>
+
+										  <div className={`diffrent-chat-dropdown ${isOpen ? 'show' : ''}`.trim()}>
+											<ul>
+											  {item.children!.map((child, idx) => (
+												<li key={child.key} className={idx === item.children!.length - 1 ? 'border-0' : ''}>
+												  <Link href={child.href} onClick={handleLinkClick}>
+													{child.label}
+												  </Link>
+												</li>
+											  ))}
+											</ul>
+										  </div>
 										</div>
-									</Link> 
-									<Link href="/add-weighing" onClick={handleLinkClick} >
+									  );
+									}
+
+									// Normal link item
+									return (
+									  <Link key={item.key} href={item.href ?? '#'} onClick={handleLinkClick}>
 										<div className="Char-content border-bottom1">
-											<div className="send-money-contact-tab ">
-												<div className="setting-icon">
-													<Image src={setting6} alt="setting-icon" />
-												</div>
-												<div className="setting-title">
-													<h3>Add Weighing</h3>
-												</div>
-												<div className="contact-star">
-													<div className="star-favourite">
-														<Image src={right_arrow} alt="edit-icon" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</Link>
-									<Link href="/add-workout" onClick={handleLinkClick} >
-										<div className="Char-content border-bottom1">
-											<div className="send-money-contact-tab ">
-												<div className="setting-icon">
-													<Image src={setting1} alt="setting-icon" />
-												</div>
-												<div className="setting-title">
-													<h3>Add Workout</h3>
-												</div>
-												<div className="contact-star">
-													<div className="star-favourite">
-														<Image src={right_arrow} alt="edit-icon" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</Link>
-									<Link href="/calendar" onClick={handleLinkClick} >
-										<div className="Char-content border-bottom1">
-											<div className="send-money-contact-tab ">
-												<div className="setting-icon">
-													<Image src={setting3} alt="setting-icon" />
-												</div>
-												<div className="setting-title">
-													<h3>Calendar</h3>
-												</div>
-												<div className="contact-star">
-													<div className="star-favourite">
-														<Image src={right_arrow} alt="edit-icon" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</Link>
-									<Link href="/charts/weight" onClick={handleLinkClick} >
-										<div className="Char-content border-bottom1">
-											<div className="send-money-contact-tab ">
-												<div className="setting-icon">
-													<Image src={setting5} alt="setting-icon" />
-												</div>
-												<div className="setting-title">
-													<h3>Weight Chart</h3>
-												</div>
-												<div className="contact-star">
-													<div className="star-favourite">
-														<Image src={right_arrow} alt="edit-icon" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</Link>
-									<Link href="/charts/workouts" 	onClick={handleLinkClick}  >
-										<div className="Char-content border-bottom1">
-											<div className="send-money-contact-tab ">
-												<div className="setting-icon">
-													<Image src={setting5} alt="setting-icon" />
-												</div>
-												<div className="setting-title">
-													<h3>Workouts Chart</h3>
-												</div>
-												<div className="contact-star">
-													<div className="star-favourite">
-														<Image src={right_arrow} alt="edit-icon" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</Link>
-									<Link href="/charts/grades" onClick={handleLinkClick}  >
-										<div className="Char-content border-bottom1">
-											<div className="send-money-contact-tab ">
-												<div className="setting-icon">
-													<Image src={setting5} alt="setting-icon" />
-												</div>
-												<div className="setting-title">
-													<h3>Grades Chart</h3>
-												</div>
-												<div className="contact-star">
-													<div className="star-favourite">
-														<Image src={right_arrow} alt="edit-icon" />
-													</div>
-												</div>
-											</div>
-										</div>
-									</Link>
-									<Link href="/users/profile" onClick={handleLinkClick} >
-										<div className="send-money-contact-tab border-bottom1 pt-0">
+										  <div className="send-money-contact-tab ">
 											<div className="setting-icon">
-												<Image src={setting12} alt="setting-icon" />
+											  <Image src={item.icon} alt="setting-icon" />
 											</div>
 											<div className="setting-title">
-												<h3>Personal Info</h3>
+											  <h3>{item.label}</h3>
 											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
+										  </div>
 										</div>
-									</Link>
-									{/* <Link href="/settings">
-										<div className="send-money-contact-tab border-bottom1">
-											<div className="setting-icon">
-												<Image src={setting7} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Settings</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									{/* <Link href="set-biometric.html">
-										<div className="send-money-contact-tab border-bottom1">
-											<div className="setting-icon">
-												<Image src={setting7} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Set biometric</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									{/* <Link href="data-analytics.html">
-										<div className="send-money-contact-tab  pb-0">
-											<div className="setting-icon">
-												<Image src={setting5} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Data &amp; Analytics</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link> 
-									<div className="setting-center-border"></div>  */}
-									{/* <Link href="language.html">
-										<div className="send-money-contact-tab border-bottom1">
-											<div className="setting-icon">
-												<Image src={setting8} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Language</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<span className="setting-lanuage">
-														English (US)
-													</span>
-													<span>
-														<Image src={right_arrow} alt="edit-icon" />
-													</span>
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									{/* <Link href="/faq">
-										<div className="send-money-contact-tab border-bottom1 ">
-											<div className="setting-icon">
-												<Image src={setting9} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>FAQs</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									{/* <Link href="data-privacy.html">
-										<div className="send-money-contact-tab border-bottom1 ">
-											<div className="setting-icon">
-												<Image src={setting10} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Data &amp; Privacy Policy</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									<Link href="/about" onClick={handleLinkClick} >
-										<div className="send-money-contact-tab border-bottom1">
-											<div className="setting-icon">
-												<Image src={setting11} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>About Fitness Geek</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<span>
-														<Image src={right_arrow} alt="edit-icon" />
-													</span>
-												</div>
-											</div>
-										</div>
-									</Link> 
-									{/* <Link href="/contact">
-										<div className="send-money-contact-tab border-bottom1 ">
-											<div className="setting-icon">
-												<Image src={setting13} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Contact Us</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									{/* <Link href="Invite-friend.html">
-										<div className="send-money-contact-tab border-bottom1 ">
-											<div className="setting-icon">
-												<Image src={setting15} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Invite Friends</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link>  */}
-									<Link href="#" onClick={handleLogout} data-bs-toggle="modal" data-bs-target="#workout-complete-modal">
-										<div className="send-money-contact-tab">
-											<div className="setting-icon bg-red">
-												<Image src={setting17} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-												<h3>Logout</h3>
-											</div>
-											<div className="contact-star">
-												<div className="star-favourite">
-													<Image src={right_arrow} alt="edit-icon" />
-												</div>
-											</div>
-										</div>
-									</Link> 
+									  </Link>
+									);
+								  })}
 								</div>
 							</div>	
 						</div>

@@ -26,7 +26,7 @@ import Header from "../../components/Header";
 const Settings = () => {
     return (
         <main className="site-content">
-            <Header title="Settings" backUrl="/homepage" />
+            <Header title="Settings" backUrl="/dashboard" />
             <div className="verify-email pb-20" id="setting-main">
                 <div className="container">
                     <div className="setting-main-wrap">

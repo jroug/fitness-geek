@@ -9,7 +9,7 @@ export default function Grades() {
 
   return (
     <>
-      <Header backUrl="/homepage" title={pageTitle} />
+      <Header backUrl="/dashboard" title={pageTitle} />
       <div className="calendar-link-wrapper" >
         <InnerLink title="Calendar" goToUrl="/calendar" />
       </div>

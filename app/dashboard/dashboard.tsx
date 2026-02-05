@@ -37,7 +37,7 @@ type UserWorkoutData = {
     w_time?: string;
 };
 
-const Homepage = () => {
+const Dashboard = () => {
 
 
     const settings = {
@@ -269,4 +269,4 @@ const Homepage = () => {
     );
 };
 
-export default Homepage;
+export default Dashboard;

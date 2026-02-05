@@ -8,7 +8,7 @@ import InnerLink from "@/components/InnerLink";
 export default function Page() {
   return (
     <>
-      <Header title="Add Workout" backUrl="/homepage" />
+      <Header title="Add Workout" backUrl="/dashboard" />
       <main className="site-content form-width">
           <InnerLink title="Calendar" goToUrl="/calendar" />
           <Suspense fallback={null}>

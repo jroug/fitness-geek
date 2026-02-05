@@ -8,7 +8,7 @@ export default function Weight() {
 
   return (
     <>
-      <Header backUrl="/homepage" title={"Weighing chart"} />
+      <Header backUrl="/dashboard" title={"Weighing chart"} />
       <div className="calendar-link-wrapper" >
         <InnerLink title="Calendar" goToUrl="/calendar" />
       </div>

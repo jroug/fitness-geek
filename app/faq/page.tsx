@@ -15,7 +15,7 @@ export default async function faq() {
         <main className="site-content">
 
             {/* <Preloader /> */}
-            <Header backUrl="/homepage" title="FAQS"  />
+            <Header backUrl="/dashboard" title="FAQS"  />
  
             {/* <!-- Faq screen start --> */}
             <div className="verify-email pb-20" id="faq-main">

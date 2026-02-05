@@ -290,7 +290,7 @@ const CalendarHomePage: React.FC = () => {
                 counter++;
             }
         }
-        return counter > 0 ? 'AVG. ' + Math.round((sumWeight / counter) * 10) / 10 + 'Kg' : 'N/A';
+        return counter > 0 ? 'AVG. ' + Math.round((sumWeight / counter) * 100) / 100+ 'Kg' : 'N/A';
     };
 
     const getValueFromWeightText = (text: string): number => {

@@ -2108,18 +2108,22 @@ li.list.active i {
 .diffrent-chat-dropdown ul {
     padding: 0;
     margin: 0;
-    list-style-type: circle;
-    margin-left: 90px;
+    list-style-type: disc;
+    color: #ffffff;
+    margin-left: 70px;
     margin-right: 30px;
     padding-bottom: 8px;
     margin-top: -18px;
 }
 .diffrent-chat-dropdown ul li {
-    border-bottom: 2px solid #f5f5f5;
+    /* border-bottom: 2px solid #f5f5f5; */
     padding: 8px;
 }
 .diffrent-chat-dropdown {
     display: none;
+}
+.diffrent-chat-dropdown.show {
+    display: block;
 }
 #homescreen-main .slick-custom-arrow-right {
     right: 40%;

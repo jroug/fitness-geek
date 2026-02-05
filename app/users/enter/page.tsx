@@ -55,7 +55,7 @@ const SignIn: React.FC = () => {
         });
       
         if (res.ok) {
-            router.push("/homepage");
+            router.push("/dashboard");
         } else {
             setloginErrorBorder(true)
             setLoginButtonText('Login');

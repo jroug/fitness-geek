@@ -8,7 +8,7 @@ export default function Workouts() {
 
   return (
     <>
-      <Header backUrl="/homepage" title={"Workouts chart"} />
+      <Header backUrl="/dashboard" title={"Workouts chart"} />
       <div className="calendar-link-wrapper" >
         <InnerLink title="Calendar" goToUrl="/calendar" />
       </div>
