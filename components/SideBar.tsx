@@ -28,81 +28,83 @@ import down_arrow from "../public/svg/down-arrow-white.svg";
 // import Logout from "./Logout";
 import { useRouter } from 'next/navigation';
 
+
+type MenuItem = {
+	key: string;
+	label: string;
+	href?: string;
+	icon: string;
+	iconBgClassName?: string;
+	children?: Array<{ key: string; label: string; href: string }>;
+};
+
+
 const SideBar = () => {
 
 	const router = useRouter();
 
-	type MenuItem = {
-	  key: string;
-	  label: string;
-	  href?: string;
-	  icon: any;
-	  iconBgClassName?: string;
-	  children?: Array<{ key: string; label: string; href: string }>;
-	};
-
 	const menuItems: MenuItem[] = useMemo(
-	  () => [
-		{
-		  key: 'dashboard',
-		  label: 'Dashboard',
-		  href: '/dashboard',
-		  icon: dash_board_icon,
-		},
-		{
-		  key: 'add-meal',
-		  label: 'Add Meal',
-		  href: '/add-meal',
-		  icon: setting6,
-		},
-		{
-		  key: 'add-weighing',
-		  label: 'Add Weighing',
-		  href: '/add-weighing',
-		  icon: setting6,
-		},
-		{
-		  key: 'add-workout',
-		  label: 'Add Workout',
-		  href: '/add-workout',
-		  icon: setting1,
-		},
-		{
-		  key: 'calendar',
-		  label: 'Calendar',
-		  href: '/calendar',
-		  icon: setting3,
-		},
-		{
-		  key: 'charts',
-		  label: 'Charts',
-		  icon: chart_icon,
-		  children: [
-			{ key: 'charts-weight', label: 'Weight Chart', href: '/charts/weight' },
-			{ key: 'charts-workouts', label: 'Workouts Chart', href: '/charts/workouts' },
-			{ key: 'charts-grades', label: 'Grades Chart', href: '/charts/grades' },
-		  ],
-		},
-		{
-		  key: 'personal-info',
-		  label: 'Personal Info',
-		  href: '/users/profile',
-		  icon: setting12,
-		},
-		{
-		  key: 'about',
-		  label: 'About Fitness Geek',
-		  href: '/about',
-		  icon: setting11,
-		},
-		{
-		  key: 'logout',
-		  label: 'Logout',
-		  icon: setting17,
-		  iconBgClassName: 'bg-red',
-		},
-	  ],
-	  []
+		() => [
+			{
+				key: 'dashboard',
+				label: 'Dashboard',
+				href: '/dashboard',
+				icon: dash_board_icon,
+			},
+			{
+				key: 'add-meal',
+				label: 'Add Meal',
+				href: '/add-meal',
+				icon: setting6,
+			},
+			{
+				key: 'add-weighing',
+				label: 'Add Weighing',
+				href: '/add-weighing',
+				icon: setting6,
+			},
+			{
+				key: 'add-workout',
+				label: 'Add Workout',
+				href: '/add-workout',
+				icon: setting1,
+			},
+			{
+				key: 'calendar',
+				label: 'Calendar',
+				href: '/calendar',
+				icon: setting3,
+			},
+			{
+				key: 'charts',
+				label: 'Charts',
+				icon: chart_icon,
+				children: [
+					{ key: 'charts-weight', label: 'Weight Chart', href: '/charts/weight' },
+					{ key: 'charts-workouts', label: 'Workouts Chart', href: '/charts/workouts' },
+					{ key: 'charts-grades', label: 'Grades Chart', href: '/charts/grades' },
+				],
+			},
+			{
+				key: 'personal-info',
+				label: 'Personal Info',
+				href: '/users/profile',
+				icon: setting12,
+			},
+			{
+				key: 'about',
+				label: 'About Fitness Geek',
+				href: '/about',
+				icon: setting11,
+			},
+			{
+				key: 'logout',
+				label: 'Logout',
+				icon: setting17,
+				iconBgClassName: 'bg-red',
+			},
+		],
+		[]
 	);
 
 	const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
@@ -117,7 +119,7 @@ const SideBar = () => {
 		const res = await fetch('/api/logout', {
 			method: 'POST',
 		});
-		
+
 		if (res.ok) {
 			// console.log('Logged out successfully');
 			router.push('/users/logout');
@@ -129,7 +131,7 @@ const SideBar = () => {
 	// if click on Link close the sidebar
 	const handleLinkClick = () => {
 		const sidebar = document.querySelector('.menu-sidebar') as HTMLElement;
-		if (sidebar){ // sidebar is in a diffrent component so it needs to exist
+		if (sidebar) { // sidebar is in a diffrent component so it needs to exist
 			document.body.classList.remove('open-sidebar');
 		}
 	}
@@ -139,7 +141,7 @@ const SideBar = () => {
 		setOpenDropdowns((prev) => ({ ...prev, [key]: !prev[key] }));
 	};
 
-    return (
+	return (
 		<>
 			<div className="menu-sidebar details">
 				<div className="offcanvas offcanvas-start custom-offcanvas-noti show" id="offcanvasExample" aria-modal="true" role="dialog">
@@ -150,85 +152,85 @@ const SideBar = () => {
 						<div className="dropdown">
 							<div className="setting-page-full">
 								<div className="setting-page-wrapper">
-								  {menuItems.map((item) => {
-									const isDropdown = Array.isArray(item.children) && item.children.length > 0;
-									const isOpen = !!openDropdowns[item.key];
+									{menuItems.map((item) => {
+										const isDropdown = Array.isArray(item.children) && item.children.length > 0;
+										const isOpen = !!openDropdowns[item.key];
 
-									// Special case: Logout (keeps your existing behavior)
-									if (item.key === 'logout') {
-									  return (
-										<Link
-										  key={item.key}
-										  href="#"
-										  onClick={handleLogout}
-										  data-bs-toggle="modal"
-										  data-bs-target="#workout-complete-modal"
-										>
-										  <div className="send-money-contact-tab">
-											<div className={`setting-icon ${item.iconBgClassName ?? ''}`.trim()}>
-											  <Image src={item.icon} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-											  <h3>{item.label}</h3>
-											</div>
-										  </div>
-										</Link>
-									  );
-									}
-
-									// Dropdown group
-									if (isDropdown) {
-									  return (
-										<div key={item.key} className="Char-content border-bottom1">
-										  <div className="send-money-contact-tab ">
-											<div className="setting-icon">
-											  <Image src={item.icon} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-											  <h3>{item.label}</h3>
-											</div>
-											<div className="contact-star">
-											  <div className="star-favourite">
-												<Link href="#" onClick={(e) => handleDropDownClick(e, item.key)}>
-												 	<Image src={down_arrow} alt="edit-icon" />
+										// Special case: Logout (keeps your existing behavior)
+										if (item.key === 'logout') {
+											return (
+												<Link
+													key={item.key}
+													href="#"
+													onClick={handleLogout}
+													data-bs-toggle="modal"
+													data-bs-target="#workout-complete-modal"
+												>
+													<div className="send-money-contact-tab">
+														<div className={`setting-icon ${item.iconBgClassName ?? ''}`.trim()}>
+															<Image src={item.icon} alt="setting-icon" />
+														</div>
+														<div className="setting-title">
+															<h3>{item.label}</h3>
+														</div>
+													</div>
 												</Link>
-											  </div>
-											</div>
-										  </div>
+											);
+										}
 
-										  <div className={`diffrent-chat-dropdown ${isOpen ? 'show' : ''}`.trim()}>
-											<ul>
-											  {item.children!.map((child, idx) => (
-												<li key={child.key} className={idx === item.children!.length - 1 ? 'border-0' : ''}>
-												  <Link href={child.href} onClick={handleLinkClick}>
-													{child.label}
-												  </Link>
-												</li>
-											  ))}
-											</ul>
-										  </div>
-										</div>
-									  );
-									}
+										// Dropdown group
+										if (isDropdown) {
+											return (
+												<div key={item.key} className="Char-content border-bottom1">
+													<div className="send-money-contact-tab ">
+														<div className="setting-icon">
+															<Image src={item.icon} alt="setting-icon" />
+														</div>
+														<div className="setting-title">
+															<h3>{item.label}</h3>
+														</div>
+														<div className="contact-star">
+															<div className="star-favourite">
+																<Link href="#" onClick={(e) => handleDropDownClick(e, item.key)}>
+																	<Image src={down_arrow} alt="edit-icon" />
+																</Link>
+															</div>
+														</div>
+													</div>
 
-									// Normal link item
-									return (
-									  <Link key={item.key} href={item.href ?? '#'} onClick={handleLinkClick}>
-										<div className="Char-content border-bottom1">
-										  <div className="send-money-contact-tab ">
-											<div className="setting-icon">
-											  <Image src={item.icon} alt="setting-icon" />
-											</div>
-											<div className="setting-title">
-											  <h3>{item.label}</h3>
-											</div>
-										  </div>
-										</div>
-									  </Link>
-									);
-								  })}
+													<div className={`diffrent-chat-dropdown ${isOpen ? 'show' : ''}`.trim()}>
+														<ul>
+															{item.children!.map((child, idx) => (
+																<li key={child.key} className={idx === item.children!.length - 1 ? 'border-0' : ''}>
+																	<Link href={child.href} onClick={handleLinkClick}>
+																		{child.label}
+																	</Link>
+																</li>
+															))}
+														</ul>
+													</div>
+												</div>
+											);
+										}
+
+										// Normal link item
+										return (
+											<Link key={item.key} href={item.href ?? '#'} onClick={handleLinkClick}>
+												<div className="Char-content border-bottom1">
+													<div className="send-money-contact-tab ">
+														<div className="setting-icon">
+															<Image src={item.icon} alt="setting-icon" />
+														</div>
+														<div className="setting-title">
+															<h3>{item.label}</h3>
+														</div>
+													</div>
+												</div>
+											</Link>
+										);
+									})}
 								</div>
-							</div>	
+							</div>
 						</div>
 					</div>
 				</div>
@@ -236,7 +238,7 @@ const SideBar = () => {
 			</div>
 			{/* <Logout /> */}
 		</>
-    );
+	);
 };
 
 export default SideBar;
