@@ -25,12 +25,24 @@ const AddWeighing: React.FC = () => {
  
     const [weightComments, setWeightComments] = useState('');
 
+    
     const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
+
+
+    // lock button on save action to prevent multiple submits while waiting for response and show the right text
+    const [isSaving, setIsSaving] = useState(false);
+    const [saveBtnText, setSaveBtnText] = useState('SAVE');
+
 
     // Function to determine the meal based on the current time
  
 
     const addWeightToDB = async (input_data: WeighingInputData) => {
+
+        if (isSaving) return false; // ⛔ already saving
+        setIsSaving(true); // 🟢 lock
+        setSaveBtnText('Saving...');
+
         const addWeighingsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-weighing`;
         const res = await fetch(addWeighingsUrl, {
             method: 'POST',
@@ -45,8 +57,17 @@ const AddWeighing: React.FC = () => {
             setDateTime('');
             setWeightVal('');
             setWeightComments('');
+
+            setSaveBtnText('Save');
+            setIsSaving(false); // 🔓 unlock
+
             return true;
-        } else {
+        } else if (data.code === 'weighing_exists') {
+            setPopupData({ title: 'Error!', message: data.message, time:globalSettings.frmTimeError, show_popup: true });
+            setSaveBtnText('Save');
+            setIsSaving(false); // 🔓 unlock
+            return false;
+        }else{
             setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
             return false;
         }
@@ -98,7 +119,7 @@ const AddWeighing: React.FC = () => {
                 }, globalSettings.frmTimeSuccess);
             }
         } else {
-            alert('Complete all necessary fields!');
+            // alert('Complete all necessary fields!');
         }
     };
 
@@ -136,7 +157,7 @@ const AddWeighing: React.FC = () => {
                                 <textarea rows={4} cols={50} placeholder="Write here..." className="sm-font-sans custom-textarea mt-8 border-green-1" id="comments" value={weightComments} onChange={handleWeightComments}></textarea>
                             </div>
                             <div className="green-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">SAVE</button>
+                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">{saveBtnText}</button>
                             </div>
                         </form>
                     </div>

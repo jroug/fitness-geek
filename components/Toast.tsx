@@ -66,7 +66,7 @@ const Toast: React.FC<PopupProps> = ({ setPopupData, popupData }) => {
                             {popupData.title === "Error!" ? (
                                 <>
                                     <h3 className="logout-txt pt-16 color-red">{popupData.title}</h3>
-                                    <p className="p-0 mt-12 color-black text-[20px]">{popupData.message}</p>
+                                    <h3 className="p-0 mt-12 color-black text-[20px]">{popupData.message}</h3>
                                 </>
                             ) : (
                                 <>

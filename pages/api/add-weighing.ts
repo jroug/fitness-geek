@@ -21,6 +21,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             body: JSON.stringify(req.body)
         });
 
+       if (response.status === 409) {
+            return res.status(409).json({ message: 'Weighing already exists for this date', code: 'weighing_exists' });
+        }
         
         if (response.status === 400) {
             return res.status(400).json({ message: 'Empty fields' });

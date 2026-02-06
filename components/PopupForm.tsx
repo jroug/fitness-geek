@@ -4,7 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
-import { globalSettings } from '@/lib/globalSettings';
+// import { globalSettings } from '@/lib/globalSettings';
 import { getMealTypeFromTime } from '@/lib/getMealTypeFromTime';
 import { geTimeFromMealType } from '@/lib/geTimeFromMealType';
 import left_arrow from "../public/svg/black-left-arrow.svg";
@@ -48,10 +48,13 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
 
    
        const selectedDateTime = getSelectedDateTime();
-       const [saveBtnText, setSaveBtnText] = useState('SAVE');
        const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
        const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
        const [quantityErrorClass, setQuantityErrorClass] = useState('');
+
+       // lock button on save action to prevent multiple submits while waiting for response and show the right text
+       const [isSaving, setIsSaving] = useState(false);
+       const [saveBtnText, setSaveBtnText] = useState('SAVE');
 
        // Local form state (initialised once, then kept in sync via useEffect below)
        const [dateTime, setDateTime] = useState<string>(selectedDateTime);
@@ -106,7 +109,11 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
        }
    
        const addMealToDB = async (input_data: MealInputData) => {
-           setSaveBtnText('Saving...');
+            if (isSaving) return false; // ⛔ already saving
+            setIsSaving(true); // 🟢 lock
+            setSaveBtnText('Saving...');
+                      
+            
            const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
            const res = await fetch(addMealsUrl, {
                method: 'POST',
@@ -205,6 +212,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                 setMealType('');
                 setPopupFormData({ title: '', dateSelected: new Date(), show_popup: false });
                 setSaveBtnText('Save');
+                setIsSaving(false); // 🔓 unlock
                 return true;
            } else {
                 //    setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
@@ -226,6 +234,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
    
        const handleFormSubmit = async (e: React.FormEvent) => {
            e.preventDefault();
+           
            let doSubmit = true;
    
            if (!mealSelected.id) {

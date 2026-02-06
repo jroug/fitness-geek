@@ -55,7 +55,17 @@ const AddWorkout: React.FC = () => {
 
     const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
 
+    // lock button on save action to prevent multiple submits while waiting for response and show the right text
+    const [isSaving, setIsSaving] = useState(false);
+    const [saveBtnText, setSaveBtnText] = useState('SAVE');
+
+
     const addWorkoutToDB = async (input_data: WorkoutInputData) => {
+
+        if (isSaving) return false; // ⛔ already saving
+        setIsSaving(true); // 🟢 lock
+        setSaveBtnText('Saving...');
+
         const addWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-workout`;
         const res = await fetch(addWorkoutUrl, {
             method: 'POST',
@@ -72,14 +82,23 @@ const AddWorkout: React.FC = () => {
                 id: "",
                 w_title: "",
                 w_description: "",
-                w_type: "",
+                w_type: "",  
                 w_calories: "",
                 w_time: ""
             });
             setWorkoutComments('');
+
+            setSaveBtnText('Save');
+            setIsSaving(false); // 🔓 unlock
+
             return true;
+        } else if (data.code === 'workout_exists') {
+            setPopupData({ title: 'Error!', message: data.message, time:globalSettings.frmTimeError, show_popup: true });
+            setSaveBtnText('Save');
+            setIsSaving(false); // 🔓 unlock
+            return false;
         } else {
-            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError*2, show_popup: true });
             return false;
         }
     };
@@ -125,7 +144,7 @@ const AddWorkout: React.FC = () => {
                 }, globalSettings.frmTimeSuccess);
             }
         } else {
-            alert('Complete all necessary fields!');
+            // alert('Complete all necessary fields!');
         }
     };
 
@@ -228,7 +247,7 @@ const AddWorkout: React.FC = () => {
                                     <textarea rows={4} cols={50} placeholder="Write here..." className="sm-font-sans custom-textarea mt-8 border-green-1" id="comments" value={workoutComments} onChange={handleworkoutComments}></textarea>
                                 </div>
                                 <div className="green-btn mt-4">
-                                    <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">SAVE</button>
+                                    <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">{saveBtnText}</button>
                                 </div>
                             </form>
                         </div>

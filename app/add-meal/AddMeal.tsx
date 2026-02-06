@@ -27,6 +27,9 @@ const AddMeal: React.FC = () => {
     const [quantityErrorClass, setQuantityErrorClass] = useState('');
 
     
+    // lock button on save action to prevent multiple submits while waiting for response and show the right text
+    const [isSaving, setIsSaving] = useState(false);
+    const [saveBtnText, setSaveBtnText] = useState('SAVE');
 
     const [dateTime, setDateTime] = useState<string>(currentDateTime);
     const [mealType, setMealType] = useState(getMealTypeFromTime(currentDateTime));
@@ -67,6 +70,12 @@ const AddMeal: React.FC = () => {
     }
 
     const addMealToDB = async (input_data: MealInputData) => {
+    
+        if (isSaving) return false; // ⛔ already saving
+        setIsSaving(true); // 🟢 lock
+        setSaveBtnText('Saving...');
+                      
+
         const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
         const res = await fetch(addMealsUrl, {
             method: 'POST',
@@ -93,6 +102,8 @@ const AddMeal: React.FC = () => {
             });
             setMealComments('');
             setMealType('');
+            setSaveBtnText('Save');
+            setIsSaving(false); // 🔓 unlock
             return true;
         } else {
             setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
@@ -383,7 +394,7 @@ const AddMeal: React.FC = () => {
                                 ></textarea>
                             </div>
                             <div className="green-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">SAVE</button>
+                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">{saveBtnText}</button>
                             </div>
                         </form>
                     </div>

@@ -20,9 +20,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             body: JSON.stringify(req.body)
         });
 
-        
         if (response.status === 400) {
             return res.status(400).json({ message: 'Empty fields' });
+        }
+        
+        if (response.status === 409) {
+            return res.status(409).json({ message: 'Workout already exists for this date', code: 'workout_exists' });
         }
         
         if (!response.ok) {
