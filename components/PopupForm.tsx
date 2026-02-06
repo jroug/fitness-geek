@@ -7,6 +7,8 @@ import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
 import { getMealTypeFromTime } from '@/lib/getMealTypeFromTime';
 import { geTimeFromMealType } from '@/lib/geTimeFromMealType';
+import left_arrow from "../public/svg/black-left-arrow.svg";
+import Image from "next/image";
 import useSWR from 'swr';
  
 const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
@@ -46,7 +48,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
 
    
        const selectedDateTime = getSelectedDateTime();
-
+       const [saveBtnText, setSaveBtnText] = useState('SAVE');
        const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
        const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
        const [quantityErrorClass, setQuantityErrorClass] = useState('');
@@ -104,6 +106,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
        }
    
        const addMealToDB = async (input_data: MealInputData) => {
+           setSaveBtnText('Saving...');
            const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
            const res = await fetch(addMealsUrl, {
                method: 'POST',
@@ -182,7 +185,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                 });
 
                // Reset form and close popup
-                setPopupFormData({ title: '', dateSelected: new Date(), show_popup: false });
+                
                 setDateTime('');
                 setMealQuantity(1);
                 setMealQuantityType('N');
@@ -200,6 +203,8 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                 });
                 setMealComments('');
                 setMealType('');
+                setPopupFormData({ title: '', dateSelected: new Date(), show_popup: false });
+                setSaveBtnText('Save');
                 return true;
            } else {
                 //    setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
@@ -255,9 +260,9 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                // Wait for addMealToDB to complete and return true before scrolling
                const success = await addMealToDB(input_data);
                if (success) {
-                   setTimeout(() => {
-                    //    window.scrollTo(0, 0);
-                   }, globalSettings.frmTimeSuccess);
+                    //    setTimeout(() => {
+                        //    window.scrollTo(0, 0);
+                    //    }, globalSettings.frmTimeSuccess);
                }
            } else {
                // alert('Complete all necessary fields!');
@@ -292,7 +297,10 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
             <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-content">
                     <div className="modal-body"> 
-                        <h1 className="modal-title text-center mb-4 sm-font-zen fw-400">{popupFormData.title}</h1>
+                         <div className=" ">
+                            <Image src={left_arrow} alt="back-btn-icon" className="scale13" onClick={handleClosePopupForm} />
+                        </div>
+                        <h1 className="modal-title text-center mb-4 sm-font-zen fw-400 mt-[-21px]">{popupFormData.title}</h1>
                         <form className="feedback-form" onSubmit={handleFormSubmit}>
                             <div className="grid grid-cols-2 gap-3" >
                                 <div className="addmeal-div feedback-email">
@@ -374,78 +382,95 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                             <div className="addmeal-div">
                                 <label htmlFor="meal-details" className="custom-lbl-feedback">Details</label>
                                 <div className="sm-font-sans custom-textarea-div border-green-1">
-                                    <table className="meal-details-table">
-                                        <tbody>
-                                            <tr><td>Category: </td><td>{mealSelected.category}</td></tr>
-                                            <tr>
-                                                <td>Size(gr): </td>
-                                                <td>
-                                                    {mealSelected.serving_size &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.serving_size).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.serving_size) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.serving_size).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Protein(gr): </td>
-                                                <td>
-                                                    {mealSelected.protein &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.protein).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.protein) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.protein).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Carbs(gr): </td>
-                                                <td>
-                                                    {mealSelected.carbohydrates &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.carbohydrates).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.carbohydrates) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.carbohydrates).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Fat(gr): </td>
-                                                <td>
-                                                    {mealSelected.fat &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.fat).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.fat) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.fat).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Fiber(gr): </td>
-                                                <td>
-                                                    {mealSelected.fiber &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.fiber).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.fiber) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.fiber).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><i>Calories(kcal): </i></td>
-                                                <td>
-                                                    {mealSelected.calories &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.calories).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.calories) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.calories).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr><td>Comments: </td><td>{mealSelected.comments}</td></tr>
-                                        </tbody>
-                                    </table>
+                                      {!mealSelected.id && <span>-</span>}
+
+                                      {mealSelected.category && <span>Category: {mealSelected.category}, </span>}
+
+                                      {mealSelected.serving_size && (
+                                        <>
+                                            <span> Size:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.serving_size).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.serving_size) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.serving_size).toFixed(0)
+                                            }gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.protein && (
+                                        <>
+                                            <span> Protein:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.protein).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.protein) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.protein).toFixed(0)
+                                            }gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.carbohydrates && (
+                                        <>
+                                            <span> Carbs:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.carbohydrates).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.carbohydrates) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.carbohydrates).toFixed(0)}
+                                            gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.fat && (
+                                        <>
+                                            <span> Fat:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.fat).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.fat) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.fat).toFixed(0)}
+                                            gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.fiber && (
+                                        <>
+                                            <span> Fiber:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.fiber).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.fiber) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.fiber).toFixed(0)}
+                                            gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.calories && (
+                                        <>
+                                            <span> Calories:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.calories).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.calories) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.calories).toFixed(0)}
+                                            kcal
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.comments && <span>, Comments: {mealSelected.comments}</span>}
                                 </div>
                             </div>
                             <div className="addmeal-div">
@@ -461,7 +486,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                                 ></textarea>
                             </div>
                             <div className="green-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">ADD</button>
+                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">{saveBtnText}</button>
                             </div>
                         </form>
                     </div>

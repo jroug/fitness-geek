@@ -275,78 +275,99 @@ const AddMeal: React.FC = () => {
                             <div className="addmeal-div">
                                 <label htmlFor="meal-details" className="custom-lbl-feedback">Details</label>
                                 <div className="sm-font-sans custom-textarea-div border-green-1">
-                                    <table className="meal-details-table">
-                                        <tbody>
-                                            <tr><td>Category: </td><td>{mealSelected.category}</td></tr>
-                                            <tr>
-                                                <td>Size(gr): </td>
-                                                <td>
-                                                    {mealSelected.serving_size &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.serving_size).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.serving_size) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.serving_size).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Protein(gr): </td>
-                                                <td>
-                                                    {mealSelected.protein &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.protein).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.protein) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.protein).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Carbs(gr): </td>
-                                                <td>
-                                                    {mealSelected.carbohydrates &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.carbohydrates).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.carbohydrates) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.carbohydrates).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Fat(gr): </td>
-                                                <td>
-                                                    {mealSelected.fat &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.fat).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.fat) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.fat).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Fiber(gr): </td>
-                                                <td>
-                                                    {mealSelected.fiber &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.fiber).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.fiber) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.fiber).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td><i>Calories(kcal): </i></td>
-                                                <td>
-                                                    {mealSelected.calories &&
-                                                        (mealQuantity !== 1
-                                                            ? <>{`${Number(mealSelected.calories).toFixed(0)} x ${mealQuantity} = `} <b>{(Number(mealSelected.calories) * mealQuantity).toFixed(0)}</b></>
-                                                            : <b>{Number(mealSelected.calories).toFixed(0)}</b>
-                                                        )
-                                                    }
-                                                </td>
-                                            </tr>
-                                            <tr><td>Comments: </td><td>{mealSelected.comments}</td></tr>
-                                        </tbody>
-                                    </table>
+                                    <div className="meal-details-inline sm-font-sans">
+
+                              
+                                      {!mealSelected.id && <span>-</span>}
+
+                                      {mealSelected.category && <span>Category: {mealSelected.category}, </span>}
+
+                                      {mealSelected.serving_size && (
+                                        <>
+                                            <span> Size:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.serving_size).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.serving_size) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.serving_size).toFixed(0)
+                                            }gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.protein && (
+                                        <>
+                                            <span> Protein:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.protein).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.protein) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.protein).toFixed(0)
+                                            }gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.carbohydrates && (
+                                        <>
+                                            <span> Carbs:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.carbohydrates).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.carbohydrates) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.carbohydrates).toFixed(0)}
+                                            gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.fat && (
+                                        <>
+                                            <span> Fat:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.fat).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.fat) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.fat).toFixed(0)}
+                                            gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.fiber && (
+                                        <>
+                                            <span> Fiber:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.fiber).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.fiber) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.fiber).toFixed(0)}
+                                            gr,&nbsp;
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.calories && (
+                                        <>
+                                            <span> Calories:</span>
+                                            <b>
+                                            {mealQuantity !== 1
+                                                ? `${Number(mealSelected.calories).toFixed(0)} x ${mealQuantity} = ${(
+                                                    Number(mealSelected.calories) * mealQuantity
+                                                ).toFixed(0)}`
+                                                : Number(mealSelected.calories).toFixed(0)}
+                                            kcal
+                                            </b>
+                                        </>
+                                      )}
+
+                                      {mealSelected.comments && <span>, Comments: {mealSelected.comments}</span>}
+                                    </div>
                                 </div>
                             </div>
                             <div className="addmeal-div">
@@ -362,7 +383,7 @@ const AddMeal: React.FC = () => {
                                 ></textarea>
                             </div>
                             <div className="green-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">ADD</button>
+                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">SAVE</button>
                             </div>
                         </form>
                     </div>

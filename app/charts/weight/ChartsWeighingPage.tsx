@@ -1,7 +1,7 @@
 "use client";
 
 import React, {  useCallback, useEffect, useState } from "react";
-
+import { getISOWeekNumber } from "@/lib/getISOWeekNumber";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -41,12 +41,15 @@ const ChartsWeighingPage: React.FC = () => {
   
   const [startDate, setStartDate] = useState<string>(() => {
     const today = new Date();
-    const priorDate = new Date().setDate(today.getDate() - 30);
-    return new Date(priorDate).toISOString().split("T")[0];
+    return today.getFullYear() + "-01-01";
   });
   const [endDate, setEndDate] = useState<string>(() => {
-    const today = new Date();
-    return today.toISOString().split("T")[0];
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, "0");
+      const day = String(today.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
   });
   const chartDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-weighing-data?startDate=${startDate}&endDate=${endDate}`;
   
@@ -105,19 +108,20 @@ const ChartsWeighingPage: React.FC = () => {
         const _data: number[] = [];
         const _backgroundColor: string[] = [];
     
-        let storeMonth = -1;
+ 
         data.forEach(item => {
             const dateObj = new Date(item.date_of_weighing);
-            const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
+            const formattedDate = dateObj.toLocaleDateString('en-GB', {  weekday: 'short', day: '2-digit', month: '2-digit', year: '2-digit' });
+            const _numberIfWeek = getISOWeekNumber(dateObj);
             // console.log("New month1:", dateObj.getMonth());
-            if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
-              storeMonth = dateObj.getMonth();
-              // console.log("storeMonth:", storeMonth);
-          
-            }
+
+            let helpCount = _numberIfWeek % 12;
+            // console.log("helpCount:", helpCount);
+       
             _labels.push(formattedDate);
             _data.push(item.weight);
-            _backgroundColor.push(chart_colors[storeMonth]);
+            _backgroundColor.push(chart_colors[helpCount]);
+ 
         });
 
 

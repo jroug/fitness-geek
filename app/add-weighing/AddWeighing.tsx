@@ -136,7 +136,7 @@ const AddWeighing: React.FC = () => {
                                 <textarea rows={4} cols={50} placeholder="Write here..." className="sm-font-sans custom-textarea mt-8 border-green-1" id="comments" value={weightComments} onChange={handleWeightComments}></textarea>
                             </div>
                             <div className="green-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">ADD</button>
+                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">SAVE</button>
                             </div>
                         </form>
                     </div>

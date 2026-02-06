@@ -86,6 +86,12 @@ paragraph p: #555658, #FB4945, #00A266
     font-family: var(--font-main);
 }
 
+/* OVERRRIDE Container max-width 1025px for desktop and 100% for mobile */
+ 
+
+ 
+
+
 html {
  scroll-behavior: smooth;
  -webkit-text-size-adjust: 100%;
@@ -442,7 +448,7 @@ header {
     color: var(--1, #FFF);
     text-align: center;
     padding: 14px 0;
-    border-radius: 12px;
+    border-radius: 35px;
     background: var(--theme-color);
     margin: auto;
     max-width: 600px;
@@ -1578,10 +1584,18 @@ div#ui-datepicker-div {
 .workout-wrap {
     column-gap: 12px;
 }
+
+ 
+
+.w-33{
+    width: 33.33%;
+}
+
+
 .workout-first {
     padding: 10px;
     border-radius: 10px;
-    width: 33.33%;
+    max-width: 192px;;
 }
 .workout-first h2 {
     color: var(--4, #12151C);
@@ -1676,8 +1690,8 @@ div#ui-datepicker-div {
 .toast-complete-modal .modal-dialog {
     position: fixed;
     top: calc(50% - 150px);
-    right: 0;
-    left: 0;
+    right: 30px;
+    left: 30px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 0;
@@ -1692,9 +1706,8 @@ div#ui-datepicker-div {
     padding: 24px 16px !important;
 }
 .popupform-complete-modal .modal-dialog {
-    position: fixed;
-    top: 50%;
-    transform: translateY(-50%);
+    position: absolute;
+    top:130px;
     right: 0;
     left: 0;
     margin-left: auto;
@@ -1702,6 +1715,14 @@ div#ui-datepicker-div {
     margin-bottom: 0;
     max-width:600px;
 }
+
+@media only screen and (max-width: 600px) {
+    .popupform-complete-modal .modal-dialog{
+        top:20px;
+    }
+}
+
+
 .popupform-complete-modal .modal-content {
     border-radius: 24px 24px;
     background: var(--1, #FFF);
@@ -1747,6 +1768,15 @@ div#ui-datepicker-div {
 }
 
 /************************ 31.Homescreen Css ***************************/
+
+.home-container {
+    max-width: 1025px !important;
+    padding-left:16px;
+    padding-right:16px;
+
+}
+
+
 .home-section-first{
     margin-top:20px;
     padding-top:10px;
@@ -1764,7 +1794,7 @@ div#ui-datepicker-div {
 }
 
 
-
+.home-section-zero h1,
 .home-section-first h2,
 .home-section-second h2,
 .home-section-third h2{
@@ -1782,11 +1812,53 @@ div#ui-datepicker-div {
 .home-first span{
     line-height: 30px !important;
 }
+
+
+.home-section-second a{
+    position: relative;
+}
+.home-section-second p{
+    top: 75px;
+    font-family: 'Zen Dots';
+    display: block;
+    position: absolute;
+    font-size: 23px;
+    z-index: 111;
+    width:100%;
+    text-align: center;
+    color: #ffffff;
+}
+.home-section-second img{
+    filter: brightness(0.7);
+    position: relative;
+    z-index: 0;
+}
+.home-section-second img.calendar-img{
+    max-width: 191px;
+    margin-top: 6px;
+    margin-top: 8px;
+}
+@media only screen and (max-width: 600px)  {
+    .home-section-second p{
+        font-size: 20px;
+    }
+
+    .home-section-second img.calendar-img{
+        max-width: 178px;
+    }
+    .home-section-second img {
+        max-width: 188px;
+    }
+}
+
+ .home-container.calendar{
+    margin-left: -12px;
+    margin-right: -12px;
+ }
+
 #homescreen-main .home-second-wrap {
     display: flex;
     column-gap: 12px;
-    padding-right: 16px;
-    padding-left: 16px;
 }
 .focus-content{
     text-align: center;
@@ -2623,7 +2695,7 @@ ul.nav.nav-tabs.focus-tab-main{
     border: 7px solid #F5F5F5;
 }
 #homescreen-main .slick-slide{
-    padding: 0 8px;
+    padding: 0 0px;
     width:210px;
 }
 /************************ 41.Face Recognition Process Css ***************************/
@@ -3836,7 +3908,7 @@ button.green-btn-small{
     padding: 0px 9px 1px;
     border-radius: 15px;
     position: absolute;
-    z-index: 100000 ;
+    z-index: 100;
     bottom: 2px;
     right: 2px;
 }

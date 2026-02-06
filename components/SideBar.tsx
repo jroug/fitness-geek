@@ -182,22 +182,21 @@ const SideBar = () => {
 										if (isDropdown) {
 											return (
 												<div key={item.key} className="Char-content border-bottom1">
-													<div className="send-money-contact-tab ">
-														<div className="setting-icon">
-															<Image src={item.icon} alt="setting-icon" />
-														</div>
-														<div className="setting-title">
-															<h3>{item.label}</h3>
-														</div>
-														<div className="contact-star">
-															<div className="star-favourite">
-																<Link href="#" onClick={(e) => handleDropDownClick(e, item.key)}>
+													<Link href="#" onClick={(e) => handleDropDownClick(e, item.key)}>
+														<div className="send-money-contact-tab ">
+															<div className="setting-icon">
+																<Image src={item.icon} alt="setting-icon" />
+															</div>
+															<div className="setting-title">
+																<h3>{item.label}</h3>
+															</div>
+															<div className="contact-star">
+																<div className="star-favourite">
 																	<Image src={down_arrow} alt="edit-icon" />
-																</Link>
+																</div>
 															</div>
 														</div>
-													</div>
-
+													</Link>
 													<div className={`diffrent-chat-dropdown ${isOpen ? 'show' : ''}`.trim()}>
 														<ul>
 															{item.children!.map((child, idx) => (

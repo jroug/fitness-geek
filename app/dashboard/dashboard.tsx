@@ -11,6 +11,7 @@ import body_muscles from "../../public/images/homescreen/muscles/body-muscles.pn
 import SlickCustomNextArrow from "../../components/SlickCustomNextArrow";
 import SlickCustomPrevArrow from "../../components/SlickCustomPrevArrow";
 import calendar_thumb from '../../public/images/homescreen/cal-thumb.png';
+import chart_thumb from '../../public/images/homescreen/chart-thumb.png';
 import workout_image from "../../public/images/workout-complete/workout.png";
 import minutes_image from "../../public/images/workout-complete/minutes.png";
 import kcal_image from "../../public/images/workout-complete/kcal.png";
@@ -141,39 +142,38 @@ const Dashboard = () => {
     return (
         <>
             <div className="verify-email" id="homescreen-main">
-                <div className="home-bottom-content mt-24">
-                    <div className="home-first container">
+                <div className="home-bottom-content mt-16">
+                    <div className="home-section-zero">
                         <h1 className="mx-8">{display_name}, Age {calcAgeFromDOB(profileDataWithStats?.date_of_birth || '')}</h1>
-   
-             
-                        <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
-                            <div className="workout-first border-green text-center">
-                                <Image src={minutes_image} className="mx-auto" alt="workout-img" />
-                                <h2>{weekly_workouts_count}<b className="text-[12px] leading-[10px]" >/4</b></h2>
-                                <p># Workouts <br/> This Week</p>
-                            </div>
-                            <div className="workout-first border-yellow text-center">
-                                <Image src={kcal_image} className="mx-auto" alt="kcal-img" />
-                                <h2>{this_week_avg_grade}<b className="text-[12px] leading-[10px]" >/10</b></h2>
-                                <p>AVG. Grade <br/> This Week</p>
-                            </div>
-                            <div className={`workout-first border-trend-${trend} text-center`}>
-                                <Image src={workout_image} className="mx-auto" alt="workout-img" />
-                                <h2>{last_weighing}<b className="text-[12px] leading-[10px]" >Kg</b></h2>
-                                <p><br/>{last_weighing_date_is_today ? 'Today' : `${days_from_last_weiing} days ago`}</p>
+                        <div className="home-first home-container">
+                            <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
+                                <div className="workout-first w-[33%] border-green text-center">
+                                    <Image src={minutes_image} className="mx-auto" alt="workout-img" />
+                                    <h2>{weekly_workouts_count}<b className="text-[12px] leading-[10px]" >/4</b></h2>
+                                    <p># Workouts <br/> This Week</p>
+                                </div>
+                                <div className="workout-first w-[33%] border-yellow text-center">
+                                    <Image src={kcal_image} className="mx-auto" alt="kcal-img" />
+                                    <h2>{this_week_avg_grade}<b className="text-[12px] leading-[10px]" >%</b></h2>
+                                    <p>AVG. Grade <br/> This Week</p>
+                                </div>
+                                <div className={`workout-first w-[33%] border-trend-${trend} text-center`}>
+                                    <Image src={workout_image} className="mx-auto" alt="workout-img" />
+                                    <h2>{last_weighing}<b className="text-[12px] leading-[10px]" >Kg</b></h2>
+                                    <p><br/>{last_weighing_date_is_today ? 'Today' : `${days_from_last_weiing} days ago`}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
- 
                     <div className="home-section-first">
-                        <h2 className="text-left container mx-8">Weight Progress</h2>
-                        <div className="workout-wrap mt-16 max-w-[600px] mx-auto">
-                            <div className="workout-first border-blue text-center">
+                        <h2 className="text-left  mx-8">Weight Progress</h2>
+                        <div className="home-container workout-wrap mt-16 max-w-[600px] mx-auto">
+                            <div className="workout-first w-[50%] border-blue text-center m-0 md:m-[10px]">
                                 <Image src={workout_image} className="mx-auto " alt="workout-img" />
                                 <h2>{last_weekly_avg_weight}<span className="text-[12px]">Kg</span></h2>
                                 <p>AVG. <br/>Last Week</p>
                             </div>
-                            <div className={`workout-first border-trend-${trend} text-center`}>
+                            <div className={`workout-first w-[50%] m-0 md:m-[10px] border-trend-${trend} text-center`}>
                                 <Image src={workout_image} className="mx-auto " alt="workout-img" />
                                 <h2>{this_weekly_avg_weight}<span className="text-[12px]">
                                         Kg
@@ -198,7 +198,7 @@ const Dashboard = () => {
 
                     </div>
                     <div className="home-section-first">
-                        <h2 className="text-left container mx-8">Workouts</h2>
+                        <h2 className="text-left mx-8">Workouts</h2>
                         <div className="home-slider-wrap mt-16" >
                             <Slider {...settings}  >
                                 {/* <!-- slide start --> */}
@@ -227,14 +227,29 @@ const Dashboard = () => {
                         </div>
                     </div>
                     <div className="home-section-second">
-                        <h2 className="text-left container mx-8">Calendar</h2>
-                        <Link href="/calendar">
-                            <Image src={calendar_thumb} alt="calendar-thumb" className="block max-w-[200px] mt-2 mx-auto" /> 
-                        </Link>
+                        <h2 className="text-left mx-8">Calendar - Charts</h2>
+                        <div className='grid grid-cols-2 home-container calendar md:grid-cols-4 mt-16' > 
+                            <Link href="/calendar" className="">
+                                <Image src={calendar_thumb} alt="calendar-thumb" className="calendar-img block mx-auto" /> 
+                                <p>Calendar</p>
+                            </Link>
+                            <Link href="/charts/weight" className="" >
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[200px] mx-auto" /> 
+                                <p>Weight</p>
+                            </Link>
+                            <Link href="/charts/workouts" className="">
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[200px] mx-auto" /> 
+                                <p>Workouts</p>
+                            </Link>
+                            <Link href="/charts/grades" className="" >
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[200px]  mx-auto" /> 
+                                <p>Grades</p>
+                            </Link>
+                        </div>
                     </div>
                     <div className="home-section-third">
-                        <h2 className="text-left container mx-8">Body focus areas</h2>
-                        <div className="home-second-wrap mt-12">
+                        <h2 className="text-left mx-8">Body focus areas</h2>
+                        <div className="home-second-wrap  mt-16">
                             <div className="focus-content shoulder-redirect">
                                 <div className="small-img"><Image src={body_muscles} alt="body-img" className="shoulders"/></div>
                                 <p className="mt-8 color-black">Shoulders</p>	
@@ -248,7 +263,7 @@ const Dashboard = () => {
                                 <p className="mt-8 color-black">Legs</p>	
                             </div>
                         </div>
-                        <div className="home-second-wrap mt-12">
+                        <div className="home-second-wrap  mt-12">
                             <div className="focus-content shoulder-redirect">
                                 <div className="small-img"><Image src={body_muscles} alt="body-img" className="back" /></div>
                                 <p className="mt-8 color-black">Back</p>	
