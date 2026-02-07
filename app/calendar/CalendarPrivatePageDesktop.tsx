@@ -17,6 +17,7 @@ import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
 import { getMealTypeFromTime } from "@/lib/getMealTypeFromTime";   
 import { mealTypeOptions } from "@/lib/mealTypeOptions";
 import PopupForm from "@/components/PopupForm";
+import TopBar from "./TopBar";
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 
@@ -150,7 +151,8 @@ const CalendarHomePage: React.FC = () => {
 
         const transformedWeightData: Record<string, string> = {};
         calendarData.weight_list.forEach((val) => {
-            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
+            // transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
+            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg`;
         });
 
         const transformedWorkoutData: Record<string, UserWorkoutData> = {};
@@ -158,7 +160,8 @@ const CalendarHomePage: React.FC = () => {
             transformedWorkoutData[moment(val.date_of_workout).format("YYYY-MM-DD")] = {
                 id: val.id,
                 w_title: val.w_title,
-                w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
+                // w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
+                w_type: val.w_type,
                 date_of_workout: val.date_of_workout,
             };
         });
@@ -341,34 +344,20 @@ const CalendarHomePage: React.FC = () => {
         setPopupFormData({ title: 'Add Meal', dateSelected: arg0.start, show_popup: true });
     }
 
-    const handleSettingsClick = (e: React.MouseEvent<HTMLElement>) => {
-        e.preventDefault();
-        // Implement settings click behavior here
-        setSettingsVisible(!settingsVisible);
-    }
+    const handleSettingsClick = (e?: React.MouseEvent<HTMLElement>) => {
+        e?.preventDefault?.();
+        setSettingsVisible((prev) => !prev);
+    };
    
 
     return (
         <>
 
-            <div className="calendar-link-wrapper" >
-                <div className="grid grid-cols-2 p-5 w-full" >
-                    <div className="text-left" >
-                        <span>
-                            <b>{isPublished ? 'Published' : 'Not Published'}</b>
-                        </span>
-                    </div>
-                    <div className="text-right" >
-                        <Link href="#" onClick={handleSettingsClick} className="underline color-blue  border-blue rounded px-2 py-1" >
-                            <b>Settings</b>
-                        </Link>
-                    </div>
-                </div>
-            </div>
+            <TopBar clickHandler={handleSettingsClick} isPublished={isPublished} />
             <div id="settings" className={`settings-link-wrapper ${settingsVisible ? '' : 'hidden'}`} >
                 <div className="calendar-link-container pb-10 pt-4 px-6" >
                     <div className="relative z-[100]">
-                        <button type="button" className="btn-settings-close text-reset" onClick={handleSettingsClick}></button>
+                        <button type="button" className="btn-settings-close text-reset" onClick={handleSettingsClick} />
                     </div>
                     <h1 className="settings_title w-full pb-4 sm-font-zen fw-400 ">Calendar Settings</h1>
                     <h2 className="my-4 text-center">Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
@@ -401,41 +390,7 @@ const CalendarHomePage: React.FC = () => {
                
                 </div>
             </div>
-            {/* <div className="calendar-link-wrapper" >
-                <div className="flex flex-col lg:flex-row items-start lg:items-center publish-btn-wrapper  w-full justify-between my-5" >
-                    <div className="flex flex-col mr-0 lg:mr-8 order-1 lg:order-none" >
-                        <h2>Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
-                    </div>
-
-                    <div className="flex custom_margin order-3 lg:order-none mt-4 lg:mt-0" >
-                        {isPublished && (
-                            <div>
-                                <p>
-                                    <span>Public URL: </span>
-                                    <Link href={calendarPageUrl} target="_blank" className="underline">
-                                        click here!
-                                    </Link>
-                                </p>
-                                <p>
-                                    <span>Contributor URL: </span>
-                                    <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
-                                        click here!
-                                    </Link>
-                                    &nbsp; - OR - &nbsp;
-                                    <button type="button" onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >
-                                        Copy to Clipboard
-                                    </button>
-                                </p>
-                            </div>
-                        )}
-                    </div>
-                    <div className="flex order-2 lg:order-none mt-4 lg:mt-0"  >
-                        <button type="button" className="green-btn" onClick={handlePublishingCalendar}>
-                            {isPublished ? 'Unpublish' : 'Publish'}
-                        </button>
-                    </div>
-                </div>
-            </div> */}
+  
 
 
             <div className="calendar-wrapper" >

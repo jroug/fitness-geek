@@ -3643,7 +3643,6 @@ body.open-sidebar .header-overlay {
     font-size: 14px;
     line-height: 17px;
     height: 100%;
-    /* max-height: 120px; */
     max-height: 84px;
 }
 
@@ -3686,8 +3685,9 @@ button.green-btn-small{
     background: var(--theme-color);
 }
 
-.custom-text-cal-header:first-child{
-    margin-top:10px;
+.custom-text-cal-header:first-child {
+    margin-top: 3px;
+    line-height: 30px;
 }
 .custom-text-cal-header{
     font-weight: bold;
@@ -4021,6 +4021,8 @@ button.green-btn-small{
 .show_on_mobile_only{
     display:none;
 }
+
+/* calendar changes from wide to mobile */
 @media only screen and (max-width: 1024px)  {
     .rbc-toolbar-label{
         width: 100%;
@@ -4037,5 +4039,12 @@ button.green-btn-small{
     #calendar-main{
         width:100% !important;
     }
+    .custom-text-cal-header:first-child{
+        margin-top:3px;
+    }
+    .custom-comment{
+        max-height: 106px;
+    }
+
 }
 
