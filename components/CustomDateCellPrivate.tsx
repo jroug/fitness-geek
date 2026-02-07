@@ -2,6 +2,8 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { DateCellWrapperProps } from 'react-big-calendar';
+import pen_icon from "../public/images/setting/pencil.svg";  
+import Image from 'next/image';
 import moment from 'moment';
 
 interface UserWorkoutData {
@@ -72,6 +74,40 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
     },[commentObjInit])
 
     const handleSaveDailyWeight = async (dateKey: string) => {
+        // delete action
+        if (weightDraft === '-') {
+
+                    // Optimistically update parent list if provided
+            setUserWeightList?.((prev) => ({
+                ...prev,
+                [dateKey]: '',
+            }));
+            
+            try {
+                const saveWeightUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-daily-weighing`;
+                const res = await fetch(saveWeightUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'delete_weight_daily',
+                        datetime_of_weighing:dateKey,
+                        jr_token,
+                    }),
+                });
+
+                if (!res.ok) {
+                    throw new Error('Failed to save weight');
+                }
+            } catch (error) {
+                console.error('Error saving weight:', error);
+            } finally {
+                setIsEditingWeight(false);
+            }
+            return;
+        }
+
+
+
         const raw = weightDraft.trim().replace(',', '.');
         if (!raw) {
             // Treat empty as cancel (no change)
@@ -233,7 +269,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
         <div className="rbc-day-bg custom-date-cell">
             {/* <h3 className="custom-text-cal-header text-center w-100 bg-cyan-400 rounded-[4px] m-[2px]">{weightText ? weightText : `+Weighing`}</h3> */}
 
-            <div className="custom-text-cal-header text-center w-100 bg-cyan-400 rounded-[4px] m-[2px]">
+            <div className="custom-text-cal-header text-center w-100 bg-cyan-400 rounded-[4px] m-[2px] relative">
                 {!isEditingWeight ? (
                     <button
                         type="button"
@@ -254,7 +290,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                             onChange={(e) => {
                                 const value = e.target.value;
                                 // allow only digits, dot and comma
-                                if (/^[0-9.,]*$/.test(value)) {
+                                if (/^[0-9.,-]*$/.test(value)) {
                                     setWeightDraft(value);
                                 }
                             }}
@@ -273,6 +309,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                         <span className="text-sm">kg</span>
                     </div>
                 )}
+                <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => setIsEditingWeight(true)} />
             </div>
 
 

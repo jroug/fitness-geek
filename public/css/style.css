@@ -4063,6 +4063,7 @@ button.green-btn-small{
 .custom-weight-input {
     background-color: transparent;
     width: 80px;
+    height:20px;
     border: 1px solid #1b93a5;
     border-radius: 9px;
     text-align: center;
@@ -4071,4 +4072,13 @@ button.green-btn-small{
 
 .color-placeholder{
     color: #1b93a5;
+}
+
+.edit-pencil{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
 }
