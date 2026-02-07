@@ -3,13 +3,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import { mealTypeOpts } from '@/lib/mealTypeOptions';
+import { mealTypeOpts, mealTypeOptions } from '@/lib/mealTypeOptions';
 // import { globalSettings } from '@/lib/globalSettings';
 import { getMealTypeFromTime } from '@/lib/getMealTypeFromTime';
 import { geTimeFromMealType } from '@/lib/geTimeFromMealType';
 import left_arrow from "../public/svg/black-left-arrow.svg";
 import Image from "next/image";
 import useSWR from 'swr';
+import moment from 'moment';
  
 const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
     if (!res.ok) throw new Error('Failed to fetch meals');
@@ -131,11 +132,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                   const start = new Date(dateTime);
                   const end = new Date(start.getTime() + 90 * 60 * 1000); // +1h 30m
 
-                  const title = start.toLocaleTimeString("en-US", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  }); // e.g. 09:00 am
+                  const title = mealTypeOptions(getMealTypeFromTime(moment(start).format("YYYY-MM-DD HH:mm"))); // e.g. 09:00 am
 
                   const newMeal = {
                     id: newMealId,

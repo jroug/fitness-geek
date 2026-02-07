@@ -115,7 +115,7 @@ const ChartsWeighingPage: React.FC = () => {
             const _numberIfWeek = getISOWeekNumber(dateObj);
             // console.log("New month1:", dateObj.getMonth());
 
-            let helpCount = _numberIfWeek % 12;
+            const helpCount = _numberIfWeek % 12;
             // console.log("helpCount:", helpCount);
        
             _labels.push(formattedDate);

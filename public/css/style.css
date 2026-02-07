@@ -172,6 +172,10 @@ ul{
 .pt-32{
     padding-top: 32px;
 }
+
+.color-blue{
+    color: var(--theme-color);
+}
 .lg-font-zen{
     color: var(--theme-color);
     font-family: var(--font-main);
@@ -3553,7 +3557,7 @@ body.open-sidebar .header-overlay {
     border-bottom:1px solid black;
     color:rgb(21, 2, 2);
     font-style: italic;
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 600;
     margin-bottom: 4px;
 }
@@ -3579,7 +3583,8 @@ body.open-sidebar .header-overlay {
 
 /* react big calendar custom timeslots */
 .custom-time-slot {
-    display: flex;
+    display: none;
+    /* display: flex; */
     flex-direction: column;
     align-items: center;
     padding: 10px 9px 10px 10px;
@@ -3611,7 +3616,9 @@ body.open-sidebar .header-overlay {
     cursor: default !important;
 }
 .rbc-label.rbc-time-header-gutter{
-    min-width: 94px !important;
+    padding: 0;
+    width: 0% !important;
+    /* min-width: 94px !important; */
     height:233px;
     /* height:197px; */
 }
@@ -3711,14 +3718,15 @@ button.green-btn-small{
         width: 100%;
         position: absolute;
         left: 0;
+        top:110px;
     }
-    @media only screen and (max-width: 2256px)  {
+    /* @media only screen and (max-width: 2256px)  {
         .calendar-main-wrapper{
             position: fixed;
             overflow: scroll;
             height: calc(100% - 153px);
         }
-    }
+    } */
 
 
 .calendar-main{
@@ -3727,8 +3735,9 @@ button.green-btn-small{
     transform: translate(-50%, 0);
     width: 1000px; */
     /* width: 1400px; */
-    /* width: 1860px; */
-    width: 2250px;
+    width:100%;
+    /* min-width: 1860px; */
+    max-width: 2350px;
     /* transform: scale(var(--cal-scale, 1)); */
     /* transform-origin: top left; */
 }
@@ -3777,6 +3786,7 @@ button.green-btn-small{
     width: calc(100% - 20px);
     margin-left: 10px;
     max-width:480px;
+    margin-top:30px
 }
 
 .Alcohol{
@@ -3908,7 +3918,7 @@ button.green-btn-small{
     padding: 0px 9px 1px;
     border-radius: 15px;
     position: absolute;
-    z-index: 100;
+    z-index: 5;
     bottom: 2px;
     right: 2px;
 }
@@ -3968,3 +3978,64 @@ button.green-btn-small{
 .border-trend-same {
   border: 2px solid #9ca3af; /* gray */
 }
+
+/* mobile calendar page */
+.settings-link-wrapper{
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    background-color: #000000a3;
+    backdrop-filter: blur(2px);
+}
+.calendar-link-container{
+    border-radius: 24px 24px;
+    background: var(--1, #FFF);
+    max-width:500px;
+    margin: auto;
+    justify-content: center;
+    margin-top: 20px;
+}
+.settings_title{
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    display: inline-block;
+    transform: translateY(-35px);
+}
+.btn-settings-close {
+    width: 20px;
+    height: 20px;
+    background-repeat: no-repeat;
+    background-image: url(../images/setting/close-img.svg);
+    margin: 15px;
+    float: right;
+}
+
+
+.show_on_desktop_only{
+    display:block;
+}
+.show_on_mobile_only{
+    display:none;
+}
+@media only screen and (max-width: 1024px)  {
+    .rbc-toolbar-label{
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 21px;
+        font-size: 20px;
+    }
+    .show_on_desktop_only{
+        display:none !important;
+    }
+    .show_on_mobile_only{
+        display:block !important;
+    }
+    #calendar-main{
+        width:100% !important;
+    }
+}
+

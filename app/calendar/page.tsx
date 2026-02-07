@@ -1,21 +1,26 @@
-import CalendarHomePage from "./CalendarHomePage";
+// import { headers } from "next/headers";
 import Header from "@/components/Header";
-// import BottomBar from "@/components/BottomBar";
 import SideBar from "@/components/SideBar";
 
-export default function CalendarPage() {
+import CalendarPrivatePageDesktop from "./CalendarPrivatePageDesktop";
+// import CalendarPrivatePageMobile from "./CalendarHomePrivateMobile";
 
+// function isMobileUA(ua: string) {
+//   // Simple heuristic. Not perfect, but good enough for “don’t ship big calendar to phones”.
+//   return /Android|iPhone|iPad|iPod|Mobile|IEMobile|Opera Mini/i.test(ua);
+// }
+
+export default async function CalendarPage() {
+  // const ua = (await headers()).get("user-agent") ?? "";
+  // const isMobile = isMobileUA(ua);
+  // console.log("User agent:", ua, "isMobile:", isMobile);
   return (
     <>
-      <Header backUrl="/dashboard" title={"Calendar"} />
-      <main className="site-content ">
-          <CalendarHomePage />
+      <Header backUrl="/dashboard" title="Calendar" />
+      <main className="site-content">
+        <CalendarPrivatePageDesktop />
       </main>
       <SideBar />
-      {/* <BottomBar /> */}
     </>
   );
 }
-
-
-         
