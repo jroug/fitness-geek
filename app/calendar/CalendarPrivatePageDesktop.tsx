@@ -7,17 +7,17 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loader";
-import CustomDateCell from '@/components/CustomDateCell';
+import CustomDateCell from '@/components/CustomDateCellPrivate';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
 import CustomToolBar from '@/components/CustomToolBar';
-import Link from "next/link";
 import { adjustTime } from "@/lib/adjustTime";
 import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
 import { getMealTypeFromTime } from "@/lib/getMealTypeFromTime";   
 import { mealTypeOptions } from "@/lib/mealTypeOptions";
 import PopupForm from "@/components/PopupForm";
 import TopBar from "./TopBar";
+import SettingsBar from "./SettingsBar";
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 
@@ -152,7 +152,7 @@ const CalendarHomePage: React.FC = () => {
         const transformedWeightData: Record<string, string> = {};
         calendarData.weight_list.forEach((val) => {
             // transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg @${moment(val.date_of_weighing).format("hh:mma")}`;
-            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = `${val.weight}kg`;
+            transformedWeightData[moment(val.date_of_weighing).format("YYYY-MM-DD")] = val.weight;
         });
 
         const transformedWorkoutData: Record<string, UserWorkoutData> = {};
@@ -352,47 +352,8 @@ const CalendarHomePage: React.FC = () => {
 
     return (
         <>
-
             <TopBar clickHandler={handleSettingsClick} isPublished={isPublished} />
-            <div id="settings" className={`settings-link-wrapper ${settingsVisible ? '' : 'hidden'}`} >
-                <div className="calendar-link-container pb-10 pt-4 px-6" >
-                    <div className="relative z-[100]">
-                        <button type="button" className="btn-settings-close text-reset" onClick={handleSettingsClick} />
-                    </div>
-                    <h1 className="settings_title w-full pb-4 sm-font-zen fw-400 ">Calendar Settings</h1>
-                    <h2 className="my-4 text-center">Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
-                    <button type="button" className="green-btn my-4 w-full" onClick={handlePublishingCalendar}>
-                                {isPublished ? 'Unpublish' : 'Publish'}
-                    </button>
-                    <div className="custom_margin order-3 lg:order-none mt-4 lg:mt-0" >
-                        {isPublished && (
-                            <div>
-                                <p>
-                                    <span>Public URL: </span>
-                                    <Link href={calendarPageUrl} target="_blank" className="underline">
-                                        click here!
-                                    </Link>
-                                </p>
-                                <br/>
-                                <p>
-                                    <span>Contributor URL: </span> <br className="show_on_mobile_only"/>
-                                    <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
-                                        click here!
-                                    </Link>
-                                    &nbsp; - OR - &nbsp;
-                                    <button type="button" onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >
-                                        Copy to Clipboard
-                                    </button>
-                                </p>
-                            </div>
-                        )}
-                    </div>
-               
-                </div>
-            </div>
-  
-
-
+            <SettingsBar settingsVisible={settingsVisible} handleSettingsClick={handleSettingsClick} isPublished={isPublished} handlePublishingCalendar={handlePublishingCalendar} calendarPageUrl={calendarPageUrl} magicLoginForContributorUrl={magicLoginForContributorUrl} handleCopyLink={handleCopyLink} />
             <div className="calendar-wrapper" >
                 <div className="calendar-main-wrapper" >
                     {/* <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main"> */}
@@ -426,6 +387,7 @@ const CalendarHomePage: React.FC = () => {
                                             getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")]}
                                             getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")]}
                                             getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
+                                            setUserWeightList={setUserWeightList}
                                             setUserCommentsList={setUserCommentsList}
                                             jr_token={''}
                                         />

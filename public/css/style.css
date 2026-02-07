@@ -3979,6 +3979,10 @@ button.green-btn-small{
   border: 2px solid #9ca3af; /* gray */
 }
 
+
+
+
+/************************ Calendar Page ***************************/
 /* mobile calendar page */
 .settings-link-wrapper{
     position:absolute;
@@ -4022,13 +4026,14 @@ button.green-btn-small{
     display:none;
 }
 
-/* calendar changes from wide to mobile */
+
 @media only screen and (max-width: 1024px)  {
     .rbc-toolbar-label{
         width: 100%;
         margin-top: 20px;
         margin-bottom: 21px;
         font-size: 20px;
+        font-weight: bold;;
     }
     .show_on_desktop_only{
         display:none !important;
@@ -4048,3 +4053,22 @@ button.green-btn-small{
 
 }
 
+.rbc-row-content {
+   display: none;
+}
+
+.custom-weight-input-wrapper {
+
+}
+.custom-weight-input {
+    background-color: transparent;
+    width: 80px;
+    border: 1px solid #1b93a5;
+    border-radius: 9px;
+    text-align: center;
+    margin-right: 5px;
+}
+
+.color-placeholder{
+    color: #1b93a5;
+}

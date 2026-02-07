@@ -38,6 +38,9 @@ export default function CalendarPublic(props: { params: Params }) {
  
     const calendarMainRef = useRef<HTMLDivElement | null>(null);
 
+    // calendar view depending on viewport width (mobile vs desktop)
+    const [view, setView] = useState<"week" | "day">("week");
+
     const [userMealsList, setUserMealsList] = useState<MealEvent[]>([]);
 
     const [userCommentsList, setUserCommentsList] = useState<Record<string, UserCommentData>>({});
@@ -221,6 +224,18 @@ export default function CalendarPublic(props: { params: Params }) {
  
     }, [router, jr_token, getUserMealsANDNameFromToken]);
 
+    useEffect(() => {
+        const updateView = () => {
+            const isMobile = window.innerWidth <= 1024;
+            setView(isMobile ? "day" : "week");
+        };
+
+        updateView(); // initial
+        window.addEventListener("resize", updateView);
+
+        return () => window.removeEventListener("resize", updateView);
+    }, []);
+
  
     if (loadingMeals) {
         return <Loader />;
@@ -253,12 +268,10 @@ export default function CalendarPublic(props: { params: Params }) {
                         <Calendar
                             localizer={localizer}
                             defaultDate={new Date()}
-                            defaultView="week"
+                            // defaultView="week"
                             events={userMealsList}
-                            views={{ 
-                                day: true, 
-                                week: true,
-                            }}
+                            view={view}
+                            onView={(v) => setView(v as "week" | "day")}
                             step={150}
                             timeslots={1}
                             min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
