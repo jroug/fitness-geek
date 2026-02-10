@@ -1,0 +1,10 @@
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fork -->
+  <rect x="5.3" y="4" width="1.4" height="7" rx="0.6" fill="#4B5563"/>
+  <rect x="7.3" y="4" width="1.4" height="7" rx="0.6" fill="#4B5563"/>
+  <rect x="9.3" y="4" width="1.4" height="7" rx="0.6" fill="#4B5563"/>
+  <rect x="7.1" y="10.5" width="2.4" height="10" rx="1.1" fill="#4B5563"/>
+  <!-- Spoon -->
+  <ellipse cx="16.1" cy="6.8" rx="2.6" ry="3.2" fill="#4B5563"/>
+  <rect x="15.3" y="9.5" width="1.6" height="11" rx="0.8" fill="#4B5563"/>
+</svg>

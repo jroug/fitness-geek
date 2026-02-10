@@ -303,7 +303,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
             <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-content">
                     <div className="modal-body"> 
-                         <div className=" ">
+                         <div className="close-popup-left-arrow">
                             <Image src={left_arrow} alt="back-btn-icon" className="scale13" onClick={handleClosePopupForm} />
                         </div>
                         <h1 className="modal-title text-center mb-4 sm-font-zen fw-400 mt-[-21px]">{popupFormData.title}</h1>

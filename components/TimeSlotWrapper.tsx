@@ -1,4 +1,8 @@
 import * as React from "react";
+import plate_icon from "../public/svg/add-meal.svg";
+
+import Image from "next/image";
+
 
 type Props = {
   children?: React.ReactNode;
@@ -15,7 +19,7 @@ type SlotChildProps = {
 export function TimeSlotWrapper({ children, value, onAddFood }: Props) {
   const slotDate = value ?? new Date();
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     onAddFood?.(slotDate);
@@ -37,14 +41,7 @@ export function TimeSlotWrapper({ children, value, onAddFood }: Props) {
     children: (
       <>
         {child.props.children}
-        <button
-          type="button"
-          onClick={handleClick}
-          aria-label="Add food"
-          className="rbc-add-food-btn"
-        >
-          +
-        </button>
+         <Image src={plate_icon} width={27} height={27} className="add-meal-btn" alt="add-meal" onClick={handleClick}/> 
       </>
     ),
   });

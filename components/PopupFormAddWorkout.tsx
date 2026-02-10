@@ -224,7 +224,7 @@ const PopupFormAddWorkout: React.FC<PopupFormProps> = ({
       <div className="modal-dialog" onClick={(e) => e.stopPropagation()}>
         <div className="modal-content">
           <div className="modal-body">
-            <div className=" ">
+            <div className="close-popup-left-arrow">
               <Image
                 src={left_arrow}
                 alt="back-btn-icon"

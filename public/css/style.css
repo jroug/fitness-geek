@@ -3912,6 +3912,9 @@ button.green-btn-small{
     color: var(--2, #000000);
 }
 
+.close-popup-left-arrow{
+    cursor: pointer;
+}
 .rbc-add-food-btn {
     background-color: var(--green-color);
     color: var(--1, #FFF);
@@ -3925,6 +3928,17 @@ button.green-btn-small{
     z-index: 5;
     bottom: 2px;
     right: 2px;
+}
+
+.add-meal-btn{
+    position: absolute;
+    z-index: 5;
+    bottom: 2px;
+    right: 2px;
+    border-radius: 15px;
+    border:1px solid black;
+    padding:2px;
+    cursor: pointer;
 }
 
 /* chart page */
@@ -4073,7 +4087,7 @@ button.green-btn-small{
 }
 
 textarea.custom-edit-input {
-    width: 280px;
+    width: calc(100% - 40px);
     height: 91px;
 }
 
@@ -4085,7 +4099,7 @@ textarea.custom-edit-input {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 5px;
+    top: 3px;
     right: 5px;
     cursor: pointer;
 }
@@ -4096,5 +4110,64 @@ textarea.custom-edit-input {
     position: absolute;
     bottom: 5px;
     right: 5px;
+    cursor: pointer;
+}
+
+
+
+
+.weighing-wrap{
+    height: 30px;
+    position: relative;
+}
+.weighing-icon{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+
+.grade-wrap{
+    height: 23px;
+    position: relative;
+}
+.grade-icon{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.comment-icon{
+    position: absolute;
+    top:45%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+
+
+
+.weighting-wrap{
+    height: 44px;
+    position: relative;
+}
+.weighting-icon{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+}
+
+.trashbin-icon{
+    position: absolute;
+    top:50%;
+    transform: translate(-6px, -50%);
+    right:0;
     cursor: pointer;
 }

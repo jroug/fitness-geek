@@ -4,16 +4,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import { DateCellWrapperProps } from 'react-big-calendar';
 import pen_icon from "../public/images/setting/pencil.svg";  
 import save_icon from "../public/svg/saving2.svg";  
+import weights_icon from "../public/svg/weights.svg";  
+import bin_icon from "../public/svg/trashbin.svg";  
+import grade_icon from "../public/svg/grade.svg";  
+import comment_icon from "../public/svg/comment.svg";  
+import weight_icon from "../public/svg/weight.svg";  
 import Image from 'next/image';
 import moment from 'moment';
 
-
-interface UserWorkoutData {
-    date_of_workout: moment.MomentInput;
-    w_title: string;
-    w_type: string;
-}
-
+ 
 interface CustomDateCellProps extends DateCellWrapperProps {
     // cameFrom?: string;
     isCommentsPublished?: boolean;
@@ -22,6 +21,7 @@ interface CustomDateCellProps extends DateCellWrapperProps {
     getComment: (dateKey: string) => UserCommentData;
     setUserWeightList: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
     setUserCommentsList: React.Dispatch<React.SetStateAction<{ [key: string]: UserCommentData }>>;
+    setUserWorkoutList: React.Dispatch<React.SetStateAction<Record<string, UserWorkoutData>>>;
     onAddWorkout?: (date: Date) => void;
     jr_token:string;
 }
@@ -36,6 +36,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
         getComment, 
         setUserWeightList,
         setUserCommentsList,
+        setUserWorkoutList,
         onAddWorkout, 
         jr_token 
     }) => {
@@ -97,8 +98,8 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
             
             
             try {
-                const saveWeightUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-daily-weighing`;
-                const res = await fetch(saveWeightUrl, {
+                const deleteWeightUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-daily-weighing`;
+                const res = await fetch(deleteWeightUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -228,30 +229,62 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
     }
 
 
-      const handleWorkoutClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      const handleWorkoutClick = (e: React.MouseEvent<HTMLImageElement>) => {
         e.preventDefault();
         e.stopPropagation();
         onAddWorkout?.(slotDate);
       };
+
+      const handleDeleteWorkoutClick = async () => {
+            try {
+                const deleteWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-daily-workout`;
+                const res = await fetch(deleteWorkoutUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        action: 'delete_workout_daily',
+                        date_of_workout: dateKey,
+                    }),
+                });
+
+                if (!res.ok) {
+                    throw new Error('Failed to save weight');
+                }
+                // Optimistically update parent list if provided on success
+                    setUserWorkoutList((prev) => {
+                        const next = { ...prev };
+                        delete next[dateKey];
+                        return next;
+                    });
+            } catch (error) {
+                console.error('Error saving weight:', error);
+            }   
+            return;
+      }
+
 
 
 
     return (
         <div className="rbc-day-bg custom-date-cell" key={"dk-d" + dateKey} >
             {/*********************************************** WEIGHT ***********************************************/}
-            <div className="custom-text-cal-header text-center w-100 bg-cyan-400 rounded-[4px] m-[2px] relative">
+            <div className="custom-text-cal-header text-center w-100 bg-cyan-400 rounded-[4px] m-[2px] relative weighing-wrap">
                 {!isEditingWeight ? (
-                    <> 
-                        <button
-                            type="button"
-                            className="w-full cursor-pointer bg-transparent p-0 text-inherit "
-                            onClick={() => setIsEditingWeight(true)}
-                            aria-label="Edit weight"
-                        >
-                            {weightText ? (<>{weightText}<span className="text-sm"> kg</span></>) : <span className="opacity-placeholder">Weighing</span>}
-                        </button>
-                        <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => setIsEditingWeight(true)} />
-                    </>
+                        weightText ? 
+                            <>
+                                <button
+                                    type="button"
+                                    className="w-full cursor-pointer bg-transparent p-0 text-inherit "
+                                    onClick={() => setIsEditingWeight(true)}
+                                    aria-label="Edit weight"
+                                >
+                                    {weightText}
+                                    <span className="text-sm"> kg</span>
+                                </button>
+                                <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => setIsEditingWeight(true)} />
+                            </>
+                        : 
+                            <Image src={weight_icon} className="weighing-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingWeight(true)} />
                 ) : (
                     <>
                         <div className="custom-edit-input-wrapper">
@@ -299,9 +332,18 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
 
 
             {/*********************************************** WORKOUT ***********************************************/}
-            <h3 className="custom-text-cal-header text-center w-100 bg-purple-300 rounded-[4px] m-[2px]">
-                <button className="w-full block leading-none pt-[3px]" onClick={handleWorkoutClick} >{workoutTypeText ? workoutTypeText : `+Workout`}  </button>
-                <span className="small-font-custom w-full">&nbsp;{workoutTitleText ? `(${workoutTitleText})` : ``}&nbsp;</span>
+            <h3 className="custom-text-cal-header text-center w-100 bg-purple-300 rounded-[4px] m-[2px] weighting-wrap">
+                <div className="w-full block leading-none pt-[3px]"  >
+                    {workoutTypeText ? workoutTypeText : <Image alt="Edit" width={24} height={24} className="weighting-icon" src={weights_icon} onClick={handleWorkoutClick} /> }  
+                </div>
+                {
+                    workoutTitleText ? 
+                    <>
+                        <span className="small-font-custom w-full">{workoutTitleText}</span>
+                        <Image src={bin_icon} alt="Edit" width={20} height={20} className="trashbin-icon" onClick={handleDeleteWorkoutClick} />
+                    </> : 
+                    <></>
+                }
             </h3> 
             {/*********************************************** WORKOUT ***********************************************/}
 
@@ -313,8 +355,9 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
             { isCommentsPublished && (
                 <>
                     {/*********************************************** GRADE GRADE GRADE***********************************************/}
-                    <div className="custom-text-cal-header text-center bg-yellow-300 p-[2px] m-[2px] rounded-[4px] relative" >
+                    <div className="custom-text-cal-header text-center bg-yellow-300 p-[2px] m-[2px] rounded-[4px] relative grade-wrap" >
                         {!isEditingGrade ? (
+                            commentObjInit && commentObjInit.grade > 0 ?
                             <>
                                 <button
                                     type="button"
@@ -322,10 +365,13 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                                     onClick={() => setIsEditingGrade(true)}
                                     aria-label="Edit grade"
                                 >
-                                    {commentObjInit && commentObjInit.grade > 0 ? (<>{commentObjInit.grade}<span className="text-sm">/10</span></>) : <span className="opacity-placeholder">Grade</span>}
+                                     {commentObjInit.grade}<span className="text-sm">/10</span>
                                 </button>
                                 <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => setIsEditingGrade(true)} />
                             </>
+                            :
+                            <Image src={grade_icon} alt="Edit" className="grade-icon" width={20} height={20} onClick={() => setIsEditingGrade(true)} />
+
                         ) : (
                             <>
                                 <div className="custom-edit-input-wrapper">
@@ -375,17 +421,20 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                     {/*********************************************** COOOOOOMMMMMMMENT ***********************************************/}
                     <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] relative custom-comment" >
                         {!isEditingComment ? (
-                            <>
-                                <button
-                                    type="button"
-                                    className="w-full cursor-pointer bg-transparent p-0 text-inherit "
-                                    onClick={() => setIsEditingComment(true)}
-                                    aria-label="Edit comment"
-                                >
-                                    {commentObjInit?.comment ? (<>{commentObjInit.comment}</>) : <span className="opacity-placeholder">Comment</span>}
-                                </button>
-                                <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => setIsEditingComment(true)} />
-                            </>
+                            commentObjInit?.comment ?
+                                <>
+                                    <button
+                                        type="button"
+                                        className="w-full cursor-pointer bg-transparent p-0 text-inherit "
+                                        onClick={() => setIsEditingComment(true)}
+                                        aria-label="Edit comment"
+                                    >
+                                         {commentObjInit.comment}
+                                    </button>
+                                    <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => setIsEditingComment(true)} />
+                                </>
+                            :
+                                <Image src={comment_icon} className="comment-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingComment(true)} />
                         ) : (
                             <>
                                 <div className="custom-edit-input-wrapper comment-input-wrapper">

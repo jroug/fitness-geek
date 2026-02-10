@@ -234,32 +234,6 @@ const CalendarHomePage: React.FC = () => {
         }
     };
 
-    // fix calendar width according to viewport width
-    // useEffect(() => {
-    //     console.log("useEffect called");
-    //     if (isLoading) return;
-
-    //     const main = calendarMainRef.current ?? document.querySelector<HTMLElement>(".calendar-main");
-    //     if (!main) return;
-
-    //     const update = () => {
-    //         const vw = window.innerWidth;
-
-    //         // run ONLY on desktop (>= 1024px)
-    //         if (vw < 1024) {
-    //             main.style.removeProperty("--cal-scale");
-    //             return;
-    //         }
-
-    //         const scale = Math.max(0.672, Math.min(1, vw / 2250));
-    //         main.style.setProperty("--cal-scale", String(scale));
-    //     };
-
-    //     update();
-    //     window.addEventListener("resize", update);
-    //     return () => window.removeEventListener("resize", update);
-    // }, [isLoading]);
-
     if (isLoading) {
         return <Loading />;
     }
@@ -396,6 +370,7 @@ const CalendarHomePage: React.FC = () => {
                                             getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
                                             setUserWeightList={setUserWeightList}
                                             setUserCommentsList={setUserCommentsList}
+                                            setUserWorkoutList={setUserWorkoutList}
                                             onAddWorkout={(date) => {
                                                 openWorkoutModal({ start: date, end: date });
                                             }}
