@@ -19,7 +19,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
       try {
         const token = req.cookies.token;
-        const saveDailyCommentUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/save-daily-grade`;
+        const saveDailyCommentUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/save-daily-comment-or-grade`;
         const response = await fetch(saveDailyCommentUrl, {
             method: 'POST',
             headers: {
@@ -33,7 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
     //   console.log(saveDailyCommentUrl);
 
         if (!response.ok) {
-          return res.status(401).json({ message: 'Authentication failed (save-comment)' });
+          return res.status(401).json({ message: 'Authentication failed (save-daily-comment-or-grade)' });
         }
   
         if (response.status === 400) {

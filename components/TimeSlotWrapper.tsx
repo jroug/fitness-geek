@@ -21,6 +21,8 @@ export function TimeSlotWrapper({ children, value, onAddFood }: Props) {
     onAddFood?.(slotDate);
   };
 
+ 
+
   if (!children) return null;
 
   // ✅ no `any`

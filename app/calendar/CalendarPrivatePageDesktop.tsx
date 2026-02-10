@@ -15,7 +15,8 @@ import { adjustTime } from "@/lib/adjustTime";
 import { TimeSlotWrapper } from "@/components/TimeSlotWrapper";
 import { getMealTypeFromTime } from "@/lib/getMealTypeFromTime";   
 import { mealTypeOptions } from "@/lib/mealTypeOptions";
-import PopupForm from "@/components/PopupForm";
+import PopupFormAddMeal from "@/components/PopupFormAddMeal";
+import PopupFormAddWorkout from "@/components/PopupFormAddWorkout";
 import TopBar from "./TopBar";
 import SettingsBar from "./SettingsBar";
 
@@ -46,6 +47,8 @@ const CalendarHomePage: React.FC = () => {
     // const calendarMainRef = useRef<HTMLDivElement | null>(null);
 
     const [popupFormData, setPopupFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
+    const [popupWorkoutFormData, setPopupWorkoutFormData] = useState({ title: '', dateSelected: new Date(), show_popup: false });
+    
     const [calendarDate, setCalendarDate] = useState<Date>(new Date());
     const [settingsVisible, setSettingsVisible] = useState(false);
     // Local state lists are still kept because other components (PopupForm / CustomEvent)
@@ -162,7 +165,7 @@ const CalendarHomePage: React.FC = () => {
                 w_title: val.w_title,
                 // w_type: `${val.w_type} @${moment(val.date_of_workout).format("hh:mma")}`,
                 w_type: val.w_type,
-                date_of_workout: val.date_of_workout,
+                date_of_workout: moment(val.date_of_workout).format("YYYY-MM-DD"),
             };
         });
 
@@ -344,6 +347,10 @@ const CalendarHomePage: React.FC = () => {
         setPopupFormData({ title: 'Add Meal', dateSelected: arg0.start, show_popup: true });
     }
 
+    const openWorkoutModal = (arg0: { start: Date; end: Date; }) => {
+        setPopupWorkoutFormData({ title: 'Add Workout', dateSelected: arg0.start, show_popup: true });
+    }
+
     const handleSettingsClick = (e?: React.MouseEvent<HTMLElement>) => {
         e?.preventDefault?.();
         setSettingsVisible((prev) => !prev);
@@ -389,6 +396,9 @@ const CalendarHomePage: React.FC = () => {
                                             getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
                                             setUserWeightList={setUserWeightList}
                                             setUserCommentsList={setUserCommentsList}
+                                            onAddWorkout={(date) => {
+                                                openWorkoutModal({ start: date, end: date });
+                                            }}
                                             jr_token={''}
                                         />
                                     ),
@@ -423,10 +433,15 @@ const CalendarHomePage: React.FC = () => {
                     </div>
                 </div>
             </div>
-            <PopupForm
+            <PopupFormAddMeal
                 setPopupFormData={setPopupFormData}
                 popupFormData={popupFormData}
                 setUserMealsList={setUserMealsList}
+            />
+            <PopupFormAddWorkout
+                setPopupFormData={setPopupWorkoutFormData}
+                popupFormData={popupWorkoutFormData}
+                setUserWorkoutList={setUserWorkoutList}
             />
         </>
     );

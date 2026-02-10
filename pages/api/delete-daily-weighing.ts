@@ -11,8 +11,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       try {
 
         const token = req.cookies.token;
-        const addWeighingUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/delete-daily-weighing/`;
-        const response = await fetch(addWeighingUrl, {
+        const deleteWeightUrl = `${process.env.WORDPRESS_API_URL}/fitnessgeek-api/v1/delete-daily-weighing/`;
+        const response = await fetch(deleteWeightUrl, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
