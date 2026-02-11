@@ -45,6 +45,26 @@ declare global {
         calcWeeklyGrades: (startDate: Date) => { avg: string; total: string; };
         calcAverageWeeklyWeight: (startDate: Date) => string;
         calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
+        generateWeeklyExportData: (startDate: Date) => {
+            weekTitle: string;
+            summary: {
+                score: string;
+                avgGrade: string;
+                avgWeight: string;
+                workouts: string;
+            };
+            days: Array<{
+                date: string;
+                grade: string;
+                comment: string;
+                weight: string;
+                workout: string;
+                meals: Array<{
+                    slot: string;
+                    items: string[];
+                }>;
+            }>;
+        };
     }
 
     interface CustomPublicToolBarProps {

@@ -314,6 +314,50 @@ const CalendarHomePage: React.FC = () => {
         return counter > 0 ? counter + "x Training" : 'N/A';
     };
 
+    const generateWeeklyExportData = (startDate: Date) => {
+        const weekStart = moment(startDate).startOf("day");
+        const weekEnd = moment(startDate).add(6, "days").startOf("day");
+
+        const weekTitle = `${weekStart.format("MMMM D, YYYY")} - ${weekEnd.format("MMMM D, YYYY")}`;
+        const summaryGrades = calcWeeklyGrades(startDate);
+        const summary = {
+            score: summaryGrades.total,
+            avgGrade: summaryGrades.avg,
+            avgWeight: calcAverageWeeklyWeight(startDate),
+            workouts: calcNumberOfWeeklyWorkouts(startDate),
+        };
+
+        const days = Array.from({ length: 7 }, (_, dayOffset) => {
+            const dayMoment = moment(startDate).add(dayOffset, "days").startOf("day");
+            const dateKey = dayMoment.format("YYYY-MM-DD");
+            const dayMeals = userMealsList
+                .filter((event) => moment(event.start).format("YYYY-MM-DD") === dateKey)
+                .map((event) => ({
+                    slot: event.title || "",
+                    items: (event.meals || []).map((meal) =>
+                        meal.f_comments ? `${meal.f_title} (${meal.f_comments})` : meal.f_title
+                    ),
+                }));
+
+            return {
+                date: dayMoment.format("dddd, MMMM D, YYYY"),
+                grade: userCommentsList[dateKey]?.grade ? String(userCommentsList[dateKey].grade) : "N/A",
+                comment: userCommentsList[dateKey]?.comment || "N/A",
+                weight: userWeightList[dateKey] ? `${userWeightList[dateKey]} kg` : "N/A",
+                workout: userWorkoutList[dateKey]
+                    ? `${userWorkoutList[dateKey].w_title} (${userWorkoutList[dateKey].w_type})`
+                    : "N/A",
+                meals: dayMeals,
+            };
+        });
+
+        return {
+            weekTitle,
+            summary,
+            days,
+        };
+    };
+
     const calendarPageUrl = `/calendar/${jrTokenFromDb}`;
     const magicLoginForContributorUrl = `${location.origin}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
 
@@ -392,6 +436,7 @@ const CalendarHomePage: React.FC = () => {
                                             calcWeeklyGrades={calcWeeklyGrades}
                                             calcAverageWeeklyWeight={calcAverageWeeklyWeight}
                                             calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
+                                            generateWeeklyExportData={generateWeeklyExportData}
                                         />
                                     ),
                                     timeSlotWrapper: (props) => (
