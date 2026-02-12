@@ -189,6 +189,20 @@ declare global {
         date_of_weighing: string;
     }
 
+    interface UserBodyfatData {
+        id: string | number;
+        measurement_date: string;
+        weight_kg: number | null;
+        bmi: number | null;
+        body_fat_percent: number | null;
+        body_fat_kg: number | null;
+        lean_body_mass_kg: number | null;
+        muscle_mass_kg: number | null;
+        total_body_water_percent: number | null;
+        waist_circumference_cm: number | null;
+        visceral_fat: number | null;
+    }
+
     interface UserWorkoutDataForChart { 
         date_of_workout: string | Date;
         w_title?: string;

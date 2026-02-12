@@ -228,22 +228,26 @@ const Dashboard = () => {
                     </div>
                     <div className="home-section-second">
                         <h2 className="text-left mx-8">Calendar - Charts</h2>
-                        <div className='grid grid-cols-2 home-container calendar md:grid-cols-4 mt-16' > 
+                        <div className='grid grid-cols-2 home-container calendar md:grid-cols-5 mt-16' > 
                             <Link href="/calendar" className="">
                                 <Image src={calendar_thumb} alt="calendar-thumb" className="calendar-img block mx-auto" /> 
                                 <p>Calendar</p>
                             </Link>
                             <Link href="/charts/weight" className="" >
-                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[200px] mx-auto" /> 
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[180px] mx-auto" /> 
                                 <p>Weight</p>
                             </Link>
                             <Link href="/charts/workouts" className="">
-                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[200px] mx-auto" /> 
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[180px] mx-auto" /> 
                                 <p>Workouts</p>
                             </Link>
                             <Link href="/charts/grades" className="" >
-                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[200px]  mx-auto" /> 
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[180px]  mx-auto" /> 
                                 <p>Grades</p>
+                            </Link>
+                            <Link href="/charts/body-composition" className="" >
+                                <Image src={chart_thumb} alt="calendar-thumb" className="block max-w-[180px]  mx-auto" /> 
+                                <p className="!top-[55px]" >Body <br/>Comp.</p>
                             </Link>
                         </div>
                     </div>

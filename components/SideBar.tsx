@@ -64,6 +64,12 @@ const SideBar = () => {
 				icon: setting6,
 			},
 			{
+				key: 'add-body-composition',
+				label: 'Add Body Composition',
+				href: '/add-body-composition',
+				icon: setting6,
+			},
+			{
 				key: 'add-workout',
 				label: 'Add Workout',
 				href: '/add-workout',
@@ -83,6 +89,7 @@ const SideBar = () => {
 					{ key: 'charts-weight', label: 'Weight Chart', href: '/charts/weight' },
 					{ key: 'charts-workouts', label: 'Workouts Chart', href: '/charts/workouts' },
 					{ key: 'charts-grades', label: 'Grades Chart', href: '/charts/grades' },
+					{ key: 'charts-bodyfat', label: 'Body Composition', href: '/charts/body-composition' },
 				],
 			},
 			{

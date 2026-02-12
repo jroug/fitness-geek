@@ -37,4 +37,134 @@ body {
   }
 }
 
+/* Bodyfat table */
+#bodyfat-page table th,
+#bodyfat-page table td {
+    font-size: 14px;
+    white-space: nowrap;
+}
 
+#bodyfat-page table thead th {
+    background: #f1f5f9;
+}
+
+#bodyfat-page table tbody tr:nth-child(even) {
+    background: #f8fafc;
+}
+
+/* Bodyfat template colors */
+.bodyfat-table th,
+.bodyfat-table td {
+    white-space: nowrap;
+    font-size: 14px;
+}
+
+.bodyfat-table .bf-row-header th {
+    background: #5c5c5c;
+    color: #fff;
+}
+
+.bodyfat-table .bf-row-weight th,
+.bodyfat-table .bf-row-weight td {
+    background: #00ff00;
+    color: #000;
+    font-weight: 600;
+}
+
+.bodyfat-table .bf-row-bmi th,
+.bodyfat-table .bf-row-bmi td {
+    background: #ffffff;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-fat-percent th,
+.bodyfat-table .bf-row-fat-percent td {
+    background: #ff9800;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-fat-kg th,
+.bodyfat-table .bf-row-fat-kg td {
+    background: #fff200;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-lean th,
+.bodyfat-table .bf-row-lean td {
+    background: #ffffff;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-muscle th,
+.bodyfat-table .bf-row-muscle td {
+    background: #e57373;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-water th,
+.bodyfat-table .bf-row-water td {
+    background: #ffffff;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-waist th,
+.bodyfat-table .bf-row-waist td {
+    background: #ffffff;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-visceral th,
+.bodyfat-table .bf-row-visceral td {
+    background: #ffffff;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-spacer th,
+.bodyfat-table .bf-row-spacer td {
+    background: #ffffff;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-weight-change th,
+.bodyfat-table .bf-row-weight-change td {
+    background: #00ff00;
+    color: #000;
+    font-weight: 600;
+}
+
+.bodyfat-table .bf-row-fatpct-change th,
+.bodyfat-table .bf-row-fatpct-change td {
+    background: #ff9800;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-fatkg-change th,
+.bodyfat-table .bf-row-fatkg-change td {
+    background: #fff200;
+    color: #000;
+}
+
+.bodyfat-table .bf-row-muscle-change th,
+.bodyfat-table .bf-row-muscle-change td {
+    background: #e57373;
+    color: #000;
+}
+
+/* Body composition form grid */
+.body-comp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+}
+
+@media (max-width: 1024px) {
+    .body-comp-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .body-comp-grid {
+        grid-template-columns: 1fr;
+    }
+}
