@@ -36,7 +36,13 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
     const formatMacroTitle = (meal?: Meals): string => {
         if (!meal) return 'No macros';
 
-        return `Kcal: ${Math.round(meal.calories || 0)} | Protein: ${Math.round(meal.protein || 0)}g | Carbs: ${Math.round(meal.carbohydrates || 0)}g | Fat: ${Math.round(meal.fat || 0)}g | Fiber: ${Math.round(meal.fiber || 0)}g`;
+        const quantity = Number(meal.portion_quantity || 0);
+        const servingSize = Number(meal.serving_size || 0);
+        const portionGrams = meal.portion_quantity_type === 'GR'
+            ? quantity
+            : quantity * servingSize;
+
+        return `Portion: ${Math.round(portionGrams)}g | Kcal: ${Math.round(meal.calories || 0)} | Protein: ${Math.round(meal.protein || 0)}g | Carbs: ${Math.round(meal.carbohydrates || 0)}g | Fat: ${Math.round(meal.fat || 0)}g | Fiber: ${Math.round(meal.fiber || 0)}g`;
     };
 
     const formatMealTotalMacroTitle = (): string => {

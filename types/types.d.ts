@@ -78,6 +78,9 @@ declare global {
         f_title: string;
         f_category: string;
         f_comments: string;
+        portion_quantity?: number;
+        portion_quantity_type?: string;
+        serving_size?: number;
         calories?: number;
         protein?: number;
         carbohydrates?: number;
@@ -92,6 +95,9 @@ declare global {
         title: string;
         category: string;
         comments: string;
+        portion_quantity?: number;
+        portion_quantity_type?: string;
+        serving_size?: number;
         calories?: number;
         protein?: number;
         carbohydrates?: number;

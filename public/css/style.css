@@ -3625,7 +3625,7 @@ body.open-sidebar .header-overlay {
     padding: 0;
     width: 0% !important;
     /* min-width: 94px !important; */
-    height:233px;
+    height:256px;
     /* height:197px; */
 }
 
@@ -3647,7 +3647,11 @@ body.open-sidebar .header-overlay {
     font-size: 14px;
     line-height: 17px;
     height: 100%;
-    max-height: 63px;
+    max-height: 86px;
+}
+
+.custom-comment button {
+    height:100%;
 }
 
 .comment-link-button{
@@ -4179,3 +4183,15 @@ textarea.custom-edit-input {
     right:0;
     cursor: pointer;
 }
+
+
+
+/* mac book 1512 */
+
+@media only screen and (max-width: 1520px) {
+    .custom-date-cell button,
+    .event-title,
+    .event-description {
+        font-size: 12px !important;
+    }
+}   
