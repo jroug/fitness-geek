@@ -139,6 +139,39 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                     f_title: data.meal_return_object.f_title,
                     f_category: data.meal_return_object.f_category,
                     f_comments: data.meal_return_object.f_comments,
+                    portion_quantity: Number(mealQuantity) || 0,
+                    portion_quantity_type: mealQuantityType,
+                    serving_size: Number(mealSelected.serving_size) || 0,
+                    calories: (() => {
+                        const q = Number(mealQuantity) || 0;
+                        const ss = Number(mealSelected.serving_size) || 0;
+                        const factor = mealQuantityType === 'GR' ? (ss > 0 ? q / ss : 0) : q;
+                        return (Number(mealSelected.calories) || 0) * factor;
+                    })(),
+                    protein: (() => {
+                        const q = Number(mealQuantity) || 0;
+                        const ss = Number(mealSelected.serving_size) || 0;
+                        const factor = mealQuantityType === 'GR' ? (ss > 0 ? q / ss : 0) : q;
+                        return (Number(mealSelected.protein) || 0) * factor;
+                    })(),
+                    carbohydrates: (() => {
+                        const q = Number(mealQuantity) || 0;
+                        const ss = Number(mealSelected.serving_size) || 0;
+                        const factor = mealQuantityType === 'GR' ? (ss > 0 ? q / ss : 0) : q;
+                        return (Number(mealSelected.carbohydrates) || 0) * factor;
+                    })(),
+                    fat: (() => {
+                        const q = Number(mealQuantity) || 0;
+                        const ss = Number(mealSelected.serving_size) || 0;
+                        const factor = mealQuantityType === 'GR' ? (ss > 0 ? q / ss : 0) : q;
+                        return (Number(mealSelected.fat) || 0) * factor;
+                    })(),
+                    fiber: (() => {
+                        const q = Number(mealQuantity) || 0;
+                        const ss = Number(mealSelected.serving_size) || 0;
+                        const factor = mealQuantityType === 'GR' ? (ss > 0 ? q / ss : 0) : q;
+                        return (Number(mealSelected.fiber) || 0) * factor;
+                    })(),
                   };
 
                     const existingIndex = (prev as unknown as MealEventLike[]).findIndex((ev) => {

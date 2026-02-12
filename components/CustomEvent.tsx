@@ -41,8 +41,15 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
         const portionGrams = meal.portion_quantity_type === 'GR'
             ? quantity
             : quantity * servingSize;
+        const parts: string[] = [];
+        if (portionGrams > 0) parts.push(`Portion: ${Math.round(portionGrams)}g`);
+        if (Number(meal.calories || 0) > 0) parts.push(`Kcal: ${Math.round(meal.calories || 0)}`);
+        if (Number(meal.protein || 0) > 0) parts.push(`Protein: ${Math.round(meal.protein || 0)}g`);
+        if (Number(meal.carbohydrates || 0) > 0) parts.push(`Carbs: ${Math.round(meal.carbohydrates || 0)}g`);
+        if (Number(meal.fat || 0) > 0) parts.push(`Fat: ${Math.round(meal.fat || 0)}g`);
+        if (Number(meal.fiber || 0) > 0) parts.push(`Fiber: ${Math.round(meal.fiber || 0)}g`);
 
-        return `Portion: ${Math.round(portionGrams)}g | Kcal: ${Math.round(meal.calories || 0)} | Protein: ${Math.round(meal.protein || 0)}g | Carbs: ${Math.round(meal.carbohydrates || 0)}g | Fat: ${Math.round(meal.fat || 0)}g | Fiber: ${Math.round(meal.fiber || 0)}g`;
+        return parts.length ? parts.join(' | ') : 'No macros';
     };
 
     const formatMealTotalMacroTitle = (): string => {
@@ -54,8 +61,13 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
             acc.fiber += Number(meal.fiber || 0);
             return acc;
         }, { calories: 0, protein: 0, carbohydrates: 0, fat: 0, fiber: 0 });
-
-        return `Kcal: ${Math.round(totals.calories)} | Protein: ${Math.round(totals.protein)}g | Carbs: ${Math.round(totals.carbohydrates)}g | Fat: ${Math.round(totals.fat)}g | Fiber: ${Math.round(totals.fiber)}g`;
+        const parts: string[] = [];
+        if (totals.calories > 0) parts.push(`Kcal: ${Math.round(totals.calories)}`);
+        if (totals.protein > 0) parts.push(`Protein: ${Math.round(totals.protein)}g`);
+        if (totals.carbohydrates > 0) parts.push(`Carbs: ${Math.round(totals.carbohydrates)}g`);
+        if (totals.fat > 0) parts.push(`Fat: ${Math.round(totals.fat)}g`);
+        if (totals.fiber > 0) parts.push(`Fiber: ${Math.round(totals.fiber)}g`);
+        return parts.length ? parts.join(' | ') : 'No macros';
     };
 
 

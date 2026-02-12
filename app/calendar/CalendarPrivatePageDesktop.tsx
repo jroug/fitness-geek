@@ -121,36 +121,25 @@ const CalendarHomePage: React.FC = () => {
     }, [foodCatalog]);
 
     const macroTotalsByDate = useMemo<Record<string, MacroTotals>>(() => {
-        if (!calendarData?.meals_list || calendarData.meals_list.length === 0 || foodCatalog.length === 0) {
-            return {};
-        }
+        if (!userMealsList.length) return {};
 
-        return calendarData.meals_list.reduce((acc, meal) => {
-            const dateKey = moment(meal.datetime_of_meal).format("YYYY-MM-DD");
-            const food = foodByName[meal.food_name.trim().toLowerCase()];
-            if (!food) return acc;
-
-            const quantity = Number(meal.meal_quantity) || 0;
-            const servingSize = Number(food.serving_size) || 0;
-            const factor = meal.meal_quantity_type === 'GR'
-                ? (servingSize > 0 ? quantity / servingSize : 0)
-                : quantity;
-
-            if (factor <= 0) return acc;
-
+        return userMealsList.reduce((acc, event) => {
+            const dateKey = moment(event.start).format("YYYY-MM-DD");
             if (!acc[dateKey]) {
                 acc[dateKey] = { calories: 0, protein: 0, carbohydrates: 0, fat: 0, fiber: 0 };
             }
 
-            acc[dateKey].calories += (Number(food.calories) || 0) * factor;
-            acc[dateKey].protein += (Number(food.protein) || 0) * factor;
-            acc[dateKey].carbohydrates += (Number(food.carbohydrates) || 0) * factor;
-            acc[dateKey].fat += (Number(food.fat) || 0) * factor;
-            acc[dateKey].fiber += (Number(food.fiber) || 0) * factor;
+            (event.meals || []).forEach((meal) => {
+                acc[dateKey].calories += Number(meal.calories || 0);
+                acc[dateKey].protein += Number(meal.protein || 0);
+                acc[dateKey].carbohydrates += Number(meal.carbohydrates || 0);
+                acc[dateKey].fat += Number(meal.fat || 0);
+                acc[dateKey].fiber += Number(meal.fiber || 0);
+            });
 
             return acc;
         }, {} as Record<string, MacroTotals>);
-    }, [calendarData?.meals_list, foodCatalog.length, foodByName]);
+    }, [userMealsList]);
 
     // Transform SWR calendar data into the local lists used by the calendar/components.
     useEffect(() => {
