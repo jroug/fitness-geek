@@ -2,15 +2,11 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { DateCellWrapperProps } from 'react-big-calendar';
-import pen_icon from "../public/images/setting/pencil.svg";  
-import save_icon from "../public/svg/saving2.svg";  
-import weights_icon from "../public/svg/weights.svg";  
-import bin_icon from "../public/svg/trashbin.svg";  
-import grade_icon from "../public/svg/grade.svg";  
-import comment_icon from "../public/svg/comment.svg";  
-import weight_icon from "../public/svg/weight.svg";  
-import Image from 'next/image';
 import moment from 'moment';
+import WeightCell from './customDateCellPrivate/WeightCell';
+import WorkoutCell from './customDateCellPrivate/WorkoutCell';
+import GradeCell from './customDateCellPrivate/GradeCell';
+import CommentCell from './customDateCellPrivate/CommentCell';
 
  
 interface CustomDateCellProps extends DateCellWrapperProps {
@@ -268,62 +264,15 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
     return (
         <div className="rbc-day-bg custom-date-cell" key={"dk-d" + dateKey} >
             {/*********************************************** WEIGHT ***********************************************/}
-            <div className="custom-text-cal-header text-center w-100 bg-cyan-400 rounded-[4px] m-[2px] relative weighing-wrap">
-                {!isEditingWeight ? (
-                        weightText ? 
-                            <>
-                                <button
-                                    type="button"
-                                    className="w-full cursor-pointer bg-transparent p-0 text-inherit "
-                                    onClick={() => setIsEditingWeight(true)}
-                                    aria-label="Edit weight"
-                                >
-                                    {weightText}
-                                    <span className="text-sm"> kg</span>
-                                </button>
-                                <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => setIsEditingWeight(true)} />
-                            </>
-                        : 
-                            <Image src={weight_icon} className="weighing-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingWeight(true)} />
-                ) : (
-                    <>
-                        <div className="custom-edit-input-wrapper">
-                            <input
-                                className="custom-edit-input"
-                                ref={weightInputRef}
-                                type="text"
-                                inputMode="decimal"
-                                value={weightDraft}
-                                onChange={(e) => {
-                                    const value = e.target.value;
-                                    // allow only digits, dot and comma
-                                    if (/^[0-9.,-]*$/.test(value)) {
-                                        setWeightDraft(value);
-                                    }
-                                }}
-                                onBlur={() => {
-                                    setWeightDraft(weightText);
-                                    setIsEditingWeight(false);
-                                }}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter') {
-                                        e.preventDefault();
-                                        void handleSaveDailyWeight();
-                                    }
-                                    if (e.key === 'Escape') {
-                                        e.preventDefault();
-                                        setWeightDraft(weightText);
-                                        setIsEditingWeight(false);
-                                    }
-                                }}
-                            />
-                            <span className="text-sm">kg</span>
-                        </div>
-                        <Image src={save_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => handleSaveDailyWeight()} onMouseDown={e => e.preventDefault()} />
-                    </>
-                )}
-                
-            </div>
+            <WeightCell
+                isEditingWeight={isEditingWeight}
+                weightText={weightText}
+                weightDraft={weightDraft}
+                weightInputRef={weightInputRef}
+                setWeightDraft={setWeightDraft}
+                setIsEditingWeight={setIsEditingWeight}
+                onSaveWeight={handleSaveDailyWeight}
+            />
             {/*********************************************** WEIGHT ***********************************************/}
 
 
@@ -332,19 +281,12 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
 
 
             {/*********************************************** WORKOUT ***********************************************/}
-            <h3 className="custom-text-cal-header text-center w-100 bg-purple-300 rounded-[4px] m-[2px] weighting-wrap">
-                <div className="w-full block leading-none pt-[3px]"  >
-                    {workoutTypeText ? workoutTypeText : <Image alt="Edit" width={24} height={24} className="weighting-icon" src={weights_icon} onClick={handleWorkoutClick} /> }  
-                </div>
-                {
-                    workoutTitleText ? 
-                    <>
-                        <span className="small-font-custom w-full">{workoutTitleText}</span>
-                        <Image src={bin_icon} alt="Edit" width={20} height={20} className="trashbin-icon" onClick={handleDeleteWorkoutClick} />
-                    </> : 
-                    <></>
-                }
-            </h3> 
+            <WorkoutCell
+                workoutTypeText={workoutTypeText}
+                workoutTitleText={workoutTitleText}
+                onWorkoutClick={handleWorkoutClick}
+                onDeleteWorkoutClick={handleDeleteWorkoutClick}
+            />
             {/*********************************************** WORKOUT ***********************************************/}
 
 
@@ -355,63 +297,15 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
             { isCommentsPublished && (
                 <>
                     {/*********************************************** GRADE GRADE GRADE***********************************************/}
-                    <div className="custom-text-cal-header text-center bg-yellow-300 p-[2px] m-[2px] rounded-[4px] relative grade-wrap" >
-                        {!isEditingGrade ? (
-                            commentObjInit && commentObjInit.grade > 0 ?
-                            <>
-                                <button
-                                    type="button"
-                                    className="w-full cursor-pointer bg-transparent p-0 text-inherit "
-                                    onClick={() => setIsEditingGrade(true)}
-                                    aria-label="Edit grade"
-                                >
-                                     {commentObjInit.grade}<span className="text-sm">/10</span>
-                                </button>
-                                <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => setIsEditingGrade(true)} />
-                            </>
-                            :
-                            <Image src={grade_icon} alt="Edit" className="grade-icon" width={20} height={20} onClick={() => setIsEditingGrade(true)} />
-
-                        ) : (
-                            <>
-                                <div className="custom-edit-input-wrapper">
-                                    <input
-                                        className="custom-edit-input"
-                                        ref={gradeInputRef}
-                                        type="number"
-                                        min={0}
-                                        max={10}
-                                        value={commentObjDraft.grade ? commentObjDraft.grade : ''} // show empty when grade is 0 for better UX
-                                        onChange={(e) => {
-                                            const value = e.target.value;
-                                            setCommentObjectDraft(prev => ({
-                                                ...prev,
-                                                grade: value === '' ? 0 : Number(value) // allow empty string but store as 0
-                                            }));
-                                        }}
-                                        onBlur={() => {
-                                            setCommentObjectDraft(commentObjInit);
-                                            setIsEditingGrade(false);
-                                        }}
-                                        onKeyDown={(e) => {
-                                            if (e.key === 'Enter') {
-                                                e.preventDefault();
-                                                void handleSaveDailyCommentOrGrade('grade');
-                                            }
-                                            if (e.key === 'Escape') {
-                                                e.preventDefault();
-                                                setCommentObjectDraft(commentObjInit);
-                                                setIsEditingGrade(false);
-                                            }
-                                        }}
-                                    />
-                                    <span className="text-sm">/10</span>
-                                </div>
-                                <Image src={save_icon} alt="Edit" width={16} height={16} className="edit-pencil" onClick={() => handleSaveDailyCommentOrGrade('grade')} onMouseDown={e => e.preventDefault()}/>
-                            </>
-                        )}
-                        
-                    </div> 
+                    <GradeCell
+                        isEditingGrade={isEditingGrade}
+                        commentObjInit={commentObjInit}
+                        commentObjDraft={commentObjDraft}
+                        gradeInputRef={gradeInputRef}
+                        setIsEditingGrade={setIsEditingGrade}
+                        setCommentObjectDraft={setCommentObjectDraft}
+                        onSaveGrade={() => handleSaveDailyCommentOrGrade('grade')}
+                    />
                     {/*********************************************** GRADE GRADE GRADE***********************************************/}
 
                     
@@ -419,60 +313,15 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                     
                     
                     {/*********************************************** COOOOOOMMMMMMMENT ***********************************************/}
-                    <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] relative custom-comment" >
-                        {!isEditingComment ? (
-                            commentObjInit?.comment ?
-                                <>
-                                    <button
-                                        type="button"
-                                        className="w-full cursor-pointer bg-transparent p-0 text-inherit "
-                                        onClick={() => setIsEditingComment(true)}
-                                        aria-label="Edit comment"
-                                    >
-                                         {commentObjInit.comment}
-                                    </button>
-                                    <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => setIsEditingComment(true)} />
-                                </>
-                            :
-                                <Image src={comment_icon} className="comment-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingComment(true)} />
-                        ) : (
-                            <>
-                                <div className="custom-edit-input-wrapper comment-input-wrapper">
-                                    <div>
-                                        <textarea
-                                            className="custom-edit-input"
-                                            ref={commentInputRef}
-                                            value={commentObjDraft.comment}
-                                            onChange={(e) => {
-                                                setCommentObjectDraft(prev => ({
-                                                    ...prev,
-                                                    comment: e.target.value
-                                                }));
-                                            }}
-                                            maxLength={150}
-                                            onBlur={() => {
-                                                setCommentObjectDraft(commentObjInit);
-                                                setIsEditingComment(false);
-                                            }}
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter') {
-                                                    e.preventDefault();
-                                                    void handleSaveDailyCommentOrGrade('comment');
-                                                }
-                                                if (e.key === 'Escape') {
-                                                    e.preventDefault();
-                                                    setCommentObjectDraft(commentObjInit);
-                                                    setIsEditingComment(false);
-                                                }
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                                <Image src={save_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => handleSaveDailyCommentOrGrade('comment') } onMouseDown={e => e.preventDefault()} />
-                            </>
-                        )}
-                        
-                    </div> 
+                    <CommentCell
+                        isEditingComment={isEditingComment}
+                        commentObjInit={commentObjInit}
+                        commentObjDraft={commentObjDraft}
+                        commentInputRef={commentInputRef}
+                        setIsEditingComment={setIsEditingComment}
+                        setCommentObjectDraft={setCommentObjectDraft}
+                        onSaveComment={() => handleSaveDailyCommentOrGrade('comment')}
+                    />
                     {/*********************************************** COOOOOOMMMMMMMENT ***********************************************/}
                 </>
             )}

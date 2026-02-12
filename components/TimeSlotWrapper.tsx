@@ -41,7 +41,7 @@ export function TimeSlotWrapper({ children, value, onAddFood }: Props) {
     children: (
       <>
         {child.props.children}
-         <Image src={plate_icon} width={27} height={27} className="add-meal-btn" alt="add-meal" onClick={handleClick}/> 
+         <Image src={plate_icon} width={24} height={24} className="add-meal-btn" alt="add-meal" onClick={handleClick}/> 
       </>
     ),
   });

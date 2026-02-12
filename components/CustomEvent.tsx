@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import { EventProps } from 'react-big-calendar';
 import bin_icon from "../public/svg/trashbin.svg";
+import bin_icon_white from "../public/svg/trashbin_white.svg";
 import Image from 'next/image';
 
 interface CustomEventProps extends EventProps {
@@ -131,8 +132,8 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
         <div className="custom-event">
             {cameFrom === 'private' && mealEvent.id
                 ?
-                <div key={`meal-${mealEvent.id}`} className="absolute right-0 p-[3px] bg-[red] rounded-[35px] leading-[12px]">
-                    <Image src={bin_icon} alt="Edit" width={19} height={19} className="trashbin-icon-all" onClick={() => handleEventDelete(mealEvent.id)} />
+                <div key={`meal-${mealEvent.id}`} className="absolute right-0 p-[3px] bg-[red] rounded-[35px] leading-[12px] cursor-pointer">
+                    <Image src={bin_icon_white} alt="Edit" width={17} height={17} className="trashbin-icon-all" onClick={() => handleEventDelete(mealEvent.id)} />
                 </div>
                 :
                 <></>
@@ -156,7 +157,7 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
                         cameFrom === 'private'
                         ?
                         <span className="text-[white] w-[20px] absolute right-[-7px] top-[3px] h-full" >
-                            <Image src={bin_icon} alt="Edit" width={19} height={19} className="trashbin-icon" onClick={() => handleEventDelete(meal.id)} />
+                            <Image src={bin_icon} alt="Edit" width={17} height={17} className="trashbin-icon" onClick={() => handleEventDelete(meal.id)} />
                         </span>
                         :
                         <></>

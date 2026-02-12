@@ -3939,6 +3939,7 @@ button.green-btn-small{
     border:1px solid black;
     padding:2px;
     cursor: pointer;
+    background-color: #b4ea8a;
 }
 
 /* chart page */
@@ -4149,9 +4150,6 @@ textarea.custom-edit-input {
     cursor: pointer;
 }
 
-
-
-
 .weighting-wrap{
     height: 44px;
     position: relative;
@@ -4167,7 +4165,7 @@ textarea.custom-edit-input {
 .trashbin-icon{
     position: absolute;
     top:50%;
-    transform: translate(-6px, -50%);
+    transform: translate(-5px, -67%);
     right:0;
     cursor: pointer;
 }
