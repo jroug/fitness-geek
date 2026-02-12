@@ -130,6 +130,11 @@ declare global {
         meal_quantity: number;
         meal_quantity_type: string;
         comments: string;
+        calories?: number | string;
+        protein?: number | string;
+        carbohydrates?: number | string;
+        fat?: number | string;
+        fiber?: number | string;
     }
 
     interface UserWeightData {

@@ -96,29 +96,11 @@ const CalendarHomePage: React.FC = () => {
         keepPreviousData: false,      // do not keep cached data
     });
 
-    // SWR: foods catalog (macros per serving)
-    const { data: foodCatalog = [] } = useSWR<MealSuggestion[]>('/api/get-all-meals', (url) => fetcher<MealSuggestion[]>(url), {
-        dedupingInterval: 60_000,
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
-    });
-
- 
-
-
     const isPublished = Boolean(tokenData?.jr_token);
     const jrTokenFromDb = tokenData?.jr_token ?? '';
     const jrLoginTokenFromDb = tokenData?.login_token ?? '';
 
     const isLoading = isCalendarLoading || isTokenLoading;
-
-    const foodByName = useMemo(() => {
-        return foodCatalog.reduce((acc, food) => {
-            const key = food.food_name.trim().toLowerCase();
-            acc[key] = food;
-            return acc;
-        }, {} as Record<string, MealSuggestion>);
-    }, [foodCatalog]);
 
     const macroTotalsByDate = useMemo<Record<string, MacroTotals>>(() => {
         if (!userMealsList.length) return {};
@@ -177,13 +159,6 @@ const CalendarHomePage: React.FC = () => {
 
             if (!acc[mealDateTime]) acc[mealDateTime] = [];
 
-            const food = foodByName[item.food_name.trim().toLowerCase()];
-            const quantity = Number(item.meal_quantity) || 0;
-            const servingSize = Number(food?.serving_size) || 0;
-            const factor = item.meal_quantity_type === 'GR'
-                ? (servingSize > 0 ? quantity / servingSize : 0)
-                : quantity;
-
             acc[mealDateTime].push({
                 id: String(item.ID),
                 start: moment(item.datetime_of_meal).toDate(),
@@ -193,12 +168,12 @@ const CalendarHomePage: React.FC = () => {
                 comments: item.comments,
                 portion_quantity: Number(item.meal_quantity) || 0,
                 portion_quantity_type: item.meal_quantity_type,
-                serving_size: Number(food?.serving_size) || 0,
-                calories: ((Number(food?.calories) || 0) * factor),
-                protein: ((Number(food?.protein) || 0) * factor),
-                carbohydrates: ((Number(food?.carbohydrates) || 0) * factor),
-                fat: ((Number(food?.fat) || 0) * factor),
-                fiber: ((Number(food?.fiber) || 0) * factor),
+                serving_size: Number(item.serving_size) || 0,
+                calories: Number(item.calories) || 0,
+                protein: Number(item.protein) || 0,
+                carbohydrates: Number(item.carbohydrates) || 0,
+                fat: Number(item.fat) || 0,
+                fiber: Number(item.fiber) || 0,
             });
             return acc;
         }, {} as Record<string, MealGrouped[]>);
@@ -259,7 +234,7 @@ const CalendarHomePage: React.FC = () => {
         setUserWorkoutList(transformedWorkoutData);
         setUserWeightList(transformedWeightData);
         setUserMealsList(transformedMealData);
-    }, [calendarData, foodByName]);
+    }, [calendarData]);
 
     useEffect(() => {
         const updateView = () => {
