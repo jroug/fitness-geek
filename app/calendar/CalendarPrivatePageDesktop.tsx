@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 // import React, { useEffect, useRef, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
@@ -35,6 +35,14 @@ interface TokenResponse {
     login_token: string;
     deleted?: string;
     message?: string;
+}
+
+interface MacroTotals {
+    calories: number;
+    protein: number;
+    carbohydrates: number;
+    fat: number;
+    fiber: number;
 }
 
 const fetcher = async <T,>(url: string): Promise<T> => {
@@ -88,12 +96,59 @@ const CalendarHomePage: React.FC = () => {
         keepPreviousData: false,      // do not keep cached data
     });
 
+    // SWR: foods catalog (macros per serving)
+    const { data: foodCatalog = [] } = useSWR<MealSuggestion[]>('/api/get-all-meals', (url) => fetcher<MealSuggestion[]>(url), {
+        dedupingInterval: 60_000,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
+
+ 
+
 
     const isPublished = Boolean(tokenData?.jr_token);
     const jrTokenFromDb = tokenData?.jr_token ?? '';
     const jrLoginTokenFromDb = tokenData?.login_token ?? '';
 
     const isLoading = isCalendarLoading || isTokenLoading;
+
+    const macroTotalsByDate = useMemo<Record<string, MacroTotals>>(() => {
+        if (!calendarData?.meals_list || calendarData.meals_list.length === 0 || foodCatalog.length === 0) {
+            return {};
+        }
+
+        const foodByName = foodCatalog.reduce((acc, food) => {
+            const key = food.food_name.trim().toLowerCase();
+            acc[key] = food;
+            return acc;
+        }, {} as Record<string, MealSuggestion>);
+
+        return calendarData.meals_list.reduce((acc, meal) => {
+            const dateKey = moment(meal.datetime_of_meal).format("YYYY-MM-DD");
+            const food = foodByName[meal.food_name.trim().toLowerCase()];
+            if (!food) return acc;
+
+            const quantity = Number(meal.meal_quantity) || 0;
+            const servingSize = Number(food.serving_size) || 0;
+            const factor = meal.meal_quantity_type === 'GR'
+                ? (servingSize > 0 ? quantity / servingSize : 0)
+                : quantity;
+
+            if (factor <= 0) return acc;
+
+            if (!acc[dateKey]) {
+                acc[dateKey] = { calories: 0, protein: 0, carbohydrates: 0, fat: 0, fiber: 0 };
+            }
+
+            acc[dateKey].calories += (Number(food.calories) || 0) * factor;
+            acc[dateKey].protein += (Number(food.protein) || 0) * factor;
+            acc[dateKey].carbohydrates += (Number(food.carbohydrates) || 0) * factor;
+            acc[dateKey].fat += (Number(food.fat) || 0) * factor;
+            acc[dateKey].fiber += (Number(food.fiber) || 0) * factor;
+
+            return acc;
+        }, {} as Record<string, MacroTotals>);
+    }, [calendarData?.meals_list, foodCatalog]);
 
     // Transform SWR calendar data into the local lists used by the calendar/components.
     useEffect(() => {
@@ -412,6 +467,7 @@ const CalendarHomePage: React.FC = () => {
                                             getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")]}
                                             getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")]}
                                             getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")]}
+                                            getMacros={(date) => macroTotalsByDate[moment(date).format("YYYY-MM-DD")] || null}
                                             setUserWeightList={setUserWeightList}
                                             setUserCommentsList={setUserCommentsList}
                                             setUserWorkoutList={setUserWorkoutList}

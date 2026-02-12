@@ -7,7 +7,15 @@ import WeightCell from './customDateCellPrivate/WeightCell';
 import WorkoutCell from './customDateCellPrivate/WorkoutCell';
 import GradeCell from './customDateCellPrivate/GradeCell';
 import CommentCell from './customDateCellPrivate/CommentCell';
+import MacrosCell from './customDateCellPrivate/MacrosCell';
 
+interface MacroTotals {
+    calories: number;
+    protein: number;
+    carbohydrates: number;
+    fat: number;
+    fiber: number;
+}
  
 interface CustomDateCellProps extends DateCellWrapperProps {
     // cameFrom?: string;
@@ -15,6 +23,7 @@ interface CustomDateCellProps extends DateCellWrapperProps {
     getWeight: (dateKey: string) => string | null;
     getWorkout: (dateKey: string) => UserWorkoutData | null;
     getComment: (dateKey: string) => UserCommentData;
+    getMacros: (dateKey: string) => MacroTotals | null;
     setUserWeightList: React.Dispatch<React.SetStateAction<{ [key: string]: string }>>;
     setUserCommentsList: React.Dispatch<React.SetStateAction<{ [key: string]: UserCommentData }>>;
     setUserWorkoutList: React.Dispatch<React.SetStateAction<Record<string, UserWorkoutData>>>;
@@ -30,6 +39,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
         getWeight, 
         getWorkout, 
         getComment, 
+        getMacros,
         setUserWeightList,
         setUserCommentsList,
         setUserWorkoutList,
@@ -45,6 +55,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
     const weightValue = getWeight(dateKey);
     const workoutValue = getWorkout(dateKey);
     const commentObjInit = getComment(dateKey);
+    const macrosValue = getMacros(dateKey);
 
     const weightText =  weightValue ? weightValue  : '';  
     const workoutTypeText =  workoutValue ? workoutValue.w_type  : '';  
@@ -288,6 +299,10 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                 onDeleteWorkoutClick={handleDeleteWorkoutClick}
             />
             {/*********************************************** WORKOUT ***********************************************/}
+
+            {/*********************************************** MACROS ***********************************************/}
+            <MacrosCell macros={macrosValue} />
+            {/*********************************************** MACROS ***********************************************/}
 
 
 

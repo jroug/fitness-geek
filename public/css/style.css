@@ -4154,6 +4154,16 @@ textarea.custom-edit-input {
     height: 44px;
     position: relative;
 }
+.macro-wrap{
+    height: 27px;
+    position: relative;
+}
+
+.macro-custom{
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 25px;
+}
 .weighting-icon{
     position: absolute;
     top:50%;
