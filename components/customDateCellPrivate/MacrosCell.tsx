@@ -22,11 +22,12 @@ const MacrosCell: React.FC<MacrosCellProps> = ({ macros }) => {
             {hasMacros ? (
                 <div className="leading-tight">
                     <div className="macro-custom">
-                        P: <b>{Math.round(macros!.protein)}gr</b>, 
-                        C:<b>{Math.round(macros!.carbohydrates)}gr</b>, 
+                        Kcal:<b>{Math.round(macros!.calories)}</b>
+                        &nbsp;|&nbsp;
+                        P:<b><u>{Math.round(macros!.protein)}gr</u></b>,
+                        C:<b>{Math.round(macros!.carbohydrates)}gr</b>,
                         F:<b>{Math.round(macros!.fat)}gr</b>,
-                        Fi:<b>{Math.round(macros!.fiber)}gr</b>,
-                        - <b>{Math.round(macros!.calories)}Kcal</b>
+                        Fi:<b>{Math.round(macros!.fiber)}gr</b> 
                     </div>
                 </div>
             ) : (

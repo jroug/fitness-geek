@@ -78,6 +78,11 @@ declare global {
         f_title: string;
         f_category: string;
         f_comments: string;
+        calories?: number;
+        protein?: number;
+        carbohydrates?: number;
+        fat?: number;
+        fiber?: number;
     }
 
     interface MealGrouped {
@@ -87,6 +92,11 @@ declare global {
         title: string;
         category: string;
         comments: string;
+        calories?: number;
+        protein?: number;
+        carbohydrates?: number;
+        fat?: number;
+        fiber?: number;
     }
 
     interface MealEvent {

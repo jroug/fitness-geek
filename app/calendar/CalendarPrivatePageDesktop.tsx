@@ -112,16 +112,18 @@ const CalendarHomePage: React.FC = () => {
 
     const isLoading = isCalendarLoading || isTokenLoading;
 
-    const macroTotalsByDate = useMemo<Record<string, MacroTotals>>(() => {
-        if (!calendarData?.meals_list || calendarData.meals_list.length === 0 || foodCatalog.length === 0) {
-            return {};
-        }
-
-        const foodByName = foodCatalog.reduce((acc, food) => {
+    const foodByName = useMemo(() => {
+        return foodCatalog.reduce((acc, food) => {
             const key = food.food_name.trim().toLowerCase();
             acc[key] = food;
             return acc;
         }, {} as Record<string, MealSuggestion>);
+    }, [foodCatalog]);
+
+    const macroTotalsByDate = useMemo<Record<string, MacroTotals>>(() => {
+        if (!calendarData?.meals_list || calendarData.meals_list.length === 0 || foodCatalog.length === 0) {
+            return {};
+        }
 
         return calendarData.meals_list.reduce((acc, meal) => {
             const dateKey = moment(meal.datetime_of_meal).format("YYYY-MM-DD");
@@ -148,7 +150,7 @@ const CalendarHomePage: React.FC = () => {
 
             return acc;
         }, {} as Record<string, MacroTotals>);
-    }, [calendarData?.meals_list, foodCatalog]);
+    }, [calendarData?.meals_list, foodCatalog.length, foodByName]);
 
     // Transform SWR calendar data into the local lists used by the calendar/components.
     useEffect(() => {
@@ -185,6 +187,14 @@ const CalendarHomePage: React.FC = () => {
             }
 
             if (!acc[mealDateTime]) acc[mealDateTime] = [];
+
+            const food = foodByName[item.food_name.trim().toLowerCase()];
+            const quantity = Number(item.meal_quantity) || 0;
+            const servingSize = Number(food?.serving_size) || 0;
+            const factor = item.meal_quantity_type === 'GR'
+                ? (servingSize > 0 ? quantity / servingSize : 0)
+                : quantity;
+
             acc[mealDateTime].push({
                 id: String(item.ID),
                 start: moment(item.datetime_of_meal).toDate(),
@@ -192,6 +202,11 @@ const CalendarHomePage: React.FC = () => {
                 title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr ' : item.meal_quantity + 'x'} ${item.food_name} `,
                 category: item.category,
                 comments: item.comments,
+                calories: ((Number(food?.calories) || 0) * factor),
+                protein: ((Number(food?.protein) || 0) * factor),
+                carbohydrates: ((Number(food?.carbohydrates) || 0) * factor),
+                fat: ((Number(food?.fat) || 0) * factor),
+                fiber: ((Number(food?.fiber) || 0) * factor),
             });
             return acc;
         }, {} as Record<string, MealGrouped[]>);
@@ -200,7 +215,17 @@ const CalendarHomePage: React.FC = () => {
             id: group.map(event => event.id).join(','),
             // title: moment(group[0].start).format("hh:mm a"),
             title: mealTypeOptions(getMealTypeFromTime(moment(group[0].start).format("YYYY-MM-DD HH:mm"))),
-            meals: group.map(event => ({ id: event.id, f_title: event.title, f_category: event.category, f_comments: event.comments || "" })),
+            meals: group.map(event => ({
+                id: event.id,
+                f_title: event.title,
+                f_category: event.category,
+                f_comments: event.comments || "",
+                calories: event.calories,
+                protein: event.protein,
+                carbohydrates: event.carbohydrates,
+                fat: event.fat,
+                fiber: event.fiber,
+            })),
             start: adjustTime(group[0].start),
             end: group[0].end,
         }));
@@ -239,7 +264,7 @@ const CalendarHomePage: React.FC = () => {
         setUserWorkoutList(transformedWorkoutData);
         setUserWeightList(transformedWeightData);
         setUserMealsList(transformedMealData);
-    }, [calendarData]);
+    }, [calendarData, foodByName]);
 
     useEffect(() => {
         const updateView = () => {

@@ -33,6 +33,25 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
         }
     }, [event]);
 
+    const formatMacroTitle = (meal?: Meals): string => {
+        if (!meal) return 'No macros';
+
+        return `Kcal: ${Math.round(meal.calories || 0)} | Protein: ${Math.round(meal.protein || 0)}g | Carbs: ${Math.round(meal.carbohydrates || 0)}g | Fat: ${Math.round(meal.fat || 0)}g | Fiber: ${Math.round(meal.fiber || 0)}g`;
+    };
+
+    const formatMealTotalMacroTitle = (): string => {
+        const totals = (mealEvent.meals || []).reduce((acc, meal) => {
+            acc.calories += Number(meal.calories || 0);
+            acc.protein += Number(meal.protein || 0);
+            acc.carbohydrates += Number(meal.carbohydrates || 0);
+            acc.fat += Number(meal.fat || 0);
+            acc.fiber += Number(meal.fiber || 0);
+            return acc;
+        }, { calories: 0, protein: 0, carbohydrates: 0, fat: 0, fiber: 0 });
+
+        return `Kcal: ${Math.round(totals.calories)} | Protein: ${Math.round(totals.protein)}g | Carbs: ${Math.round(totals.carbohydrates)}g | Fat: ${Math.round(totals.fat)}g | Fiber: ${Math.round(totals.fiber)}g`;
+    };
+
 
     const handleEventDelete = async (mids: string) => {
         const confirmed = confirm('Are you sure?');
@@ -138,10 +157,10 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
                 :
                 <></>
              }
-            <h2 className="w-100 text-center event-title">{mealEvent.title}</h2>
+            <h2 className="w-100 text-center event-title" title={formatMealTotalMacroTitle()} >{mealEvent.title}</h2>
             {mealEvent.meals && mealEvent.meals.length > 0 && mealEvent.meals.map((meal, idx) => (
                 <div key={`meal-${idx}`} className="relative border-b border-dotted border-black" >
-                    <div className={"event-description w-[calc(100%-20px)] " + meal.f_category}>
+                    <div className={"event-description w-[calc(100%-20px)] " + meal.f_category} title={formatMacroTitle(meal)} >
                         {meal.f_title}
                         {
                             isCommentsPublished

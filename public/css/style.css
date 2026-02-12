@@ -3647,7 +3647,7 @@ body.open-sidebar .header-overlay {
     font-size: 14px;
     line-height: 17px;
     height: 100%;
-    max-height: 96px;
+    max-height: 63px;
 }
 
 .comment-link-button{
@@ -4162,7 +4162,7 @@ textarea.custom-edit-input {
 .macro-custom{
     font-size: 14px;
     font-weight: normal;
-    line-height: 25px;
+    line-height: 27px;
 }
 .weighting-icon{
     position: absolute;
