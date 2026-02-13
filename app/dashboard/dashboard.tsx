@@ -173,13 +173,13 @@ const Dashboard = () => {
                     <div className="home-section-zero">
                         <h1 className="mx-8">{display_name}, Age {calcAgeFromDOB(profileDataWithStats?.date_of_birth || '')}</h1>
                         <div className="home-first home-container">
-                            <div className="workout-wrap mt-16 mx-auto">
-                                <div className="workout-first w-[50%] border-light-green  text-center">
+                            <div className="workout-wrap flex-wrap gap-3 mt-16 mx-auto">
+                                <div className="workout-first w-1/2 border-light-green  text-center">
                                     <Image src={minutes_image} className="mx-auto" alt="workout-img" />
                                     <h2>{weekly_workouts_count}<span className="text-[12px] leading-[10px]" >/4</span></h2>
                                     <p># Workouts <br/> This Week</p>
                                 </div>
-                                <div className="workout-first w-[50%] border-yellow text-center">
+                                <div className="workout-first w-1/2 border-yellow text-center">
                                     <Image src={kcal_image} className="mx-auto" alt="kcal-img" />
                                     <h2>{this_week_avg_grade}<span className="text-[12px] leading-[10px]" >/10</span></h2>
                                     <p>AVG. Grade <br/> This Week</p>
@@ -204,50 +204,50 @@ const Dashboard = () => {
                             {bodycomp_date_info ? ` before ${bodycomp_date_info.diffDays} days` : ''}
                         </p>
                         <div className="home-first home-container">
-                            <div className="workout-wrap mt-16 mx-auto">
+                            <div className="workout-wrap flex-wrap gap-3 mt-16 mx-auto">
  
-                                <div className={`workout-first w-[20%] border-magenta text-center`}>
+                                <div className={`workout-first w-1/2 md:w-1/3 lg:w-1/5 border-magenta text-center`}>
                                     <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                     <h2>{body_fat_percent}<span className="text-[12px] leading-[10px]" >%</span></h2>
-                                    <p><br/>Body Fat </p>
+                                    <p>Body Fat </p>
                                 </div>
-                                <div className={`workout-first w-[20%] border-magenta text-center`}>
+                                <div className={`workout-first w-1/2 md:w-1/3 lg:w-1/5 border-magenta text-center`}>
                                     <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                     <h2>{visceral_fat}<span className="text-[12px] leading-[10px]" >cm</span></h2>
-                                    <p><br/>Visceral Fat </p>
+                                    <p>Visceral Fat </p>
                                 </div>
-                                <div className={`workout-first w-[20%] border-magenta text-center`}>
+                                <div className={`workout-first w-1/2 md:w-1/3 lg:w-1/5 border-magenta text-center`}>
                                     <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                     <h2>{muscle_mass}<span className="text-[12px] leading-[10px]" >Kg</span></h2>
-                                    <p><br/>Muscle Mass </p>
+                                    <p>Muscle Mass </p>
                                 </div>
-                                <div className={`workout-first w-[20%] border-magenta text-center`}>
+                                <div className={`workout-first w-1/2 md:w-1/3 lg:w-1/5 border-magenta text-center`}>
                                     <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                     <h2>{body_weight}<span className="text-[12px] leading-[10px]" >Kg</span></h2>
-                                    <p><br/>Weight </p>
+                                    <p>Weight </p>
                                 </div>
-                                <div className={`workout-first w-[20%] border-magenta text-center`}>
+                                <div className={`workout-first w-1/2 md:w-1/3 lg:w-1/5 border-magenta text-center`}>
                                     <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                     <h2>{waist}<span className="text-[12px] leading-[10px]" >cm</span></h2>
-                                    <p><br/>Weist </p>
+                                    <p>Weist </p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div className="home-section-first">
                         <h2 className="text-left  mx-8">Weight Progress</h2>
-                        <div className="home-container workout-wrap mt-16 mx-auto">
-                            <div className="workout-first w-[25%] border-blue text-center ">
+                        <div className="home-container workout-wrap flex-wrap gap-3 mt-16 mx-auto">
+                            <div className="workout-first w-1/2 lg:w-1/4 border-blue text-center ">
                                 <Image src={workout_image} className="mx-auto " alt="workout-img" />
                                 <h2>{last_weekly_avg_weight}<span className="text-[12px]">Kg</span></h2>
                                 <p>AVG. <br/>Last Week</p>
                             </div>
-                            <div className={`workout-first w-[25%] border-blue text-center`}>
+                            <div className={`workout-first w-1/2 lg:w-1/4 border-blue text-center`}>
                                 <Image src={workout_image} className="mx-auto " alt="workout-img" />
                                 <h2>{this_weekly_avg_weight}<span className="text-[12px]">Kg</span></h2>
                                 <p>AVG. <br/>This Week</p>
                             </div>
-                            <div className={`workout-first w-[25%] border-trend-${trend} text-center`}>
+                            <div className={`workout-first w-1/2 lg:w-1/4 border-trend-${trend} text-center`}>
                                 <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                 <h2>{weightDiff}<span className="text-[12px] leading-[10px]" >Kg
                                     <span className={`trend-arrow ${trend}`}>
@@ -257,7 +257,7 @@ const Dashboard = () => {
                                     </span></span></h2>
                                 <p><br/>Weigt Diff</p>
                             </div>
-                            <div className={`workout-first w-[25%] border-magenta text-center`}>
+                            <div className={`workout-first w-1/2 lg:w-1/4 border-magenta text-center`}>
                                 <Image src={workout_image} className="mx-auto" alt="workout-img" />
                                 <h2>{last_weighing}<span className="text-[12px] leading-[10px]" >Kg</span></h2>
                                 <p><br/>{last_weighing_date_is_today ? 'Today' : `${days_from_last_weiing} days ago`}</p>

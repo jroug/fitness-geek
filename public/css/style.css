@@ -1599,16 +1599,16 @@ div#ui-datepicker-div {
 .workout-first {
     padding: 10px;
     border-radius: 10px;
-    max-width: 192px;;
+    max-width: 180px;
 }
 .workout-first h2 {
     color: var(--4, #12151C);
     text-align: center;
     font-family: var(--font-main);
-    font-size: 24px;
+    font-size: 18px !important;
     font-style: normal;
     font-weight: 400;
-    line-height: 24px;
+    line-height: 18px;
     text-transform: uppercase;
     margin-top: 6px;
 }
