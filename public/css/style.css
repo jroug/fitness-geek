@@ -3555,6 +3555,11 @@ body.open-sidebar .header-overlay {
         margin-top:10px !important;
         margin-bottom:20px !important;
     }
+    .workout-first {
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 165px;
+    }
 }
  
 
