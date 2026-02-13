@@ -33,6 +33,13 @@ declare global {
             this_weekly_avg_weight?: number;
             weekly_workouts_count?: number;
             this_week_avg_grade?: number;
+
+            bodycomp_date?: Date;
+            bodycomp_fat_percent?: number;
+            bodycomp_fat?: number;
+            bodycomp_fat_visceral?: number;
+            bodycomp_waist?: number;
+            bodycomp_weight?: number;
         }
     }
  

@@ -3170,6 +3170,14 @@ ul.nav.nav-tabs.focus-tab-main{
 .border-yellow{
     border: 2px solid var(--6, #FFAA01);
 }
+.border-light-green{
+    border: 2px solid var(--8, #86efac);
+}
+.border-magenta{
+    border: 2px solid var(--8, magenta);
+}
+
+
 
 .statistic-overview-content {
     display: flex;

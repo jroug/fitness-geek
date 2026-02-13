@@ -17,6 +17,13 @@ interface ProfileDataResponse {
         this_weekly_avg_weight?: number;
         weekly_workouts_count?: number;
         this_week_avg_grade?: number;
+
+        bodycomp_date?: Date;
+        bodycomp_fat_percent?: number;
+        bodycomp_fat?: number;
+        bodycomp_fat_visceral?: number;
+        bodycomp_waist?: number;
+        bodycomp_weight?: number;
     }
 }
 
@@ -71,6 +78,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     this_weekly_avg_weight: data.fitness_stats?.this_weekly_avg_weight,
                     weekly_workouts_count: data.fitness_stats?.weekly_workouts_count,
                     this_week_avg_grade: data.fitness_stats?.this_week_avg_grade,
+
+                    bodycomp_date: data.fitness_stats?.bodycomp_date,
+                    bodycomp_fat_percent: data.fitness_stats?.bodycomp_fat_percent,
+                    bodycomp_fat: data.fitness_stats?.bodycomp_fat,
+                    bodycomp_fat_visceral: data.fitness_stats?.bodycomp_fat_visceral,
+                    bodycomp_waist: data.fitness_stats?.bodycomp_waist,
+                    bodycomp_weight: data.fitness_stats?.bodycomp_weight
                 }
             });
             
