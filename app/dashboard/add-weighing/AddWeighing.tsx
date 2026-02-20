@@ -29,7 +29,7 @@ const AddWeighing: React.FC = () => {
         setIsSaving(true);
         setSaveBtnText('Saving...');
 
-        const addWeighingsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/dashboard/add-weighing`;
+        const addWeighingsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-weighing`;
         const res = await fetch(addWeighingsUrl, {
             method: 'POST',
             headers: {

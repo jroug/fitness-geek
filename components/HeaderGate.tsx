@@ -6,7 +6,8 @@ import { isPublicPath } from '@/lib/isPublicPath';
 
 export default function HeaderGate() {
   const pathname = usePathname();
-  const showHeader = !isPublicPath(pathname || '');
+  const currentPath = pathname || '';
+  const showHeader = currentPath.startsWith('/dashboard') && !isPublicPath(currentPath);
 
   if (!showHeader) return null;
   return <Header />;

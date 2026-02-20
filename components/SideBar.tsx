@@ -94,7 +94,7 @@ const SideBar = () => {
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
 
     useEffect(() => {
-        console.log('useEffect sidebar');
+        // console.log('useEffect sidebar');
         document.body.classList.add('open-sidebar');
         return () => {
             document.body.classList.remove('open-sidebar');

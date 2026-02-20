@@ -6,7 +6,8 @@ import { isPublicPath } from '@/lib/isPublicPath';
 
 export default function SidebarGate() {
   const pathname = usePathname();
-  const showSidebar = !isPublicPath(pathname || '');
+  const currentPath = pathname || '';
+  const showSidebar = currentPath.startsWith('/dashboard') && !isPublicPath(currentPath);
 
   if (!showSidebar) return null;
   return <SideBar />;

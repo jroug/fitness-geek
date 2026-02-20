@@ -66,7 +66,7 @@ const AddMeal: React.FC = () => {
         setIsSaving(true);
         setSaveBtnText('Saving...');
 
-        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/dashboard/add-meal`;
+        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
         const res = await fetch(addMealsUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

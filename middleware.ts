@@ -9,12 +9,14 @@ export function middleware(req: NextRequest) {
   // 1) allow public pages
   if (isPublicPath(pathname)) return NextResponse.next();
 
-  // console.log('middleware executed for path:', pathname);
-  // 2) check auth cookie
+  // 2) only protect dashboard routes
+  if (!pathname.startsWith("/dashboard")) return NextResponse.next();
+
+  // 3) check auth cookie
   const token = req.cookies.get("token")?.value;
   // console.log('token:', token);
   
-  // 3) if not logged in => redirect to /
+  // 4) if not logged in => redirect to /
   if (!token) {
     const url = req.nextUrl.clone();
     url.pathname = "/";
