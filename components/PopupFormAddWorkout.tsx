@@ -5,8 +5,9 @@ import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import left_arrow from "../public/svg/black-left-arrow.svg";
 import Image from "next/image";
-import useSWR from "swr";
+import useSWR, { mutate } from "swr";
 import moment from "moment";
+import { profileDataSWRKey } from "@/lib/profileDataSWR";
 
 const fetcher = (url: string) =>
   fetch(url, { credentials: "include" }).then((res) => {
@@ -118,6 +119,7 @@ const PopupFormAddWorkout: React.FC<PopupFormProps> = ({
     });
     const data = await res.json();
     if (data.user_workout_added) {
+      await mutate(profileDataSWRKey);
       // Optimistically update workout list for the selected date
       const dateKey = moment(dateTime).format("YYYY-MM-DD");
       setUserWorkoutList((prev) => ({

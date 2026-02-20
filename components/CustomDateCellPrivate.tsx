@@ -3,11 +3,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { DateCellWrapperProps } from 'react-big-calendar';
 import moment from 'moment';
+import { mutate } from 'swr';
 import WeightCell from './customDateCellPrivate/WeightCell';
 import WorkoutCell from './customDateCellPrivate/WorkoutCell';
 import GradeCell from './customDateCellPrivate/GradeCell';
 import CommentCell from './customDateCellPrivate/CommentCell';
 import MacrosCell from './customDateCellPrivate/MacrosCell';
+import { profileDataSWRKey } from '@/lib/profileDataSWR';
 
 interface MacroTotals {
     calories: number;
@@ -124,6 +126,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                     ...prev,
                     [dateKey]: '',
                 }));
+                await mutate(profileDataSWRKey);
             } catch (error) {
                 console.error('Error saving weight:', error);
             }  finally {
@@ -172,6 +175,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                 ...prev,
                 [dateKey]: weightNumber.toString(),
             }));
+            await mutate(profileDataSWRKey);
 
         } catch (error) {
             console.error('Error saving weight:', error);
@@ -216,6 +220,9 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                         grade: commentObjDraft.grade
                     }
                 }));
+                if (what === 'grade') {
+                    await mutate(profileDataSWRKey);
+                }
 
             }else{
                 // console.log('Message: ' + data.message);
@@ -263,6 +270,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                         delete next[dateKey];
                         return next;
                     });
+                    await mutate(profileDataSWRKey);
             } catch (error) {
                 console.error('Error saving weight:', error);
             }   

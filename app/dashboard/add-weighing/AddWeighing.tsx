@@ -1,9 +1,11 @@
 'use client';
 import React, { useState } from 'react';
+import { mutate } from 'swr';
 
 import Toast from '@/components/Toast';
 import { globalSettings } from '@/lib/globalSettings';
 import { getCurrentDateTime } from '@/lib/getCurrentDateTime';
+import { profileDataSWRKey } from '@/lib/profileDataSWR';
 
 interface WeighingInputData {
     datetime_of_weighing: string;
@@ -39,6 +41,7 @@ const AddWeighing: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_weight_added) {
+            await mutate(profileDataSWRKey);
             setPopupData({ title: 'Message', message: data.message, time: globalSettings.frmTimeSuccess, show_popup: true });
             setDateTime('');
             setWeightVal('');

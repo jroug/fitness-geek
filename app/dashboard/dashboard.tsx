@@ -15,6 +15,7 @@ import workoutImage from '../../public/images/workout-complete/workout.png';
 import minutesImage from '../../public/images/workout-complete/minutes.png';
 import kcalImage from '../../public/images/workout-complete/kcal.png';
 import useSWR from 'swr';
+import { profileDataSWRFetcher, profileDataSWRKey } from '@/lib/profileDataSWR';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -73,15 +74,12 @@ const Dashboard = () => {
         data: profileDataWithStats,
         error: profileError,
         isLoading: isProfileLoading,
-    } = useSWR<ProfileDataWithStats>(
-        '/api/profile-data?include_fitness_stats=1',
-        (url) => fetcher<ProfileDataWithStats>(url),
-        {
-            provider: () => new Map(),
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-        }
-    );
+    } = useSWR<ProfileDataWithStats>(profileDataSWRKey, (url) => profileDataSWRFetcher<ProfileDataWithStats>(url), {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false,
+        dedupingInterval: 300000,
+    });
 
     const {
         data: workouts = [],
@@ -273,7 +271,7 @@ const Dashboard = () => {
                     <p className="text-sm uppercase tracking-[0.2em] text-cyan-200">Fitness Geek Dashboard</p>
                     <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                         <div>
-                            <h1 className="text-3xl font-bold leading-tight md:text-4xl">Welcome back, {displayName}</h1>
+                            <h1 className="text-3xl font-bold leading-tight md:text-4xl">Hi, {displayName}</h1>
                             <p className="mt-2 text-sm text-cyan-100 md:text-base">
                                 {age !== null ? `Age ${age}` : 'Age not set'}
                                 {' · '}Stay consistent and track this week&apos;s progress.

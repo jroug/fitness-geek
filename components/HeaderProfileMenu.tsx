@@ -3,8 +3,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import useSWR from 'swr';
 import profileImage from '@/public/images/main-img/profile-img.png';
 import card_down from '@/public/svg/card-down.svg';
+import { profileDataSWRFetcher, profileDataSWRKey } from '@/lib/profileDataSWR';
 
 type ProfileSummary = {
   first_name: string;
@@ -13,18 +15,32 @@ type ProfileSummary = {
   profile_picture: string;
 };
 
-const profileDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/profile-data`;
-
 export default function HeaderProfileMenu() {
   const router = useRouter();
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
-  const [profileSummary, setProfileSummary] = useState<ProfileSummary>({
+  const defaultProfileSummary: ProfileSummary = {
     first_name: '',
     last_name: '',
     email: '',
     profile_picture: '',
-  });
+  };
+  const { data: profileData } = useSWR<Record<string, unknown>>(
+    profileDataSWRKey,
+    (url) => profileDataSWRFetcher<Record<string, unknown>>(url),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+      revalidateIfStale: false,
+      dedupingInterval: 300000,
+    },
+  );
+  const profileSummary: ProfileSummary = {
+    first_name: String(profileData?.first_name ?? defaultProfileSummary.first_name),
+    last_name: String(profileData?.last_name ?? defaultProfileSummary.last_name),
+    email: String(profileData?.email ?? defaultProfileSummary.email),
+    profile_picture: String(profileData?.profile_picture ?? defaultProfileSummary.profile_picture),
+  };
 
   const handleLogout = async () => {
     const res = await fetch('/api/logout', {
@@ -50,30 +66,6 @@ export default function HeaderProfileMenu() {
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
-
-  useEffect(() => {
-    const fetchProfileSummary = async () => {
-      try {
-        const response = await fetch(profileDataFetchUrl, {
-          method: 'GET',
-          credentials: 'include',
-        });
-
-        if (!response.ok) return;
-        const data = await response.json();
-        setProfileSummary({
-          first_name: String(data?.first_name ?? ''),
-          last_name: String(data?.last_name ?? ''),
-          email: String(data?.email ?? ''),
-          profile_picture: String(data?.profile_picture ?? ''),
-        });
-      } catch (error) {
-        console.error('Failed to fetch profile summary:', error);
-      }
-    };
-
-    fetchProfileSummary();
   }, []);
 
   const profileFullName = `${profileSummary.first_name} ${profileSummary.last_name}`.trim() || 'My Profile';

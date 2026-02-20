@@ -95,7 +95,9 @@ const SideBar = () => {
 
     useEffect(() => {
         // console.log('useEffect sidebar');
-        document.body.classList.add('open-sidebar');
+        if (window.innerWidth>=600)
+            document.body.classList.add('open-sidebar');
+        
         return () => {
             document.body.classList.remove('open-sidebar');
         };

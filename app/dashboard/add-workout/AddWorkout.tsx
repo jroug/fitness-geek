@@ -7,7 +7,8 @@ import { useSearchParams } from 'next/navigation';
 import Toast from '@/components/Toast';
 import { globalSettings } from '@/lib/globalSettings';
 import { getCurrentDateTime } from '@/lib/getCurrentDateTime';
-import useSWR from 'swr';
+import useSWR, { mutate } from 'swr';
+import { profileDataSWRKey } from '@/lib/profileDataSWR';
 
 const fetcher = (url: string) =>
     fetch(url, { credentials: 'include' }).then((res) => {
@@ -70,6 +71,7 @@ const AddWorkout: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_workout_added) {
+            await mutate(profileDataSWRKey);
             setPopupData({ title: 'Message', message: data.message, time: globalSettings.frmTimeSuccess, show_popup: true });
             setDateTime('');
             setWorkoutSelected({
