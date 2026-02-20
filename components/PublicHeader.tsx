@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const PublicHeader = () => {
     return (     
-        <header id="top-header" className="bg-white  py-4">
+        <header id="top-header-public" className="bg-white  py-4">
         <div className="justify-between header-wrap space-between">
           <div className="flex header-name justify-start">
             <Link href="/" >

@@ -76,10 +76,12 @@ paragraph p: #555658, #FB4945, #00A266
 
   --theme-color: #4C62AF;
 
-  --theme-width: 1020px;
+  --theme-width: 100%;
+  --dash-max-width: 1600px;
   --form-width: 700px;
 
-  --font-main: "Zen Dots", sans-serif;
+  /* --font-main: "Zen Dots", sans-serif; */
+  --font-main: "DM Sans", sans-serif;
 }
 
 .font-main{
@@ -121,6 +123,8 @@ body {
     /* max-width: 600px; */
     margin: 0 auto;
     height: 100%;
+    background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+    /* background-color: red; */
 }
 svg{
     vertical-align: middle;
@@ -262,7 +266,7 @@ ul{
 #account-upgrade-processing-main .bank-img,
 .skip-btn-form a,
 .continue-btn-form a,
-#homescreen-main .slick-custom-arrow,
+#dashboard-main .slick-custom-arrow,
 .slider-sec-btn a,
 #splash-screen-page,
 li.list.active,
@@ -306,6 +310,8 @@ li.list.active,
 .site-content {
     max-width: var(--theme-width);
     margin: 0 auto;
+    --tw-bg-opacity: 1;
+    padding-top:1.5rem;
 }
 
 .site-content.form-width {
@@ -318,9 +324,13 @@ li.list.active,
     max-width: 100%;
 }
 #top-header{
-    max-width: var(--theme-width);
+    width: 100%;
+    /* max-width: var(--theme-width); */
     margin: 0 auto;
 }
+
+
+ 
 
 .calendar-link-wrapper{
     max-width: var(--theme-width);
@@ -341,25 +351,71 @@ header {
     align-items: center;
     column-gap: 12px;
     justify-content: space-between;
-    height:40px;
+    min-height: 52px;
 }
 .header-back {
-    width: 24px;
-    height: 24px;
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
 }
 .header-back a {
-    width: 24px;
-    height: 24px;
+    width: 100%;
+    height: 100%;
     display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #f1f5f9;
+    transition: background-color 0.2s ease;
+}
+.header-back a:hover {
+    background: #e2e8f0;
+}
+.header-logo-home {
+    flex-shrink: 0;
+}
+.header-logo-home a {
+    display: inline-flex;
+    align-items: center;
+}
+.header-logo-img {
+    display: block;
+    width: auto;
+    height: 42px;
 }
 .header-name{
     width:100%;
     text-align:center;
+    padding: 0 8px;
 }
 .header-name p,
 .friend-no,
 .billing-price{
-    margin-top: 4px;
+    margin-top: 0;
+}
+.header-name p{
+    color: #0f172a;
+    font-family: "DM Sans";
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+    letter-spacing: 0.01em;
+}
+.home-setting button{
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 10px;
+    background: #f1f5f9;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.home-setting button:hover{
+    background: #e2e8f0;
 }
 #delete-deactivate-main .custom-radio {
     position: relative;
@@ -479,7 +535,7 @@ header {
 #wokout-category1-main .workout-time p,
 #single-workout-overview-main .contact-txt,
 .animation-content p,
-#homescreen-main .focus-content p,
+#dashboard-main .focus-content p,
 #stomach-main .contact-txt p
 {
     color: var(--5, #555658);
@@ -532,8 +588,8 @@ header {
     margin: 0 auto;
 }
 .main-img-top img,
-#homescreen-main .main-img-top img,
-#homescreen-main .main-img-bottom img{
+#dashboard-main .main-img-top img,
+#dashboard-main .main-img-bottom img{
     width: 100%;
 }
 
@@ -592,7 +648,6 @@ header {
 .workout-time,
 #wokout-category1-main .workout-btn,
 #discover-workout-main .workout-btn,
-.home-setting,
 #setting-main .contact-star,
 #payment-method-main .delete-select,
 #wokout-search-main .workout-btn,
@@ -809,15 +864,22 @@ textarea {
 #enter-otp-main,
 #line-chart-main,
 #area-chart-main,
-#bar-chart-main,
-#homescreen-main
+#bar-chart-main
 {
     padding-bottom: 135px;
 }
-#homescreen-main{
+#dashboard-main{
     padding-bottom: 160px;
     overflow-x: hidden;
 }
+
+
+
+
+#dashboard-main .dash-main-div{
+    max-width: var(--dash-max-width);
+}
+
 .concentric-circles {
     position: relative;
     width: 300px;
@@ -1503,6 +1565,68 @@ div#ui-datepicker-div {
     padding: 11px;
     display: flex;
 }
+.enter-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 45%, #ffffff 100%);
+}
+.enter-page .enter-main {
+    padding-bottom: 32px;
+}
+.enter-page .let-you-middle-wrap {
+    margin-top: 8px;
+    border-radius: 20px;
+    background: #ffffff;
+    padding: 24px 18px;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+}
+.enter-page .middle-first p {
+    color: #4b5563;
+}
+.enter-page .enter-form {
+    margin-top: 26px;
+}
+.enter-page .form-details-sign-in {
+    border-color: #e2e8f0 !important;
+    background: #f8fafc;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.enter-page .form-details-sign-in:focus-within {
+    border-color: var(--theme-color) !important;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(166, 204, 58, 0.22);
+}
+.enter-page .form-details-sign-in.border-error {
+    background: #fff7f7;
+    box-shadow: none;
+}
+.enter-page .password-btn .enter-submit-btn {
+    border: 0;
+    border-radius: 12px;
+    padding: 13px 16px;
+    text-transform: none;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    background: linear-gradient(135deg, #12151c 0%, #2f3e51 100%);
+}
+.enter-page .password-btn .enter-submit-btn:hover {
+    filter: brightness(1.06);
+}
+.enter-page .login-error-message {
+    min-height: 20px;
+    color: #ef4444;
+}
+.enter-page #let-you-footer {
+    position: static;
+    max-width: 100%;
+    padding: 14px 0 0;
+    background: transparent;
+}
+@media only screen and (max-width: 480px) {
+    .enter-page .let-you-middle-wrap {
+        border-radius: 16px;
+        padding: 20px 14px;
+    }
+}
 .sign-in-custom-input {
     border: none;
     background: transparent;
@@ -1866,7 +1990,7 @@ div#ui-datepicker-div {
     margin-right: -12px;
  }
 
-#homescreen-main .home-second-wrap {
+#dashboard-main .home-second-wrap {
     display: flex;
     column-gap: 12px;
 }
@@ -1877,14 +2001,14 @@ div#ui-datepicker-div {
 .focus-content img {
   margin:auto;
 }
-#homescreen-main .home-second{
+#dashboard-main .home-second{
     margin-top: 70px;
 }
  
-#homescreen-main .slick-list{
+#dashboard-main .slick-list{
     margin-left: 12px;
 }
-#homescreen-main .slick-custom-arrow {
+#dashboard-main .slick-custom-arrow {
     position: absolute;
     transform: translateY(-50%);
     -webkit-transform: translateY(-50%);
@@ -1897,6 +2021,12 @@ div#ui-datepicker-div {
     color: #000;
 }
 
+#dashboard-main .slick-slider .slick-track,
+#dashboard-main .slick-slider .slick-list
+{
+    padding-top:5px;
+    padding-bottom:25px;
+}
 
 /************************ 32.Bottom Tabbar Css ***************************/
 .bottom-menu-svg-main {
@@ -2207,23 +2337,23 @@ li.list.active i {
 .diffrent-chat-dropdown.show {
     display: block;
 }
-#homescreen-main .slick-custom-arrow-right {
+#dashboard-main .slick-custom-arrow-right {
     right: 40%;
-    bottom: -30%;
+    bottom: -25px;
 }
-#homescreen-main .slick-custom-arrow-left {
+#dashboard-main .slick-custom-arrow-left {
     left: 40%;
-    bottom: -30%;
+    bottom: -25px;
 }
 
 @media only screen and (max-width: 600px)  {
-    #homescreen-main .slick-custom-arrow-right {
+    #dashboard-main .slick-custom-arrow-right {
         right: 30%;
-        bottom: -30%;
+        bottom: -25px;
     }
-    #homescreen-main .slick-custom-arrow-left {
+    #dashboard-main .slick-custom-arrow-left {
         left: 30%;
-        bottom: -30%;
+        bottom: -25px;
     }
 }
  
@@ -2704,7 +2834,7 @@ ul.nav.nav-tabs.focus-tab-main{
     border-radius: 17%;
     border: 7px solid #F5F5F5;
 }
-#homescreen-main .slick-slide{
+#dashboard-main .slick-slide{
     padding: 0 0px;
     width:210px;
 }
@@ -3389,12 +3519,12 @@ ul.nav.nav-tabs.focus-tab-main{
 .menu-sidebar{
     z-index: 20;
     position: fixed;
-    left: -280px; /* Hidden off the left side */
-    width:280px;
+    left: -300px; /* Hidden off the left side */
+    width: 300px;
     top: 0;
     height: 100%; 
     transition: left 0.3s ease;
-    background-color: #4C62AF;
+    background-color: #ffffff;
     padding:10px;
 }
 
@@ -3403,20 +3533,64 @@ body.open-sidebar .menu-sidebar {
     left: 0; /* Slide in */
 }
 
+
 .header-overlay {
     display:none; 
 }
 
-body.open-sidebar .header-overlay {
-    display:block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 10;
+body.open-sidebar .site-content,
+body.open-sidebar #top-header {
+    width: calc(100% - 300px);
+    max-width: none;
+    margin-left: 300px;
+    margin-right: 0;
 }
+
+body.open-sidebar .home-setting {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    body.open-sidebar .header-overlay {
+        display:block;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 20;
+    }
+}
+
+/* @media (min-width: 1024px) {
+ 
+
+ 
+
+    body.has-sidebar .home-setting {
+        display: none;
+    }
+
+    body.has-sidebar.sidebar-closed .menu-sidebar {
+        left: -300px !important;
+    }
+
+    body.has-sidebar.sidebar-closed .site-content,
+    body.has-sidebar.sidebar-closed #top-header,
+    body.has-sidebar.sidebar-closed .calendar-link-wrapper {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    body.has-sidebar.sidebar-closed .home-setting {
+        display: block;
+    }
+
+    body.has-sidebar .header-overlay {
+        display: none !important;
+    }
+} */
 
 .landing-page-content h2{
     font-weight: 600;
@@ -3674,10 +3848,10 @@ body.open-sidebar .header-overlay {
 
 /* framer motion wrapper divs */
 .outer-motion-div{
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 .inner-motion-div{
-    background-color: #fff;
+    /* background-color: #fff; */
 }
 
 /* button green */
@@ -3855,13 +4029,13 @@ button.green-btn-small{
     font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 600;
     line-height: 24px;
     text-transform: uppercase;
 }
 
 .black-link-btn{
-        padding:10px;
+    padding:10px;
     margin:0 5px;
     background-color: var(--2, #000000);
     border-radius:12px;
@@ -3869,7 +4043,7 @@ button.green-btn-small{
     font-family: var(--font-main);
     font-size: 14px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: bold;
     line-height: 28px;
     text-transform: uppercase;
 }
@@ -3883,7 +4057,7 @@ button.green-btn-small{
     font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: bold;
     line-height: 24px;
     text-transform: uppercase;
 }
@@ -3896,7 +4070,7 @@ button.green-btn-small{
     font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: bold;
     line-height: 24px;
     text-transform: uppercase;
 }
@@ -3909,7 +4083,7 @@ button.green-btn-small{
     font-family: var(--font-main);
     font-size: 12px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: bold;
     line-height: 24px;
     text-transform: uppercase;
 }
@@ -3970,11 +4144,7 @@ button.green-btn-small{
 
 /* footer */
 .footer-bar{
-    width:100%;
-    height:5px;
-    background-color:black;
-    position: relative;
-    bottom:0;
+ 
 }
 
 
@@ -4208,3 +4378,59 @@ textarea.custom-edit-input {
         font-size: 12px !important;
     }
 }   
+
+/* Modern calendar visual overrides */
+.calendar-modern .rbc-calendar {
+    background: #ffffff;
+    color: #0f172a;
+}
+
+.calendar-modern .rbc-toolbar {
+    margin-bottom: 14px !important;
+    padding: 8px;
+    border-radius: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+}
+
+.calendar-modern .rbc-toolbar button {
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #ffffff;
+    color: #334155;
+    font-family: "DM Sans", sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 6px 10px;
+}
+
+.calendar-modern .rbc-toolbar button.rbc-active,
+.calendar-modern .rbc-toolbar button:hover {
+    background: #0f172a;
+    border-color: #0f172a;
+    color: #ffffff;
+}
+
+.calendar-modern .rbc-toolbar-label {
+    font-family: "DM Sans", sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: #0f172a;
+}
+
+.calendar-modern .rbc-time-view {
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    overflow: hidden;
+}
+
+.calendar-modern .rbc-time-header-content,
+.calendar-modern .rbc-header {
+    background: #f8fafc;
+    color: #334155;
+    font-weight: 700;
+}
+
+.calendar-modern .rbc-time-content {
+    border-top: 1px solid #e2e8f0;
+}

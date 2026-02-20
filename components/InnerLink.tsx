@@ -10,16 +10,17 @@ interface InnerLinkProps {
 
 const InnerLink: React.FC<InnerLinkProps> = ({ title, goToUrl }) => {
     return (     
-        <Link href={goToUrl} className="inner-link-wrap flex flex-row justify-end items-center mt-[20px]">
-            <div className="flex">
-                <div className="inner-link-name mr-[10px]">
-                    <p className="sm-font-zen fw-400">{title}</p>
+        <div className="calendar-link-wrapper mt-5 flex justify-end px-4 md:px-6">
+            <Link
+                href={goToUrl}
+                className="inline-flex items-center gap-2 rounded-md px-1 py-1 text-sm font-semibold text-slate-600 transition hover:text-cyan-700"
+            >
+                <span>{title}</span>
+                <div className="flex h-5 w-5 items-center justify-center">
+                    <Image src={right_arrow} alt={`${title} link`} className="h-3.5 w-3.5 opacity-80" />
                 </div>
-                <div className="home-setting">
-                    <Image src={right_arrow} alt="setting-icon" />
-                </div>
-            </div>
-        </Link>
+            </Link>
+        </div>
     );
 }
 

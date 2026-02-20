@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Header from '@/components/Header';
 import SimpleContent from '@/components/SimpleContent';
 
 export default async function about() {
@@ -17,7 +16,6 @@ export default async function about() {
  
     return (
         <main className="site-content">
-            <Header backUrl="/dashboard" title={pageTitle}  />
             <SimpleContent pageContent={pageContent} />
         </main>
     );

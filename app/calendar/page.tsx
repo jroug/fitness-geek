@@ -1,6 +1,4 @@
 // import { headers } from "next/headers";
-import Header from "@/components/Header";
-import SideBar from "@/components/SideBar";
 
 import CalendarPrivatePageDesktop from "./CalendarPrivatePageDesktop";
 // import CalendarPrivatePageMobile from "./CalendarHomePrivateMobile";
@@ -16,11 +14,9 @@ export default async function CalendarPage() {
   // console.log("User agent:", ua, "isMobile:", isMobile);
   return (
     <>
-      <Header backUrl="/dashboard" title="Calendar" />
-      <main className="site-content">
+      <main className="site-content full-width">
         <CalendarPrivatePageDesktop />
       </main>
-      <SideBar />
     </>
   );
 }

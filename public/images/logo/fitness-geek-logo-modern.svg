@@ -1,0 +1,35 @@
+<svg width="920" height="260" viewBox="0 0 920 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="fg_grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0F172A"/>
+      <stop offset="55%" stop-color="#0C4A6E"/>
+      <stop offset="100%" stop-color="#06B6D4"/>
+    </linearGradient>
+    <linearGradient id="fg_card" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F8FAFC"/>
+      <stop offset="100%" stop-color="#E2E8F0"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="8" y="8" width="244" height="244" rx="48" fill="url(#fg_grad)"/>
+  <rect x="22" y="22" width="216" height="216" rx="36" fill="url(#fg_card)" opacity="0.12"/>
+
+  <rect x="62" y="108" width="136" height="44" rx="22" fill="#E2E8F0"/>
+  <rect x="44" y="96" width="26" height="68" rx="10" fill="#94A3B8"/>
+  <rect x="190" y="96" width="26" height="68" rx="10" fill="#94A3B8"/>
+
+  <path d="M84 78H176" stroke="#E2E8F0" stroke-width="12" stroke-linecap="round"/>
+  <path d="M94 64C109 47 130 42 152 50" stroke="#67E8F9" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="148" cy="50" r="7" fill="#67E8F9"/>
+
+  <path d="M118 120H154" stroke="#0F172A" stroke-width="12" stroke-linecap="round"/>
+  <path d="M118 140H142" stroke="#0F172A" stroke-width="12" stroke-linecap="round"/>
+
+  <g fill="#0F172A">
+    <text x="290" y="118" font-family="'Zen Dots', 'DM Sans', sans-serif" font-size="74" font-weight="700" letter-spacing="2">FITNESS</text>
+    <text x="290" y="194" font-family="'Zen Dots', 'DM Sans', sans-serif" font-size="74" font-weight="700" letter-spacing="2">GEEK</text>
+  </g>
+
+  <rect x="288" y="206" width="250" height="12" rx="6" fill="#06B6D4"/>
+  <rect x="550" y="206" width="140" height="12" rx="6" fill="#0C4A6E" opacity="0.45"/>
+</svg>

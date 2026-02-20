@@ -1,51 +1,64 @@
-// import Image from "next/image";
 import Link from 'next/link';
-// import Loading from "../components/Loading";
-import PublicHeader from "@/components/PublicHeader";
-import PublicFooter from "@/components/PublicFooter";
+import PublicHeader from '@/components/PublicHeader';
+import PublicFooter from '@/components/PublicFooter';
 
- 
+type WpPage = {
+  id: number;
+  title?: { rendered?: string };
+  content?: { rendered?: string };
+};
+
 export default async function LandingPage() {
+  const wpApi = process.env.WORDPRESS_API_URL;
+  if (!wpApi) {
+    throw new Error('Missing WORDPRESS_API_URL env var');
+  }
 
-  // server side component no need to call node API
- 
-  const fetchLandingPageDataUrl = `${process.env.WORDPRESS_API_URL}/wp/v2/pages?slug=landingpage&_fields=id,title,content`;
-  // console.log('fetchLandingPageDataUrl', fetchLandingPageDataUrl);
-  const response = await fetch(fetchLandingPageDataUrl);
-  const data = await response.json();
-  const pageData = data[0];
-  // console.log('pageData', pageData);
-  
+  const fetchLandingPageDataUrl = `${wpApi.replace(/\/$/, '')}/wp/v2/pages?slug=landingpage&_fields=id,title,content`;
+  const response = await fetch(fetchLandingPageDataUrl, {
+    next: { revalidate: 3600 },
+  });
+
+  if (!response.ok) {
+    throw new Error(`Failed to fetch Landing page (${response.status})`);
+  }
+
+  const data = (await response.json()) as WpPage[];
+  const pageData = data?.[0];
+
+  const pageTitle = pageData?.title?.rendered ?? 'Fitness Geek';
+  const pageContent = pageData?.content?.rendered ?? '';
+
   return (
-    <main className="site-content">
-        {/* <Loading/> */}
-        <PublicHeader />
-        <div className="verify-email pb-20" id="about-us">
-          <div className="container mx-auto">
-            <div className="about-us-section-wrap">
-              <div className="about-us-screen-full border-b-2 border-gray-200">
-                <div className="max-w-4xl mx-auto bg-white rounded-lg ">
-                  <h2 className="text-4xl font-bold text-gray-900 mb-6 mt-4">{pageData.title.rendered}</h2>
-                  <p>I had some text for here… but you know what it’s all about.</p>
-                  <br/>
-                  <p>So what are you waiting for?</p>
-                  {/* <br/>
-                  <div className="flex justify-center">
-                    <Link href="/" className="black-link-btn">ENTER</Link>
-                  </div> */}
-                  <br/>
-                  <Link href="/users/enter" >
-                    <div className="landing-page-content" dangerouslySetInnerHTML={{ __html: pageData.content.rendered }} />
-                  </Link>
-                </div>
-              </div>
-              <PublicFooter />
-            </div>
+    <main className="site-content full-width bg-slate-50">
+      <PublicHeader />
+
+      <section className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6 md:px-6">
+        <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Fitness Geek</p>
+          <h1 className="mt-2 text-3xl font-bold md:text-4xl">{pageTitle}</h1>
+          <p className="mt-2 text-sm text-cyan-100 md:text-base">
+            Track workouts, food, and progress in one place.
+          </p>
+          <div className="mt-5">
+            <Link
+              href="/users/enter"
+              className="inline-flex items-center rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-100"
+            >
+              Enter App
+            </Link>
           </div>
         </div>
-		</main>
+
+        <div className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-8">
+          <div
+            className="landing-page-content text-slate-700 [&_a]:text-cyan-700 [&_a]:underline [&_h1]:mt-6 [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:text-slate-900 [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h3]:mt-4 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-slate-900 [&_li]:ml-5 [&_li]:list-disc [&_p]:mt-3 [&_p]:leading-7"
+            dangerouslySetInnerHTML={{ __html: pageContent }}
+          />
+        </div>
+      </section>
+
+      <PublicFooter />
+    </main>
   );
 }
-
-
- 

@@ -1,8 +1,6 @@
 "use client";
 
-import React, {  useCallback, useEffect, useState } from "react";
-// import Header from "@/components/Header";
-
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -15,16 +13,9 @@ import {
 import { Bar } from "react-chartjs-2";
 import { chart_colors } from "@/lib/globalSettings";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Title,
-  Tooltip,
-  Legend
-);
- 
-interface userChartData {
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+
+interface UserChartData {
   labels: string[];
   datasets: {
     label: string;
@@ -34,9 +25,8 @@ interface userChartData {
 }
 
 const ChartsWorkoutsPage: React.FC = () => {
-
   const [firstChartLoad, setFirstChartLoad] = useState<boolean>(false);
-  
+
   const [startDate, setStartDate] = useState<string>(() => {
     const today = new Date();
     const priorDate = new Date().setDate(today.getDate() - 30);
@@ -46,18 +36,18 @@ const ChartsWorkoutsPage: React.FC = () => {
     const today = new Date();
     return today.toISOString().split("T")[0];
   });
+
   const chartDataFetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-workout-data?startDate=${startDate}&endDate=${endDate}`;
-  
- 
 
   const options = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: "top" as const,
       },
       title: {
-        display: true,
+        display: false,
         text: "",
       },
     },
@@ -66,72 +56,65 @@ const ChartsWorkoutsPage: React.FC = () => {
         min: 0,
         max: 120,
         ticks: {
-          stepSize: 5, // optional but nice
+          stepSize: 5,
           callback: (value: string | number) => `${value} minutes`,
         },
       },
     },
   };
 
-
-  const [chartData, setChartData] = useState<userChartData>({
-  labels: [],
-  datasets: [
-    {
-      label: "",
-      data: [],
-      backgroundColor: [],
-    },
-  ],
-})
-
-
- 
+  const [chartData, setChartData] = useState<UserChartData>({
+    labels: [],
+    datasets: [
+      {
+        label: "",
+        data: [],
+        backgroundColor: [],
+      },
+    ],
+  });
 
   const getChartData = useCallback(async (): Promise<void> => {
-        const response = await fetch(chartDataFetchUrl, {
-            method: 'GET',
-            credentials: 'include',
-        });
+    const response = await fetch(chartDataFetchUrl, {
+      method: "GET",
+      credentials: "include",
+    });
 
-        const data: UserWorkoutDataForChart[] = await response.json();
-        // console.log(data);
+    const data: UserWorkoutDataForChart[] = await response.json();
 
-        // process data and populate helper arrays to fit chart data format
-        const _labels: string[] = [];
-        const _data: number[] = [];
-        const _backgroundColor: string[] = [];
-    
-        let storeMonth = -1;
-        data.forEach(item => {
-            const dateObj = new Date(item.date_of_workout);
-            const formattedDate = dateObj.toLocaleDateString('en-GB', {  day: '2-digit', month: 'long', year: 'numeric' });
-            // console.log("New month1:", dateObj.getMonth());
-            if (storeMonth === -1 || storeMonth !== dateObj.getMonth()){
-              storeMonth = dateObj.getMonth();
-              // console.log("storeMonth:", storeMonth);
-          
-            }
-            _labels.push(formattedDate);
-            _data.push(item.w_time);
-            _backgroundColor.push(chart_colors[storeMonth]);
-        });
+    const labels: string[] = [];
+    const values: number[] = [];
+    const backgroundColor: string[] = [];
 
+    let storeMonth = -1;
+    data.forEach((item) => {
+      const dateObj = new Date(item.date_of_workout);
+      const formattedDate = dateObj.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+      });
 
-        // console.log('processedData', processedData);
-        setChartData({
-          labels: _labels,
-          datasets: [
-            {
-              label: "Daily workout (minutes)",
-              data: _data,
-              backgroundColor: _backgroundColor,
-            },
-          ],
-        });
+      if (storeMonth === -1 || storeMonth !== dateObj.getMonth()) {
+        storeMonth = dateObj.getMonth();
+      }
 
+      labels.push(formattedDate);
+      values.push(item.w_time);
+      backgroundColor.push(chart_colors[storeMonth]);
+    });
+
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label: "Daily workout (minutes)",
+          data: values,
+          backgroundColor,
+        },
+      ],
+    });
   }, [chartDataFetchUrl]);
-
 
   useEffect(() => {
     if (!firstChartLoad) {
@@ -140,35 +123,36 @@ const ChartsWorkoutsPage: React.FC = () => {
     }
   }, [firstChartLoad, getChartData]);
 
-
   return (
-    <>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 chart-dates-filter-wrap flex items-center mt-[50px] mx-auto px-[30px]">
+    <section className="mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+      <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <div className="flex flex-col">
-            <label className="text-sm mb-1">Start date</label>
+            <label className="mb-1 text-sm font-semibold text-slate-700">Start date</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="border rounded px-3 py-2"
+              className="rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
               max={endDate}
             />
           </div>
 
           <div className="flex flex-col">
-            <label className="text-sm mb-1">End date</label>
+            <label className="mb-1 text-sm font-semibold text-slate-700">End date</label>
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="border rounded px-3 py-2"
+              className="rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
               min={startDate}
             />
           </div>
-          <div className="flex flex-col">
+
+          <div className="flex items-end">
             <button
               type="button"
-              className="green-btn mt-[25px] dateApplyBtn"
+              className="inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 md:w-auto"
               onClick={() => {
                 if (!startDate || !endDate) return;
                 if (startDate > endDate) return;
@@ -178,26 +162,17 @@ const ChartsWorkoutsPage: React.FC = () => {
               Apply
             </button>
           </div>
-      </div>
-      <div className="verify-email pb-20" id="charts-weight">
-        <div className="container mx-auto">
-          <div className="about-us-section-wrap">
-            <div className="about-us-screen-full border-b-2 border-gray-200 mt-4">
-              <div className="mx-auto bg-white rounded-lg mt-4 mb-6">
-                <div className="setting-bottom-img p-0 mt-16">
-                  <div className="verify-email-img-sec">
-                    <div className="main-img-top">
-                      <Bar options={options} data={chartData} />       
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
-    </>
+
+      <div className="mt-5 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
+        <h2 className="text-lg font-bold text-slate-900">Workout Duration</h2>
+        <div className="mt-4 h-[600px]">
+          <Bar options={options} data={chartData} />
+        </div>
+      </div>
+    </section>
   );
-}
+};
 
 export default ChartsWorkoutsPage;

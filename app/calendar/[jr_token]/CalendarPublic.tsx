@@ -6,7 +6,7 @@ import { checkAuthAndRedirect } from "@/lib/checkAuthAndRedirect";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Loader from "@/components/Loader";
+import Loading from "@/components/Loading";
 import CustomDateCell from '@/components/CustomDateCell';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
@@ -238,34 +238,44 @@ export default function CalendarPublic(props: { params: Params }) {
 
  
     if (loadingMeals) {
-        return <Loader />;
+        return <Loading />;
     }
 
     const currentDate = new Date();
 
     return (
-        <main className="site-content">
-            <div className="fixed w-full left-0 top-10" >
-                <h2 className="text-center font-bold text-2xl publish-btn-wrapper mx-auto" >{userDisplayName} Diet Calendar</h2>
-                <div className="w-full text-center mt-[10px]" >
-                    {
-                        isCurrentUserViewing
-                        ?
-                        <>
-                        <span>Comments are {isCommentsPublished ? 'Open' : 'Close'}</span>,&nbsp;&nbsp;
-                        <button type="button" className="green-btn-small" onClick={handlePublishingCommentsForCalendar}>
-                            {isCommentsPublished ? 'Close them' : 'Open them'}
-                        </button>
-                        </>
-                        :
-                        <></>
-                    }
+        <main className="site-content full-width bg-slate-50">
+            <section className="calendar-link-wrapper mx-auto mt-4 w-full max-w-7xl px-4 md:px-8">
+                <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
+                    <h2 className="text-center text-2xl font-bold text-slate-900">{userDisplayName} Diet Calendar</h2>
+                    <div className="mt-2 text-center text-sm text-slate-700">
+                        {isCurrentUserViewing ? (
+                            <>
+                                <span>
+                                    Comments are{' '}
+                                    <b className={isCommentsPublished ? 'text-emerald-700' : 'text-amber-700'}>
+                                        {isCommentsPublished ? 'Open' : 'Closed'}
+                                    </b>
+                                </span>
+                                {' · '}
+                                <button
+                                    type="button"
+                                    className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-slate-700"
+                                    onClick={handlePublishingCommentsForCalendar}
+                                >
+                                    {isCommentsPublished ? 'Close Comments' : 'Open Comments'}
+                                </button>
+                            </>
+                        ) : null}
+                    </div>
                 </div>
-            </div>
-            <div className="calendar-main-wrapper top-120px" >
-                <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main">
-                    <div className="padding-wrapper" >
-                        <Calendar
+            </section>
+
+            <section className="calendar-modern mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+                <div className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
+                    <div className="calendar-modern-shell overflow-x-auto">
+                        <div ref={calendarMainRef} className="min-w-[920px]">
+                            <Calendar
                             localizer={localizer}
                             defaultDate={new Date()}
                             // defaultView="week"
@@ -297,10 +307,11 @@ export default function CalendarPublic(props: { params: Params }) {
                                 timeGutterWrapper: CustomTimeGutter,    
                                 toolbar: CustomToolBarPublic
                             }}
-                        />
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
+            </section>
         </main>
     );
 }

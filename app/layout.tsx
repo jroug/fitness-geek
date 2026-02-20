@@ -3,6 +3,8 @@ import "./globals.css";
 import "../public/css/style.css"; 
 import "../public/css/all.min.css"; // Importing the CSS file directly
 import { Analytics } from "@vercel/analytics/react"
+import HeaderGate from "@/components/HeaderGate";
+import SidebarGate from "@/components/SidebarGate";
 // import PageAnimatePresence from '../components/PageAnimatePresence'
 // import BottomBar from "@/components/BottomBar";
 
@@ -26,7 +28,9 @@ export default function RootLayout({
         <link rel="manifest" href="/images/favicon/site.webmanifest" />
       </head>
       <body className="antialiased">
+        <HeaderGate />
         {children}
+        <SidebarGate />
         {
           process.env.NEXT_PUBLIC_ENV_NAME === 'live' && <Analytics/> // Only load the analytics script in production
         }

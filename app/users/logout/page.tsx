@@ -18,8 +18,8 @@ const Page = () => {
 
                 if (res.ok) {
                     setLogoutStatus({
-                        title: 'Hasta lasagna.',
-                        message: "You're all safe and logged out. Enjoy the rest of your day.",
+                        title: 'You are logged out',
+                        message: 'Session closed successfully. See you next workout.',
                     });
                 } else {
                     setLogoutStatus({
@@ -35,28 +35,24 @@ const Page = () => {
                 });
             }
         })();
-    }, []); // Runs only on mount
+    }, []);
 
     return (
-        <main className="site-content">
+        <main className="site-content full-width bg-slate-50">
             <PublicHeader />
-            <div className="verify-email pb-20" id="logout">
-                <div className="container mx-auto">
-                    <div className="about-us-section-wrap">
-                        <div className="border-b-2 border-gray-200">
-                            <div className="logout-screen-full flex flex-col justify-center max-w-4xl mx-auto bg-white rounded-lg">
-                                <h2 className="text-4xl font-bold text-gray-900 mb-6 mt-4 text-center">
-                                    {logoutStatus.title}
-                                </h2>
-                                <p className="text-center">
-                                    {logoutStatus.message}
-                                </p>
-                            </div>
-                        </div>
-                        <PublicFooter />
-                    </div>
+            <section className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6 md:px-6">
+                <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
+                    <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Fitness Geek</p>
+                    <h1 className="mt-2 text-2xl font-bold md:text-3xl">Logout</h1>
+                    <p className="mt-2 text-sm text-cyan-100">Managing account session status.</p>
                 </div>
-            </div>
+
+                <div className="mt-6 rounded-2xl bg-white p-6 text-center shadow-sm ring-1 ring-slate-200 md:p-10">
+                    <h2 className="text-3xl font-bold text-slate-900">{logoutStatus.title}</h2>
+                    <p className="mx-auto mt-3 max-w-2xl text-slate-600">{logoutStatus.message}</p>
+                </div>
+            </section>
+            <PublicFooter />
         </main>
     );
 };

@@ -64,7 +64,7 @@ const SignIn: React.FC = () => {
     };
 
     return (
-        <main className="site-content form-width">
+        <main className="site-content form-width enter-page">
             <header id="top-header" className="border-0">
                 <div className="header-wrap">
                     <div className="header-back">
@@ -75,7 +75,7 @@ const SignIn: React.FC = () => {
                 </div>
             </header>
 
-            <div className="verify-email pb-20" id="sign-up-main">
+            <div className="verify-email pb-20 enter-main" id="sign-up-main">
                 <div className="container mx-auto">
                     <div className="let-you-middle-wrap text-center">
                         <div className="middle-first mt-6">
@@ -89,7 +89,7 @@ const SignIn: React.FC = () => {
                                 Sign in now to get access to personalized workouts and achieve your fitness goals.
                             </p>
                         </div>
-                        <form className="mt-8" onSubmit={handleSignInSubmit} >
+                        <form className="mt-8 enter-form" onSubmit={handleSignInSubmit} >
                             <div className={"form-details-sign-in flex items-center px-4 py-2 " + (loginErrorBorder ? " border-error" : "border") }>
                                 <span>
                                     <Image src={mail_icon} alt="mail-icon" />
@@ -117,17 +117,17 @@ const SignIn: React.FC = () => {
                                 <i className="fas fa-eye-slash" id="eye" onClick={handleShowHidePassword}></i>
                             </div>
                             <div className="password-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">{loginButtonText}</button>
+                                <button type="submit" className="enter-submit-btn">{loginButtonText}</button>
                             </div>
                         </form>
                         <div className="mt-4">
-                            <p className="text-red-500 text-sm font-normal">{loginErrorMessage}</p>
+                            <p className="login-error-message text-sm font-normal">{loginErrorMessage}</p>
                         </div>
                         <footer id="let-you-footer">
                             <div className="block-footer mt-4">
                                 <p className="text-base font-normal text-center">
                                     Don&#39;t have an account? &nbsp;
-                                    <Link href="/users/sign-up" className="font-medium text-black underline">Sign Up</Link>
+                                    <Link href="/users/join" className="font-medium text-black underline">Sign Up</Link>
                                 </p>
                             </div>
                         </footer>

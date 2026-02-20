@@ -1,21 +1,15 @@
 'use client';
 
 import React from 'react';
-import Link from 'next/link';
 import Image from "next/image";
-import left_arrow from "../public/svg/black-left-arrow.svg";
-import settings_icon from "../public/svg/setting-icon.svg";
-import header_logo from "../public/images/splashscreen/header-logo.png";
+import Link from 'next/link';
+// import left_arrow from "../public/svg/black-left-arrow.svg";
+import burger_menu_icon from "../public/svg/burger-menu.svg";
+import calendar_icon from '@/public/svg/calendar-icon.svg';
+import HeaderProfileMenu from '@/components/HeaderProfileMenu';
+// import header_logo from "../public/images/logo/fitness-geek-logo-fresh.svg";
 
-interface HeaderProps {
-    title?: string;
-    backUrl?: string;
-    homeUrl?: string;
-}
-
-
-const Header: React.FC<HeaderProps> = ({ title, backUrl, homeUrl }) => {
-
+const Header: React.FC = () => {
     const handleHomeSettingsClick = () => {
         const sidebar = document.querySelector('.menu-sidebar') as HTMLElement;
         if (sidebar){ // sidebar is in a diffrent component so it needs to exist
@@ -29,37 +23,26 @@ const Header: React.FC<HeaderProps> = ({ title, backUrl, homeUrl }) => {
             document.body.classList.remove('open-sidebar');
         }
     }
- 
+
     return (  
         <>   
             <div className="header-overlay" onClick={handleOverlayClick}></div>
             <header id="top-header" >
                 <div className="header-wrap">
-
-                    {homeUrl && (
-                        <div className="header-logo-home">
-                            <Link href={homeUrl}>
-                                <Image src={header_logo} alt="back-btn-icon" />
-                            </Link>
-                        </div>
-                    )}
-
-                    {backUrl && (
-                        <div className="header-back">
-                            <Link href={backUrl}>
-                                <Image src={left_arrow} alt="back-btn-icon" className="scale13" />
-                            </Link>
-                        </div>
-                    )}
-
-                    {title && (
-                        <div className="header-name">
-                            <p className="sm-font-zen fw-400">{title}</p>
-                        </div>
-                    )}
-
-                    <div className="home-setting">
-                        <Link href="#" onClick={handleHomeSettingsClick} ><Image src={settings_icon} alt="setting-icon" className="scale13"/></Link>
+                    <div className="home-setting relative !z-10">
+                        <button type="button" onClick={handleHomeSettingsClick} aria-label="Open sidebar">
+                            <Image src={burger_menu_icon} alt="menu-icon" className="h-5 w-5"/>
+                        </button>
+                    </div>
+                    <div className="ml-auto mr-2 flex items-center gap-2">
+                        <Link
+                            href="/calendar"
+                            aria-label="Go to calendar"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 p-2 transition hover:bg-slate-200"
+                        >
+                            <Image src={calendar_icon} alt="calendar-shortcut-icon" className="h-5 w-5" />
+                        </Link>
+                        <HeaderProfileMenu />
                     </div>
                 </div>
             </header>

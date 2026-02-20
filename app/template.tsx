@@ -2,7 +2,6 @@
 
 import { ReactNode } from 'react';
 import { motion } from "framer-motion";
- 
 
 interface TemplateProps {
     children: ReactNode;
@@ -22,18 +21,19 @@ const pageTransition = {
 // console.log('env:' + process.env.NEXT_PUBLIC_ENV_NAME);
 
 export default function Template({ children }: TemplateProps) {
-
     return (
-        <motion.div 
-            key={"landing"}  // Key based on pathname to trigger animation on route change
-            initial="initial"
-            animate="enter"
-            exit="exit"
-            variants={regularVariants}
-            transition={pageTransition}
-            className="inner-motion-div"
-        >
-            {children}
-        </motion.div>
+        <>
+            <motion.div 
+                key={"landing"}  // Key based on pathname to trigger animation on route change
+                initial="initial"
+                animate="enter"
+                exit="exit"
+                variants={regularVariants}
+                transition={pageTransition}
+                className="inner-motion-div"
+            >
+                {children}
+            </motion.div>
+        </>
     );
 }

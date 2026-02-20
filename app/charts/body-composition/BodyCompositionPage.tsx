@@ -1,16 +1,13 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import Loading from '@/components/Loader';
+import Loading from '@/components/Loading';
 
 const BodyCompositionPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
 
-    const [startDate, setStartDate] = useState<string>(() => {
-        const today = new Date();
-        return `2024-04-01`;
-    });
+    const [startDate, setStartDate] = useState<string>(() => '2024-04-01');
 
     const [endDate, setEndDate] = useState<string>(() => {
         const today = new Date();
@@ -78,66 +75,58 @@ const BodyCompositionPage: React.FC = () => {
         return formatNumber(Number(current) - Number(prev));
     };
 
-    if (sortedRows.length === 0) {
-        return (
-            <div className="verify-email pb-20" id="bodyfat-page">
-                <div className="container mx-auto">
-                    <div className="about-us-section-wrap">
-                        <h1 className="mx-8 mt-16">Body Composition</h1>
-                        <div className="mx-8 mt-10">No records found.</div>
+    return (
+        <section className="mx-auto w-full max-w-7xl px-4 pb-24 md:px-8" id="bodyfat-page">
+            <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+                    <div className="flex flex-col">
+                        <label className="mb-1 text-sm font-semibold text-slate-700">Start date</label>
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            className="rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                            max={endDate}
+                        />
+                    </div>
+
+                    <div className="flex flex-col">
+                        <label className="mb-1 text-sm font-semibold text-slate-700">End date</label>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                            className="rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                            min={startDate}
+                        />
+                    </div>
+
+                    <div className="flex items-end">
+                        <button
+                            type="button"
+                            className="inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 md:w-auto"
+                            onClick={() => {
+                                if (!startDate || !endDate) return;
+                                if (startDate > endDate) return;
+                                fetchData();
+                            }}
+                        >
+                            Apply
+                        </button>
                     </div>
                 </div>
             </div>
-        );
-    }
 
-    return (
-        <div className="verify-email pb-20" id="bodyfat-page">
-            <div className="container mx-auto">
-                <div className="about-us-section-wrap">
+            <div className="mt-5 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
+                <h2 className="text-lg font-bold text-slate-900">Body Composition History</h2>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 chart-dates-filter-wrap flex items-center mt-[30px] mx-auto">
-                        <div className="flex flex-col">
-                            <label className="text-sm mb-1">Start date</label>
-                            <input
-                                type="date"
-                                value={startDate}
-                                onChange={(e) => setStartDate(e.target.value)}
-                                className="border rounded px-3 py-2"
-                                max={endDate}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <label className="text-sm mb-1">End date</label>
-                            <input
-                                type="date"
-                                value={endDate}
-                                onChange={(e) => setEndDate(e.target.value)}
-                                className="border rounded px-3 py-2"
-                                min={startDate}
-                            />
-                        </div>
-
-                        <div className="flex flex-col">
-                            <button
-                                type="button"
-                                className="green-btn mt-[25px] dateApplyBtn"
-                                onClick={() => {
-                                    if (!startDate || !endDate) return;
-                                    if (startDate > endDate) return;
-                                    fetchData();
-                                }}
-                            >
-                                Apply
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="mx-8 mt-10 overflow-x-auto">
+                {sortedRows.length === 0 ? (
+                    <p className="mt-4 text-sm text-slate-600">No records found for this period.</p>
+                ) : (
+                    <div className="mt-4 overflow-x-auto">
                         <table className="bodyfat-table min-w-[1200px] w-full border-collapse">
                             <thead>
-                                <tr className="">
+                                <tr>
                                     <th className="border px-2 py-2 text-left">Ημερομηνία</th>
                                     {sortedRows.map((row) => (
                                         <th key={row.id} className="border px-2 py-2 text-center">
@@ -234,9 +223,9 @@ const BodyCompositionPage: React.FC = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                )}
             </div>
-        </div>
+        </section>
     );
 };
 

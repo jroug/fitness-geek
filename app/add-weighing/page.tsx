@@ -1,18 +1,12 @@
 import AddWeighing from "./AddWeighing";
-import Header from '@/components/Header';
-import SideBar from '@/components/SideBar';
-import InnerLink from "@/components/InnerLink";
  
 const PageWeighing = () => {
  
     return (
         <>
-            <Header title="Add Weighing" backUrl="/dashboard" />
             <main className="site-content form-width">
-                <InnerLink title="Calendar" goToUrl="/calendar" />
                 <AddWeighing  />
             </main>
-            <SideBar />
         </>
     );
 

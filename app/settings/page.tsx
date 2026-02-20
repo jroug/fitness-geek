@@ -21,12 +21,10 @@ import setting13 from "../../public/images/setting/setting13.svg";
 // import setting16 from "../../public/images/setting/setting16.svg";
 // import setting17 from "../../public/images/setting/setting17.svg";
 
-import Header from "../../components/Header";
 
 const Settings = () => {
     return (
         <main className="site-content">
-            <Header title="Settings" backUrl="/dashboard" />
             <div className="verify-email pb-20" id="setting-main">
                 <div className="container">
                     <div className="setting-main-wrap">

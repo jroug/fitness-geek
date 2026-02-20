@@ -6,7 +6,7 @@ import useSWR, { mutate } from "swr";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import Loading from "@/components/Loader";
+import Loading from "@/components/Loading";
 import CustomDateCell from '@/components/CustomDateCellPrivate';
 import CustomTimeGutter from '@/components/CustomTimeGutter';
 import CustomEvent from '@/components/CustomEvent';
@@ -429,11 +429,10 @@ const CalendarHomePage: React.FC = () => {
         <>
             <TopBar clickHandler={handleSettingsClick} isPublished={isPublished} />
             <SettingsBar settingsVisible={settingsVisible} handleSettingsClick={handleSettingsClick} isPublished={isPublished} handlePublishingCalendar={handlePublishingCalendar} calendarPageUrl={calendarPageUrl} magicLoginForContributorUrl={magicLoginForContributorUrl} handleCopyLink={handleCopyLink} />
-            <div className="calendar-wrapper" >
-                <div className="calendar-main-wrapper" >
-                    {/* <div ref={calendarMainRef} className="pb-20 calendar-main mx-auto" id="calendar-main"> */}
-                    <div className="pb-20 calendar-main mx-auto" id="calendar-main">
-                        <div className="padding-wrapper" >
+            <section className="calendar-modern mx-auto w-full  px-4 pb-24 md:px-8">
+                <div className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
+                    <div className="calendar-modern-shell overflow-x-auto">
+                        <div className="min-w-[920px]">
                             <Calendar
                                 localizer={localizer}
                                 date={calendarDate}
@@ -503,7 +502,7 @@ const CalendarHomePage: React.FC = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
             <PopupFormAddMeal
                 setPopupFormData={setPopupFormData}
                 popupFormData={popupFormData}

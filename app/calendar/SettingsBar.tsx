@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 interface SettingsBarProps {
     settingsVisible: boolean;
@@ -10,42 +10,70 @@ interface SettingsBarProps {
     handleCopyLink: (url: string) => void;
 }
 
-const SettingsBar = ({ settingsVisible, handleSettingsClick, isPublished, handlePublishingCalendar, calendarPageUrl, magicLoginForContributorUrl, handleCopyLink }: SettingsBarProps) => {
+const SettingsBar = ({
+    settingsVisible,
+    handleSettingsClick,
+    isPublished,
+    handlePublishingCalendar,
+    calendarPageUrl,
+    magicLoginForContributorUrl,
+    handleCopyLink,
+}: SettingsBarProps) => {
     return (
-        <div id="settings" className={`settings-link-wrapper ${settingsVisible ? '' : 'hidden'}`} >
-            <div className="calendar-link-container pb-10 pt-4 px-6" >
-                <div className="relative z-[100]">
-                    <button type="button" className="btn-settings-close text-reset" onClick={handleSettingsClick} />
+        <div className={`settings-link-wrapper ${settingsVisible ? '' : 'hidden'}`}>
+            <div className="calendar-link-container w-[92%] max-w-[640px] rounded-2xl bg-white px-5 pb-6 pt-5 shadow-xl ring-1 ring-slate-200">
+                <div className="mb-3 flex items-center justify-between">
+                    <h1 className="text-lg font-bold text-slate-900">Calendar Settings</h1>
+                    <button
+                        type="button"
+                        onClick={handleSettingsClick}
+                        className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-slate-100 text-slate-700 transition hover:bg-slate-200"
+                        aria-label="Close settings"
+                    >
+                        ×
+                    </button>
                 </div>
-                <h1 className="settings_title w-full pb-4 sm-font-zen fw-400 ">Calendar Settings</h1>
-                <h2 className="my-4 text-center">Status: <b>{isPublished ? 'Published' : 'Not Published'}</b></h2>
-                <button type="button" className="green-btn my-4 w-full" onClick={handlePublishingCalendar}>
-                            {isPublished ? 'Unpublish' : 'Publish'}
+
+                <p className="text-sm text-slate-700">
+                    Status:{' '}
+                    <span className={`font-semibold ${isPublished ? 'text-emerald-700' : 'text-amber-700'}`}>
+                        {isPublished ? 'Published' : 'Not Published'}
+                    </span>
+                </p>
+
+                <button
+                    type="button"
+                    className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700"
+                    onClick={handlePublishingCalendar}
+                >
+                    {isPublished ? 'Unpublish' : 'Publish'}
                 </button>
-                <div className="custom_margin order-3 lg:order-none mt-4 lg:mt-0" >
-                    {isPublished && (
-                        <div>
-                            <p>
-                                <span>Public URL: </span>
-                                <Link href={calendarPageUrl} target="_blank" className="underline">
-                                    click here!
-                                </Link>
-                            </p>
-                            <br/>
-                            <p>
-                                <span>Contributor URL: </span> <br className="show_on_mobile_only"/>
-                                <Link href={magicLoginForContributorUrl} target="_blank" className="underline" >
-                                    click here!
-                                </Link>
-                                &nbsp; - OR - &nbsp;
-                                <button type="button" onClick={() => handleCopyLink(magicLoginForContributorUrl)} className="underline" >
-                                    Copy to Clipboard
-                                </button>
-                            </p>
-                        </div>
-                    )}
-                </div>
-            
+
+                {isPublished ? (
+                    <div className="mt-5 space-y-4 rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+                        <p className="text-sm text-slate-700">
+                            <span className="font-semibold">Public URL:</span>{' '}
+                            <Link href={calendarPageUrl} target="_blank" className="text-cyan-700 underline">
+                                Open calendar
+                            </Link>
+                        </p>
+
+                        <p className="text-sm text-slate-700">
+                            <span className="font-semibold">Contributor URL:</span>{' '}
+                            <Link href={magicLoginForContributorUrl} target="_blank" className="text-cyan-700 underline">
+                                Open link
+                            </Link>
+                            {' · '}
+                            <button
+                                type="button"
+                                onClick={() => handleCopyLink(magicLoginForContributorUrl)}
+                                className="text-cyan-700 underline"
+                            >
+                                Copy to Clipboard
+                            </button>
+                        </p>
+                    </div>
+                ) : null}
             </div>
         </div>
     );

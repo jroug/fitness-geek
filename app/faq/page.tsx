@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Header from "../../components/Header";
 
 export default async function faq() {
 
@@ -15,8 +14,6 @@ export default async function faq() {
         <main className="site-content">
 
             {/* <Preloader /> */}
-            <Header backUrl="/dashboard" title="FAQS"  />
- 
             {/* <!-- Faq screen start --> */}
             <div className="verify-email pb-20" id="faq-main">
                 <div className="container">

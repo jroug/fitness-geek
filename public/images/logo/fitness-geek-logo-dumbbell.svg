@@ -1,0 +1,42 @@
+<svg width="980" height="260" viewBox="0 0 980 260" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d9dee6"/>
+      <stop offset="20%" stop-color="#9aa4b1"/>
+      <stop offset="48%" stop-color="#f2f5f8"/>
+      <stop offset="78%" stop-color="#8e98a7"/>
+      <stop offset="100%" stop-color="#596273"/>
+    </linearGradient>
+    <linearGradient id="plateDark" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3d4552"/>
+      <stop offset="55%" stop-color="#1a2029"/>
+      <stop offset="100%" stop-color="#0f141b"/>
+    </linearGradient>
+    <linearGradient id="plateMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#a7b0bd"/>
+      <stop offset="55%" stop-color="#6f7988"/>
+      <stop offset="100%" stop-color="#4e5867"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="980" height="260" rx="18" fill="#f6f7f9"/>
+
+  <rect x="175" y="108" width="630" height="8" rx="4" fill="url(#steel)" stroke="#212833" stroke-width="1.5"/>
+
+  <g transform="translate(40,14)">
+    <rect x="0" y="90" width="58" height="44" rx="8" fill="url(#plateDark)" stroke="#10151d" stroke-width="2"/>
+    <rect x="50" y="47" width="64" height="130" rx="10" fill="url(#plateDark)" stroke="#10151d" stroke-width="2"/>
+    <rect x="108" y="19" width="72" height="186" rx="12" fill="url(#plateMid)" stroke="#2a313d" stroke-width="2"/>
+    <circle cx="180" cy="112" r="15" fill="url(#plateDark)" stroke="#0f141b" stroke-width="2"/>
+  </g>
+
+  <g transform="translate(740,14)">
+    <rect x="182" y="90" width="58" height="44" rx="8" fill="url(#plateDark)" stroke="#10151d" stroke-width="2"/>
+    <rect x="126" y="47" width="64" height="130" rx="10" fill="url(#plateDark)" stroke="#10151d" stroke-width="2"/>
+    <rect x="60" y="19" width="72" height="186" rx="12" fill="url(#plateMid)" stroke="#2a313d" stroke-width="2"/>
+    <circle cx="60" cy="112" r="15" fill="url(#plateDark)" stroke="#0f141b" stroke-width="2"/>
+  </g>
+
+  <text x="490" y="92" text-anchor="middle" dominant-baseline="middle" fill="#080b11" font-family="'Arial Black', 'DM Sans', sans-serif" font-size="74" font-weight="900" letter-spacing="1">FITNESS</text>
+  <text x="490" y="196" text-anchor="middle" dominant-baseline="middle" fill="#0b1f6f" font-family="'Arial Black', 'DM Sans', sans-serif" font-size="74" font-weight="900" letter-spacing="1">GEEK</text>
+</svg>

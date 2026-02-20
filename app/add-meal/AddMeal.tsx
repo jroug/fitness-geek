@@ -2,32 +2,27 @@
 import React, { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-import Toast from "@/components/Toast";
+import Toast from '@/components/Toast';
 import { mealTypeOpts } from '@/lib/mealTypeOptions';
 import { globalSettings } from '@/lib/globalSettings';
 import { getCurrentDateTime } from '@/lib/getCurrentDateTime';
 import { getMealTypeFromTime } from '@/lib/getMealTypeFromTime';
 import { geTimeFromMealType } from '@/lib/geTimeFromMealType';
 import useSWR from 'swr';
- 
-const fetcher = (url: string) => fetch(url, { credentials: 'include' }).then((res) => {
-    if (!res.ok) throw new Error('Failed to fetch meals');
-    return res.json();
-});
+
+const fetcher = (url: string) =>
+    fetch(url, { credentials: 'include' }).then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch meals');
+        return res.json();
+    });
 
 const AddMeal: React.FC = () => {
-    
-    // const fetchSuggestedMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-all-meals`;
-
-
     const currentDateTime = getCurrentDateTime();
 
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
     const [mealTitleErrorClass, setMealTitleErrorClass] = useState('');
     const [quantityErrorClass, setQuantityErrorClass] = useState('');
 
-    
-    // lock button on save action to prevent multiple submits while waiting for response and show the right text
     const [isSaving, setIsSaving] = useState(false);
     const [saveBtnText, setSaveBtnText] = useState('SAVE');
 
@@ -36,22 +31,19 @@ const AddMeal: React.FC = () => {
     const [mealQuantity, setMealQuantity] = useState<number>(1) || '';
     const [mealQuantityType, setMealQuantityType] = useState<string>('N');
     const [mealSelected, setMealSelected] = useState<MealSuggestion>({
-        id: "",
-        food_name: "",
-        calories: "",
-        protein: "",
-        carbohydrates: "",
-        fat: "",
-        fiber: "",
-        category: "",
-        serving_size: "",
-        comments: ""
+        id: '',
+        food_name: '',
+        calories: '',
+        protein: '',
+        carbohydrates: '',
+        fat: '',
+        fiber: '',
+        category: '',
+        serving_size: '',
+        comments: '',
     });
     const [mealComments, setMealComments] = useState<string>('');
-    // const [suggestionMeals, setSuggestionMeals] = useState<MealSuggestion[]>([]);
-    const [popupData, setPopupData] = useState({ title: '', message: '', time:0, show_popup: false });
-
-
+    const [popupData, setPopupData] = useState({ title: '', message: '', time: 0, show_popup: false });
 
     const handleMealTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const mealT = e.target.value;
@@ -59,7 +51,7 @@ const AddMeal: React.FC = () => {
 
         setDateTime(mealD);
         setMealType(mealT);
-    }
+    };
 
     const handleDateTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const mealD = e.target.value;
@@ -67,14 +59,12 @@ const AddMeal: React.FC = () => {
 
         setDateTime(mealD);
         setMealType(mealT);
-    }
+    };
 
     const addMealToDB = async (input_data: MealInputData) => {
-    
-        if (isSaving) return false; // ⛔ already saving
-        setIsSaving(true); // 🟢 lock
+        if (isSaving) return false;
+        setIsSaving(true);
         setSaveBtnText('Saving...');
-                      
 
         const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
         const res = await fetch(addMealsUrl, {
@@ -84,46 +74,32 @@ const AddMeal: React.FC = () => {
         });
         const data = await res.json();
         if (data.user_meal_added) {
-            setPopupData({ title: 'Message', message: data.message, time:globalSettings.frmTimeSuccess, show_popup: true });
+            setPopupData({ title: 'Message', message: data.message, time: globalSettings.frmTimeSuccess, show_popup: true });
             setDateTime('');
             setMealQuantity(1);
             setMealQuantityType('N');
             setMealSelected({
-                id: "",
-                food_name: "",
-                calories: "",
-                protein: "",
-                carbohydrates: "",
-                fat: "",
-                fiber: "",
-                category: "",
-                serving_size: "",
-                comments: ""
+                id: '',
+                food_name: '',
+                calories: '',
+                protein: '',
+                carbohydrates: '',
+                fat: '',
+                fiber: '',
+                category: '',
+                serving_size: '',
+                comments: '',
             });
             setMealComments('');
             setMealType('');
             setSaveBtnText('Save');
-            setIsSaving(false); // 🔓 unlock
+            setIsSaving(false);
             return true;
         } else {
-            setPopupData({ title: 'Error!', message: 'Something went wrong!', time:globalSettings.frmTimeError, show_popup: true });
+            setPopupData({ title: 'Error!', message: 'Something went wrong!', time: globalSettings.frmTimeError, show_popup: true });
             return false;
         }
     };
-
-    
-    // useEffect(() => {
-
-    //     const getMealSuggestions = async (): Promise<void> => {    
-    //         const res = await fetch(fetchSuggestedMealsUrl);
-    //         const data = await res.json();
-    //         setSuggestionMeals(data);
-    //     };
-    //     getMealSuggestions();
- 
-    // }, [fetchSuggestedMealsUrl]);
-
- 
 
     const handleMealSuggestionsInputChange = (_: React.SyntheticEvent, newValue: MealSuggestion | null) => {
         if (newValue) setMealSelected(newValue);
@@ -139,23 +115,23 @@ const AddMeal: React.FC = () => {
 
         if (!mealSelected.id) {
             doSubmit = false;
-            setMealTitleErrorClass("error2");
+            setMealTitleErrorClass('error2');
         } else {
-            setMealTitleErrorClass("");
+            setMealTitleErrorClass('');
         }
 
         if (!dateTime) {
             doSubmit = false;
-            setDateTimeErrorClass("error");
+            setDateTimeErrorClass('error');
         } else {
-            setDateTimeErrorClass("");
+            setDateTimeErrorClass('');
         }
 
         if (!mealQuantity) {
             doSubmit = false;
-            setQuantityErrorClass("error");
+            setQuantityErrorClass('error');
         } else {
-            setQuantityErrorClass("");
+            setQuantityErrorClass('');
         }
 
         if (doSubmit) {
@@ -166,238 +142,271 @@ const AddMeal: React.FC = () => {
                 meal_quantity_type: mealQuantityType,
                 comments: mealComments,
             };
-            // Wait for addMealToDB to complete and return true before scrolling
             const success = await addMealToDB(input_data);
             if (success) {
                 setTimeout(() => {
                     window.scrollTo(0, 0);
                 }, globalSettings.frmTimeSuccess);
             }
-        } else {
-            // alert('Complete all necessary fields!');
         }
     };
 
-    // get the data of the page
-    const { data: suggestionMeals = [], error, isLoading } = useSWR<MealSuggestion[]>('/api/get-all-meals', fetcher,
-        {
-            dedupingInterval: 60_000, // 1 minute
-            revalidateOnFocus: false,
-            revalidateOnReconnect: false,
-        }
-    );
+    const {
+        data: suggestionMeals = [],
+        error,
+        isLoading,
+    } = useSWR<MealSuggestion[]>('/api/get-all-meals', fetcher, {
+        dedupingInterval: 60_000,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
 
     if (isLoading || error) {
-        return (
-            <></>
-        );
+        return <></>;
     }
+
+    const inputBase = 'w-full rounded-xl border bg-white px-4 py-3 text-slate-900 outline-none transition';
+    const inputNormal = 'border-slate-300 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200';
+    const inputError = 'border-rose-500 focus:border-rose-500 focus:ring-2 focus:ring-rose-200';
+
+    const qty = typeof mealQuantity === 'number' ? mealQuantity : Number(mealQuantity || 0);
 
     return (
         <>
-            <div className="verify-email pb-20" id="feedback-main">
-                <div className="container">
-                    <div className="feedback-content">
-                        {/* <div className="green-btn mt-4">
-                            <Link href="#" onClick={handleSetCurrentDateAndMeal}>Set Current Date & Type</Link>
-                        </div> */}
-                        <form className="feedback-form" onSubmit={handleFormSubmit}>
+            <div className="min-h-[calc(100vh-120px)] pb-24">
+                <div className="mx-auto w-full max-w-4xl px-4 md:px-6">
+                    <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
+                        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Form</p>
+                        <h1 className="mt-2 text-2xl font-bold md:text-3xl">Add Meal</h1>
+                        <p className="mt-2 text-sm text-cyan-100">Log meals quickly with automatic nutrient calculations.</p>
+                    </section>
 
-                            <div className="grid grid-cols-2 gap-3" >
-                                <div className="addmeal-div feedback-email">
-                                    <label htmlFor="quantity-type" className="custom-lbl-feedback">What type?</label>
-                                    <div className="custom-select-subject">
-                                        <select 
-                                            id="quantity-type" 
-                                            value={mealType} 
-                                            onChange={handleMealTypeChange}
-                                            className="arrow-icon sm-font-sans border-green-1"
-                                        >
-                                            <option key={"00"} value="" >...</option>
-                                            {
-                                                mealTypeOpts.map((meal) => {
-                                                    return (
-                                                        <option key={meal.key} value={meal.key} >{meal.label}</option>
-                                                    )
-                                                })
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="addmeal-div feedback-email">
-                                    <label htmlFor="datetime-local" className="custom-lbl-feedback">Date & Time of meal*</label>
-                                    <input 
-                                        type="datetime-local" 
-                                        id="datetime-local" 
-                                        value={dateTime} 
-                                        onChange={handleDateTimeChange} 
-                                        className={`border-green-1 ${dateTimeErrorClass}`}
-                                    />
-                                </div>
+                    <form onSubmit={handleFormSubmit} className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                                <label htmlFor="meal-type" className="mb-2 block text-sm font-semibold text-slate-700">
+                                    What type?
+                                </label>
+                                <select
+                                    id="meal-type"
+                                    value={mealType}
+                                    onChange={handleMealTypeChange}
+                                    className={`${inputBase} ${inputNormal}`}
+                                >
+                                    <option key="00" value="">
+                                        ...
+                                    </option>
+                                    {mealTypeOpts.map((meal) => (
+                                        <option key={meal.key} value={meal.key}>
+                                            {meal.label}
+                                        </option>
+                                    ))}
+                                </select>
                             </div>
-
-                            <div className="addmeal-div feedback-email">
-                                <label htmlFor="meal-short" className="custom-lbl-feedback">What did I eat?*</label>
-                                <Autocomplete
-                                    className={`Autocomplete-green ${mealTitleErrorClass}`}
-                                    value={mealSelected}
-                                    options={suggestionMeals}
-                                    getOptionLabel={(option) => (option.food_name ? option.food_name + ' - ' + Math.round(parseInt(option.serving_size)) + 'gr' : '') }
-                                    onChange={handleMealSuggestionsInputChange}
-                                    isOptionEqualToValue={(option, value) => option.id === value.id}
-                                    renderInput={(params) => <TextField {...params} label="" variant="outlined" />}
+                            <div>
+                                <label htmlFor="datetime-local" className="mb-2 block text-sm font-semibold text-slate-700">
+                                    Date & Time of meal*
+                                </label>
+                                <input
+                                    type="datetime-local"
+                                    id="datetime-local"
+                                    value={dateTime}
+                                    onChange={handleDateTimeChange}
+                                    className={`${inputBase} ${dateTimeErrorClass ? inputError : inputNormal}`}
                                 />
                             </div>
-                            
-                            <div className="grid grid-cols-2 gap-3" >
-                                <div className="addmeal-div feedback-email">
-                                    <label htmlFor="quantity-type" className="custom-lbl-feedback">Type*</label>
-                                    <div className="custom-select-subject">
-                                        <select 
-                                            id="quantity-type" 
-                                            value={mealQuantityType} 
-                                            onChange={(e) => setMealQuantityType(e.target.value)}
-                                            className="arrow-icon sm-font-sans border-green-1"
-                                        >
-                                            <option value="N">Number</option>
-                                            <option value="GR">Grams</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div className="addmeal-div feedback-email">
-                                    <label htmlFor="meal-quantity" className="custom-lbl-feedback">Quan.*</label>
-                                    <div className="custom-select-subject">
-                                        <input 
-                                            type="number"
-                                            id="meal-quantity" 
-                                            value={mealQuantity} 
-                                            onChange={(e) => {
-                                                const value = e.target.value;
-                                                setMealQuantity(value === '' ? ('' as unknown as number) : Number(value));
-                                                }}
-                                                className={`sm-font-sans border-green-1 ${quantityErrorClass}`}
-                                        />
-                                    </div>
-                                </div>
+                        </div>
+
+                        <div className="mt-4">
+                            <label htmlFor="meal-short" className="mb-2 block text-sm font-semibold text-slate-700">
+                                What did I eat?*
+                            </label>
+                            <Autocomplete
+                                value={mealSelected}
+                                options={suggestionMeals}
+                                getOptionLabel={(option) =>
+                                    option.food_name ? `${option.food_name} - ${Math.round(parseInt(option.serving_size, 10))}gr` : ''
+                                }
+                                onChange={handleMealSuggestionsInputChange}
+                                isOptionEqualToValue={(option, value) => option.id === value.id}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        id="meal-short"
+                                        variant="outlined"
+                                        placeholder="Select meal"
+                                        sx={{
+                                            '& .MuiOutlinedInput-root': {
+                                                borderRadius: '12px',
+                                                backgroundColor: '#ffffff',
+                                                '& fieldset': {
+                                                    borderColor: mealTitleErrorClass ? '#f43f5e' : '#cbd5e1',
+                                                },
+                                                '&:hover fieldset': {
+                                                    borderColor: mealTitleErrorClass ? '#f43f5e' : '#06b6d4',
+                                                },
+                                                '&.Mui-focused fieldset': {
+                                                    borderColor: mealTitleErrorClass ? '#f43f5e' : '#06b6d4',
+                                                    borderWidth: 1,
+                                                },
+                                            },
+                                        }}
+                                    />
+                                )}
+                            />
+                        </div>
+
+                        <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+                            <div>
+                                <label htmlFor="quantity-type" className="mb-2 block text-sm font-semibold text-slate-700">
+                                    Type*
+                                </label>
+                                <select
+                                    id="quantity-type"
+                                    value={mealQuantityType}
+                                    onChange={(e) => setMealQuantityType(e.target.value)}
+                                    className={`${inputBase} ${inputNormal}`}
+                                >
+                                    <option value="N">Number</option>
+                                    <option value="GR">Grams</option>
+                                </select>
                             </div>
+                            <div>
+                                <label htmlFor="meal-quantity" className="mb-2 block text-sm font-semibold text-slate-700">
+                                    Quantity*
+                                </label>
+                                <input
+                                    type="number"
+                                    id="meal-quantity"
+                                    value={mealQuantity}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        setMealQuantity(value === '' ? ('' as unknown as number) : Number(value));
+                                    }}
+                                    className={`${inputBase} ${quantityErrorClass ? inputError : inputNormal}`}
+                                />
+                            </div>
+                        </div>
 
+                        <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-4">
+                            <p className="text-sm font-semibold text-slate-700">Details</p>
+                            <div className="mt-2 text-sm text-slate-700">
+                                {!mealSelected.id && <span>-</span>}
 
+                                {mealSelected.category && <span>Category: {mealSelected.category}, </span>}
 
-                            <div className="addmeal-div">
-                                <label htmlFor="meal-details" className="custom-lbl-feedback">Details</label>
-                                <div className="sm-font-sans custom-textarea-div border-green-1">
-                                    <div className="meal-details-inline sm-font-sans">
+                                {mealSelected.serving_size && (
+                                    <>
+                                        <span>Size:</span>
+                                        <b>
+                                            {' '}
+                                            {qty !== 1
+                                                ? `${Number(mealSelected.serving_size).toFixed(0)} x ${qty} = ${(
+                                                      Number(mealSelected.serving_size) * qty
+                                                  ).toFixed(0)}`
+                                                : Number(mealSelected.serving_size).toFixed(0)}
+                                            gr,&nbsp;
+                                        </b>
+                                    </>
+                                )}
 
-                              
-                                      {!mealSelected.id && <span>-</span>}
+                                {mealSelected.protein && (
+                                    <>
+                                        <span>Protein:</span>
+                                        <b>
+                                            {' '}
+                                            {qty !== 1
+                                                ? `${Number(mealSelected.protein).toFixed(0)} x ${qty} = ${(
+                                                      Number(mealSelected.protein) * qty
+                                                  ).toFixed(0)}`
+                                                : Number(mealSelected.protein).toFixed(0)}
+                                            gr,&nbsp;
+                                        </b>
+                                    </>
+                                )}
 
-                                      {mealSelected.category && <span>Category: {mealSelected.category}, </span>}
-
-                                      {mealSelected.serving_size && (
-                                        <>
-                                            <span> Size:</span>
-                                            <b>
-                                            {mealQuantity !== 1
-                                                ? `${Number(mealSelected.serving_size).toFixed(0)} x ${mealQuantity} = ${(
-                                                    Number(mealSelected.serving_size) * mealQuantity
-                                                ).toFixed(0)}`
-                                                : Number(mealSelected.serving_size).toFixed(0)
-                                            }gr,&nbsp;
-                                            </b>
-                                        </>
-                                      )}
-
-                                      {mealSelected.protein && (
-                                        <>
-                                            <span> Protein:</span>
-                                            <b>
-                                            {mealQuantity !== 1
-                                                ? `${Number(mealSelected.protein).toFixed(0)} x ${mealQuantity} = ${(
-                                                    Number(mealSelected.protein) * mealQuantity
-                                                ).toFixed(0)}`
-                                                : Number(mealSelected.protein).toFixed(0)
-                                            }gr,&nbsp;
-                                            </b>
-                                        </>
-                                      )}
-
-                                      {mealSelected.carbohydrates && (
-                                        <>
-                                            <span> Carbs:</span>
-                                            <b>
-                                            {mealQuantity !== 1
-                                                ? `${Number(mealSelected.carbohydrates).toFixed(0)} x ${mealQuantity} = ${(
-                                                    Number(mealSelected.carbohydrates) * mealQuantity
-                                                ).toFixed(0)}`
+                                {mealSelected.carbohydrates && (
+                                    <>
+                                        <span>Carbs:</span>
+                                        <b>
+                                            {' '}
+                                            {qty !== 1
+                                                ? `${Number(mealSelected.carbohydrates).toFixed(0)} x ${qty} = ${(
+                                                      Number(mealSelected.carbohydrates) * qty
+                                                  ).toFixed(0)}`
                                                 : Number(mealSelected.carbohydrates).toFixed(0)}
                                             gr,&nbsp;
-                                            </b>
-                                        </>
-                                      )}
+                                        </b>
+                                    </>
+                                )}
 
-                                      {mealSelected.fat && (
-                                        <>
-                                            <span> Fat:</span>
-                                            <b>
-                                            {mealQuantity !== 1
-                                                ? `${Number(mealSelected.fat).toFixed(0)} x ${mealQuantity} = ${(
-                                                    Number(mealSelected.fat) * mealQuantity
-                                                ).toFixed(0)}`
+                                {mealSelected.fat && (
+                                    <>
+                                        <span>Fat:</span>
+                                        <b>
+                                            {' '}
+                                            {qty !== 1
+                                                ? `${Number(mealSelected.fat).toFixed(0)} x ${qty} = ${(Number(mealSelected.fat) * qty).toFixed(0)}`
                                                 : Number(mealSelected.fat).toFixed(0)}
                                             gr,&nbsp;
-                                            </b>
-                                        </>
-                                      )}
+                                        </b>
+                                    </>
+                                )}
 
-                                      {mealSelected.fiber && (
-                                        <>
-                                            <span> Fiber:</span>
-                                            <b>
-                                            {mealQuantity !== 1
-                                                ? `${Number(mealSelected.fiber).toFixed(0)} x ${mealQuantity} = ${(
-                                                    Number(mealSelected.fiber) * mealQuantity
-                                                ).toFixed(0)}`
+                                {mealSelected.fiber && (
+                                    <>
+                                        <span>Fiber:</span>
+                                        <b>
+                                            {' '}
+                                            {qty !== 1
+                                                ? `${Number(mealSelected.fiber).toFixed(0)} x ${qty} = ${(Number(mealSelected.fiber) * qty).toFixed(0)}`
                                                 : Number(mealSelected.fiber).toFixed(0)}
                                             gr,&nbsp;
-                                            </b>
-                                        </>
-                                      )}
+                                        </b>
+                                    </>
+                                )}
 
-                                      {mealSelected.calories && (
-                                        <>
-                                            <span> Calories:</span>
-                                            <b>
-                                            {mealQuantity !== 1
-                                                ? `${Number(mealSelected.calories).toFixed(0)} x ${mealQuantity} = ${(
-                                                    Number(mealSelected.calories) * mealQuantity
-                                                ).toFixed(0)}`
+                                {mealSelected.calories && (
+                                    <>
+                                        <span>Calories:</span>
+                                        <b>
+                                            {' '}
+                                            {qty !== 1
+                                                ? `${Number(mealSelected.calories).toFixed(0)} x ${qty} = ${(Number(mealSelected.calories) * qty).toFixed(0)}`
                                                 : Number(mealSelected.calories).toFixed(0)}
                                             kcal
-                                            </b>
-                                        </>
-                                      )}
+                                        </b>
+                                    </>
+                                )}
 
-                                      {mealSelected.comments && <span>, Comments: {mealSelected.comments}</span>}
-                                    </div>
-                                </div>
+                                {mealSelected.comments && <span>, Comments: {mealSelected.comments}</span>}
                             </div>
-                            <div className="addmeal-div">
-                                <label htmlFor="comments" className="custom-lbl-feedback">Comments</label>
-                                <textarea 
-                                    rows={4} 
-                                    cols={50} 
-                                    placeholder="Write here..." 
-                                    className="sm-font-sans custom-textarea border-green-1" 
-                                    id="comments" 
-                                    value={mealComments} 
-                                    onChange={handleMealComments}
-                                ></textarea>
-                            </div>
-                            <div className="green-btn mt-4">
-                                <button type="submit" className="bg-blue-500 text-white py-2 px-6 rounded-full">{saveBtnText}</button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+
+                        <div className="mt-4">
+                            <label htmlFor="comments" className="mb-2 block text-sm font-semibold text-slate-700">
+                                Comments
+                            </label>
+                            <textarea
+                                rows={5}
+                                placeholder="Write here..."
+                                className={`${inputBase} ${inputNormal}`}
+                                id="comments"
+                                value={mealComments}
+                                onChange={handleMealComments}
+                            ></textarea>
+                        </div>
+
+                        <div className="mt-6">
+                            <button
+                                type="submit"
+                                disabled={isSaving}
+                                className="inline-flex items-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
+                            >
+                                {saveBtnText}
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <Toast popupData={popupData} setPopupData={setPopupData} />
