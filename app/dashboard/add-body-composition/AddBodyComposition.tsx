@@ -137,7 +137,7 @@ const AddBodyComposition: React.FC = () => {
                         <p className="mt-2 text-sm text-cyan-100">Store body composition metrics for trend tracking and analysis.</p>
                     </section>
 
-                    <form onSubmit={handleFormSubmit} className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                    <form onSubmit={handleFormSubmit} className="typical-form mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                         <div>
                             <label htmlFor="measurement-date" className="mb-2 block text-sm font-semibold text-slate-700">
                                 Measurement Date*

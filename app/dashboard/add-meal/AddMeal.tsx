@@ -181,7 +181,7 @@ const AddMeal: React.FC = () => {
                         <p className="mt-2 text-sm text-cyan-100">Log meals quickly with automatic nutrient calculations.</p>
                     </section>
 
-                    <form onSubmit={handleFormSubmit} className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                    <form onSubmit={handleFormSubmit} className="typical-form mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                             <div>
                                 <label htmlFor="meal-type" className="mb-2 block text-sm font-semibold text-slate-700">
@@ -212,7 +212,7 @@ const AddMeal: React.FC = () => {
                                     id="datetime-local"
                                     value={dateTime}
                                     onChange={handleDateTimeChange}
-                                    className={`${inputBase} ${dateTimeErrorClass ? inputError : inputNormal}`}
+                                    className={`border-green-1 ${inputBase} ${dateTimeErrorClass ? inputError : inputNormal}`}
                                 />
                             </div>
                         </div>
@@ -222,6 +222,7 @@ const AddMeal: React.FC = () => {
                                 What did I eat?*
                             </label>
                             <Autocomplete
+                                className="Autocomplete-green"
                                 value={mealSelected}
                                 options={suggestionMeals}
                                 getOptionLabel={(option) =>

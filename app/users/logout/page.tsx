@@ -38,7 +38,7 @@ const Page = () => {
     }, []);
 
     return (
-        <main className="site-content full-width bg-slate-50 pt-0">
+        <main className="site-content full-width bg-slate-50 !pt-0">
             <PublicHeader />
             <section className="mx-auto w-full max-w-6xl px-4 pb-24 pt-10 md:px-6">
                 <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">

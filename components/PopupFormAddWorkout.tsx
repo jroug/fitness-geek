@@ -237,7 +237,7 @@ const PopupFormAddWorkout: React.FC<PopupFormProps> = ({
             <h1 className="modal-title text-center mb-4 sm-font-zen fw-400 mt-[-21px]">
               {popupFormData.title}
             </h1>
-            <form className="feedback-form" onSubmit={handleFormSubmit}>
+            <form className="typical-form" onSubmit={handleFormSubmit}>
               <div className="addmeal-div feedback-email">
                 <label htmlFor="datetime-local" className="custom-lbl-feedback">
                   Date & Time of workout*

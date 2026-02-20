@@ -340,7 +340,7 @@ const PopupForm: React.FC<PopupFormProps> = ({ setPopupFormData, popupFormData, 
                             <Image src={left_arrow} alt="back-btn-icon" className="scale13" onClick={handleClosePopupForm} />
                         </div>
                         <h1 className="modal-title text-center mb-4 sm-font-zen fw-400 mt-[-21px]">{popupFormData.title}</h1>
-                        <form className="feedback-form" onSubmit={handleFormSubmit}>
+                        <form className="typical-form" onSubmit={handleFormSubmit}>
                             <div className="grid grid-cols-2 gap-3" >
                                 <div className="addmeal-div feedback-email">
                                     <label htmlFor="quantity-type" className="custom-lbl-feedback">What type?</label>
