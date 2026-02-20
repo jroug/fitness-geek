@@ -280,13 +280,13 @@ const Dashboard = () => {
                         </div>
                         <div className="flex gap-3">
                             <Link
-                                href="/add-workout"
+                                href="/dashboard/add-workout"
                                 className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-100"
                             >
                                 Log Workout
                             </Link>
                             <Link
-                                href="/add-weighing"
+                                href="/dashboard/add-weighing"
                                 className="rounded-xl bg-cyan-400 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-300"
                             >
                                 Add Weighing
@@ -386,7 +386,7 @@ const Dashboard = () => {
                     {!lastWeighingDateIsToday ? (
                         <div className="mt-5">
                             <Link
-                                href="/add-weighing"
+                                href="/dashboard/add-weighing"
                                 className="inline-flex items-center rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-700"
                             >
                                 Add today&apos;s weighing
@@ -417,7 +417,7 @@ const Dashboard = () => {
                         <Slider {...settings}>
                             {workouts.map((workout, index) => (
                                 <div key={workout.id} className="w-[280px] pr-3 md:w-[320px]">
-                                    <Link href={`/add-workout?workoutId=${workout.id}`}>
+                                    <Link href={`/dashboard/add-workout?workoutId=${workout.id}`}>
                                         <article className="flex h-[230px] flex-col rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-cyan-900 p-5 text-white transition hover:-translate-y-1 hover:shadow-xl">
                                             <p className="text-xs uppercase tracking-[0.18em] text-cyan-200">{`#${index + 1} ${workout.w_type}`}</p>
                                             <h3 className="mt-2 text-xl font-bold leading-tight">{workout.w_title}</h3>
@@ -449,11 +449,11 @@ const Dashboard = () => {
                     <h2 className="text-xl font-bold text-slate-900">Calendar & Charts</h2>
                     <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
                         {[
-                            { href: '/calendar', label: 'Calendar', image: calendarThumb },
-                            { href: '/charts/weight', label: 'Weight', image: chartThumb },
-                            { href: '/charts/workouts', label: 'Workouts', image: chartThumb },
-                            { href: '/charts/grades', label: 'Grades', image: chartThumb },
-                            { href: '/charts/body-composition', label: 'Body Comp.', image: chartThumb },
+                            { href: '/dashboard/calendar', label: 'Calendar', image: calendarThumb },
+                            { href: '/dashboard/charts/weight', label: 'Weight', image: chartThumb },
+                            { href: '/dashboard/charts/workouts', label: 'Workouts', image: chartThumb },
+                            { href: '/dashboard/charts/grades', label: 'Grades', image: chartThumb },
+                            { href: '/dashboard/charts/body-composition', label: 'Body Comp.', image: chartThumb },
                         ].map((item) => (
                             <Link
                                 key={item.href}

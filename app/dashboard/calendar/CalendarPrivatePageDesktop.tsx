@@ -408,7 +408,7 @@ const CalendarHomePage: React.FC = () => {
         };
     };
 
-    const calendarPageUrl = `/calendar/${jrTokenFromDb}`;
+    const calendarPageUrl = `/dashboard/calendar/${jrTokenFromDb}`;
     const magicLoginForContributorUrl = `${location.origin}/users/magic-login/${encodeURIComponent(jrLoginTokenFromDb)}`;
 
     const openFoodModal = (arg0: { start: Date; end: Date; }) => {

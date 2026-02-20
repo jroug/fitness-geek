@@ -9,13 +9,12 @@ import youtube from "../public/images/about-us/youtube.svg";
 const PublicFooter = () => {
     return (     
         <div className="about-us-social-media">
-        <h1 className="text-2xl font-bold mt-16">Follow Us</h1>
-        <div className="about-us-icon-wrapper mt-12 flex">
+        <div className="about-us-icon-wrapper mt-8 flex">
           
           <div className="social-detail-about flex flex-col items-center">
-            <div className="shape facebook-bg bg-blue-600 p-4 rounded-full">
+            <div className="shape facebook-bg bg-blue-600 p-3 rounded-full">
               <Link href="https://www.facebook.com/" target="_blank">
-                <Image src={facebook} alt="facebook" />
+                <Image src={facebook} alt="facebook" className="h-7 w-7" />
               </Link>
             </div>
             <div>
@@ -23,9 +22,9 @@ const PublicFooter = () => {
             </div>
           </div>
           <div className="social-detail-about flex flex-col items-center">
-            <div className="shape instragram-bg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-4 rounded-full">
+            <div className="shape instragram-bg bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-3 rounded-full">
               <Link href="https://www.instagram.com/" target="_blank">
-                <Image src={instragram} alt="instagram" />
+                <Image src={instragram} alt="instagram" className="h-7 w-7" />
               </Link>
             </div>
             <div>
@@ -33,9 +32,9 @@ const PublicFooter = () => {
             </div>
           </div>
           <div className="social-detail-about flex flex-col items-center">
-            <div className="shape twitter-bg bg-blue-400 p-4 rounded-full">
+            <div className="shape twitter-bg bg-blue-400 p-3 rounded-full">
               <Link href="https://twitter.com/" target="_blank">
-                <Image src={twitter} alt="twitter" />
+                <Image src={twitter} alt="twitter" className="h-7 w-7" />
               </Link>
             </div>
             <div>
@@ -43,9 +42,9 @@ const PublicFooter = () => {
             </div>
           </div>
           <div className="social-detail-about flex flex-col items-center">
-            <div className="shape youtube-bg bg-red-600 p-4 rounded-full">
+            <div className="shape youtube-bg bg-red-600 p-3 rounded-full">
               <Link href="https://www.youtube.com/" target="_blank">
-                <Image src={youtube} alt="youtube" />
+                <Image src={youtube} alt="youtube" className="h-7 w-7" />
               </Link>
             </div>
             <div>

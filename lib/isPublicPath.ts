@@ -1,8 +1,10 @@
 const PUBLIC_PATHS = new Set([
   "/",
+  "/features",
   "/users/enter",
   "/users/join",
   "/users/logout",
+  "/contact",
 ]);
 
 export function isPublicPath(pathname: string) {

@@ -237,13 +237,13 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, 
         <span className="training-info" >{calcNumberOfWeeklyWorkouts(startOfWeek)}</span>
       </span>
       {/* <span className="rbc-btn-group show_on_desktop_only">
-            <Link href="/add-meal" className="green-link-btn"  >
+            <Link href="/dashboard/add-meal" className="green-link-btn"  >
                 + Meal
             </Link>
-            <Link href="/add-weighing" className="green-link-btn"  >
+            <Link href="/dashboard/add-weighing" className="green-link-btn"  >
                 + Weighing  
             </Link>
-            <Link href="/add-workout" className="green-link-btn" >
+            <Link href="/dashboard/add-workout" className="green-link-btn" >
                 + workouts 
             </Link>
       </span> */}

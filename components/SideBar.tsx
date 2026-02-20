@@ -43,31 +43,31 @@ const SideBar = () => {
             {
                 key: 'add-meal',
                 label: 'Add Meal',
-                href: '/add-meal',
+                href: '/dashboard/add-meal',
                 icon: setting6,
             },
             {
                 key: 'add-weighing',
                 label: 'Add Weighing',
-                href: '/add-weighing',
+                href: '/dashboard/add-weighing',
                 icon: setting6,
             },
             {
                 key: 'add-body-composition',
                 label: 'Add Body Composition',
-                href: '/add-body-composition',
+                href: '/dashboard/add-body-composition',
                 icon: setting6,
             },
             {
                 key: 'add-workout',
                 label: 'Add Workout',
-                href: '/add-workout',
+                href: '/dashboard/add-workout',
                 icon: setting1,
             },
             {
                 key: 'calendar',
                 label: 'Calendar',
-                href: '/calendar',
+                href: '/dashboard/calendar',
                 icon: calendarIcon,
             },
             {
@@ -75,16 +75,16 @@ const SideBar = () => {
                 label: 'Charts',
                 icon: chartIcon,
                 children: [
-                    { key: 'charts-weight', label: 'Weight Chart', href: '/charts/weight' },
-                    { key: 'charts-workouts', label: 'Workouts Chart', href: '/charts/workouts' },
-                    { key: 'charts-grades', label: 'Grades Chart', href: '/charts/grades' },
-                    { key: 'charts-bodyfat', label: 'Body Composition', href: '/charts/body-composition' },
+                    { key: 'charts-weight', label: 'Weight Chart', href: '/dashboard/charts/weight' },
+                    { key: 'charts-workouts', label: 'Workouts Chart', href: '/dashboard/charts/workouts' },
+                    { key: 'charts-grades', label: 'Grades Chart', href: '/dashboard/charts/grades' },
+                    { key: 'charts-bodyfat', label: 'Body Composition', href: '/dashboard/charts/body-composition' },
                 ],
             },
             {
                 key: 'about',
                 label: 'About Fitness Geek',
-                href: '/about',
+                href: '/dashboard/about',
                 icon: setting11,
             }
         ],

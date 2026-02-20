@@ -38,9 +38,9 @@ const Page = () => {
     }, []);
 
     return (
-        <main className="site-content full-width bg-slate-50">
+        <main className="site-content full-width bg-slate-50 pt-0">
             <PublicHeader />
-            <section className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6 md:px-6">
+            <section className="mx-auto w-full max-w-6xl px-4 pb-24 pt-10 md:px-6">
                 <div className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
                     <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Fitness Geek</p>
                     <h1 className="mt-2 text-2xl font-bold md:text-3xl">Logout</h1>
@@ -52,7 +52,9 @@ const Page = () => {
                     <p className="mx-auto mt-3 max-w-2xl text-slate-600">{logoutStatus.message}</p>
                 </div>
             </section>
-            <PublicFooter />
+            <section className="mx-auto w-full max-w-6xl px-4 pb-16 md:px-6">
+                <PublicFooter />
+            </section>
         </main>
     );
 };

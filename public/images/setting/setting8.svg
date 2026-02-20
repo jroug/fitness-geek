@@ -3,11 +3,11 @@
 <rect width="24" height="24" fill="white"/>
 </mask>
 <g mask="url(#mask0_1_9855)">
-<path d="M3 7V5H16V7" stroke="#7FD83B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M10 5V19" stroke="#7FD83B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M12 19H8" stroke="#7FD83B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M15 13V12H21V13" stroke="#7FD83B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M18 12V19" stroke="#7FD83B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-<path d="M17 19H19" stroke="#7FD83B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M3 7V5H16V7" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10 5V19" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M12 19H8" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M15 13V12H21V13" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M18 12V19" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M17 19H19" stroke="#22d3ee" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 </g>
 </svg>

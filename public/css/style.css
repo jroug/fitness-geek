@@ -311,7 +311,7 @@ li.list.active,
     max-width: var(--theme-width);
     margin: 0 auto;
     --tw-bg-opacity: 1;
-    padding-top:1.5rem;
+    /* padding-top:1.5rem; */
 }
 
 .site-content.form-width {
@@ -748,8 +748,8 @@ textarea {
     margin-right: auto;
 }
 .shape {
-    width: 74px;
-    height: 74px;
+    width: 54px;
+    height: 54px;
     border-radius: 37px;
     cursor: pointer;
 }

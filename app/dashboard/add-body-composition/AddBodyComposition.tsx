@@ -51,7 +51,7 @@ const AddBodyComposition: React.FC = () => {
         setIsSaving(true);
         setSaveBtnText('Saving...');
 
-        const addBodyCompositionUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-body-composition`;
+        const addBodyCompositionUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/dashboard/add-body-composition`;
         const res = await fetch(addBodyCompositionUrl, {
             method: 'POST',
             headers: {

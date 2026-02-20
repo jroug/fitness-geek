@@ -123,7 +123,7 @@ export default function HeaderProfileMenu() {
             type="button"
             onClick={() => {
               setIsProfileMenuOpen(false);
-              router.push('/users/profile');
+              router.push('/dashboard/users/profile');
             }}
             className="block w-full rounded-lg px-3 py-2 text-left text-[16px] font-normal leading-8 text-slate-800 transition hover:bg-slate-100"
           >

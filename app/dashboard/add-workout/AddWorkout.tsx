@@ -60,7 +60,7 @@ const AddWorkout: React.FC = () => {
         setIsSaving(true);
         setSaveBtnText('Saving...');
 
-        const addWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-workout`;
+        const addWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/dashboard/add-workout`;
         const res = await fetch(addWorkoutUrl, {
             method: 'POST',
             headers: {

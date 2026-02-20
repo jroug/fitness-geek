@@ -36,7 +36,7 @@ const Header: React.FC = () => {
                     </div>
                     <div className="ml-auto mr-2 flex items-center gap-2">
                         <Link
-                            href="/calendar"
+                            href="/dashboard/calendar"
                             aria-label="Go to calendar"
                             className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 p-2 transition hover:bg-slate-200"
                         >
