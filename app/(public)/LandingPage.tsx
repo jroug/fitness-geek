@@ -29,12 +29,11 @@ export default async function LandingPage() {
   const pageContent = pageData?.content?.rendered ?? "";
 
   return (
-    <main className="site-content full-width bg-slate-50 pt-0">
+    <main className="site-content full-width bg-slate-50 ">
+      <div className="absolute left-[-120px] top-[70px] h-[360px] w-[360px] rounded-full bg-cyan-500/10 blur-2xl" />
+      <div className="absolute right-[-160px] top-[40px] h-[420px] w-[420px] rounded-full bg-sky-500/10 blur-3xl" />
       <section className="relative overflow-hidden">
-        <div className="absolute left-[-120px] top-[-160px] h-[360px] w-[360px] rounded-full bg-cyan-500/10 blur-2xl" />
-        <div className="absolute right-[-160px] top-[40px] h-[420px] w-[420px] rounded-full bg-sky-500/10 blur-3xl" />
-
-        <div className="mx-auto w-full max-w-6xl px-4 pb-12 pt-10 md:px-6 md:pt-10">
+        <div className="mx-auto w-full max-w-6xl px-4 pb-12 md:px-6 ">
           <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-sky-950 to-cyan-900 px-6 py-10 text-white shadow-2xl md:px-10 md:py-14">
             <div className="absolute -left-20 -top-20 h-64 w-64 rounded-full border-[30px] border-cyan-400/10" />
             <div className="absolute -right-16 bottom-[-80px] h-64 w-64 rounded-full border-[28px] border-sky-300/10" />

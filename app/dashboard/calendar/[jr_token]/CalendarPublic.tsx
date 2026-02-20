@@ -274,7 +274,7 @@ export default function CalendarPublic(props: { params: Params }) {
             <section className="calendar-modern mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
                 <div className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
                     <div className="calendar-modern-shell overflow-x-auto">
-                        <div ref={calendarMainRef} className="min-w-[920px]">
+                        <div ref={calendarMainRef} className="">
                             <Calendar
                             localizer={localizer}
                             defaultDate={new Date()}

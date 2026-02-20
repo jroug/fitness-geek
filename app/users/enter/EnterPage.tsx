@@ -58,7 +58,7 @@ export default function EnterPage() {
           <div className="mx-auto flex h-full w-full max-w-[420px] flex-col justify-center">
             <div className="mb-8">
               <Link href="/" className="mb-5 inline-flex">
-                <Image src={fitness_geek_logo} alt="Fitness Geek logo" className="h-10 w-auto object-contain" />
+                <Image src={fitness_geek_logo} alt="Fitness Geek logo" className="h-11 w-auto object-contain" />
               </Link>
               <h1 className="text-4xl font-bold text-slate-900">Sign In</h1>
               <p className="mt-2 text-sm text-slate-500">Your Fitness Dashboard</p>

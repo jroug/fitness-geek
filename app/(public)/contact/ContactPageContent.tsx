@@ -12,12 +12,12 @@ export default function ContactPageContent() {
   };
 
   return (
-    <main className="site-content full-width bg-slate-50 pt-0">
+    <main className="site-content full-width bg-slate-50 ">
+      <div className="absolute left-[-120px] top-[70px] h-[360px] w-[360px] rounded-full bg-cyan-500/10 blur-2xl" />
+      <div className="absolute right-[-160px] top-[40px] h-[420px] w-[420px] rounded-full bg-sky-500/10 blur-3xl" />
       <section className="relative overflow-hidden">
-        <div className="absolute left-[-120px] top-[-140px] h-[320px] w-[320px] rounded-full bg-cyan-500/10 blur-2xl" />
-        <div className="absolute right-[-180px] top-[40px] h-[380px] w-[380px] rounded-full bg-sky-500/10 blur-3xl" />
 
-        <div className="mx-auto w-full max-w-6xl px-4 pb-12 pt-10 md:px-6 md:pt-10">
+        <div className="mx-auto w-full max-w-6xl px-4 pb-12 md:px-6 ">
           <div className="overflow-hidden rounded-[2rem] bg-gradient-to-br from-slate-950 via-sky-950 to-cyan-900 px-6 py-10 text-white shadow-2xl md:px-10 md:py-14">
             <p className="text-xs uppercase tracking-[0.24em] text-cyan-200">Contact Fitness Geek</p>
             <h1 className="mt-4 max-w-3xl text-4xl font-black leading-tight md:text-6xl">Let&apos;s Talk</h1>

@@ -38,6 +38,7 @@ declare global {
             bodycomp_fat_percent?: number;
             bodycomp_fat?: number;
             bodycomp_fat_visceral?: number;
+            bodycomp_muscle?: number;
             bodycomp_waist?: number;
             bodycomp_weight?: number;
         }

@@ -60,7 +60,7 @@ const BodyCompositionPage: React.FC = () => {
         return `${day}/${month}/${year}`;
     };
 
-    const formatNumber = (value: number | string | null | undefined, digits = 2) => {
+    const formatNumber = (value: number | string | null | undefined, digits = 1) => {
         if (value === null || value === undefined) return '';
         const num = typeof value === 'number' ? value : parseFloat(value);
         if (Number.isNaN(num)) return '';
@@ -76,54 +76,55 @@ const BodyCompositionPage: React.FC = () => {
     };
 
     return (
-        <section className="mx-auto w-full max-w-7xl px-4 pb-24 md:px-8" id="bodyfat-page">
-            <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
-                <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-semibold text-slate-700">Start date</label>
-                        <input
-                            type="date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            className="rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
-                            max={endDate}
-                        />
+        <div className="mx-auto w-full max-w-[2000px] px-4 pb-24 md:px-8" id="bodyfat-page">
+            <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
+                <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Chart</p>
+                <h1 className="mt-2 text-2xl font-bold md:text-3xl">Body Composition History</h1>
+                <p className="mt-2 text-sm text-cyan-100">Review your body composition trends and compare key measurements over time.</p>
+            </section>
+            <div className="mt-6 rounded-2xl bg-white p-4 md:p-7">
+                <div className="flex flex-col gap-4 md:flex-row md:items-end w-full max-w-[700px]">
+                    <div className="grid flex-1 grid-cols-1 gap-3 sm:grid-cols-2">
+                        <div className="flex flex-col">
+                            <label className="mb-1 text-sm font-semibold text-slate-700">Start date</label>
+                            <input
+                                type="date"
+                                value={startDate}
+                                onChange={(e) => setStartDate(e.target.value)}
+                                className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                                max={endDate}
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="mb-1 text-sm font-semibold text-slate-700">End date</label>
+                            <input
+                                type="date"
+                                value={endDate}
+                                onChange={(e) => setEndDate(e.target.value)}
+                                className="rounded-xl border border-slate-300 bg-white px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
+                                min={startDate}
+                            />
+                        </div>
                     </div>
 
-                    <div className="flex flex-col">
-                        <label className="mb-1 text-sm font-semibold text-slate-700">End date</label>
-                        <input
-                            type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            className="rounded-xl border border-slate-300 px-3 py-2.5 outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-200"
-                            min={startDate}
-                        />
-                    </div>
-
-                    <div className="flex items-end">
-                        <button
-                            type="button"
-                            className="inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 md:w-auto"
-                            onClick={() => {
-                                if (!startDate || !endDate) return;
-                                if (startDate > endDate) return;
-                                fetchData();
-                            }}
-                        >
-                            Apply
-                        </button>
-                    </div>
+                    <button
+                        type="button"
+                        className="translate-y-[-4px] inline-flex w-full items-center justify-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 md:w-auto"
+                        onClick={() => {
+                            if (!startDate || !endDate) return;
+                            if (startDate > endDate) return;
+                            fetchData();
+                        }}
+                    >
+                        Apply
+                    </button>
                 </div>
-            </div>
-
-            <div className="mt-5 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-6">
-                <h2 className="text-lg font-bold text-slate-900">Body Composition History</h2>
-
+        
                 {sortedRows.length === 0 ? (
-                    <p className="mt-4 text-sm text-slate-600">No records found for this period.</p>
+                    <p className="mt-[40px] text-sm text-slate-600">No records found for this period.</p>
                 ) : (
-                    <div className="mt-4 overflow-x-auto">
+                    <div className="mt-[40px] overflow-x-auto">
                         <table className="bodyfat-table min-w-[1200px] w-full border-collapse">
                             <thead>
                                 <tr>
@@ -225,7 +226,7 @@ const BodyCompositionPage: React.FC = () => {
                     </div>
                 )}
             </div>
-        </section>
+        </div>
     );
 };
 

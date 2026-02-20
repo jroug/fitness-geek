@@ -124,6 +124,7 @@ body {
     margin: 0 auto;
     height: 100%;
     background-color: rgb(248 250 252 / var(--tw-bg-opacity, 1));
+    overflow-x: hidden;
     /* background-color: red; */
 }
 svg{
@@ -311,7 +312,7 @@ li.list.active,
     max-width: var(--theme-width);
     margin: 0 auto;
     --tw-bg-opacity: 1;
-    /* padding-top:1.5rem; */
+    padding-top:1.5rem;
 }
 
 .site-content.form-width {
@@ -382,6 +383,10 @@ header {
     display: block;
     width: auto;
     height: 42px;
+}
+
+.header-logo-img.sidebar-logo{
+    height: 32px;
 }
 .header-name{
     width:100%;

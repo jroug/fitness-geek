@@ -22,6 +22,7 @@ interface ProfileDataResponse {
         bodycomp_fat_percent?: number;
         bodycomp_fat?: number;
         bodycomp_fat_visceral?: number;
+        bodycomp_muscle?: number;
         bodycomp_waist?: number;
         bodycomp_weight?: number;
     }
@@ -83,6 +84,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                     bodycomp_fat_percent: data.fitness_stats?.bodycomp_fat_percent,
                     bodycomp_fat: data.fitness_stats?.bodycomp_fat,
                     bodycomp_fat_visceral: data.fitness_stats?.bodycomp_fat_visceral,
+                    bodycomp_muscle: data.fitness_stats?.bodycomp_muscle,
                     bodycomp_waist: data.fitness_stats?.bodycomp_waist,
                     bodycomp_weight: data.fitness_stats?.bodycomp_weight
                 }

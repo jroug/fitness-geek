@@ -126,9 +126,9 @@ const SideBar = () => {
     return (
         <div className="menu-sidebar details !z-20">
             <aside className="h-full rounded-r-3xl from-slate-900 via-sky-900 to-cyan-800 p-4 text-slate-100 shadow-2xl">
-                <div className="mb-4 flex items-center justify-between border-b border-white/20 pb-3">
+                <div className="mb-8 flex items-center justify-between border-b border-white/20 pb-3">
                     <Link href={"/dashboard"}>
-                        <Image src={header_logo} alt="Fitness Geek logo" className="header-logo-img" />
+                        <Image src={header_logo} alt="Fitness Geek logo" className="header-logo-img sidebar-logo" />
                     </Link>
                     <button
                         type="button"

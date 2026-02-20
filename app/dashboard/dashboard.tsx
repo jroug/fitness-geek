@@ -172,8 +172,9 @@ const Dashboard = () => {
 
     const bodycompDate = profileDataWithStats?.fitness_stats?.bodycomp_date || '';
     const bodyFatPercent = profileDataWithStats?.fitness_stats?.bodycomp_fat_percent || 0;
+    const bodyFatMass = profileDataWithStats?.fitness_stats?.bodycomp_fat || 0;
     const visceralFat = profileDataWithStats?.fitness_stats?.bodycomp_fat_visceral || 0;
-    const muscleMass = profileDataWithStats?.fitness_stats?.bodycomp_fat || 0;
+    const muscleMass = profileDataWithStats?.fitness_stats?.bodycomp_muscle || 0;
     const bodyWeight = profileDataWithStats?.fitness_stats?.bodycomp_weight || 0;
     const waist = profileDataWithStats?.fitness_stats?.bodycomp_waist || 0;
 
@@ -335,9 +336,10 @@ const Dashboard = () => {
                                 : 'No recent measurement'}
                         </p>
                     </div>
-                    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
+                    <div className="grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-6">
                         {[
                             { label: 'Body Fat', value: bodyFatPercent, unit: '%' },
+                            { label: 'Body Fat Mass', value: bodyFatMass, unit: 'kg' },
                             { label: 'Visceral Fat', value: visceralFat, unit: 'cm' },
                             { label: 'Muscle Mass', value: muscleMass, unit: 'kg' },
                             { label: 'Weight', value: bodyWeight, unit: 'kg' },
