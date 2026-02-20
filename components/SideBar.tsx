@@ -41,35 +41,37 @@ const SideBar = () => {
                 icon: dashBoardIcon,
             },
             {
-                key: 'add-meal',
-                label: 'Add Meal',
-                href: '/dashboard/add-meal',
-                icon: setting6,
-            },
-            {
-                key: 'add-weighing',
-                label: 'Add Weighing',
-                href: '/dashboard/add-weighing',
-                icon: setting6,
-            },
-            {
-                key: 'add-body-composition',
-                label: 'Add Body Composition',
-                href: '/dashboard/add-body-composition',
-                icon: setting6,
-            },
-            {
-                key: 'add-workout',
-                label: 'Add Workout',
-                href: '/dashboard/add-workout',
-                icon: setting1,
-            },
-            {
                 key: 'calendar',
                 label: 'Calendar',
                 href: '/dashboard/calendar',
                 icon: calendarIcon,
             },
+            {
+                key: 'add-body-composition',
+                label: 'Body Composition',
+                href: '/dashboard/add-body-composition',
+                icon: setting6,
+            },
+            {
+                key: 'add-weighing',
+                label: 'Weighing',
+                href: '/dashboard/add-weighing',
+                icon: setting6,
+            },
+            {
+                key: 'add-meal',
+                label: 'Meal',
+                href: '/dashboard/add-meal',
+                icon: setting6,
+            },
+            {
+                key: 'add-workout',
+                label: 'Workout',
+                href: '/dashboard/add-workout',
+                icon: setting1,
+            },
+
+
             {
                 key: 'charts',
                 label: 'Charts',
@@ -97,7 +99,7 @@ const SideBar = () => {
         // console.log('useEffect sidebar');
         if (window.innerWidth>=600)
             document.body.classList.add('open-sidebar');
-        
+
         return () => {
             document.body.classList.remove('open-sidebar');
         };
@@ -143,75 +145,93 @@ const SideBar = () => {
                 </div>
 
                 <nav className="max-h-[calc(100vh-110px)] space-y-2 overflow-y-auto pr-1">
-                    {menuItems.map((item) => {
+                    {menuItems.map((item, index) => {
                         const isDropdown = Array.isArray(item.children) && item.children.length > 0;
                         const isOpen = !!openDropdowns[item.key];
                         const activeItem = isItemActive(item);
 
                         if (isDropdown) {
                             return (
-                                <div key={item.key} className="rounded-xl border-white/15 bg-white/5">
-                                    <button
-                                        type="button"
-                                        onClick={() => handleDropDownClick(item.key)}
-                                        className={`flex w-full items-center gap-3 px-3 py-2 text-left transition ${
-                                            activeItem ? 'bg-white/15' : 'hover:bg-white/10'
-                                        }`}
-                                    >
-                                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                                            <Image src={item.icon} alt={item.label} className="h-[23px] w-[23px]" />
-                                        </div>
-                                        <span className="flex-1 text-base font-normal text-black">{item.label}</span>
-                                        <span
-                                            className={`text-lg leading-none text-cyan-100 transition-transform ${
-                                                isOpen ? 'rotate-180' : ''
+                                <React.Fragment key={item.key}>
+                                    <div className="rounded-xl border-white/15 bg-white/5">
+                                        <button
+                                            type="button"
+                                            onClick={() => handleDropDownClick(item.key)}
+                                            className={`flex w-full items-center gap-3 px-3 py-2 text-left transition ${
+                                                activeItem ? 'bg-white/15' : 'hover:bg-white/10'
                                             }`}
                                         >
-                                            ˅
-                                        </span>
-                                    </button>
-                                    {isOpen ? (
-                                        <ul className="space-y-1 px-3 pb-3">
-                                            {item.children!.map((child) => {
-                                                const activeChild = pathname === child.href;
-                                                return (
-                                                    <li key={child.key}>
-                                                        <Link
-                                                            href={child.href}
-                                                            onClick={closeSidebarFromMenuItem}
-                                                            className={`block rounded-lg px-3 py-2 text-base transition ml-[40px] ${
-                                                                activeChild
-                                                                    ? 'border-cyan-300/40 bg-cyan-300/15 text-[#2a86bb]'
-                                                                    : 'border-white/15 bg-white/5 hover:bg-white/10 text-black '
-                                                            }`}
-                                                        >
-                                                            {child.label}
-                                                        </Link>
-                                                    </li>
-                                                );
-                                            })}
-                                        </ul>
-                                    ) : null}
-                                </div>
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                                                <Image src={item.icon} alt={item.label} className="h-[23px] w-[23px]" />
+                                            </div>
+                                            <span className="flex-1 text-base font-normal text-black">{item.label}</span>
+                                            <span
+                                                className={`transition-transform duration-200 text-black ${
+                                                    isOpen ? 'rotate-180' : ''
+                                                }`}
+                                                aria-hidden="true"
+                                            >
+                                                <svg className="h-4 w-4" viewBox="0 0 20 20" fill="none">
+                                                    <path
+                                                        d="M5 7.5L10 12.5L15 7.5"
+                                                        stroke="currentColor"
+                                                        strokeWidth="1.8"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                    />
+                                                </svg>
+                                            </span>
+                                        </button>
+                                        {isOpen ? (
+                                            <ul className="space-y-1 px-3 pb-3">
+                                                {item.children!.map((child) => {
+                                                    const activeChild = pathname === child.href;
+                                                    return (
+                                                        <li key={child.key}>
+                                                            <Link
+                                                                href={child.href}
+                                                                onClick={closeSidebarFromMenuItem}
+                                                                className={`block rounded-lg px-3 py-2 text-base transition ml-[40px] ${
+                                                                    activeChild
+                                                                        ? 'border-cyan-300/40 bg-cyan-300/15 text-[#2a86bb]'
+                                                                        : 'border-white/15 bg-white/5 hover:bg-white/10 text-black '
+                                                                }`}
+                                                            >
+                                                                {child.label}
+                                                            </Link>
+                                                        </li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        ) : null}
+                                        { index === 1 || index === 5 || index === 6 ? (
+                                            <div className="my-2 pt-[1px] bg-[#e5e7eb]" aria-hidden="true"></div>
+                                        ) : null}
+                                    </div>
+                                </React.Fragment>
                             );
                         }
 
                         return (
-                            <Link
-                                key={item.key}
-                                href={item.href ?? '#'}
-                                onClick={closeSidebarFromMenuItem}
-                                className={`flex items-center gap-3 rounded-xl px-3 py-2 transition hover:text-[#2a86bb] ${
-                                    activeItem
-                                        ? 'border-cyan-300/40 bg-cyan-300/15 text-[#2a86bb]'
-                                        : 'border-white/15 bg-white/5 hover:bg-white/10 text-black '
-                                }`}
-                            >
-                                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 ">
-                                    <Image src={item.icon} alt={item.label} className="h-[23px] w-[23px]" />
-                                </div>
-                                <span className="text-base font-normal  ">{item.label}</span>
-                            </Link>
+                            <React.Fragment key={item.key}>
+                                <Link
+                                    href={item.href ?? '#'}
+                                    onClick={closeSidebarFromMenuItem}
+                                    className={`flex items-center gap-3 rounded-xl px-3 py-2 transition hover:text-[#2a86bb] ${
+                                        activeItem
+                                            ? 'border-cyan-300/40 bg-cyan-300/15 text-[#2a86bb]'
+                                            : 'border-white/15 bg-white/5 hover:bg-white/10 text-black '
+                                    }`}
+                                >
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 ">
+                                        <Image src={item.icon} alt={item.label} className="h-[23px] w-[23px]" />
+                                    </div>
+                                    <span className="text-base font-normal  ">{item.label}</span>
+                                </Link>
+                                {index === 1 || index === 5 || index === 6 ? (
+                                    <div className="my-2 pt-[1px] bg-[#e5e7eb]" aria-hidden="true"></div>
+                                ) : null}
+                            </React.Fragment>
                         );
                     })}
                 </nav>

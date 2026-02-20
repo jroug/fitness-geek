@@ -54,7 +54,7 @@ const PublicHeader = () => {
                 <div className="hidden md:grid md:grid-cols-[1fr_auto_1fr] md:items-center">
                     <div className="flex justify-start">
                         <Link href="/">
-                            <Image src={fitness_geek_logo} alt="Fitness Geek logo" className="h-12 w-auto" />
+                            <Image src={fitness_geek_logo} alt="Fitness Geek logo" className="h-10 w-auto" />
                         </Link>
                     </div>
 

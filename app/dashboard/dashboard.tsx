@@ -294,7 +294,7 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                <section className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
+                <section className="mt-16 grid grid-cols-1 gap-4 md:grid-cols-2">
                     <article className="rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200">
                         <div className="flex items-center gap-4">
                             <div className="rounded-xl bg-emerald-100 p-3">
@@ -325,7 +325,7 @@ const Dashboard = () => {
                     </article>
                 </section>
 
-                <section className="mt-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                         <h2 className="text-xl font-bold text-slate-900">Body Composition</h2>
                         <p className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
@@ -355,7 +355,7 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                <section className="mt-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                     <h2 className="text-xl font-bold text-slate-900">Weight Progress</h2>
                     <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
                         <article className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
@@ -395,7 +395,7 @@ const Dashboard = () => {
                     ) : null}
                 </section>
 
-                <section className="mt-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                     <h2 className="text-xl font-bold text-slate-900">Last 2 Weeks Weight Chart</h2>
                     <p className="mt-1 text-sm text-slate-500">Daily weighing trend for the past 14 days.</p>
                     <div className="mt-4 h-[260px]">
@@ -411,7 +411,7 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                <section className="mt-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                     <h2 className="text-xl font-bold text-slate-900">Workouts</h2>
                     <div className="mt-5">
                         <Slider {...settings}>
@@ -445,7 +445,7 @@ const Dashboard = () => {
                     </div>
                 </section>
 
-                <section className="mt-8 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                     <h2 className="text-xl font-bold text-slate-900">Calendar & Charts</h2>
                     <div className="mt-4 grid grid-cols-2 gap-3 md:grid-cols-3 xl:grid-cols-5">
                         {[

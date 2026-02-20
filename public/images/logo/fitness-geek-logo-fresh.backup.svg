@@ -1,0 +1,20 @@
+<svg width="720" height="192" viewBox="24 24 720 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(24,24)">
+    <rect x="0" y="0" width="192" height="192" rx="40" fill="#000000"/>
+
+    <rect x="36" y="92" width="120" height="12" rx="6" fill="#FFFFFF"/>
+
+    <rect x="22" y="50" width="20" height="92" rx="8" fill="#FFFFFF"/>
+    <rect x="8" y="58" width="14" height="76" rx="6" fill="#FFFFFF"/>
+    <rect x="0" y="72" width="8" height="48" rx="4" fill="#FFFFFF"/>
+
+    <rect x="150" y="50" width="20" height="92" rx="8" fill="#FFFFFF"/>
+    <rect x="170" y="58" width="14" height="76" rx="6" fill="#FFFFFF"/>
+    <rect x="184" y="72" width="8" height="48" rx="4" fill="#FFFFFF"/>
+
+    <path d="M60 144C76 158 110 156 124 138" stroke="#5EDFF5" stroke-width="8" stroke-linecap="round"/>
+  </g>
+
+  <text x="250" y="102" fill="#08132D" font-family="'DM Sans', sans-serif" font-size="78" font-weight="800" letter-spacing="1">FITNESS</text>
+  <text x="250" y="180" fill="#5EDFF5" font-family="'DM Sans', sans-serif" font-size="78" font-weight="800" letter-spacing="1">GEEK</text>
+</svg>
