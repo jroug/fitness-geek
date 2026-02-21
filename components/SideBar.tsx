@@ -3,12 +3,17 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import header_logo from "../public/images/logo/fitness-geek-logo-fresh.svg";
-import setting1 from '../public/images/setting/setting1.svg';
 import dashBoardIcon from '../public/images/setting/setting4.svg';
 import calendarIcon from '@/public/svg/calendar-icon.svg';
+import weightIcon from '@/public/svg/weight.svg';
+import mealIcon from '@/public/svg/add-meal-blue.svg';
+// import workoutHeartIcon from '@/public/svg/workout-heart-icon.svg';
+import workoutHeartIcon from '@/public/svg/add-workout.svg';
 import chartIcon from '../public/images/setting/setting5.svg';
+import goalsIcon from '@/public/svg/goals-icon.svg';
+import achievementsIcon from '@/public/svg/achievements-icon.svg';
 import setting6 from '../public/images/setting/setting6.svg';
 import setting11 from '../public/images/setting/setting11.svg';
 import close_icon from '../public/svg/close-icon.svg';
@@ -28,8 +33,10 @@ type MenuItem = {
     children?: MenuChild[];
 };
 
+const SIDEBAR_DIVIDER_INDEXES = [1, 5, 6, 8];
+
 const SideBar = () => {
-    const router = useRouter();
+
     const pathname = usePathname();
 
     const menuItems: MenuItem[] = useMemo(
@@ -56,22 +63,20 @@ const SideBar = () => {
                 key: 'add-weighing',
                 label: 'Weighing',
                 href: '/dashboard/add-weighing',
-                icon: setting6,
+                icon: weightIcon,
             },
             {
                 key: 'add-meal',
                 label: 'Meal',
                 href: '/dashboard/add-meal',
-                icon: setting6,
+                icon: mealIcon,
             },
             {
                 key: 'add-workout',
                 label: 'Workout',
                 href: '/dashboard/add-workout',
-                icon: setting1,
+                icon: workoutHeartIcon,
             },
-
-
             {
                 key: 'charts',
                 label: 'Charts',
@@ -82,6 +87,23 @@ const SideBar = () => {
                     { key: 'charts-grades', label: 'Grades Chart', href: '/dashboard/charts/grades' },
                     { key: 'charts-bodyfat', label: 'Body Composition', href: '/dashboard/charts/body-composition' },
                 ],
+            },
+            {
+                key: 'goals',
+                label: 'Goals',
+                icon: goalsIcon,
+                children: [
+                    { key: 'goals-weight', label: 'Weight', href: '/dashboard/goals/weight' },
+                    { key: 'goals-workouts', label: 'Workouts', href: '/dashboard/goals/workouts' },
+                    { key: 'goals-bodyfat', label: 'Body Fat', href: '/dashboard/goals/bodyfat' },
+                    { key: 'goals-muscle', label: 'Muscle', href: '/dashboard/goals/muscle' },
+                ],
+            },
+            {
+                key: 'achievements',
+                label: 'Achievements',
+                href: '/dashboard/achievements',
+                icon: achievementsIcon,
             },
             {
                 key: 'about',
@@ -162,7 +184,7 @@ const SideBar = () => {
                                             }`}
                                         >
                                             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
-                                                <Image src={item.icon} alt={item.label} className="h-[23px] w-[23px]" />
+                                                <Image src={item.icon} alt={item.label} className="h-[26px] w-[26px]" />
                                             </div>
                                             <span className="flex-1 text-base font-normal text-black">{item.label}</span>
                                             <span
@@ -204,9 +226,9 @@ const SideBar = () => {
                                                 })}
                                             </ul>
                                         ) : null}
-                                        { index === 1 || index === 5 || index === 6 ? (
-                                            <div className="my-2 pt-[1px] bg-[#e5e7eb]" aria-hidden="true"></div>
-                                        ) : null}
+                                {SIDEBAR_DIVIDER_INDEXES.includes(index) ? (
+                                    <div className="my-2 pt-[1px] bg-[#e5e7eb]" aria-hidden="true"></div>
+                                ) : null}
                                     </div>
                                 </React.Fragment>
                             );
@@ -224,11 +246,11 @@ const SideBar = () => {
                                     }`}
                                 >
                                     <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 ">
-                                        <Image src={item.icon} alt={item.label} className="h-[23px] w-[23px]" />
+                                        <Image src={item.icon} alt={item.label} className="h-[26px] w-[26px]" />
                                     </div>
                                     <span className="text-base font-normal  ">{item.label}</span>
                                 </Link>
-                                {index === 1 || index === 5 || index === 6 ? (
+                                {SIDEBAR_DIVIDER_INDEXES.includes(index) ? (
                                     <div className="my-2 pt-[1px] bg-[#e5e7eb]" aria-hidden="true"></div>
                                 ) : null}
                             </React.Fragment>

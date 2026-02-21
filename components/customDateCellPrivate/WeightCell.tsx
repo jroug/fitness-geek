@@ -4,7 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import pen_icon from "../../public/images/setting/pencil.svg";
 import save_icon from "../../public/svg/saving2.svg";
-import weight_icon from "../../public/svg/weight.svg";
+import weight_icon from "../../public/svg/weight-black.svg";
 
 interface WeightCellProps {
     isEditingWeight: boolean;

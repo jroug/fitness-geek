@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from 'next/link';
 // import left_arrow from "../public/svg/black-left-arrow.svg";
 import burger_menu_icon from "../public/svg/burger-menu.svg";
+import dashboard_icon from '@/public/images/setting/setting4.svg';
 import calendar_icon from '@/public/svg/calendar-icon.svg';
 import HeaderProfileMenu from '@/components/HeaderProfileMenu';
 // import header_logo from "../public/images/logo/fitness-geek-logo-fresh.svg";
@@ -29,10 +30,17 @@ const Header: React.FC = () => {
             <div className="header-overlay" onClick={handleOverlayClick}></div>
             <header id="top-header" >
                 <div className="header-wrap">
-                    <div className="home-setting relative !z-10">
+                    <div className="home-setting relative !z-10 flex items-center gap-2">
                         <button type="button" onClick={handleHomeSettingsClick} aria-label="Open sidebar">
                             <Image src={burger_menu_icon} alt="menu-icon" className="h-5 w-5"/>
                         </button>
+                        <Link
+                            href="/dashboard"
+                            aria-label="Go to dashboard"
+                            className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 p-2 transition hover:bg-slate-200"
+                        >
+                            <Image src={dashboard_icon} alt="dashboard-shortcut-icon" className="h-5 w-5" />
+                        </Link>
                     </div>
                     <div className="ml-auto mr-2 flex items-center gap-2">
                         <Link
