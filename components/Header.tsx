@@ -37,7 +37,7 @@ const Header: React.FC = () => {
                         <Link
                             href="/dashboard"
                             aria-label="Go to dashboard"
-                            className="ml-2 inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 p-2 transition hover:bg-slate-200"
+                            className="ml-[2px] inline-flex h-9 w-9 items-center justify-center rounded-full bg-slate-100 p-2 transition hover:bg-slate-200"
                         >
                             <Image src={dashboard_icon} alt="dashboard-shortcut-icon" className="h-5 w-5" />
                         </Link>

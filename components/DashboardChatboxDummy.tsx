@@ -2,6 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import Image from 'next/image';
+import header_logo_small from '@/public/images/logo/fitness-geek-logo-fresh-small.svg';
 
 type ChatMessage = {
   role: 'user' | 'assistant';
@@ -66,22 +68,29 @@ export default function DashboardChatboxDummy() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed bottom-[6.5rem] right-4 z-50 h-[540px] w-[500px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl md:bottom-[5.75rem] md:right-6 md:h-[980px]"
+            className="fixed bottom-[4.8rem] right-4 z-50 h-[800px] w-[500px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl md:right-6 md:h-[min(1260px,calc(100dvh-7rem))]"
             aria-label="Demo chatbox"
           >
-          <div className="flex items-center justify-between bg-slate-900 px-4 py-3 text-white">
-            <p className="text-sm font-semibold">Support Chat</p>
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="rounded-md px-2 py-1 text-xs font-medium text-slate-200 transition hover:bg-white/10"
-              aria-label="Close chatbox"
-            >
-              Close
-            </button>
+          <div className="chat-header flex items-center justify-between bg-slate-900 px-4 pt-[10px] pb-[10px] text-white">
+            <div className="flex items-center gap-2">
+              <Image src={header_logo_small} alt="Fitness Geek logo" className="h-8 w-8 rounded-md" />
+              <p className="text-sm font-semibold">AI Coach</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-200 transition hover:bg-white/10"
+                aria-label="Close chatbox"
+              >
+                <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                  <path d="M6 6L18 18M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                </svg>
+              </button>
+            </div>
           </div>
 
-          <div className="h-[calc(100%-110px)] space-y-3 overflow-y-auto bg-slate-50 p-4">
+          <div className="h-[calc(100%-120px)] space-y-3 overflow-y-auto bg-slate-50 p-4">
             {messages.map((message, index) => (
               <div
                 key={`${message.role}-${index}`}
@@ -127,7 +136,7 @@ export default function DashboardChatboxDummy() {
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
-        className="fixed bottom-24 right-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white shadow-xl transition hover:bg-slate-700 md:bottom-6 md:right-6"
+        className="fixed bottom-4 right-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white shadow-xl transition hover:bg-slate-700 md:right-6"
         aria-label="Open chatbox"
       >
         <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
