@@ -10,7 +10,12 @@ type ChatMessage = {
   content: string;
 };
 
-export default function DashboardChatboxDummy() {
+type ChatboxInjectDetail = {
+  question?: string;
+  answer?: string;
+};
+
+export default function DashboardChatbox() {
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -20,10 +25,59 @@ export default function DashboardChatboxDummy() {
   const [errorText, setErrorText] = useState('');
   const bottomRef = useRef<HTMLDivElement | null>(null);
 
+  const renderMessageContent = (content: string) => {
+    const lines = content.split('\n');
+    const headingRegex = /^(\s*[-*]?\s*)(wins?|risks?|next[- ]week actions?)(\s*[:\-]\s*)(.*)$/i;
+
+    return (
+      <>
+        {lines.map((line, index) => {
+          const match = line.match(headingRegex);
+          if (!match) {
+            return (
+              <span key={`line-${index}`}>
+                {line}
+                {index < lines.length - 1 ? <br /> : null}
+              </span>
+            );
+          }
+
+          return (
+            <span key={`line-${index}`}>
+              {match[1]}
+              <strong>{match[2]}</strong>
+              {match[3]}
+              {match[4]}
+              {index < lines.length - 1 ? <br /> : null}
+            </span>
+          );
+        })}
+      </>
+    );
+  };
+
   useEffect(() => {
     if (!isOpen) return;
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [isOpen, messages]);
+
+  useEffect(() => {
+    const handleInjectedChatMessage = (event: Event) => {
+      const customEvent = event as CustomEvent<ChatboxInjectDetail>;
+      const question = customEvent.detail?.question?.trim();
+      const answer = customEvent.detail?.answer?.trim();
+      if (!question || !answer) return;
+
+      setIsOpen(true);
+      setErrorText('');
+      setMessages((prev) => [...prev, { role: 'user', content: question }, { role: 'assistant', content: answer }]);
+    };
+
+    window.addEventListener('fitness-geek:chatbox-message', handleInjectedChatMessage);
+    return () => {
+      window.removeEventListener('fitness-geek:chatbox-message', handleInjectedChatMessage);
+    };
+  }, []);
 
   const handleSend = async (e: FormEvent) => {
     e.preventDefault();
@@ -69,7 +123,7 @@ export default function DashboardChatboxDummy() {
             exit={{ opacity: 0, y: 5 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className="fixed bottom-[4.8rem] right-4 z-50 h-[800px] w-[500px] max-w-[calc(100vw-2rem)] overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl md:right-6 md:h-[min(1260px,calc(100dvh-7rem))]"
-            aria-label="Demo chatbox"
+            aria-label="Dashboard chatbox"
           >
           <div className="chat-header flex items-center justify-between bg-slate-900 px-4 pt-[10px] pb-[10px] text-white">
             <div className="flex items-center gap-2">
@@ -100,7 +154,7 @@ export default function DashboardChatboxDummy() {
                     : 'ml-auto rounded-br-md bg-cyan-100 text-slate-800 ring-cyan-200'
                 }`}
               >
-                {message.content}
+                {renderMessageContent(message.content)}
               </div>
             ))}
             {isSending ? (

@@ -168,3 +168,167 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* Dashboard dark mode (toggled from the header) */
+body.dashboard-dark {
+    background: #020617;
+    color: #e2e8f0;
+}
+
+body.dashboard-dark header {
+    background: #0f172a;
+    border-bottom-color: #1e293b;
+}
+
+body.dashboard-dark #top-header .bg-slate-100 {
+    background-color: #1e293b !important;
+}
+
+body.dashboard-dark #top-header .text-slate-700 {
+    color: #e2e8f0 !important;
+}
+
+body.dashboard-dark .bg-white {
+    background-color: #111827 !important;
+}
+
+body.dashboard-dark .bg-slate-50 {
+    background-color: #0f172a !important;
+}
+
+body.dashboard-dark .text-slate-900 {
+    color: #f8fafc !important;
+}
+
+body.dashboard-dark .text-slate-800 {
+    color: #e2e8f0 !important;
+}
+
+body.dashboard-dark .text-slate-700 {
+    color: #cbd5e1 !important;
+}
+
+body.dashboard-dark .text-slate-600 {
+    color: #94a3b8 !important;
+}
+
+body.dashboard-dark .ring-slate-200 {
+    --tw-ring-color: #334155 !important;
+}
+
+body.dashboard-dark .border-slate-200 {
+    border-color: #334155 !important;
+}
+
+body.dashboard-dark .border-slate-300 {
+    border-color: #475569 !important;
+}
+
+body.dashboard-dark .menu-sidebar aside {
+    background: linear-gradient(155deg, #020617 0%, #0b1220 55%, #1e293b 100%);
+    color: #e2e8f0;
+}
+
+body.dashboard-dark .menu-sidebar {
+    background-color: #020617 !important;
+}
+
+body.dashboard-dark .menu-sidebar .text-slate-900,
+body.dashboard-dark .menu-sidebar .text-slate-800 {
+    color: #e2e8f0 !important;
+}
+
+body.dashboard-dark .menu-sidebar .bg-white\/10 {
+    background-color: rgba(148, 163, 184, 0.16) !important;
+}
+
+body.dashboard-dark .menu-sidebar .bg-white\/5 {
+    background-color: rgba(148, 163, 184, 0.1) !important;
+}
+
+body.dashboard-dark .menu-sidebar .hover\:bg-white\/10:hover {
+    background-color: rgba(148, 163, 184, 0.2) !important;
+}
+
+body.dashboard-dark .menu-sidebar .hover\:bg-white\/20:hover {
+    background-color: rgba(148, 163, 184, 0.24) !important;
+}
+
+body.dashboard-dark .menu-sidebar .bg-\[\#e5e7eb\] {
+    background-color: #334155 !important;
+}
+
+body.dashboard-dark .about-logo-light {
+    display: none !important;
+}
+
+body.dashboard-dark .about-logo-dark {
+    display: block !important;
+}
+
+/* Calendar page dark theme (dashboard only) */
+body.dashboard-dark .calendar-modern .rbc-calendar {
+    background: #0b1220;
+    color: #e2e8f0;
+}
+
+body.dashboard-dark .calendar-modern .rbc-toolbar {
+    background: #0f172a;
+    border-color: #334155;
+}
+
+body.dashboard-dark .calendar-modern .rbc-toolbar button {
+    background: #111827;
+    border-color: #334155;
+    color: #cbd5e1;
+}
+
+body.dashboard-dark .calendar-modern .rbc-toolbar button.rbc-active,
+body.dashboard-dark .calendar-modern .rbc-toolbar button:hover {
+    background: #0891b2;
+    border-color: #0891b2;
+    color: #f8fafc;
+}
+
+body.dashboard-dark .calendar-modern .rbc-toolbar-label {
+    color: #f8fafc;
+}
+
+body.dashboard-dark .calendar-modern .rbc-time-view,
+body.dashboard-dark .calendar-modern .rbc-time-content,
+body.dashboard-dark .calendar-modern .rbc-time-header-content,
+body.dashboard-dark .calendar-modern .rbc-time-gutter,
+body.dashboard-dark .calendar-modern .rbc-header,
+body.dashboard-dark .calendar-modern .rbc-day-bg,
+body.dashboard-dark .calendar-modern .rbc-timeslot-group {
+    border-color: #334155;
+}
+
+body.dashboard-dark .calendar-modern .rbc-time-header-content,
+body.dashboard-dark .calendar-modern .rbc-header,
+body.dashboard-dark .calendar-modern .rbc-time-gutter,
+body.dashboard-dark .calendar-modern .rbc-time-slot {
+    background: #0f172a;
+    color: #cbd5e1;
+}
+
+body.dashboard-dark .calendar-modern .rbc-day-bg {
+    background: #0b1220;
+}
+
+body.dashboard-dark .calendar-modern .rbc-today {
+    background-color: #111827;
+}
+
+body.dashboard-dark .calendar-modern .rbc-off-range-bg {
+    background: #0a1020;
+}
+
+body.dashboard-dark .calendar-modern .rbc-current-time-indicator {
+    background-color: #22d3ee;
+}
+
+body.dashboard-dark .calendar-modern .event-title {
+    border-bottom-color: #334155;
+    color: #e2e8f0;
+}

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import PublicFooter from "@/components/PublicFooter";
+import Image from "next/image";
 
 type WpPage = {
   id: number;
@@ -26,8 +27,6 @@ export default async function LandingPage() {
   const pageData = data?.[0];
 
   const pageTitle = pageData?.title?.rendered ?? "Fitness Geek";
-  const pageContent = pageData?.content?.rendered ?? "";
-
   return (
     <main className="site-content full-width bg-slate-50 ">
       <div className="absolute left-[-120px] top-[70px] h-[360px] w-[360px] rounded-full bg-cyan-500/10 blur-2xl" />
@@ -89,10 +88,64 @@ export default async function LandingPage() {
           </div>
 
           <div className="mt-6 rounded-3xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-8">
-            <div
+            {/* <div
               className="landing-page-content text-slate-700 [&_a]:text-cyan-700 [&_a]:underline [&_h1]:mt-6 [&_h1]:text-3xl [&_h1]:font-black [&_h1]:text-slate-900 [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h3]:mt-4 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-slate-900 [&_li]:ml-5 [&_li]:list-disc [&_p]:mt-3 [&_p]:leading-7"
               dangerouslySetInnerHTML={{ __html: pageContent }}
-            />
+            /> */}
+
+            <div className="grid gap-6 sm:grid-cols-2">
+              {[
+                {
+                  alt: "Runner",
+                  src: "/images/landing/runner.png",
+                  label: "Start Your Running Plan",
+                  cta: "Track Runs",
+                  href: "/users/join",
+                },
+                {
+                  alt: "Weight lifter training with barbell",
+                  src: "/images/landing/weight_lifter.png",
+                  label: "Build Strength Faster",
+                  cta: "Log Workouts",
+                  href: "/users/join",
+                },
+                {
+                  alt: "Healthy Meals",
+                  src: "/images/landing/healthy_meals.png",
+                  label: "Eat Smarter Daily",
+                  cta: "Plan Meals",
+                  href: "/users/join",
+                },
+                {
+                  alt: "Before After",
+                  src: "/images/landing/body_progress.png",
+                  label: "See Real Progress",
+                  cta: "View Metrics",
+                  href: "/users/enter",
+                },
+              ].map((image) => (
+                <figure key={image.src} className="group overflow-hidden rounded-2xl ring-1 ring-slate-200">
+                  <div className="relative h-56 w-full md:h-64">
+                    <Image
+                      src={image.src}
+                      alt={image.alt}
+                      fill
+                      sizes="(min-width: 640px) 50vw, 100vw"
+                      className="object-cover transition duration-500 group-hover:scale-105"
+                    />
+                  </div>
+                  <figcaption className="flex items-center justify-between gap-3 bg-slate-50 px-4 py-3">
+                    <p className="text-sm font-semibold text-slate-800">{image.label}</p>
+                    <Link
+                      href={image.href}
+                      className="inline-flex rounded-lg bg-cyan-700 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-cyan-800"
+                    >
+                      {image.cta}
+                    </Link>
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
           </div>
         </div>
       </section>

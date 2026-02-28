@@ -1,5 +1,5 @@
 import { ReactNode } from 'react';
-import DashboardChatboxDummy from '@/components/DashboardChatboxDummy';
+import DashboardChatbox from '@/components/DashboardChatbox';
 
 interface DashboardTemplateProps {
   children: ReactNode;
@@ -9,7 +9,7 @@ export default function DashboardTemplate({ children }: DashboardTemplateProps) 
   return (
     <>
       {children}
-      <DashboardChatboxDummy />
+      <DashboardChatbox />
     </>
   );
 }

@@ -2,6 +2,7 @@ import React from 'react';
 // import settingImg from "@/public/images/main-img/setting-img.png";
 // import fitnessGeekLogo from "@/public/images/logo/fitness-geek-logo.png";
 import fitnessGeekLogo from "@/public/images/logo/fitness-geek-logo-fresh.svg";
+import fitnessGeekLogoDark from "@/public/images/logo/fitness-geek-logo-fresh-dark.svg";
 import Image from 'next/image';
 
 interface SimpleContentProps {
@@ -20,8 +21,9 @@ const SimpleContent: React.FC<SimpleContentProps> = ({ pageContent }) => {
 
                 <section className="mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-8">
                     <div className="mx-auto max-w-3xl">
-                        <div className="mx-auto mb-6 max-w-[260px]">
-                            <Image src={fitnessGeekLogo} alt="Fitness Geek logo" />
+                        <div className="mx-auto mb-6 max-w-[400px]">
+                            <Image src={fitnessGeekLogo} alt="Fitness Geek logo" className="about-logo-light" />
+                            <Image src={fitnessGeekLogoDark} alt="Fitness Geek logo dark" className="about-logo-dark hidden" />
                         </div>
                         <div
                             className="page-content text-slate-700 [&_a]:text-cyan-700 [&_a]:underline [&_h1]:mt-6 [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:text-slate-900 [&_h2]:mt-6 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:text-slate-900 [&_h3]:mt-4 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:text-slate-900 [&_li]:ml-5 [&_li]:list-disc [&_p]:mt-3 [&_p]:leading-7"

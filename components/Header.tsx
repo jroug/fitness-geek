@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from "next/image";
 import Link from 'next/link';
 // import left_arrow from "../public/svg/black-left-arrow.svg";
@@ -11,6 +11,25 @@ import HeaderProfileMenu from '@/components/HeaderProfileMenu';
 // import header_logo from "../public/images/logo/fitness-geek-logo-fresh.svg";
 
 const Header: React.FC = () => {
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
+    const [isThemeReady, setIsThemeReady] = useState(false);
+
+    useEffect(() => {
+        const savedTheme = window.localStorage.getItem('dashboard-theme');
+        const shouldUseDark = savedTheme === 'dark';
+        setIsDarkTheme(shouldUseDark);
+        document.documentElement.classList.toggle('dashboard-dark', shouldUseDark);
+        document.body.classList.toggle('dashboard-dark', shouldUseDark);
+        setIsThemeReady(true);
+    }, []);
+
+    useEffect(() => {
+        if (!isThemeReady) return;
+        window.localStorage.setItem('dashboard-theme', isDarkTheme ? 'dark' : 'light');
+        document.documentElement.classList.toggle('dashboard-dark', isDarkTheme);
+        document.body.classList.toggle('dashboard-dark', isDarkTheme);
+    }, [isDarkTheme, isThemeReady]);
+
     const handleHomeSettingsClick = () => {
         const sidebar = document.querySelector('.menu-sidebar') as HTMLElement;
         if (sidebar){ // sidebar is in a diffrent component so it needs to exist
@@ -43,6 +62,15 @@ const Header: React.FC = () => {
                         </Link>
                     </div>
                     <div className="ml-auto mr-2 flex items-center gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setIsDarkTheme((prev) => !prev)}
+                            aria-label={isDarkTheme ? "Switch to light theme" : "Switch to dark theme"}
+                            title={isDarkTheme ? "Switch to light theme" : "Switch to dark theme"}
+                            className="inline-flex h-9 items-center justify-center rounded-full bg-slate-100 px-3 text-xs font-semibold text-slate-700 transition hover:bg-slate-200"
+                        >
+                            {isDarkTheme ? "Light" : "Dark"}
+                        </button>
                         <Link
                             href="/dashboard/calendar"
                             aria-label="Go to calendar"

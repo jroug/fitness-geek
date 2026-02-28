@@ -7,6 +7,9 @@ const nextConfig = {
       {
         pathname: "/api/get-image-from-wp",
       },
+      {
+        pathname: "/images/**",
+      },
     ],
   },
 };

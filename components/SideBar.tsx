@@ -5,6 +5,7 @@ import Image, { type StaticImageData } from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import header_logo from "../public/images/logo/fitness-geek-logo-fresh.svg";
+import header_logo_dark from "../public/images/logo/fitness-geek-logo-fresh-dark.svg";
 import dashBoardIcon from '../public/images/setting/setting4.svg';
 import calendarIcon from '@/public/svg/calendar-icon.svg';
 import weightIcon from '@/public/svg/weight.svg';
@@ -116,6 +117,7 @@ const SideBar = () => {
     );
 
     const [openDropdowns, setOpenDropdowns] = useState<Record<string, boolean>>({});
+    const [isDarkTheme, setIsDarkTheme] = useState(false);
 
     useEffect(() => {
         // console.log('useEffect sidebar');
@@ -125,6 +127,19 @@ const SideBar = () => {
         return () => {
             document.body.classList.remove('open-sidebar');
         };
+    }, []);
+
+    useEffect(() => {
+        const syncThemeFromBody = () => {
+            setIsDarkTheme(document.body.classList.contains('dashboard-dark'));
+        };
+
+        syncThemeFromBody();
+
+        const observer = new MutationObserver(syncThemeFromBody);
+        observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+        return () => observer.disconnect();
     }, []);
 
     const closeSidebar = () => {
@@ -154,12 +169,12 @@ const SideBar = () => {
             <aside className="h-full rounded-r-3xl from-slate-900 via-sky-900 to-cyan-800 p-4 text-slate-100 shadow-2xl">
                 <div className="mb-8 flex items-center justify-between border-b border-white/20 pb-3">
                     <Link href={"/dashboard"}>
-                        <Image src={header_logo} alt="Fitness Geek logo" className="header-logo-img sidebar-logo" />
+                        <Image src={isDarkTheme ? header_logo_dark : header_logo} alt="Fitness Geek logo" className="header-logo-img sidebar-logo" />
                     </Link>
                     <button
                         type="button"
                         onClick={closeSidebar}
-                        className="rounded-lg bg-white/10 px-2 py-1 text-base font-semibold text-black transition hover:bg-white/20"
+                        className="rounded-lg bg-white/10 px-2 py-1 text-base font-semibold text-slate-900 transition hover:bg-white/20"
                         aria-label="Close sidebar"
                     >
                         <Image src={close_icon} alt="Close" className="h-5 w-5" />
@@ -175,7 +190,7 @@ const SideBar = () => {
                         if (isDropdown) {
                             return (
                                 <React.Fragment key={item.key}>
-                                    <div className="rounded-xl border-white/15 bg-white/5">
+                                    <div className="rounded-xl border-white/15 ">
                                         <button
                                             type="button"
                                             onClick={() => handleDropDownClick(item.key)}
@@ -183,12 +198,12 @@ const SideBar = () => {
                                                 activeItem ? 'bg-white/15' : 'hover:bg-white/10'
                                             }`}
                                         >
-                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10">
+                                            <div className="flex h-10 w-10 items-center justify-center rounded-lg ">
                                                 <Image src={item.icon} alt={item.label} className="h-[26px] w-[26px]" />
                                             </div>
-                                            <span className="flex-1 text-base font-normal text-black">{item.label}</span>
+                                            <span className="flex-1 text-base font-normal text-slate-800">{item.label}</span>
                                             <span
-                                                className={`transition-transform duration-200 text-black ${
+                                                className={`text-slate-800 transition-transform duration-200 ${
                                                     isOpen ? 'rotate-180' : ''
                                                 }`}
                                                 aria-hidden="true"
@@ -216,7 +231,7 @@ const SideBar = () => {
                                                                 className={`block rounded-lg px-3 py-2 text-base transition ml-[40px] ${
                                                                     activeChild
                                                                         ? 'border-cyan-300/40 bg-cyan-300/15 text-[#2a86bb]'
-                                                                        : 'border-white/15 bg-white/5 hover:bg-white/10 text-black '
+                                                                        : 'border-white/15 text-slate-800 hover:bg-white/10 '
                                                                 }`}
                                                             >
                                                                 {child.label}
@@ -242,10 +257,10 @@ const SideBar = () => {
                                     className={`flex items-center gap-3 rounded-xl px-3 py-2 transition hover:text-[#2a86bb] ${
                                         activeItem
                                             ? 'border-cyan-300/40 bg-cyan-300/15 text-[#2a86bb]'
-                                            : 'border-white/15 bg-white/5 hover:bg-white/10 text-black '
+                                            : 'border-white/15 text-slate-800 hover:bg-white/10 '
                                     }`}
                                 >
-                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-white/10 ">
+                                    <div className="flex h-10 w-10 items-center justify-center rounded-lg ">
                                         <Image src={item.icon} alt={item.label} className="h-[26px] w-[26px]" />
                                     </div>
                                     <span className="text-base font-normal  ">{item.label}</span>
