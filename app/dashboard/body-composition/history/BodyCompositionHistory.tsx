@@ -1,7 +1,11 @@
 'use client';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import Link from 'next/link';
+import useSWR, { mutate } from 'swr';
 import Loading from '@/components/Loading';
+import { bodyCompositionSWRCacheKeyPrefix } from '@/lib/bodyCompositionSWR';
+import { bodyCompositionSWRFetcher, bodyCompositionSWRKey } from '@/lib/bodyCompositionSWR';
 
 type BodyMetricField =
     | 'weight_kg'
@@ -29,10 +33,7 @@ type CaptionRowConfig = {
 
 type TableRowConfig = ValueRowConfig | CaptionRowConfig;
 
-const BodyCompositionPage: React.FC = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [hasError, setHasError] = useState(false);
-
+const BodyCompositionHistory: React.FC = () => {
     const [startDate, setStartDate] = useState<string>(() => '2024-04-01');
 
     const [endDate, setEndDate] = useState<string>(() => {
@@ -43,36 +44,17 @@ const BodyCompositionPage: React.FC = () => {
         return `${year}-${month}-${day}`;
     });
 
-    const [rows, setRows] = useState<UserBodyfatData[]>([]);
+    const [appliedStartDate, setAppliedStartDate] = useState<string>(startDate);
+    const [appliedEndDate, setAppliedEndDate] = useState<string>(endDate);
+    const [deletingRecordId, setDeletingRecordId] = useState<string | number | null>(null);
+    const swrKey = bodyCompositionSWRKey(appliedStartDate, appliedEndDate);
+    const { data: rows = [], error, isLoading } = useSWR<UserBodyfatData[]>(swrKey, bodyCompositionSWRFetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+        revalidateIfStale: false
+    });
 
-    const fetchUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/get-bodyfat-data?startDate=${startDate}&endDate=${endDate}`;
-
-    const fetchData = useCallback(async () => {
-        try {
-            setIsLoading(true);
-            const res = await fetch(fetchUrl, { method: 'GET', credentials: 'include' });
-            if (!res.ok) {
-                setHasError(true);
-                setIsLoading(false);
-                return;
-            }
-
-            const data: UserBodyfatData[] = await res.json();
-
-            setRows(data);
-            setHasError(false);
-        } catch {
-            setHasError(true);
-        } finally {
-            setIsLoading(false);
-        }
-    }, [fetchUrl]);
-
-    useEffect(() => {
-        fetchData();
-    }, [fetchData]);
-
-    if (isLoading || hasError) {
+    if (isLoading || error) {
         return <Loading />;
     }
 
@@ -80,9 +62,9 @@ const BodyCompositionPage: React.FC = () => {
         const d = new Date(value);
         if (Number.isNaN(d.getTime())) return value;
         const day = String(d.getDate()).padStart(2, '0');
-        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const month = d.toLocaleString('en-US', { month: 'short' });
         const year = String(d.getFullYear()).slice(-2);
-        return `${day}/${month}/${year}`;
+        return `${day} ${month} ${year}`;
     };
 
     const formatNumber = (value: number | string | null | undefined, digits = 1) => {
@@ -110,7 +92,7 @@ const BodyCompositionPage: React.FC = () => {
         { kind: 'value', className: 'bf-row-water', label: 'Συνολικό Νερό (%)', field: 'total_body_water_percent' },
         { kind: 'value', className: 'bf-row-waist', label: 'Περίμετρος μέσης (cm)', field: 'waist_circumference_cm' },
         { kind: 'value', className: 'bf-row-visceral', label: 'Σπλαχνικό λίπος', field: 'visceral_fat' },
-        { kind: 'caption', className: 'bf-row-delta-caption', label: 'Μεταβολές' },
+        { kind: 'caption', className: 'bf-row-delta-caption', label: 'Μεταβολες' },
         { kind: 'delta', className: 'bf-row-weight-change', label: 'Μεταβολή Βάρους (Kg)', field: 'weight_kg' },
         { kind: 'delta', className: 'bf-row-fatpct-change', label: 'Μεταβολή Λίπους (%)', field: 'body_fat_percent' },
         { kind: 'delta', className: 'bf-row-fatkg-change', label: 'Μεταβολή Λίπους (kg)', field: 'body_fat_kg' },
@@ -120,12 +102,63 @@ const BodyCompositionPage: React.FC = () => {
         { kind: 'delta', className: 'bf-row-visceral-change', label: 'Μεταβολή Σπλαχνικού λίπους', field: 'visceral_fat' }
     ];
 
+    const handleDeleteRecord = async (recordId: string | number) => {
+        const confirmed = window.confirm('Delete this body composition record?');
+        if (!confirmed) return;
+
+        setDeletingRecordId(recordId);
+        try {
+            const response = await fetch('/api/delete-body-composition', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    id: recordId,
+                    action: 'delete_bodycomposition'
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to delete record');
+            }
+
+            await mutate(
+                (key) => typeof key === 'string' && key.startsWith(bodyCompositionSWRCacheKeyPrefix),
+                undefined,
+                { revalidate: true }
+            );
+        } catch {
+            window.alert('Could not delete this record. Please try again.');
+        } finally {
+            setDeletingRecordId(null);
+        }
+    };
+
     const renderDateHeaders = () => {
         const headers: React.ReactNode[] = [];
         for (const row of rows) {
+            const rowId = row.id;
+            const isDeleting = deletingRecordId === rowId;
             headers.push(
                 <th key={row.id} className="border px-2 py-2 text-center">
-                    {formatDateShort(row.measurement_date)}
+                    <div className="flex min-w-[90px] items-center justify-center gap-2">
+                        <span>{formatDateShort(row.measurement_date)}</span>
+                        <button
+                            type="button"
+                            className="inline-flex h-6 w-6 items-center justify-center rounded-sm transition hover:opacity-70 disabled:cursor-not-allowed disabled:opacity-40"
+                            disabled={isDeleting}
+                            onClick={() => handleDeleteRecord(rowId)}
+                            aria-label="Delete record"
+                            title="Delete record"
+                        >
+                            <img
+                                src="/svg/trashbin.svg"
+                                alt=""
+                                className={`h-4 w-4 ${isDeleting ? 'opacity-60' : ''}`}
+                            />
+                        </button>
+                    </div>
                 </th>
             );
         }
@@ -147,11 +180,24 @@ const BodyCompositionPage: React.FC = () => {
     };
 
     return (
-        <div className="mx-auto w-full max-w-[2000px] px-4 pb-24 md:px-8" id="bodyfat-page">
+        <div className="mx-auto w-full max-w-[2200px] px-4 pb-24 md:px-8" id="bodyfat-page">
             <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
-                <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Chart</p>
-                <h1 className="mt-2 text-2xl font-bold md:text-3xl">Body Composition History</h1>
-                <p className="mt-2 text-sm text-cyan-100">Review your body composition trends and compare key measurements over time.</p>
+                <div className="mt-3 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+                    <div>
+                        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Data</p>
+                        <h1 className="mt-2 text-2xl font-bold md:text-3xl">Body Composition History</h1>
+                        <p className="mt-2 text-sm text-cyan-100">Review your body composition trends and compare key measurements over time.</p>
+                    </div>
+                    <div className="flex gap-3">
+                        <Link
+                            href="/dashboard/body-composition/add-new"
+                            className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-100"
+                        >
+                            Add New BC
+                        </Link>
+
+                    </div>
+                </div>
             </section>
             <div className="mt-6 rounded-2xl bg-white p-4 md:p-7">
                 <div className="flex flex-col gap-4 md:flex-row md:items-end w-full max-w-[700px]">
@@ -185,7 +231,8 @@ const BodyCompositionPage: React.FC = () => {
                         onClick={() => {
                             if (!startDate || !endDate) return;
                             if (startDate > endDate) return;
-                            fetchData();
+                            setAppliedStartDate(startDate);
+                            setAppliedEndDate(endDate);
                         }}
                     >
                         Apply
@@ -231,4 +278,4 @@ const BodyCompositionPage: React.FC = () => {
     );
 };
 
-export default BodyCompositionPage;
+export default BodyCompositionHistory;

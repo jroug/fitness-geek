@@ -55,10 +55,14 @@ const SideBar = () => {
                 icon: calendarIcon,
             },
             {
-                key: 'add-body-composition',
+                key: 'body-composition',
                 label: 'Body Composition',
-                href: '/dashboard/add-body-composition',
                 icon: setting6,
+                children: [
+                    { key: 'history-body-composition', label: 'History', href: '/dashboard/body-composition/history' },
+                    { key: 'chart-body-composition', label: 'Chart', href: '/dashboard/body-composition/chart' },
+                    { key: 'add-body-composition', label: 'Add New', href: '/dashboard/body-composition/add-new' },
+                ],
             },
             {
                 key: 'add-weighing',
@@ -86,7 +90,6 @@ const SideBar = () => {
                     { key: 'charts-weight', label: 'Weight Chart', href: '/dashboard/charts/weight' },
                     { key: 'charts-workouts', label: 'Workouts Chart', href: '/dashboard/charts/workouts' },
                     { key: 'charts-grades', label: 'Grades Chart', href: '/dashboard/charts/grades' },
-                    { key: 'charts-bodyfat', label: 'Body Composition', href: '/dashboard/charts/body-composition' },
                 ],
             },
             {
@@ -201,7 +204,14 @@ const SideBar = () => {
                                             <div className="flex h-10 w-10 items-center justify-center rounded-lg ">
                                                 <Image src={item.icon} alt={item.label} className="h-[26px] w-[26px]" />
                                             </div>
-                                            <span className="flex-1 text-base font-normal text-slate-800">{item.label}</span>
+                                            {
+                                                item.href ? 
+                                                    <Link href={ item.href}>
+                                                        <span className="flex-1 text-base font-normal text-slate-800">{item.label}</span>
+                                                    </Link> 
+                                                :
+                                                    <span className="flex-1 text-base font-normal text-slate-800">{item.label}</span>
+                                            }
                                             <span
                                                 className={`text-slate-800 transition-transform duration-200 ${
                                                     isOpen ? 'rotate-180' : ''

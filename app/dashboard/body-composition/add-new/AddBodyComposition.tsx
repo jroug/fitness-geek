@@ -5,6 +5,7 @@ import { mutate } from 'swr';
 import Toast from '@/components/Toast';
 import { globalSettings } from '@/lib/globalSettings';
 import { profileDataSWRKey } from '@/lib/profileDataSWR';
+import { bodyCompositionSWRCacheKeyPrefix } from '@/lib/bodyCompositionSWR';
 
 interface BodyCompositionInputData {
     measurement_date: string;
@@ -65,6 +66,11 @@ const AddBodyComposition: React.FC = () => {
         const data = await res.json();
         if (data.bodycomposition_added) {
             await mutate(profileDataSWRKey);
+            await mutate(
+                (key) => typeof key === 'string' && key.startsWith(bodyCompositionSWRCacheKeyPrefix),
+                undefined,
+                { revalidate: true }
+            );
             setPopupData({ title: 'Message', message: data.message || 'Saved', time: globalSettings.frmTimeSuccess, show_popup: true });
             setMeasurementDate(getCurrentDate());
             setWeightKg('');
