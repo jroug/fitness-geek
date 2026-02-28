@@ -6,6 +6,7 @@ import useSWR, { mutate } from 'swr';
 import Loading from '@/components/Loading';
 import { bodyCompositionSWRCacheKeyPrefix } from '@/lib/bodyCompositionSWR';
 import { bodyCompositionSWRFetcher, bodyCompositionSWRKey } from '@/lib/bodyCompositionSWR';
+import { profileDataSWRKey } from '@/lib/profileDataSWR';
 
 type BodyMetricField =
     | 'weight_kg'
@@ -32,6 +33,7 @@ type CaptionRowConfig = {
 };
 
 type TableRowConfig = ValueRowConfig | CaptionRowConfig;
+type EditingCell = { recordId: string | number; field: BodyMetricField } | null;
 
 const BodyCompositionHistory: React.FC = () => {
     const [startDate, setStartDate] = useState<string>(() => '2024-04-01');
@@ -47,6 +49,9 @@ const BodyCompositionHistory: React.FC = () => {
     const [appliedStartDate, setAppliedStartDate] = useState<string>(startDate);
     const [appliedEndDate, setAppliedEndDate] = useState<string>(endDate);
     const [deletingRecordId, setDeletingRecordId] = useState<string | number | null>(null);
+    const [editingCell, setEditingCell] = useState<EditingCell>(null);
+    const [editingValue, setEditingValue] = useState<string>('');
+    const [savingCellKey, setSavingCellKey] = useState<string | null>(null);
     const swrKey = bodyCompositionSWRKey(appliedStartDate, appliedEndDate);
     const { data: rows = [], error, isLoading } = useSWR<UserBodyfatData[]>(swrKey, bodyCompositionSWRFetcher, {
         revalidateOnFocus: false,
@@ -128,10 +133,89 @@ const BodyCompositionHistory: React.FC = () => {
                 undefined,
                 { revalidate: true }
             );
+            await mutate(profileDataSWRKey);
         } catch {
             window.alert('Could not delete this record. Please try again.');
         } finally {
             setDeletingRecordId(null);
+        }
+    };
+
+    const getCellKey = (recordId: string | number, field: BodyMetricField) => `${recordId}-${field}`;
+
+    const startCellEditing = (recordId: string | number, field: BodyMetricField, currentValue: number | null) => {
+        if (savingCellKey) return;
+        setEditingCell({ recordId, field });
+        setEditingValue(currentValue === null || currentValue === undefined ? '' : String(currentValue));
+    };
+
+    const saveCellEdit = async (recordId: string | number, field: BodyMetricField) => {
+        const cellKey = getCellKey(recordId, field);
+        if (savingCellKey === cellKey) return;
+
+        const row = rows.find((item) => String(item.id) === String(recordId));
+        if (!row) {
+            setEditingCell(null);
+            return;
+        }
+
+        const raw = editingValue.trim();
+        const nextValue = raw === '' ? null : Number(raw);
+        if (raw !== '' && Number.isNaN(nextValue)) {
+            window.alert('Please enter a valid number.');
+            return;
+        }
+
+        const currentValue = row[field];
+        const currentNumericValue = currentValue === null || currentValue === undefined ? null : Number(currentValue);
+        const unchanged =
+            (nextValue === null && currentNumericValue === null) ||
+            (nextValue !== null && currentNumericValue !== null && Math.abs(nextValue - currentNumericValue) < 0.000001);
+
+        if (unchanged) {
+            setEditingCell(null);
+            return;
+        }
+
+        setSavingCellKey(cellKey);
+        try {
+            const response = await fetch('/api/update-body-composition', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: recordId,
+                    field,
+                    value: nextValue,
+                    action: 'update_bodycomposition_cell',
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to update cell');
+            }
+
+            await mutate(
+                (key) => typeof key === 'string' && key.startsWith(bodyCompositionSWRCacheKeyPrefix),
+                (currentData?: UserBodyfatData[]) => {
+                    if (!Array.isArray(currentData)) return currentData;
+                    return currentData.map((item) => {
+                        if (String(item.id) !== String(recordId)) return item;
+                        return {
+                            ...item,
+                            [field]: nextValue
+                        };
+                    });
+                },
+                { revalidate: false }
+            );
+            await mutate(profileDataSWRKey);
+            setEditingCell(null);
+        } catch {
+            window.alert('Could not update this cell. Please try again.');
+        } finally {
+            setSavingCellKey(null);
         }
     };
 
@@ -169,10 +253,48 @@ const BodyCompositionHistory: React.FC = () => {
         const cells: React.ReactNode[] = [];
         for (let idx = 0; idx < rows.length; idx += 1) {
             const row = rows[idx];
+            const rowId = row.id;
+            const cellKey = getCellKey(rowId, config.field);
+            const isEditing = config.kind === 'value' && editingCell?.recordId === rowId && editingCell.field === config.field;
+            const isSavingCell = savingCellKey === cellKey;
             const value = config.kind === 'delta' ? deltaValue(idx, config.field) : formatNumber(row[config.field]);
             cells.push(
                 <td key={`${row.id}-${config.className}`} className="border px-2 py-2 text-center">
-                    {value}
+                    {config.kind === 'delta' ? (
+                        value
+                    ) : isEditing ? (
+                        <input
+                            type="number"
+                            step="0.1"
+                            value={editingValue}
+                            disabled={isSavingCell}
+                            autoFocus
+                            className="w-[86px] rounded-md border border-cyan-500 bg-white px-2 py-1 text-center text-sm outline-none ring-2 ring-cyan-200"
+                            onChange={(e) => setEditingValue(e.target.value)}
+                            onBlur={() => {
+                                void saveCellEdit(rowId, config.field);
+                            }}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    e.preventDefault();
+                                    void saveCellEdit(rowId, config.field);
+                                }
+                                if (e.key === 'Escape') {
+                                    e.preventDefault();
+                                    setEditingCell(null);
+                                }
+                            }}
+                        />
+                    ) : (
+                        <button
+                            type="button"
+                            className="min-w-[70px] rounded px-1 py-0.5 transition hover:bg-slate-100"
+                            onClick={() => startCellEditing(rowId, config.field, row[config.field])}
+                            title="Click to edit"
+                        >
+                            {value}
+                        </button>
+                    )}
                 </td>
             );
         }
