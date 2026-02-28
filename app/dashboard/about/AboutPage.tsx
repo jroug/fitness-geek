@@ -1,7 +1,7 @@
 import React from 'react';
 import SimpleContent from '@/components/SimpleContent';
 
-export default  function AboutPage({ pageTitle, pageContent }: { pageTitle: string; pageContent: string }) {
+export default  function AboutPage({ pageContent }: { pageTitle: string; pageContent: string }) {
 
     return (
         <>
