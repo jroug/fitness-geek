@@ -5,6 +5,7 @@ import "../public/css/all.min.css"; // Importing the CSS file directly
 import { Analytics } from "@vercel/analytics/react"
 import HeaderGate from "@/components/HeaderGate";
 import SidebarGate from "@/components/SidebarGate";
+import DashboardChatbox from '@/components/DashboardChatbox';
 // import PageAnimatePresence from '../components/PageAnimatePresence'
 // import BottomBar from "@/components/BottomBar";
 
@@ -30,6 +31,7 @@ export default function RootLayout({
         <HeaderGate />
         {children}
         <SidebarGate />
+        <DashboardChatbox />
         {
           process.env.NEXT_PUBLIC_ENV_NAME === 'live' && <Analytics/> // Only load the analytics script in production
         }

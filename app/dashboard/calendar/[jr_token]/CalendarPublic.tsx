@@ -245,7 +245,7 @@ export default function CalendarPublic(props: { params: Params }) {
 
     return (
         <main className="site-content full-width bg-slate-50">
-            <section className="calendar-link-wrapper mx-auto mt-4 w-full max-w-7xl px-4 md:px-8">
+            <section className="calendar-link-wrapper mx-auto mt-4 w-full px-4 md:px-8">
                 <div className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200">
                     <h2 className="text-center text-2xl font-bold text-slate-900">{userDisplayName} Diet Calendar</h2>
                     <div className="mt-2 text-center text-sm text-slate-700">
@@ -271,7 +271,7 @@ export default function CalendarPublic(props: { params: Params }) {
                 </div>
             </section>
 
-            <section className="calendar-modern mx-auto w-full max-w-7xl px-4 pb-24 md:px-8">
+            <section className="calendar-modern mx-auto w-ful  px-4 pb-24 md:px-8">
                 <div className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
                     <div className="calendar-modern-shell overflow-x-auto">
                         <div ref={calendarMainRef} className="">

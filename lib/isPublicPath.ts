@@ -13,6 +13,9 @@ export function isPublicPath(pathname: string) {
   // Magic login API routes
   if (pathname.startsWith("/users/magic-login/")) return true;
 
+  // Public calendar share route: /dashboard/calendar/[jr_token]
+  if (/^\/dashboard\/calendar\/[^/]+\/?$/.test(pathname)) return true;
+
   // Public API routes
   if (pathname.startsWith("/api")) return true;
 

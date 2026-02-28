@@ -99,7 +99,7 @@ const CalendarHomePage: React.FC = () => {
     const isPublished = Boolean(tokenData?.jr_token);
     const jrTokenFromDb = tokenData?.jr_token ?? '';
     const jrLoginTokenFromDb = tokenData?.login_token ?? '';
-
+   
     const isLoading = isCalendarLoading || isTokenLoading;
 
     const macroTotalsByDate = useMemo<Record<string, MacroTotals>>(() => {
