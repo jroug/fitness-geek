@@ -88,6 +88,7 @@ export default function HeaderProfileMenu() {
           width={28}
           height={28}
           className="h-7 w-7 rounded-full object-cover"
+          priority
         />
         <Image src={card_down} alt="open-menu-icon" className="h-3 w-3 opacity-70" />
       </button>

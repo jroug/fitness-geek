@@ -60,94 +60,115 @@ body {
 }
 
 .bodyfat-table .bf-row-header th {
-    background: #5c5c5c;
-    color: #fff;
+    background: #0f172a;
+    color: #f8fafc;
 }
 
 .bodyfat-table .bf-row-weight th,
 .bodyfat-table .bf-row-weight td {
-    background: #00ff00;
-    color: #000;
+    background: #dcfce7;
+    color: #14532d;
     font-weight: 600;
 }
 
 .bodyfat-table .bf-row-bmi th,
 .bodyfat-table .bf-row-bmi td {
-    background: #ffffff;
-    color: #000;
+    background: #f8fafc;
+    color: #0f172a;
 }
 
 .bodyfat-table .bf-row-fat-percent th,
 .bodyfat-table .bf-row-fat-percent td {
-    background: #ff9800;
-    color: #000;
+    background: #ffedd5;
+    color: #9a3412;
 }
 
 .bodyfat-table .bf-row-fat-kg th,
 .bodyfat-table .bf-row-fat-kg td {
-    background: #fff200;
-    color: #000;
+    background: #fef9c3;
+    color: #854d0e;
 }
 
 .bodyfat-table .bf-row-lean th,
 .bodyfat-table .bf-row-lean td {
-    background: #ffffff;
-    color: #000;
+    background: #eef2ff;
+    color: #312e81;
 }
 
 .bodyfat-table .bf-row-muscle th,
 .bodyfat-table .bf-row-muscle td {
-    background: #e57373;
-    color: #000;
+    background: #fee2e2;
+    color: #991b1b;
 }
 
 .bodyfat-table .bf-row-water th,
 .bodyfat-table .bf-row-water td {
-    background: #ffffff;
-    color: #000;
+    background: #e0f2fe;
+    color: #0c4a6e;
 }
 
 .bodyfat-table .bf-row-waist th,
 .bodyfat-table .bf-row-waist td {
-    background: #ffffff;
-    color: #000;
+    background: #ede9fe;
+    color: #4c1d95;
 }
 
 .bodyfat-table .bf-row-visceral th,
 .bodyfat-table .bf-row-visceral td {
-    background: #ffffff;
-    color: #000;
+    background: #ffe4e6;
+    color: #9f1239;
 }
 
-.bodyfat-table .bf-row-spacer th,
-.bodyfat-table .bf-row-spacer td {
-    background: #ffffff;
-    color: #000;
+.bodyfat-table .bf-row-delta-caption th {
+    background: #0f172a;
+    color: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
 }
 
 .bodyfat-table .bf-row-weight-change th,
 .bodyfat-table .bf-row-weight-change td {
-    background: #00ff00;
-    color: #000;
+    background: #dcfce7;
+    color: #14532d;
     font-weight: 600;
 }
 
 .bodyfat-table .bf-row-fatpct-change th,
 .bodyfat-table .bf-row-fatpct-change td {
-    background: #ff9800;
-    color: #000;
+    background: #ffedd5;
+    color: #9a3412;
 }
 
 .bodyfat-table .bf-row-fatkg-change th,
 .bodyfat-table .bf-row-fatkg-change td {
-    background: #fff200;
-    color: #000;
+    background: #fef9c3;
+    color: #854d0e;
 }
 
 .bodyfat-table .bf-row-muscle-change th,
 .bodyfat-table .bf-row-muscle-change td {
-    background: #e57373;
-    color: #000;
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.bodyfat-table .bf-row-water-change th,
+.bodyfat-table .bf-row-water-change td {
+    background: #e0f2fe;
+    color: #0c4a6e;
+}
+
+.bodyfat-table .bf-row-waist-change th,
+.bodyfat-table .bf-row-waist-change td {
+    background: #ede9fe;
+    color: #4c1d95;
+}
+
+.bodyfat-table .bf-row-visceral-change th,
+.bodyfat-table .bf-row-visceral-change td {
+    background: #ffe4e6;
+    color: #9f1239;
 }
 
 /* Body composition form grid */

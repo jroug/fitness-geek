@@ -3,6 +3,32 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import Loading from '@/components/Loading';
 
+type BodyMetricField =
+    | 'weight_kg'
+    | 'bmi'
+    | 'body_fat_percent'
+    | 'body_fat_kg'
+    | 'lean_body_mass_kg'
+    | 'muscle_mass_kg'
+    | 'total_body_water_percent'
+    | 'waist_circumference_cm'
+    | 'visceral_fat';
+
+type ValueRowConfig = {
+    kind: 'value' | 'delta';
+    className: string;
+    label: string;
+    field: BodyMetricField;
+};
+
+type CaptionRowConfig = {
+    kind: 'caption';
+    className: string;
+    label: string;
+};
+
+type TableRowConfig = ValueRowConfig | CaptionRowConfig;
+
 const BodyCompositionPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
@@ -32,6 +58,7 @@ const BodyCompositionPage: React.FC = () => {
             }
 
             const data: UserBodyfatData[] = await res.json();
+
             setRows(data);
             setHasError(false);
         } catch {
@@ -49,8 +76,6 @@ const BodyCompositionPage: React.FC = () => {
         return <Loading />;
     }
 
-    const sortedRows = [...rows].sort((a, b) => a.measurement_date.localeCompare(b.measurement_date));
-
     const formatDateShort = (value: string) => {
         const d = new Date(value);
         if (Number.isNaN(d.getTime())) return value;
@@ -67,12 +92,58 @@ const BodyCompositionPage: React.FC = () => {
         return num.toFixed(digits);
     };
 
-    const deltaValue = (index: number, field: keyof UserBodyfatData) => {
+    const deltaValue = (index: number, field: BodyMetricField) => {
         if (index === 0) return '';
-        const current = sortedRows[index][field];
-        const prev = sortedRows[index - 1][field];
+        const current = rows[index][field];
+        const prev = rows[index - 1][field];
         if (current === null || current === undefined || prev === null || prev === undefined) return '';
         return formatNumber(Number(current) - Number(prev));
+    };
+
+    const tableRows: TableRowConfig[] = [
+        { kind: 'value', className: 'bf-row-weight', label: 'Βάρος (Kg)', field: 'weight_kg' },
+        { kind: 'value', className: 'bf-row-bmi', label: 'ΔΜΣ (Kg/m2)', field: 'bmi' },
+        { kind: 'value', className: 'bf-row-fat-percent', label: 'Λίπος (%)', field: 'body_fat_percent' },
+        { kind: 'value', className: 'bf-row-fat-kg', label: 'Λίπος (Kg)', field: 'body_fat_kg' },
+        { kind: 'value', className: 'bf-row-lean', label: 'Άλιπη μάζα σώματος (Kg)', field: 'lean_body_mass_kg' },
+        { kind: 'value', className: 'bf-row-muscle', label: 'Μυϊκός ιστός (Kg)', field: 'muscle_mass_kg' },
+        { kind: 'value', className: 'bf-row-water', label: 'Συνολικό Νερό (%)', field: 'total_body_water_percent' },
+        { kind: 'value', className: 'bf-row-waist', label: 'Περίμετρος μέσης (cm)', field: 'waist_circumference_cm' },
+        { kind: 'value', className: 'bf-row-visceral', label: 'Σπλαχνικό λίπος', field: 'visceral_fat' },
+        { kind: 'caption', className: 'bf-row-delta-caption', label: 'Μεταβολές' },
+        { kind: 'delta', className: 'bf-row-weight-change', label: 'Μεταβολή Βάρους (Kg)', field: 'weight_kg' },
+        { kind: 'delta', className: 'bf-row-fatpct-change', label: 'Μεταβολή Λίπους (%)', field: 'body_fat_percent' },
+        { kind: 'delta', className: 'bf-row-fatkg-change', label: 'Μεταβολή Λίπους (kg)', field: 'body_fat_kg' },
+        { kind: 'delta', className: 'bf-row-muscle-change', label: 'Μεταβολή Μυϊκού ιστού (Kg)', field: 'muscle_mass_kg' },
+        { kind: 'delta', className: 'bf-row-water-change', label: 'Μεταβολή Νερου (%)', field: 'total_body_water_percent' },
+        { kind: 'delta', className: 'bf-row-waist-change', label: 'Μεταβολή Περίμετρος μέσης (cm)', field: 'waist_circumference_cm' },
+        { kind: 'delta', className: 'bf-row-visceral-change', label: 'Μεταβολή Σπλαχνικού λίπους', field: 'visceral_fat' }
+    ];
+
+    const renderDateHeaders = () => {
+        const headers: React.ReactNode[] = [];
+        for (const row of rows) {
+            headers.push(
+                <th key={row.id} className="border px-2 py-2 text-center">
+                    {formatDateShort(row.measurement_date)}
+                </th>
+            );
+        }
+        return headers;
+    };
+
+    const renderMetricCells = (config: ValueRowConfig) => {
+        const cells: React.ReactNode[] = [];
+        for (let idx = 0; idx < rows.length; idx += 1) {
+            const row = rows[idx];
+            const value = config.kind === 'delta' ? deltaValue(idx, config.field) : formatNumber(row[config.field]);
+            cells.push(
+                <td key={`${row.id}-${config.className}`} className="border px-2 py-2 text-center">
+                    {value}
+                </td>
+            );
+        }
+        return cells;
     };
 
     return (
@@ -121,7 +192,7 @@ const BodyCompositionPage: React.FC = () => {
                     </button>
                 </div>
         
-                {sortedRows.length === 0 ? (
+                {rows.length === 0 ? (
                     <p className="mt-[40px] text-sm text-slate-600">No records found for this period.</p>
                 ) : (
                     <div className="mt-[40px] overflow-x-auto">
@@ -129,98 +200,28 @@ const BodyCompositionPage: React.FC = () => {
                             <thead>
                                 <tr>
                                     <th className="border px-2 py-2 text-left">Ημερομηνία</th>
-                                    {sortedRows.map((row) => (
-                                        <th key={row.id} className="border px-2 py-2 text-center">
-                                            {formatDateShort(row.measurement_date)}
-                                        </th>
-                                    ))}
+                                    {renderDateHeaders()}
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr className="bf-row-weight">
-                                    <th className="border px-2 py-2 text-left">Βάρος (Kg)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.weight_kg)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-bmi">
-                                    <th className="border px-2 py-2 text-left">ΔΜΣ (Kg/m2)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.bmi)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-fat-percent">
-                                    <th className="border px-2 py-2 text-left">Λίπος (%)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.body_fat_percent)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-fat-kg">
-                                    <th className="border px-2 py-2 text-left">Λίπος (Kg)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.body_fat_kg)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-lean">
-                                    <th className="border px-2 py-2 text-left">Άλιπη μάζα σώματος (Kg)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.lean_body_mass_kg)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-muscle">
-                                    <th className="border px-2 py-2 text-left">Μυϊκός ιστός (Kg)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.muscle_mass_kg)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-water">
-                                    <th className="border px-2 py-2 text-left">Συνολικό Νερό (%)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.total_body_water_percent)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-waist">
-                                    <th className="border px-2 py-2 text-left">Περίμετρος μέσης (cm)</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.waist_circumference_cm)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-visceral">
-                                    <th className="border px-2 py-2 text-left">Σπλαχνικό λίπος</th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{formatNumber(row.visceral_fat)}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-spacer">
-                                    <th className="border px-2 py-2 text-left"> </th>
-                                    {sortedRows.map((row) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center"></td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-weight-change">
-                                    <th className="border px-2 py-2 text-left">Μεταβολή Βάρους (Kg)</th>
-                                    {sortedRows.map((row, idx) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{deltaValue(idx, 'weight_kg')}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-fatpct-change">
-                                    <th className="border px-2 py-2 text-left">Μεταβολή Λίπους (%)</th>
-                                    {sortedRows.map((row, idx) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{deltaValue(idx, 'body_fat_percent')}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-fatkg-change">
-                                    <th className="border px-2 py-2 text-left">Μεταβολή Λίπους (kg)</th>
-                                    {sortedRows.map((row, idx) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{deltaValue(idx, 'body_fat_kg')}</td>
-                                    ))}
-                                </tr>
-                                <tr className="bf-row-muscle-change">
-                                    <th className="border px-2 py-2 text-left">Μεταβολή Μυϊκού ιστού (Kg)</th>
-                                    {sortedRows.map((row, idx) => (
-                                        <td key={row.id} className="border px-2 py-2 text-center">{deltaValue(idx, 'muscle_mass_kg')}</td>
-                                    ))}
-                                </tr>
+                                {tableRows.map((config) => {
+                                    if (config.kind === 'caption') {
+                                        return (
+                                            <tr key={config.className} className={config.className}>
+                                                <th colSpan={rows.length + 1} className="border px-3 py-2 text-left">
+                                                    {config.label}
+                                                </th>
+                                            </tr>
+                                        );
+                                    }
+
+                                    return (
+                                        <tr key={config.className} className={config.className}>
+                                            <th className="border px-2 py-2 text-left">{config.label}</th>
+                                            {renderMetricCells(config)}
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>
