@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 interface LoginRequestBody {
     username: string;
     password: string;
+    rememberMe?: boolean;
 }
 
 interface SuccessResponse {
@@ -17,7 +18,7 @@ type ApiResponse = SuccessResponse | ErrorResponse;
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'POST') {
-        const { username, password } = req.body as LoginRequestBody;
+        const { username, password, rememberMe } = req.body as LoginRequestBody;
 
         try {
             const wpApiUrl = `${process.env.WORDPRESS_API_URL}`;
@@ -50,8 +51,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
                 return res.status(401).json({ message: 'Unauthorized: Incorrect user role' });
             }
 
-            // Set token in cookies
-            res.setHeader('Set-Cookie', `token=${token}; Path=/; HttpOnly; SameSite=Strict;`);
+            const isProduction = process.env.NODE_ENV === 'production';
+            const baseCookie = `token=${token}; Path=/; HttpOnly; SameSite=Strict;${isProduction ? ' Secure;' : ''}`;
+            const rememberMeMaxAge = 60 * 60 * 24 * 7; // 7 days
+            const cookie = rememberMe
+                ? `${baseCookie} Max-Age=${rememberMeMaxAge};`
+                : baseCookie;
+
+            res.setHeader('Set-Cookie', cookie);
 
             return res.status(200).json({ message: 'Logged in successfully' });
         } catch {

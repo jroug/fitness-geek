@@ -11,6 +11,7 @@ import fb_icon from "../../../public/svg/fb-icon.svg";
 export default function EnterPage() {
   const [inputEmail, setInputEmail] = useState<string>("");
   const [inputPassword, setInputPassword] = useState<string>("");
+  const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [loginErrorMessage, setLoginErrorMessage] = useState<string>("");
@@ -23,17 +24,17 @@ export default function EnterPage() {
     setIsSubmitting(true);
     setLoginErrorMessage("");
     setloginErrorBorder(false);
-    await login(inputEmail, inputPassword);
+    await login(inputEmail, inputPassword, rememberMe);
   };
 
-  const login = async (username: string, password: string) => {
+  const login = async (username: string, password: string, rememberMeValue: boolean) => {
     try {
       const res = await fetch("/api/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, rememberMe: rememberMeValue }),
       });
 
       if (res.ok) {
@@ -135,7 +136,12 @@ export default function EnterPage() {
 
               <div className="flex items-center justify-between text-sm">
                 <label className="inline-flex items-center gap-2 text-slate-600">
-                  <input type="checkbox" className="h-4 w-4 rounded border-slate-300" />
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="h-4 w-4 rounded border-slate-300"
+                  />
                   Remember this Device
                 </label>
                 <Link href="#" className="font-semibold text-cyan-700 hover:text-cyan-600">
