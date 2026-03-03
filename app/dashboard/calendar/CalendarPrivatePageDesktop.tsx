@@ -322,7 +322,7 @@ const CalendarHomePage: React.FC = () => {
                 counter++;
             }
         }
-        const grAvg = Math.round((sumGrades / counter) * 10);
+        const grAvg = Math.round((sumGrades / counter)*10)/10;
         if (counter===0){
             return {
                 avg: 'N/A', 
@@ -331,7 +331,7 @@ const CalendarHomePage: React.FC = () => {
         }
 
         return {
-            avg: 'AVG: ' + grAvg.toString() + '%', 
+            avg: 'AVG: ' + grAvg.toString() + '/10', 
             total:'Score: ' + sumGrades.toString() + '/' + counter*10 + ' (MAX 70)'
         };     
     };

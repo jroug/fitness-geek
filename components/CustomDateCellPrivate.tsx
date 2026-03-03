@@ -285,7 +285,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
         return;
     }
 
-    const getGradeStarClick = async () => {
+    const getGradeFromAI = async () => {
         const dateText = dateKey; // e.g. "2024-08-15"
         const dateData = macrosValue ? `Calories: ${macrosValue.calories}, Protein: ${macrosValue.protein}g , Carbohydrates: ${macrosValue.carbohydrates}g, Fat: ${macrosValue.fat}g , ` : "No data"; // Adjust if you want to include more context in the prompt
  
@@ -333,6 +333,45 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
         }
     };
 
+    const getCommentFromAI = async () => {
+        const dateText = dateKey; // e.g. "2024-08-15"
+        const dateData = macrosValue ? `Calories: ${macrosValue.calories}, Protein: ${macrosValue.protein}g , Carbohydrates: ${macrosValue.carbohydrates}g, Fat: ${macrosValue.fat}g , ` : "No data"; // Adjust if you want to include more context in the prompt
+ 
+        const chatQuestion = `Give me a realistic comment for date ${dateText}. Data: ${dateData}. Return only the comment without extra text.`;
+
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: "system",
+                            content:
+                                "You are a fitness coach. Return a short realistic comment based on the user's performance. No extra text, just the comment.",
+                        },
+                        {
+                            role: "user",
+                            content: chatQuestion,
+                        },
+                    ],
+                }),
+            });
+
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data?.error || "Failed to generate AI comment");
+            }
+
+            const answer = typeof data?.answer === "string" ? data.answer.trim() : "";
+            return answer;
+      
+        } catch (error) {
+            console.error("AI comment error:", error);
+            const message = error instanceof Error ? error.message : "Could not generate AI comment.";
+            alert(message);
+        }
+    }
 
     return (
         <div className="rbc-day-bg custom-date-cell" key={"dk-d" + dateKey} >
@@ -381,7 +420,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                         gradeInputRef={gradeInputRef}
                         setIsEditingGrade={setIsEditingGrade}
                         setCommentObjectDraft={setCommentObjectDraft}
-                        getGradeStarClick={getGradeStarClick}
+                        getGradeFromAI={getGradeFromAI}
                         onSaveGrade={() => handleSaveDailyCommentOrGrade('grade')}
                     />
                     {/*********************************************** GRADE GRADE GRADE***********************************************/}
@@ -398,6 +437,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                         commentInputRef={commentInputRef}
                         setIsEditingComment={setIsEditingComment}
                         setCommentObjectDraft={setCommentObjectDraft}
+                        getCommentFromAI={getCommentFromAI}
                         onSaveComment={() => handleSaveDailyCommentOrGrade('comment')}
                     />
                     {/*********************************************** COOOOOOMMMMMMMENT ***********************************************/}

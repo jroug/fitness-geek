@@ -4298,8 +4298,8 @@ button.green-btn-small{
 }
 
 textarea.custom-edit-input {
-    width: calc(100% - 40px);
-    height: 91px;
+    width: calc(100% - 5px);
+    height: 85px;
 }
 
 .opacity-placeholder{

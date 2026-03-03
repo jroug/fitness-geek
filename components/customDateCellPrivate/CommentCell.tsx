@@ -13,6 +13,7 @@ interface CommentCellProps {
     commentInputRef: React.RefObject<HTMLTextAreaElement>;
     setIsEditingComment: React.Dispatch<React.SetStateAction<boolean>>;
     setCommentObjectDraft: React.Dispatch<React.SetStateAction<UserCommentData>>;
+    getCommentFromAI: () => Promise<string | undefined>;
     onSaveComment: () => Promise<boolean>;
 }
 
@@ -23,13 +24,18 @@ const CommentCell: React.FC<CommentCellProps> = ({
     commentInputRef,
     setIsEditingComment,
     setCommentObjectDraft,
+    getCommentFromAI,
     onSaveComment
 }) => {
 
-    // console.log('commentObjInit - COMMENT CELL');
-    // console.log(commentObjInit);
-    // console.log('commentObjDraft - COMMENT CELL');
-    // console.log(commentObjDraft);
+    const handleCommentIconClick = async () => {
+        const commentFromAI = await getCommentFromAI();
+        setCommentObjectDraft(prev => ({
+            ...prev,
+            comment: commentFromAI ?? ''
+        }));   
+        setIsEditingComment(true);
+    }
 
     return (
         <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] relative custom-comment" >
@@ -47,7 +53,7 @@ const CommentCell: React.FC<CommentCellProps> = ({
                         <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => setIsEditingComment(true)} />
                     </>
                     :
-                    <Image src={comment_icon} className="comment-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingComment(true)} />
+                    <Image src={comment_icon} className="comment-icon" alt="Edit" width={20} height={20} onClick={handleCommentIconClick} />
             ) : (
                 <>
                     <div className="custom-edit-input-wrapper comment-input-wrapper">

@@ -13,7 +13,7 @@ interface GradeCellProps {
     gradeInputRef: React.RefObject<HTMLInputElement>;
     setIsEditingGrade: React.Dispatch<React.SetStateAction<boolean>>;
     setCommentObjectDraft: React.Dispatch<React.SetStateAction<UserCommentData>>;
-    getGradeStarClick: () => Promise<number | undefined>;
+    getGradeFromAI: () => Promise<number | undefined>;
     onSaveGrade: () => Promise<boolean>;
 }
 
@@ -24,18 +24,16 @@ const GradeCell: React.FC<GradeCellProps> = ({
     gradeInputRef,
     setIsEditingGrade,
     setCommentObjectDraft,
-    getGradeStarClick,
+    getGradeFromAI,
     onSaveGrade
 }) => {
 
     const handleGradeStarClick = async () => {
-        const gradeFromAI = await getGradeStarClick();
-        console.log(commentObjDraft);
+        const gradeFromAI = await getGradeFromAI();
         setCommentObjectDraft(prev => ({
             ...prev,
             grade: gradeFromAI ?? 0
         }));   
-    
         setIsEditingGrade(true);
     }
 

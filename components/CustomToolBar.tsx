@@ -118,7 +118,7 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({ label, date, onNavigate, 
 
       {/* Custom Button */}
       <span className="rbc-btn-group mr-[50px] show_on_desktop_only">
-        <span className="grades-info" >{calcWeeklyGrades(startOfWeek).total} </span>
+        {/* <span className="grades-info" >{calcWeeklyGrades(startOfWeek).total} </span> */}
         <span className="grades-info" >{calcWeeklyGrades(startOfWeek).avg} </span>
         <span className="weight-info" >{calcAverageWeeklyWeight(startOfWeek)} </span>
         <span className="training-info" >{calcNumberOfWeeklyWorkouts(startOfWeek)}</span>

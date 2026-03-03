@@ -4,7 +4,7 @@ import PublicHeader from "@/components/PublicHeader";
 export default function NotFoundPage() {
   return (
     <main className="site-content full-width bg-slate-50 pt-0">
-      <PublicHeader />
+      {/* <PublicHeader /> */}
 
       <section className="mx-auto w-full max-w-4xl px-4 py-16 md:px-6 md:py-24">
         <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-slate-950 via-sky-950 to-cyan-900 p-8 text-white shadow-2xl md:p-12">
