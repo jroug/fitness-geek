@@ -56,7 +56,13 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
 
     const weightValue = getWeight(dateKey);
     const workoutValue = getWorkout(dateKey);
-    const commentObjInit = getComment(dateKey);
+    const commentObjInit = getComment(dateKey) || {
+        id: 0,
+        user_id: 0,
+        date_of_comment: dateKey, 
+        comment: '',
+        grade: 0
+    };
     const macrosValue = getMacros(dateKey);
 
     const weightText =  weightValue ? weightValue  : '';  
@@ -188,9 +194,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
 
 
     const handleSaveDailyCommentOrGrade = async (what: string) => {
-
-
-
+ 
         const saveDailyCommentORGradeUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/save-daily-comment-or-grade`;
         try {
             const res = await fetch(saveDailyCommentORGradeUrl, {
@@ -216,10 +220,14 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                     ...prev,
                     [dateKey]: {
                         ...prev[dateKey],
+                        id: commentObjDraft.id,
+                        user_id: commentObjDraft.user_id,
+                        date_of_comment: commentObjDraft.date_of_comment, 
                         comment: commentObjDraft.comment,
                         grade: commentObjDraft.grade
                     }
                 }));
+
                 if (what === 'grade') {
                     await mutate(profileDataSWRKey);
                 }
@@ -243,41 +251,87 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
     }
 
 
-      const handleWorkoutClick = (e: React.MouseEvent<HTMLImageElement>) => {
+    const handleWorkoutClick = (e: React.MouseEvent<HTMLImageElement>) => {
         e.preventDefault();
         e.stopPropagation();
         onAddWorkout?.(slotDate);
-      };
+    };
 
-      const handleDeleteWorkoutClick = async () => {
-            try {
-                const deleteWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-daily-workout`;
-                const res = await fetch(deleteWorkoutUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'delete_workout_daily',
-                        date_of_workout: dateKey,
-                    }),
+    const handleDeleteWorkoutClick = async () => {
+        try {
+            const deleteWorkoutUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/delete-daily-workout`;
+            const res = await fetch(deleteWorkoutUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'delete_workout_daily',
+                    date_of_workout: dateKey,
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to save weight');
+            }
+            // Optimistically update parent list if provided on success
+                setUserWorkoutList((prev) => {
+                    const next = { ...prev };
+                    delete next[dateKey];
+                    return next;
                 });
+                await mutate(profileDataSWRKey);
+        } catch (error) {
+            console.error('Error saving weight:', error);
+        }   
+        return;
+    }
 
-                if (!res.ok) {
-                    throw new Error('Failed to save weight');
-                }
-                // Optimistically update parent list if provided on success
-                    setUserWorkoutList((prev) => {
-                        const next = { ...prev };
-                        delete next[dateKey];
-                        return next;
-                    });
-                    await mutate(profileDataSWRKey);
-            } catch (error) {
-                console.error('Error saving weight:', error);
-            }   
-            return;
-      }
+    const getGradeStarClick = async () => {
+        const dateText = dateKey; // e.g. "2024-08-15"
+        const dateData = macrosValue ? `Calories: ${macrosValue.calories}, Protein: ${macrosValue.protein}g , Carbohydrates: ${macrosValue.carbohydrates}g, Fat: ${macrosValue.fat}g , ` : "No data"; // Adjust if you want to include more context in the prompt
+ 
+        const chatQuestion = `Give me a success grade from 0 to 10 for date ${dateText}. Comment: ${dateData}. Return only a number.`;
 
+        try {
+            const response = await fetch("/api/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    messages: [
+                        {
+                            role: "system",
+                            content:
+                                "You are a fitness coach. Return only one number between 0 and 10 (decimals allowed). No extra text.",
+                        },
+                        {
+                            role: "user",
+                            content: chatQuestion,
+                        },
+                    ],
+                }),
+            });
 
+            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(data?.error || "Failed to generate AI grade");
+            }
+
+            const answer = typeof data?.answer === "string" ? data.answer.trim() : "";
+            const matched = answer.match(/(\d+(?:\.\d+)?)/);
+            const parsed = matched ? Number(matched[1]) : NaN;
+
+            if (!Number.isFinite(parsed)) {
+                throw new Error("AI response did not include a valid number.");
+            }
+
+            const boundedGrade = Math.max(0, Math.min(10, parsed));
+            return Number(boundedGrade.toFixed(1));
+      
+        } catch (error) {
+            console.error("AI grade error:", error);
+            const message = error instanceof Error ? error.message : "Could not generate AI grade.";
+            alert(message);
+        }
+    };
 
 
     return (
@@ -327,6 +381,7 @@ const CustomDateCell: React.FC<CustomDateCellProps> = ({
                         gradeInputRef={gradeInputRef}
                         setIsEditingGrade={setIsEditingGrade}
                         setCommentObjectDraft={setCommentObjectDraft}
+                        getGradeStarClick={getGradeStarClick}
                         onSaveGrade={() => handleSaveDailyCommentOrGrade('grade')}
                     />
                     {/*********************************************** GRADE GRADE GRADE***********************************************/}

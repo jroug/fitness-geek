@@ -24,60 +24,69 @@ const CommentCell: React.FC<CommentCellProps> = ({
     setIsEditingComment,
     setCommentObjectDraft,
     onSaveComment
-}) => (
-    <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] relative custom-comment" >
-        {!isEditingComment ? (
-            commentObjInit?.comment ?
+}) => {
+
+    // console.log('commentObjInit - COMMENT CELL');
+    // console.log(commentObjInit);
+    // console.log('commentObjDraft - COMMENT CELL');
+    // console.log(commentObjDraft);
+
+    return (
+        <div className="custom-text-cal-header text-center bg-orange-300 p-[2px] m-[2px] rounded-[4px] relative custom-comment" >
+            {!isEditingComment ? (
+                commentObjInit?.comment ?
+                    <>
+                        <button
+                            type="button"
+                            className="w-full cursor-pointer bg-transparent p-0 text-inherit "
+                            onClick={() => setIsEditingComment(true)}
+                            aria-label="Edit comment"
+                        >
+                            {commentObjInit.comment}
+                        </button>
+                        <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => setIsEditingComment(true)} />
+                    </>
+                    :
+                    <Image src={comment_icon} className="comment-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingComment(true)} />
+            ) : (
                 <>
-                    <button
-                        type="button"
-                        className="w-full cursor-pointer bg-transparent p-0 text-inherit "
-                        onClick={() => setIsEditingComment(true)}
-                        aria-label="Edit comment"
-                    >
-                        {commentObjInit.comment}
-                    </button>
-                    <Image src={pen_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => setIsEditingComment(true)} />
-                </>
-                :
-                <Image src={comment_icon} className="comment-icon" alt="Edit" width={20} height={20} onClick={() => setIsEditingComment(true)} />
-        ) : (
-            <>
-                <div className="custom-edit-input-wrapper comment-input-wrapper">
-                    <div>
-                        <textarea
-                            className="custom-edit-input"
-                            ref={commentInputRef}
-                            value={commentObjDraft.comment}
-                            onChange={(e) => {
-                                setCommentObjectDraft(prev => ({
-                                    ...prev,
-                                    comment: e.target.value
-                                }));
-                            }}
-                            maxLength={150}
-                            onBlur={() => {
-                                setCommentObjectDraft(commentObjInit);
-                                setIsEditingComment(false);
-                            }}
-                            onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                    e.preventDefault();
-                                    void onSaveComment();
-                                }
-                                if (e.key === 'Escape') {
-                                    e.preventDefault();
+                    <div className="custom-edit-input-wrapper comment-input-wrapper">
+                        <div>
+                            <textarea
+                                className="custom-edit-input"
+                                ref={commentInputRef}
+                                value={commentObjDraft?.comment || ''}
+                                onChange={(e) => {
+                                    setCommentObjectDraft(prev => ({
+                                        ...prev,
+                                        comment: e.target.value
+                                    }));
+                                    // console.log(commentObjDraft);
+                                }}
+                                maxLength={150}
+                                onBlur={() => {
                                     setCommentObjectDraft(commentObjInit);
                                     setIsEditingComment(false);
-                                }
-                            }}
-                        />
+                                }}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        e.preventDefault();
+                                        void onSaveComment();
+                                    }
+                                    if (e.key === 'Escape') {
+                                        e.preventDefault();
+                                        setCommentObjectDraft(commentObjInit);
+                                        setIsEditingComment(false);
+                                    }
+                                }}
+                            />
+                        </div>
                     </div>
-                </div>
-                <Image src={save_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => onSaveComment()} onMouseDown={e => e.preventDefault()} />
-            </>
-        )}
-    </div>
-);
+                    <Image src={save_icon} alt="Edit" width={16} height={16} className="edit-pencil-bottom" onClick={() => onSaveComment()} onMouseDown={e => e.preventDefault()} />
+                </>
+            )}
+        </div>
+    );
+}
 
 export default CommentCell;
