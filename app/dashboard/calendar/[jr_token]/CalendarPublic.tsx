@@ -98,7 +98,12 @@ export default function CalendarPublic(props: { params: Params }) {
                     id: String(item.ID),
                     start: moment(item.datetime_of_meal).toDate(),
                     end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                    title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr' : item.meal_quantity + 'x'} ${item.food_name} `,
+                    title: `${item.meal_quantity_type === 'N' 
+                        ? 
+                        ( item.category === 'Meat' || item.category === 'Chicken' || item.category === 'Fish' ) 
+                            ? item.meal_quantity*item.serving_size + 'gr ' 
+                            : item.meal_quantity + 'x ' 
+                            : item.meal_quantity + 'gr '} ${item.food_name}`,
                     // title: `${ item.meal_quantity > 1 ? item.meal_quantity+' x ':'' } ${item.food_name }`,
                     category: item.category,
                     comments: item.comments
@@ -276,36 +281,36 @@ export default function CalendarPublic(props: { params: Params }) {
                     <div className="calendar-modern-shell overflow-x-auto">
                         <div ref={calendarMainRef} className="">
                             <Calendar
-                            localizer={localizer}
-                            defaultDate={new Date()}
-                            // defaultView="week"
-                            events={userMealsList}
-                            view={view}
-                            onView={(v) => setView(v as "week" | "day")}
-                            step={150}
-                            timeslots={1}
-                            min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
-                            max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
-                            formats={{
-                                dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
-                                  const startFormat = localizer?.format(start, 'MMMM D', culture)
-                                  const endFormat = localizer?.format(end, 'D, YYYY', culture)
-                                  return `${startFormat} – ${endFormat}`
-                                }
-                            }}
-                            components={{
-                                event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished} setUserMealsList={setUserMealsList} />,  
-                                dateCellWrapper: (props) => <CustomDateCell {...props} 
-                                    // cameFrom="public"
-                                    isCommentsPublished={isCommentsPublished}
-                                    getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
-                                    getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
-                                    getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
-                                    setUserCommentsList = {setUserCommentsList}
-                                    jr_token = {jr_token}
-                                />, 
-                                timeGutterWrapper: CustomTimeGutter,    
-                                toolbar: CustomToolBarPublic
+                                localizer={localizer}
+                                defaultDate={new Date()}
+                                // defaultView="week"
+                                events={userMealsList}
+                                view={view}
+                                onView={(v) => setView(v as "week" | "day")}
+                                step={150}
+                                timeslots={1}
+                                min={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 9, 0, 0)}
+                                max={new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate(), 23, 59, 0)}
+                                formats={{
+                                    dayRangeHeaderFormat: ({ start, end }, culture, localizer) => {
+                                    const startFormat = localizer?.format(start, 'MMMM D', culture)
+                                    const endFormat = localizer?.format(end, 'D, YYYY', culture)
+                                    return `${startFormat} – ${endFormat}`
+                                    }
+                                }}
+                                components={{
+                                    event: (props) => <CustomEvent {...props} cameFrom="public" isCommentsPublished={isCommentsPublished} setUserMealsList={setUserMealsList} />,  
+                                    dateCellWrapper: (props) => <CustomDateCell {...props} 
+                                        // cameFrom="public"
+                                        isCommentsPublished={isCommentsPublished}
+                                        getWeight={(date) => userWeightList[moment(date).format("YYYY-MM-DD")] || null} 
+                                        getWorkout={(date) => userWorkoutList[moment(date).format("YYYY-MM-DD")] || null} 
+                                        getComment={(date) => userCommentsList[moment(date).format("YYYY-MM-DD")] || null}
+                                        setUserCommentsList = {setUserCommentsList}
+                                        jr_token = {jr_token}
+                                    />, 
+                                    timeGutterWrapper: CustomTimeGutter,    
+                                    toolbar: CustomToolBarPublic
                             }}
                             />
                         </div>

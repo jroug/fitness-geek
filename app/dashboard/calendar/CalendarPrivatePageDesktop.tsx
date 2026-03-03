@@ -163,7 +163,12 @@ const CalendarHomePage: React.FC = () => {
                 id: String(item.ID),
                 start: moment(item.datetime_of_meal).toDate(),
                 end: moment(item.datetime_of_meal).add(30, 'minutes').toDate(),
-                title: `${item.meal_quantity_type === 'GR' ? item.meal_quantity + 'gr ' : item.meal_quantity + 'x'} ${item.food_name} `,
+                title: `${item.meal_quantity_type === 'N' 
+                    ? 
+                    ( item.category === 'Meat' || item.category === 'Chicken' || item.category === 'Fish' ) 
+                        ? item.meal_quantity*item.serving_size + 'gr ' 
+                        : item.meal_quantity + 'x ' 
+                        : item.meal_quantity + 'gr '} ${item.food_name}`,
                 category: item.category,
                 comments: item.comments,
                 portion_quantity: Number(item.meal_quantity) || 0,
