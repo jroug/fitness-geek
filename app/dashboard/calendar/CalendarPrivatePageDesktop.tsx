@@ -17,6 +17,7 @@ import { getMealTypeFromTime } from "@/lib/getMealTypeFromTime";
 import { mealTypeOptions } from "@/lib/mealTypeOptions";
 import PopupFormAddMeal from "@/components/PopupFormAddMeal";
 import PopupFormAddWorkout from "@/components/PopupFormAddWorkout";
+import { goalsFetcher, goalsSWRKey, type GoalRow } from "@/app/dashboard/goals/goalsShared";
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 
@@ -92,6 +93,11 @@ const CalendarHomePage: React.FC = () => {
         revalidateOnFocus: true,
         revalidateOnReconnect: true,
         keepPreviousData: false,      // do not keep cached data
+    });
+
+    const { data: goals = [] } = useSWR<GoalRow[]>(goalsSWRKey, goalsFetcher, {
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
     });
 
     const isPublished = Boolean(tokenData?.jr_token);
@@ -498,6 +504,7 @@ const CalendarHomePage: React.FC = () => {
                                             calcAverageWeeklyWeight={calcAverageWeeklyWeight}
                                             calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
                                             generateWeeklyExportData={generateWeeklyExportData}
+                                            goals={goals}
                                         />
                                     ),
                                     timeSlotWrapper: (props) => (

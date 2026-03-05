@@ -27,7 +27,7 @@ export default function DashboardChatbox() {
 
   const renderMessageContent = (content: string) => {
     const lines = content.split('\n');
-    const headingRegex = /^(\s*[-*]?\s*)(wins?|risks?|next[- ]week actions?)(\s*[:-]\s*)(.*)$/i;
+    const headingRegex = /^(\s*[-*]?\s*)(wins?|risks?|next[- ]week actions?|progress\s+vs\.?\s+goals?)(\s*[:-]\s*)(.*)$/i;
 
     return (
       <>

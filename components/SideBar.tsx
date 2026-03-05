@@ -59,9 +59,9 @@ const SideBar = () => {
                 label: 'Body Composition',
                 icon: setting6,
                 children: [
+                    { key: 'add-body-composition', label: 'Add Mesurement', href: '/dashboard/body-composition/add-new' },
                     { key: 'history-body-composition', label: 'History', href: '/dashboard/body-composition/history' },
                     { key: 'chart-body-composition', label: 'Chart', href: '/dashboard/body-composition/chart' },
-                    { key: 'add-body-composition', label: 'Add New', href: '/dashboard/body-composition/add-new' },
                 ],
             },
             {
@@ -107,8 +107,8 @@ const SideBar = () => {
                 label: 'Goals',
                 icon: goalsIcon,
                 children: [
-                    { key: 'view-goals', label: 'View Goals', href: '/dashboard/goals/view-goals' },
                     { key: 'add-goal', label: 'Add Goal', href: '/dashboard/goals/add-goal' },
+                    { key: 'view-goals', label: 'View Goals', href: '/dashboard/goals/view-goals' },
                 ],
             },
             {

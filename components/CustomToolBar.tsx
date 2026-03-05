@@ -46,23 +46,13 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({
 
     setIsSummarizing(true);
     try {
-      const exportData = generateWeeklyExportData(startOfWeek);
-      const chatQuestion = `Summarize my week (${exportData.weekTitle}) with wins, risks, and next-week actions.`;
-      const compactWeekData = {
-        weekTitle: exportData.weekTitle,
-        summary: exportData.summary,
-        days: exportData.days.map((day) => ({
-          date: day.date,
-          grade: day.grade,
-          comment: day.comment,
-          weight: day.weight,
-          workout: day.workout,
-          meals: day.meals.map((meal) => ({
-            slot: meal.slot,
-            items: meal.items,
-          })),
-        })),
-      };
+      const weekStart = new Date(startOfWeek);
+      weekStart.setHours(0, 0, 0, 0);
+      const weekEnd = new Date(weekStart);
+      weekEnd.setDate(weekEnd.getDate() + 6);
+      const formatDate = (d: Date) => d.toISOString().split("T")[0];
+
+      const chatQuestion = `Summarize my week (${formatDate(weekStart)} to ${formatDate(weekEnd)}) with wins, risks, next-week actions, and progress on daily/weekly goals.`;
 
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -72,11 +62,11 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({
             {
               role: "system",
               content:
-                "You are a fitness coach. Generate a concise weekly summary with: 1) wins, 2) risks, 3) next-week actions. Keep it under 140 words and use plain text bullet points.",
+                "You are a fitness coach. Generate a concise weekly summary with: 1) wins, 2) risks, 3) next-week actions, 4) progress vs daily/weekly goals. Keep it under 140 words and use plain text bullet points.",
             },
             {
               role: "user",
-              content: `${chatQuestion}\n\nData:\n${JSON.stringify(compactWeekData)}`,
+              content: chatQuestion,
             },
           ],
         }),

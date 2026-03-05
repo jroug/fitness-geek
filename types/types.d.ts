@@ -61,6 +61,18 @@ declare global {
         calcWeeklyGrades: (startDate: Date) => { avg: string; total: string; };
         calcAverageWeeklyWeight: (startDate: Date) => string;
         calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
+        goals?: Array<{
+            id: number;
+            title: string;
+            target_value: string | number;
+            current_value: string | number;
+            unit: string;
+            period_type: string;
+            start_date: string;
+            end_date: string | null;
+            status: string;
+            notes: string | null;
+        }>;
         generateWeeklyExportData: (startDate: Date) => {
             weekTitle: string;
             summary: {
