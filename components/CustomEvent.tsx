@@ -169,15 +169,15 @@ const CustomEvent: React.FC<CustomEventProps> = ({ event, cameFrom, isCommentsPu
         <div className="custom-event">
             {cameFrom === 'private' && mealEvent.id
                 ?
-                <div key={`meal-${mealEvent.id}`} className="absolute right-0 p-[3px] bg-[red] rounded-[35px] leading-[12px] cursor-pointer">
-                    <Image src={bin_icon_white} alt="Edit" width={17} height={17} className="trashbin-icon-all" onClick={() => handleEventDelete(mealEvent.id)} />
+                <div key={`meal-${mealEvent.id}`} className="absolute right-[2px] p-[3px] bg-[red] rounded-[35px] leading-[12px] cursor-pointer mt-[-2px] mr-[-2px] border-black border-[1px]">
+                    <Image src={bin_icon_white} alt="Edit" width={16} height={16} className="trashbin-icon-all" onClick={() => handleEventDelete(mealEvent.id)} />
                 </div>
                 :
                 <></>
              }
             <h2 className="w-100 text-center event-title" title={formatMealTotalMacroTitle()} >{mealEvent.title}</h2>
             {mealEvent.meals && mealEvent.meals.length > 0 && mealEvent.meals.map((meal, idx) => (
-                <div key={`meal-${idx}`} className="relative border-b border-dotted border-black" >
+                <div key={`meal-${idx}`} className="relative" >
                     <div className={"event-description w-[calc(100%-20px)] " + meal.f_category} title={formatMacroTitle(meal)} >
                         {meal.f_title}
                         {

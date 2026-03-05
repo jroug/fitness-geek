@@ -17,8 +17,15 @@ type ApiResponse = Meal[] | ErrorResponse;
 export default async function handler(req: NextApiRequest, res: NextApiResponse<ApiResponse>) {
     if (req.method === 'GET') {
         try {
+            const token = req.cookies.token;
             const fetchSuggestedMealsUrl = `${process.env.WORDPRESS_API_URL}/workouts/v1/list/`;
-            const response = await fetch(fetchSuggestedMealsUrl);
+            const response = await fetch(fetchSuggestedMealsUrl, {
+                headers: token
+                    ? {
+                          Authorization: `Bearer ${token}`,
+                      }
+                    : undefined,
+            });
 
             if (!response.ok) {
                 return res.status(401).json({ message: 'Authentication failed (get-all-workouts)' });

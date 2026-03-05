@@ -181,6 +181,7 @@ declare global {
         category: string;
         serving_size: string;
         comments: string;
+        user_id?: number | string;
     }
 
     interface MealInputData {

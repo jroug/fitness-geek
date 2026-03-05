@@ -71,16 +71,26 @@ const SideBar = () => {
                 icon: weightIcon,
             },
             {
-                key: 'add-meal',
-                label: 'Meal',
-                href: '/dashboard/add-meal',
+                key: 'νutrition',
+                label: 'Nutrition',
                 icon: mealIcon,
+                children: [
+                    { key: 'log-meal', label: 'Log Meal', href: '/dashboard/meals/log' },
+                    { key: 'add-food', label: 'Add Food', href: '/dashboard/meals/add' },
+                    // { key: 'add-recipe', label: 'Add Recipe', href: '/dashboard/recipes/add' },
+                    { key: 'food-list', label: 'Food List', href: '/dashboard/meals/list' },
+                    // { key: 'recipe-list', label: 'Recipe List', href: '/dashboard/recipes/list' },
+                ],
             },
             {
                 key: 'add-workout',
                 label: 'Workout',
-                href: '/dashboard/add-workout',
                 icon: workoutHeartIcon,
+                children: [
+                    { key: 'log-workout', label: 'Log Workout', href: '/dashboard/workouts/log' },
+                    { key: 'add-workout', label: 'Add Workout', href: '/dashboard/workouts/add' },
+                    { key: 'workout-list', label: 'Workout List', href: '/dashboard/workouts/list' },
+                ],
             },
             {
                 key: 'charts',
@@ -97,10 +107,8 @@ const SideBar = () => {
                 label: 'Goals',
                 icon: goalsIcon,
                 children: [
-                    { key: 'goals-weight', label: 'Weight', href: '/dashboard/goals/weight' },
-                    { key: 'goals-workouts', label: 'Workouts', href: '/dashboard/goals/workouts' },
-                    { key: 'goals-bodyfat', label: 'Body Fat', href: '/dashboard/goals/bodyfat' },
-                    { key: 'goals-muscle', label: 'Muscle', href: '/dashboard/goals/muscle' },
+                    { key: 'view-goals', label: 'View Goals', href: '/dashboard/goals/view-goals' },
+                    { key: 'add-goal', label: 'Add Goal', href: '/dashboard/goals/add-goal' },
                 ],
             },
             {

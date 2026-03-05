@@ -31,7 +31,7 @@ interface WorkoutInputData {
     comments: string;
 }
 
-const AddWorkout: React.FC = () => {
+const LogWorkout: React.FC = () => {
     const searchParams = useSearchParams();
     const preselectWorkoutId = searchParams?.get('workoutId') || null;
 
@@ -291,4 +291,4 @@ const AddWorkout: React.FC = () => {
     );
 };
 
-export default AddWorkout;
+export default LogWorkout;

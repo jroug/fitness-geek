@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import AddWorkout from "./AddWorkout";
+import LogWorkout from "./LogWorkout";
  
 
 export default function Page() {
@@ -7,7 +7,7 @@ export default function Page() {
     <>
       <main className="site-content form-width">
           <Suspense fallback={null}>
-                <AddWorkout />
+                <LogWorkout />
           </Suspense>
       </main>
     </>

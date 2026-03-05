@@ -16,6 +16,7 @@ import minutesImage from '../../public/images/workout-complete/minutes.png';
 import kcalImage from '../../public/images/workout-complete/kcal.png';
 import useSWR from 'swr';
 import { profileDataSWRFetcher, profileDataSWRKey } from '@/lib/profileDataSWR';
+import type { GoalRow } from './goals/goalsShared';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -47,10 +48,10 @@ type UserWorkoutData = {
 type Trend = 'up' | 'down' | 'same';
 
 const Dashboard = () => {
-    const twoWeeksRange = useMemo(() => {
+    const thirtyDaysRange = useMemo(() => {
         const end = new Date();
         const start = new Date();
-        start.setDate(end.getDate() - 13);
+        start.setDate(end.getDate() - 29);
         const toISODate = (date: Date) => date.toISOString().split('T')[0];
         return {
             startDate: toISODate(start),
@@ -91,8 +92,8 @@ const Dashboard = () => {
         revalidateOnReconnect: false,
     });
 
-    const { data: twoWeekWeights = [], isLoading: isTwoWeekWeightsLoading } = useSWR<UserWeighingData[]>(
-        `/api/get-weighing-data?startDate=${twoWeeksRange.startDate}&endDate=${twoWeeksRange.endDate}`,
+    const { data: thirtyDayWeights = [], isLoading: isThirtyDayWeightsLoading } = useSWR<UserWeighingData[]>(
+        `/api/get-weighing-data?startDate=${thirtyDaysRange.startDate}&endDate=${thirtyDaysRange.endDate}`,
         (url) => fetcher<UserWeighingData[]>(url),
         {
             dedupingInterval: 60_000,
@@ -101,10 +102,20 @@ const Dashboard = () => {
         }
     );
 
-    const twoWeekWeightChartData = useMemo(() => {
-        if (!twoWeekWeights.length) return null;
+    const {
+        data: goals = [],
+        error: goalsError,
+        isLoading: isGoalsLoading,
+    } = useSWR<GoalRow[]>('/api/get-goals', (url) => fetcher<GoalRow[]>(url), {
+        dedupingInterval: 60_000,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false,
+    });
 
-        const sorted = [...twoWeekWeights].sort(
+    const thirtyDayWeightChartData = useMemo(() => {
+        if (!thirtyDayWeights.length) return null;
+
+        const sorted = [...thirtyDayWeights].sort(
             (a, b) => new Date(String(a.date_of_weighing)).getTime() - new Date(String(b.date_of_weighing)).getTime()
         );
 
@@ -135,7 +146,7 @@ const Dashboard = () => {
                 },
             ],
         };
-    }, [twoWeekWeights]);
+    }, [thirtyDayWeights]);
 
     const isLoading = isProfileLoading || isWorkoutsLoading;
     const hasError = profileError || workoutsError;
@@ -233,6 +244,10 @@ const Dashboard = () => {
         same: 'Flat',
     };
 
+    const activeDashboardGoals = goals.filter(
+        (goal) => goal.status === 'active' && (goal.show_in_dashboard === true || Number(goal.show_in_dashboard) === 1)
+    );
+
     const twoWeekWeightChartOptions = {
         responsive: true,
         maintainAspectRatio: false,
@@ -326,6 +341,35 @@ const Dashboard = () => {
                 </section>
 
                 <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
+                    <div className="mb-4 flex items-center justify-between gap-2">
+                        <h2 className="text-xl font-bold text-slate-900">Active Goals</h2>
+                        <Link href="/dashboard/goals/view-goals" className="text-sm font-semibold text-cyan-700 hover:underline">
+                            View All
+                        </Link>
+                    </div>
+                    {isGoalsLoading ? <p className="text-sm text-slate-500">Loading goals...</p> : null}
+                    {goalsError ? <p className="text-sm text-rose-600">Could not load goals.</p> : null}
+                    {!isGoalsLoading && !goalsError && activeDashboardGoals.length === 0 ? (
+                        <p className="text-sm text-slate-500">No active dashboard goals.</p>
+                    ) : null}
+                    {!isGoalsLoading && !goalsError && activeDashboardGoals.length > 0 ? (
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+                            {activeDashboardGoals.map((goal) => (
+                                <article key={goal.id} className="rounded-xl bg-slate-50 p-4 ring-1 ring-slate-200">
+                                    <p className="text-base font-semibold text-slate-900">{goal.title}</p>
+                                    <p className="mt-1 text-sm text-slate-600">
+                                        Target: <span className="font-semibold text-slate-900">{goal.target_value} {goal.unit || ''}</span>
+                                    </p>
+                                    <p className="mt-1 text-xs text-slate-500">
+                                        {goal.start_date}{goal.end_date ? ` → ${goal.end_date}` : ''}
+                                    </p>
+                                </article>
+                            ))}
+                        </div>
+                    ) : null}
+                </section>
+
+                <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
                     <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
                         <h2 className="text-xl font-bold text-slate-900">Body Composition</h2>
                         <p className="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-600">
@@ -396,16 +440,16 @@ const Dashboard = () => {
                 </section>
 
                 <section className="mt-16 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">
-                    <h2 className="text-xl font-bold text-slate-900">Last 2 Weeks Weight Chart</h2>
-                    <p className="mt-1 text-sm text-slate-500">Daily weighing trend for the past 14 days.</p>
+                    <h2 className="text-xl font-bold text-slate-900">Last 30 Days Weight Chart</h2>
+                    <p className="mt-1 text-sm text-slate-500">Daily weighing trend for the past 30 days.</p>
                     <div className="mt-4 h-[260px]">
-                        {isTwoWeekWeightsLoading ? (
+                        {isThirtyDayWeightsLoading ? (
                             <div className="flex h-full items-center justify-center text-sm text-slate-500">Loading chart...</div>
-                        ) : twoWeekWeightChartData ? (
-                            <Line data={twoWeekWeightChartData} options={twoWeekWeightChartOptions} />
+                        ) : thirtyDayWeightChartData ? (
+                            <Line data={thirtyDayWeightChartData} options={twoWeekWeightChartOptions} />
                         ) : (
                             <div className="flex h-full items-center justify-center text-sm text-slate-500">
-                                No weighing data found for the last 2 weeks.
+                                No weighing data found for the last 30 days.
                             </div>
                         )}
                     </div>

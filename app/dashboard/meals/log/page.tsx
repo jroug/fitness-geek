@@ -1,11 +1,11 @@
-import AddMeal from "./AddMeal";
+import LogMeal from "./LogMeal";
  
 const PageMeals = () => {
  
     return (
         <>
             <main className="site-content form-width">
-                <AddMeal  />
+                <LogMeal  />
             </main>
         </>
     );

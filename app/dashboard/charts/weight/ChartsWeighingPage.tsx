@@ -6,22 +6,28 @@ import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
-  BarElement,
+  PointElement,
+  LineElement,
   Title,
   Tooltip,
   Legend,
 } from "chart.js";
-import { Bar } from "react-chartjs-2";
+import { Line } from "react-chartjs-2";
 import { chart_colors } from "@/lib/globalSettings";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 interface UserChartData {
   labels: string[];
   datasets: {
     label: string;
     data: number[];
-    backgroundColor: string[];
+    borderColor: string;
+    pointBackgroundColor: string[];
+    pointBorderColor: string[];
+    backgroundColor: string;
+    tension: number;
+    fill: boolean;
   }[];
 }
 
@@ -111,7 +117,12 @@ const ChartsWeighingPage: React.FC = () => {
         {
           label: "Daily weight (kg)",
           data: values,
-          backgroundColor,
+          borderColor: "#0284c7",
+          pointBackgroundColor: backgroundColor,
+          pointBorderColor: backgroundColor,
+          backgroundColor: "rgba(2,132,199,0.12)",
+          tension: 0.28,
+          fill: true,
         },
       ],
     });
@@ -170,7 +181,7 @@ const ChartsWeighingPage: React.FC = () => {
           </button>
         </div>
         <div className="mt-4 h-[600px]">
-          <Bar options={options} data={chartData} />
+          <Line options={options} data={chartData} />
         </div>
       </div>
     </div>

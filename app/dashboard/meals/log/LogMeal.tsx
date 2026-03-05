@@ -16,7 +16,7 @@ const fetcher = (url: string) =>
         return res.json();
     });
 
-const AddMeal: React.FC = () => {
+const LogMeal: React.FC = () => {
     const currentDateTime = getCurrentDateTime();
 
     const [dateTimeErrorClass, setDateTimeErrorClass] = useState('');
@@ -61,13 +61,13 @@ const AddMeal: React.FC = () => {
         setMealType(mealT);
     };
 
-    const addMealToDB = async (input_data: MealInputData) => {
+    const logMealToDB = async (input_data: MealInputData) => {
         if (isSaving) return false;
         setIsSaving(true);
         setSaveBtnText('Saving...');
 
-        const addMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
-        const res = await fetch(addMealsUrl, {
+        const logMealsUrl = `${process.env.NEXT_PUBLIC_BASE_URL}${process.env.NEXT_PUBLIC_BASE_PORT}/api/add-meal`;
+        const res = await fetch(logMealsUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(input_data),
@@ -142,7 +142,7 @@ const AddMeal: React.FC = () => {
                 meal_quantity_type: mealQuantityType,
                 comments: mealComments,
             };
-            const success = await addMealToDB(input_data);
+            const success = await logMealToDB(input_data);
             if (success) {
                 setTimeout(() => {
                     window.scrollTo(0, 0);
@@ -174,10 +174,10 @@ const AddMeal: React.FC = () => {
     return (
         <>
             <div className="min-h-[calc(100vh-120px)] pb-24">
-                <div className="mx-auto w-full max-w-4xl px-4 md:px-6">
+                <div className="mx-auto w-full max-w-5xl px-4 md:px-6">
                     <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
-                        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Form</p>
-                        <h1 className="mt-2 text-2xl font-bold md:text-3xl">Add Meal</h1>
+                        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Nutrition</p>
+                        <h1 className="mt-2 text-2xl font-bold md:text-3xl">Log Meal</h1>
                         <p className="mt-2 text-sm text-cyan-100">Log meals quickly with automatic nutrient calculations.</p>
                     </section>
 
@@ -398,11 +398,11 @@ const AddMeal: React.FC = () => {
                             ></textarea>
                         </div>
 
-                        <div className="mt-6">
+                        <div className="mt-6 flex justify-end">
                             <button
                                 type="submit"
                                 disabled={isSaving}
-                                className="inline-flex items-center rounded-xl bg-slate-900 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-70"
+                                className="inline-flex min-w-[120px] items-center justify-center rounded-xl bg-cyan-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-cyan-700 disabled:cursor-not-allowed disabled:opacity-60"
                             >
                                 {saveBtnText}
                             </button>
@@ -415,4 +415,4 @@ const AddMeal: React.FC = () => {
     );
 };
 
-export default AddMeal;
+export default LogMeal;
