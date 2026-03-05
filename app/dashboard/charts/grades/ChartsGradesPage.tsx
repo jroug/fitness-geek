@@ -75,7 +75,12 @@ const ChartsGradesPage: React.FC = () => {
       {
         label: "",
         data: [],
-        backgroundColor: [],
+        borderColor: "",
+        pointBackgroundColor: [],
+        pointBorderColor: [],
+        backgroundColor: "",
+        tension: 0,
+        fill: false,
       },
     ],
   });
