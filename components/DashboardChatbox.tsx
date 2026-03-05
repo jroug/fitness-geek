@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import header_logo_small from '@/public/images/logo/fitness-geek-logo-fresh-small.svg';
 
 type ChatMessage = {
@@ -16,6 +17,7 @@ type ChatboxInjectDetail = {
 };
 
 export default function DashboardChatbox() {
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [isSending, setIsSending] = useState(false);
@@ -24,6 +26,7 @@ export default function DashboardChatbox() {
   ]);
   const [errorText, setErrorText] = useState('');
   const bottomRef = useRef<HTMLDivElement | null>(null);
+  const showFloatingButton = pathname?.startsWith('/dashboard');
 
   const renderMessageContent = (content: string) => {
     const lines = content.split('\n');
@@ -187,18 +190,20 @@ export default function DashboardChatbox() {
         ) : null}
       </AnimatePresence>
 
-      <button
-        type="button"
-        onClick={() => setIsOpen((prev) => !prev)}
-        className="fixed bottom-4 right-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white shadow-xl transition hover:bg-slate-700 md:right-6"
-        aria-label="Open chatbox"
-      >
-        <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <path d="M12 3.75L13.2 6.8L16.25 8L13.2 9.2L12 12.25L10.8 9.2L7.75 8L10.8 6.8L12 3.75Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M6 13.5L6.8 15.2L8.5 16L6.8 16.8L6 18.5L5.2 16.8L3.5 16L5.2 15.2L6 13.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M17.5 13L18.4 14.8L20.2 15.7L18.4 16.6L17.5 18.4L16.6 16.6L14.8 15.7L16.6 14.8L17.5 13Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </button>
+      {showFloatingButton ? (
+        <button
+          type="button"
+          onClick={() => setIsOpen((prev) => !prev)}
+          className="fixed bottom-4 right-4 z-50 inline-flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white shadow-xl transition hover:bg-slate-700 md:right-6"
+          aria-label="Open chatbox"
+        >
+          <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M12 3.75L13.2 6.8L16.25 8L13.2 9.2L12 12.25L10.8 9.2L7.75 8L10.8 6.8L12 3.75Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M6 13.5L6.8 15.2L8.5 16L6.8 16.8L6 18.5L5.2 16.8L3.5 16L5.2 15.2L6 13.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+            <path d="M17.5 13L18.4 14.8L20.2 15.7L18.4 16.6L17.5 18.4L16.6 16.6L14.8 15.7L16.6 14.8L17.5 13Z" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
+      ) : null}
     </>
   );
 }
