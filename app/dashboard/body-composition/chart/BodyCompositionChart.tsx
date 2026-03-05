@@ -137,7 +137,7 @@ const BodyCompositionChart: React.FC = () => {
                             href="/dashboard/body-composition/add-new"
                             className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-100"
                         >
-                            Add New BC
+                            Add Measurement
                         </Link>
 
                     </div>

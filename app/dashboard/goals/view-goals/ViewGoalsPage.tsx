@@ -124,12 +124,18 @@ export default function ViewGoalsPage() {
                             <h1 className="mt-2 text-2xl font-bold md:text-3xl">Goals History</h1>
                             <p className="mt-2 text-sm text-cyan-100">Review and manage your goals.</p>
                         </div>
-                        <div className="flex gap-3">
+                        <div className="inline-flex rounded-xl bg-white/10 p-1">
                             <Link
                                 href="/dashboard/goals/add-goal"
-                                className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-100"
+                                className="rounded-lg px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-white/10 hover:text-white"
                             >
                                 Add Goal
+                            </Link>
+                            <Link
+                                href="/dashboard/goals/view-goals"
+                                className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"
+                            >
+                                View Goals
                             </Link>
                         </div>
                     </div>

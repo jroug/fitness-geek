@@ -310,14 +310,19 @@ const BodyCompositionHistory: React.FC = () => {
                         <h1 className="mt-2 text-2xl font-bold md:text-3xl">Body Composition History</h1>
                         <p className="mt-2 text-sm text-cyan-100">Review your body composition trends and compare key measurements over time.</p>
                     </div>
-                    <div className="flex gap-3">
+                    <div className="inline-flex rounded-xl bg-white/10 p-1">
                         <Link
                             href="/dashboard/body-composition/add-new"
-                            className="rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 transition hover:bg-cyan-100"
+                            className="rounded-lg px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-white/10 hover:text-white"
                         >
-                            Add New BC
+                            Add Measurement
                         </Link>
-
+                        <Link
+                            href="/dashboard/body-composition/history"
+                            className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"
+                        >
+                            History
+                        </Link>
                     </div>
                 </div>
             </section>

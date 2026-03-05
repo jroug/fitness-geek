@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { mutate } from 'swr';
+import Link from 'next/link';
 
 import Toast from '@/components/Toast';
 import { globalSettings } from '@/lib/globalSettings';
@@ -138,9 +139,27 @@ const AddBodyComposition: React.FC = () => {
             <div className="min-h-[calc(100vh-120px)] pb-24">
                 <div className="mx-auto w-full max-w-5xl px-4 md:px-6">
                     <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
-                        <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Form</p>
-                        <h1 className="mt-2 text-2xl font-bold md:text-3xl">Add Body Composition</h1>
-                        <p className="mt-2 text-sm text-cyan-100">Store body composition metrics for trend tracking and analysis.</p>
+                        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                            <div>
+                                <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Form</p>
+                                <h1 className="mt-2 text-2xl font-bold md:text-3xl">Add Body Composition</h1>
+                                <p className="mt-2 text-sm text-cyan-100">Store body composition metrics for trend tracking and analysis.</p>
+                            </div>
+                            <div className="inline-flex rounded-xl bg-white/10 p-1">
+                                <Link
+                                    href="/dashboard/body-composition/add-new"
+                                    className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"
+                                >
+                                    Add Measurement
+                                </Link>
+                                <Link
+                                    href="/dashboard/body-composition/history"
+                                    className="rounded-lg px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-white/10 hover:text-white"
+                                >
+                                    History
+                                </Link>
+                            </div>
+                        </div>
                     </section>
 
                     <form onSubmit={handleFormSubmit} className="typical-form mt-6 rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 md:p-6">

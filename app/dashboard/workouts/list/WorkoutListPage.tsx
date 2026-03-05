@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState } from 'react';
 import useSWR, { mutate } from 'swr';
+import Link from 'next/link';
 import Toast from '@/components/Toast';
 import { globalSettings } from '@/lib/globalSettings';
 
@@ -161,9 +162,27 @@ export default function WorkoutListPage() {
         <>
             <div className="mx-auto w-full max-w-[2200px] px-4 pb-24 md:px-8">
                 <section className="overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-sky-900 to-cyan-700 p-6 text-white shadow-xl md:p-8">
-                    <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Workout</p>
-                    <h1 className="mt-2 text-2xl font-bold md:text-3xl">Workout List</h1>
-                    <p className="mt-2 text-sm text-cyan-100">System workouts and your personal workouts.</p>
+                    <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                        <div>
+                            <p className="text-xs uppercase tracking-[0.2em] text-cyan-200">Workout</p>
+                            <h1 className="mt-2 text-2xl font-bold md:text-3xl">Workout List</h1>
+                            <p className="mt-2 text-sm text-cyan-100">System workouts and your personal workouts.</p>
+                        </div>
+                        <div className="inline-flex rounded-xl bg-white/10 p-1">
+                            <Link
+                                href="/dashboard/workouts/add"
+                                className="rounded-lg px-4 py-2 text-sm font-semibold text-cyan-100 transition hover:bg-white/10 hover:text-white"
+                            >
+                                Add Workout
+                            </Link>
+                            <Link
+                                href="/dashboard/workouts/list"
+                                className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-slate-900"
+                            >
+                                Workout List
+                            </Link>
+                        </div>
+                    </div>
                 </section>
 
                 <section className="mt-6 rounded-2xl bg-white p-4 md:p-7">
