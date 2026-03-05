@@ -3821,10 +3821,11 @@ body.open-sidebar .home-setting {
 }
 .rbc-event-content{
     font-size:15px;
-    background: transparent;
+    background: #edff0052;
     color: white;
     font-weight: bold;
     font-family: "DM Sans", sans-serif;
+    border-radius: 5px;
 }
 .rbc-event{
     /* background: var(--theme-color); !important; */
