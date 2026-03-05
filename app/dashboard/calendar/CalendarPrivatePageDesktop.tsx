@@ -17,8 +17,6 @@ import { getMealTypeFromTime } from "@/lib/getMealTypeFromTime";
 import { mealTypeOptions } from "@/lib/mealTypeOptions";
 import PopupFormAddMeal from "@/components/PopupFormAddMeal";
 import PopupFormAddWorkout from "@/components/PopupFormAddWorkout";
-import TopBar from "./TopBar";
-import SettingsBar from "./SettingsBar";
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 
@@ -424,18 +422,18 @@ const CalendarHomePage: React.FC = () => {
         setPopupWorkoutFormData({ title: 'Add Workout', dateSelected: arg0.start, show_popup: true });
     }
 
-    const handleSettingsClick = (e?: React.MouseEvent<HTMLElement>) => {
-        e?.preventDefault?.();
+    const handleSettingsToggle = () => {
         setSettingsVisible((prev) => !prev);
     };
-   
+
+    const handleSettingsClose = () => {
+        setSettingsVisible(false);
+    };
 
     return (
         <>
-            <TopBar clickHandler={handleSettingsClick} isPublished={isPublished} />
-            <SettingsBar settingsVisible={settingsVisible} handleSettingsClick={handleSettingsClick} isPublished={isPublished} handlePublishingCalendar={handlePublishingCalendar} calendarPageUrl={calendarPageUrl} magicLoginForContributorUrl={magicLoginForContributorUrl} handleCopyLink={handleCopyLink} />
             <section className="calendar-modern mx-auto w-full  px-4 pb-24 md:px-8">
-                <div className="mt-4 rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
+                <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
                     <div className="calendar-modern-shell overflow-x-auto">
                         <div className="">
                             <Calendar
@@ -488,6 +486,14 @@ const CalendarHomePage: React.FC = () => {
                                     toolbar: (props) => (
                                         <CustomToolBar
                                             {...props}
+                                            settingsVisible={settingsVisible}
+                                            onSettingsToggle={handleSettingsToggle}
+                                            onSettingsClose={handleSettingsClose}
+                                            isPublished={isPublished}
+                                            handlePublishingCalendar={handlePublishingCalendar}
+                                            calendarPageUrl={calendarPageUrl}
+                                            magicLoginForContributorUrl={magicLoginForContributorUrl}
+                                            handleCopyLink={handleCopyLink}
                                             calcWeeklyGrades={calcWeeklyGrades}
                                             calcAverageWeeklyWeight={calcAverageWeeklyWeight}
                                             calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}

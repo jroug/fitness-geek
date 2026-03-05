@@ -50,6 +50,14 @@ declare global {
         date: Date;
         onNavigate: (action: NavigateAction) => void;
         onView: (view: View) => void;
+        settingsVisible?: boolean;
+        onSettingsToggle?: () => void;
+        onSettingsClose?: () => void;
+        isPublished?: boolean;
+        handlePublishingCalendar?: () => void;
+        calendarPageUrl?: string;
+        magicLoginForContributorUrl?: string;
+        handleCopyLink?: (url: string) => void;
         calcWeeklyGrades: (startDate: Date) => { avg: string; total: string; };
         calcAverageWeeklyWeight: (startDate: Date) => string;
         calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
