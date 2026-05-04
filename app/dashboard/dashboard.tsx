@@ -319,7 +319,6 @@ const Dashboard = () => {
                                 <p className="text-sm text-slate-500">Workouts This Week</p>
                                 <p className="text-3xl font-bold text-slate-900">
                                     {weeklyWorkoutsCount}
-                                    <span className="ml-1 text-lg font-medium text-slate-500">/4</span>
                                 </p>
                             </div>
                         </div>
