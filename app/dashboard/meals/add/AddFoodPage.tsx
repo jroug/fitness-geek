@@ -18,6 +18,19 @@ type AddFoodPayload = {
     comments: string;
 };
 
+type NutritionLookupResponse = {
+    message?: string;
+    nutrition_found?: boolean;
+    nutrition?: {
+        calories: number;
+        protein: number;
+        carbohydrates: number;
+        fat: number;
+        fiber: number;
+    };
+    source?: string;
+};
+
 const categoryOptions = [
     'Meat',
     'Fish',
@@ -51,6 +64,7 @@ export default function AddFoodPage() {
     const [comments, setComments] = useState('');
 
     const [isSaving, setIsSaving] = useState(false);
+    const [isLookingUpNutrition, setIsLookingUpNutrition] = useState(false);
     const [saveBtnText, setSaveBtnText] = useState('SAVE');
     const [popupData, setPopupData] = useState({ title: '', message: '', time: 0, show_popup: false });
 
@@ -67,6 +81,64 @@ export default function AddFoodPage() {
         setFat('');
         setFiber('0');
         setComments('');
+    };
+
+    const formatNutritionValue = (value: number) => {
+        if (!Number.isFinite(value)) return '0';
+        return Number.isInteger(value) ? String(value) : value.toFixed(2).replace(/\.?0+$/, '');
+    };
+
+    const handleNutritionLookup = async () => {
+        if (isLookingUpNutrition) return;
+
+        if (!foodName.trim() || !servingSize || toNumber(servingSize) <= 0) {
+            setPopupData({
+                title: 'Error!',
+                message: 'Enter a food name and serving size first.',
+                time: globalSettings.frmTimeError,
+                show_popup: true,
+            });
+            return;
+        }
+
+        setIsLookingUpNutrition(true);
+
+        try {
+            const response = await fetch('/api/lookup-food-nutrition', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    food_name: foodName.trim(),
+                    serving_size: toNumber(servingSize),
+                }),
+            });
+            const data = (await response.json()) as NutritionLookupResponse;
+
+            if (!response.ok || !data?.nutrition_found || !data.nutrition) {
+                setPopupData({
+                    title: 'Error!',
+                    message: data?.message || 'Could not find nutrition data for that food.',
+                    time: globalSettings.frmTimeError,
+                    show_popup: true,
+                });
+                return;
+            }
+
+            setCalories(formatNutritionValue(data.nutrition.calories));
+            setProtein(formatNutritionValue(data.nutrition.protein));
+            setCarbohydrates(formatNutritionValue(data.nutrition.carbohydrates));
+            setFat(formatNutritionValue(data.nutrition.fat));
+            setFiber(formatNutritionValue(data.nutrition.fiber));
+        } catch {
+            setPopupData({
+                title: 'Error!',
+                message: 'Could not look up nutrition data.',
+                time: globalSettings.frmTimeError,
+                show_popup: true,
+            });
+        } finally {
+            setIsLookingUpNutrition(false);
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -212,6 +284,18 @@ export default function AddFoodPage() {
                                     onChange={(e) => setServingSize(e.target.value)}
                                     className={`${inputBase} ${inputNormal}`}
                                 />
+                            </div>
+
+                            <div className="md:col-span-2">
+                                <button
+                                    type="button"
+                                    onClick={handleNutritionLookup}
+                                    disabled={isLookingUpNutrition}
+                                    className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-cyan-200 bg-cyan-50 px-5 py-2.5 text-sm font-semibold text-cyan-800 transition hover:border-cyan-300 hover:bg-cyan-100 disabled:cursor-not-allowed disabled:opacity-60 md:w-auto"
+                                >
+                                    <span className="fa-solid fa-wand-magic-sparkles text-base" aria-hidden="true" />
+                                    {isLookingUpNutrition ? 'Looking up nutrition...' : 'Auto-populate nutrition'}
+                                </button>
                             </div>
 
                             <div>
