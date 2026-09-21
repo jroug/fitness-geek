@@ -102,7 +102,7 @@ OPENAI_NUTRITION_MODEL=gpt-4.1-mini
 | Variable | Purpose |
 | --- | --- |
 | `NEXT_PUBLIC_BASE_URL` | Frontend origin without the separately configured port. |
-| `NEXT_PUBLIC_BASE_PORT` | Port suffix including `:`, or empty when no explicit port is needed. |
+| `NEXT_PUBLIC_BASE_PORT` | Optional port suffix including `:`. It defaults to an empty string when unset, which is appropriate for production HTTPS deployments. |
 | `NEXT_PUBLIC_ENV_NAME` | Environment label; `live` enables production-specific behavior such as analytics. |
 | `WORDPRESS_API_URL` | WordPress REST API base ending in `/wp-json`, without a trailing slash. |
 | `JWT_SECRET_KEY` | Secret used for token verification; must match the backend's JWT signing secret. |
