@@ -470,7 +470,7 @@ const CalendarHomePage: React.FC = () => {
                                     <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-2">
                                         <div className="min-w-0">
                                         <h3 className="break-words text-sm font-semibold leading-5 text-slate-900">{goal.title}</h3>
-                                        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
+                                        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-[14px]">
                                             <span className="rounded-md bg-cyan-100/70 px-2 py-0.5 text-cyan-900">
                                                 Target: <strong className="font-semibold">{String(goal.target_value).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1')} {goal.unit || ''}</strong>
                                             </span>
@@ -479,7 +479,7 @@ const CalendarHomePage: React.FC = () => {
                                             </span>
                                         </div>
                                         </div>
-                                        {goal.end_date ? <div className="ml-auto flex flex-wrap justify-end gap-2 text-xs">
+                                        {goal.end_date ? <div className="ml-auto flex flex-wrap justify-end gap-2 text-[14px]">
                                             <span className="rounded-md bg-amber-100/70 px-2 py-1 text-amber-900">
                                                 <span className="font-semibold">End:</span> {moment(goal.end_date).format('DD MMM YYYY')}
                                             </span>
