@@ -479,9 +479,11 @@ const CalendarHomePage: React.FC = () => {
                                             </span>
                                         </div>
                                         </div>
-                                        <p className="ml-auto shrink-0 rounded-md bg-violet-100/70 px-2 py-0.5 text-right text-xs text-violet-900">
-                                            {moment(goal.start_date).format('DD MMM YYYY')}{goal.end_date ? ` → ${moment(goal.end_date).format('DD MMM YYYY')}` : ''}
-                                        </p>
+                                        <div className="ml-auto flex flex-wrap justify-end gap-2 text-xs">
+                                            <span className="rounded-md bg-amber-100/70 px-2 py-1 text-amber-900">
+                                                <span className="font-semibold">End:</span> {goal.end_date ? moment(goal.end_date).format('DD MMM YYYY') : 'No end date'}
+                                            </span>
+                                        </div>
                                     </div>
                                 </article>
                             ))}
