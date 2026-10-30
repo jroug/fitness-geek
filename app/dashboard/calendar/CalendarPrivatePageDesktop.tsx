@@ -479,11 +479,11 @@ const CalendarHomePage: React.FC = () => {
                                             </span>
                                         </div>
                                         </div>
-                                        <div className="ml-auto flex flex-wrap justify-end gap-2 text-xs">
+                                        {goal.end_date ? <div className="ml-auto flex flex-wrap justify-end gap-2 text-xs">
                                             <span className="rounded-md bg-amber-100/70 px-2 py-1 text-amber-900">
-                                                <span className="font-semibold">End:</span> {goal.end_date ? moment(goal.end_date).format('DD MMM YYYY') : 'No end date'}
+                                                <span className="font-semibold">End:</span> {moment(goal.end_date).format('DD MMM YYYY')}
                                             </span>
-                                        </div>
+                                        </div> : null}
                                     </div>
                                 </article>
                             ))}
