@@ -457,7 +457,7 @@ const CalendarHomePage: React.FC = () => {
                         <p className="text-sm text-slate-500">No active goals selected for the calendar.</p>
                     ) : null}
                     {activeCalendarGoals.length > 0 ? (
-                        <div className="space-y-2">
+                        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
                             {activeCalendarGoals.map((goal) => (
                                 <article key={goal.id} className="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200/80 bg-gradient-to-r from-cyan-50/60 to-slate-50 px-4 py-3">
                                     <span aria-hidden="true" className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-cyan-700 shadow-sm ring-1 ring-cyan-100">
