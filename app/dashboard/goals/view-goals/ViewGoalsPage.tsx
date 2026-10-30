@@ -240,7 +240,7 @@ export default function ViewGoalsPage() {
                                         </div>
 
                                         {goal.notes ? <p className="mt-3 text-sm text-slate-700">{goal.notes}</p> : null}
-                                        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
+                                        {goal.status === 'active' ? <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-6">
                                             <label className="inline-flex items-center gap-2 text-xs text-slate-700">
                                                 <input
                                                     type="checkbox"
@@ -261,7 +261,7 @@ export default function ViewGoalsPage() {
                                                 />
                                                 Appear in Dashboard
                                             </label>
-                                        </div>
+                                        </div> : null}
                                     </article>
                                 );
                             })}

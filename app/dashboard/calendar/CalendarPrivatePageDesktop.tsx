@@ -5,6 +5,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import useSWR, { mutate } from "swr";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import Link from 'next/link';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import Loading from "@/components/Loading";
 import CustomDateCell from '@/components/CustomDateCellPrivate';
@@ -17,7 +18,7 @@ import { getMealTypeFromTime } from "@/lib/getMealTypeFromTime";
 import { mealTypeOptions } from "@/lib/mealTypeOptions";
 import PopupFormAddMeal from "@/components/PopupFormAddMeal";
 import PopupFormAddWorkout from "@/components/PopupFormAddWorkout";
-import { goalsFetcher, goalsSWRKey, type GoalRow } from "@/app/dashboard/goals/goalsShared";
+import { goalsFetcher, goalsSWRKey, periodTypeOptions, type GoalRow } from "@/app/dashboard/goals/goalsShared";
 
 moment.updateLocale("en", { week: { dow: 1 } }); // Set Monday as the first day
 
@@ -95,10 +96,14 @@ const CalendarHomePage: React.FC = () => {
         keepPreviousData: false,      // do not keep cached data
     });
 
-    const { data: goals = [] } = useSWR<GoalRow[]>(goalsSWRKey, goalsFetcher, {
-        revalidateOnFocus: false,
-        revalidateOnReconnect: false,
+    const { data: goals = [], error: goalsError, isLoading: isGoalsLoading } = useSWR<GoalRow[]>(goalsSWRKey, goalsFetcher, {
+        revalidateOnFocus: true,
+        revalidateOnReconnect: true,
     });
+
+    const activeCalendarGoals = goals.filter(
+        (goal) => goal.status === 'active' && (goal.show_in_calendar === true || Number(goal.show_in_calendar) === 1)
+    );
 
     const isPublished = Boolean(tokenData?.jr_token);
     const jrTokenFromDb = tokenData?.jr_token ?? '';
@@ -439,6 +444,50 @@ const CalendarHomePage: React.FC = () => {
     return (
         <>
             <section className="calendar-modern mx-auto w-full  px-4 pb-24 md:px-8">
+                <section aria-labelledby="calendar-goals-heading" className="mb-6 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200 md:p-5">
+                    <div className="mb-3 flex items-center justify-between gap-3">
+                        <h2 id="calendar-goals-heading" className="text-lg font-semibold text-slate-900">Active goals</h2>
+                        <Link href="/dashboard/goals/view-goals" className="text-sm font-semibold text-cyan-700 hover:underline">
+                            Manage goals
+                        </Link>
+                    </div>
+                    {isGoalsLoading ? <p role="status" className="text-sm text-slate-500">Loading goals...</p> : null}
+                    {goalsError ? <p role="alert" className="text-sm text-rose-600">Could not load goals.</p> : null}
+                    {!isGoalsLoading && !goalsError && activeCalendarGoals.length === 0 ? (
+                        <p className="text-sm text-slate-500">No active goals selected for the calendar.</p>
+                    ) : null}
+                    {activeCalendarGoals.length > 0 ? (
+                        <div className="space-y-2">
+                            {activeCalendarGoals.map((goal) => (
+                                <article key={goal.id} className="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200/80 bg-gradient-to-r from-cyan-50/60 to-slate-50 px-4 py-3">
+                                    <span aria-hidden="true" className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white text-cyan-700 shadow-sm ring-1 ring-cyan-100">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" className="h-5 w-5">
+                                            <circle cx="12" cy="12" r="8" />
+                                            <circle cx="12" cy="12" r="4" />
+                                            <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+                                        </svg>
+                                    </span>
+                                    <div className="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-2">
+                                        <div className="min-w-0">
+                                        <h3 className="break-words text-sm font-semibold leading-5 text-slate-900">{goal.title}</h3>
+                                        <div className="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs">
+                                            <span className="rounded-md bg-cyan-100/70 px-2 py-0.5 text-cyan-900">
+                                                Target: <strong className="font-semibold">{String(goal.target_value).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1')} {goal.unit || ''}</strong>
+                                            </span>
+                                            <span className="font-medium text-slate-600">
+                                                {periodTypeOptions.find((option) => option.value === goal.period_type)?.label || goal.period_type}
+                                            </span>
+                                        </div>
+                                        </div>
+                                        <p className="ml-auto shrink-0 text-right text-xs text-slate-500">
+                                            {goal.start_date}{goal.end_date ? ` → ${goal.end_date}` : ''}
+                                        </p>
+                                    </div>
+                                </article>
+                            ))}
+                        </div>
+                    ) : null}
+                </section>
                 <div className="rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 md:p-4">
                     <div className="calendar-modern-shell overflow-x-auto">
                         <div className="">
