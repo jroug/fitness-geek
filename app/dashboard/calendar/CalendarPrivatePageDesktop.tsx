@@ -479,8 +479,8 @@ const CalendarHomePage: React.FC = () => {
                                             </span>
                                         </div>
                                         </div>
-                                        <p className="ml-auto shrink-0 text-right text-xs text-slate-500">
-                                            {goal.start_date}{goal.end_date ? ` → ${goal.end_date}` : ''}
+                                        <p className="ml-auto shrink-0 rounded-md bg-violet-100/70 px-2 py-0.5 text-right text-xs text-violet-900">
+                                            {moment(goal.start_date).format('DD MMM YYYY')}{goal.end_date ? ` → ${moment(goal.end_date).format('DD MMM YYYY')}` : ''}
                                         </p>
                                     </div>
                                 </article>
