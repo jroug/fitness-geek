@@ -60,6 +60,7 @@ declare global {
         handleCopyLink?: (url: string) => void;
         calcWeeklyGrades: (startDate: Date) => { avg: string; total: string; };
         calcAverageWeeklyWeight: (startDate: Date) => string;
+        calcAverageWeeklyNutrition: (startDate: Date) => { calories: number | null; protein: number | null; days: number };
         calcNumberOfWeeklyWorkouts: (startDate: Date) => string;
         goals?: Array<{
             id: number;

@@ -365,6 +365,24 @@ const CalendarHomePage: React.FC = () => {
         return parseFloat(arr[0]);
     };
 
+    const calcAverageWeeklyNutrition = (startDate: Date) => {
+        const loggedDays = Array.from({ length: 7 }, (_, offset) =>
+            macroTotalsByDate[moment(startDate).add(offset, 'days').format('YYYY-MM-DD')]
+        ).filter((totals): totals is MacroTotals => totals !== undefined);
+
+        if (!loggedDays.length) return { calories: null, protein: null, days: 0 };
+
+        const totals = loggedDays.reduce(
+            (sum, day) => ({ calories: sum.calories + day.calories, protein: sum.protein + day.protein }),
+            { calories: 0, protein: 0 }
+        );
+        return {
+            calories: Math.round(totals.calories / loggedDays.length),
+            protein: Math.round(totals.protein / loggedDays.length),
+            days: loggedDays.length,
+        };
+    };
+
     const calcNumberOfWeeklyWorkouts = (startDate: Date) => {
         let counter = 0;
         for (let i = 0; i < 7; i++) {
@@ -553,6 +571,7 @@ const CalendarHomePage: React.FC = () => {
                                             handleCopyLink={handleCopyLink}
                                             calcWeeklyGrades={calcWeeklyGrades}
                                             calcAverageWeeklyWeight={calcAverageWeeklyWeight}
+                                            calcAverageWeeklyNutrition={calcAverageWeeklyNutrition}
                                             calcNumberOfWeeklyWorkouts={calcNumberOfWeeklyWorkouts}
                                             generateWeeklyExportData={generateWeeklyExportData}
                                             goals={goals}

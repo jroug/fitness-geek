@@ -23,6 +23,7 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({
   handleCopyLink,
   calcWeeklyGrades,
   calcAverageWeeklyWeight,
+  calcAverageWeeklyNutrition,
   calcNumberOfWeeklyWorkouts,
   generateWeeklyExportData,
 }) => {
@@ -37,6 +38,8 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({
   };
 
   const startOfWeek = getStartOfWeek(new Date(date));
+  const averageNutrition = calcAverageWeeklyNutrition(startOfWeek);
+  const nutritionAverageTitle = `Daily average across ${averageNutrition.days} day${averageNutrition.days === 1 ? '' : 's'} with meal entries this week`;
   // console.log("Start of the week:", startOfWeek.toISOString().split("T")[0]);
 
 
@@ -168,10 +171,16 @@ const CustomToolBar: React.FC<CustomToolBarProps> = ({
             </button>   
         </div>
 
-        <span className="rbc-btn-group mr-[50px] show_on_desktop_only">
+        <span className="rbc-btn-group mr-3 show_on_desktop_only">
           <span className="grades-info" >{calcWeeklyGrades(startOfWeek).avg} </span>
           <span className="weight-info" >{calcAverageWeeklyWeight(startOfWeek)} </span>
           <span className="training-info" >{calcNumberOfWeeklyWorkouts(startOfWeek)}</span>
+          <span className="training-info !bg-emerald-200 !text-emerald-950" title={nutritionAverageTitle}>
+            Avg. {averageNutrition.calories === null ? 'N/A' : `${averageNutrition.calories} kcal/day`}
+          </span>
+          <span className="training-info !bg-emerald-100 !text-emerald-950" title={nutritionAverageTitle}>
+            Avg. protein {averageNutrition.protein === null ? 'N/A' : `${averageNutrition.protein} g/day`}
+          </span>
         </span>
         <span className="rbc-btn-group">
               <Link href="#" onClick={handleWeekExport} className="green-link-btn inline-flex h-9 items-center" >
